@@ -1,31 +1,87 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+    <v-app dark>
+        <v-navigation-drawer
+                persistent
+                :clipped="clipped"
+                v-model="drawer"
+                enable-resize-watcher
+                fixed
+                app
+        >
+            <v-list>
+                <v-list-tile
+                        value="true"
+                        :to="item.link"
+                        v-for="(item, i) in items"
+                        :key="i"
+                >
+                    <v-list-tile-action>
+                        <v-icon v-html="item.icon"></v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title v-text="item.title"></v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-toolbar
+                app
+                :clipped-left="clipped"
+        >
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        </v-toolbar>
+        <v-content>
+            <router-view/>
+        </v-content>
+
+        <v-footer :fixed="fixed" app>
+            <span>{{message}}</span>
+            <v-spacer></v-spacer>
+            <span>eos-commons.io</span>
+        </v-footer>
+    </v-app>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  name: 'App',
+  data () {
+    return {
+      clipped: true,
+      drawer: true,
+      fixed: false,
+      items: [{
+        icon: 'bubble_chart',
+        title: 'Home',
+        link: 'home'
+      }, {
+        icon: 'bubble_chart',
+        title: 'Classes',
+        link: 'classes'
+      }, {
+        icon: 'bubble_chart',
+        title: 'Tree',
+        link: 'tree'
+      }, {
+        icon: 'bubble_chart',
+        title: 'Ipfs',
+        link: 'ipfs'
+      }, {
+        icon: 'bubble_chart',
+        title: 'Page',
+        link: 'page'
+      }]
+    }
+  },
+  computed: {
+    message () {
+      return this.$store.getters.getMessage
+    }
+  }
 }
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+</script>
+<style scoped>
+    span {
+        padding: 5px;
+    }
 </style>

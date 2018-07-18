@@ -1,5 +1,5 @@
 <template>
-    <div class=""tree">
+    <div class="tree">
         <img src="logo.png">
         <h1>{{ msg }}</h1>
         <h2>Tree View</h2>
@@ -155,314 +155,318 @@
 </template>
 
 <script>
+import VJstree from 'vue-jstree'
 export default {
   name: 'Tree',
-    data: {
-        msg: 'A Tree Plugin For Vue2',
-        searchText: '',
-        editingItem: {},
-        editingNode: null,
-        itemEvents: {
-            mouseover: function () {
-                console.log('mouseover')
-            },
-            contextmenu: function () {
-                console.log(arguments[2])
-                arguments[2].preventDefault()
-                console.log('contextmenu')
-            }
+  components: {
+    VJstree
+  },
+  data () {
+    return {
+      msg: 'A Tree Plugin For Vue2',
+      searchText: '',
+      editingItem: {},
+      editingNode: null,
+      itemEvents: {
+        mouseover: function () {
+          console.log('mouseover')
         },
-        data: [
-            {
-                "text": "Same but with checkboxes",
-                "children": [
-                    {
-                        "text": "initially selected",
-                        "selected": true
-                    },
-                    {
-                        "text": "custom icon",
-                        "icon": "fa fa-warning icon-state-danger"
-                    },
-                    {
-                        "text": "initially open",
-                        "icon": "fa fa-folder icon-state-default",
-                        "opened": true,
-                        "children": [
-                            {
-                                "text": "Another node"
-                            }
-                        ]
-                    },
-                    {
-                        "text": "custom icon",
-                        "icon": "fa fa-warning icon-state-warning"
-                    },
-                    {
-                        "text": "disabled node",
-                        "icon": "fa fa-check icon-state-success",
-                        "disabled": true
-                    }
-                ]
-            },
-            {
-                "text": "Same but with checkboxes",
-                "opened": true,
-                "children": [
-                    {
-                        "text": "initially selected",
-                        "selected": true
-                    },
-                    {
-                        "text": "custom icon",
-                        "icon": "fa fa-warning icon-state-danger"
-                    },
-                    {
-                        "text": "initially open",
-                        "icon": "fa fa-folder icon-state-default",
-                        "opened": true,
-                        "children": [
-                            {
-                                "text": "Another node"
-                            }
-                        ]
-                    },
-                    {
-                        "text": "custom icon",
-                        "icon": "fa fa-warning icon-state-warning"
-                    },
-                    {
-                        "text": "disabled node",
-                        "icon": "fa fa-check icon-state-success",
-                        "disabled": true
-                    }
-                ]
-            },
-            {
-                "text": "And wholerow selection"
-            },
-            {
-                "text": "drag disabled",
-                "icon": "fa fa-warning icon-state-danger",
-                "dragDisabled": true
-            },
-            {
-                "text": "drop disabled",
-                "icon": "fa fa-warning icon-state-danger",
-                "dropDisabled": true
-            }
-        ],
-        data2: [
-            {
-                "text2": "Same but with checkboxes",
-                "children2": [
-                    {
-                        "text2": "initially selected",
-                        "selected": true
-                    },
-                    {
-                        "text2": "custom icon",
-                        "icon": "fa fa-warning icon-state-danger"
-                    },
-                    {
-                        "text2": "initially open",
-                        "icon": "fa fa-folder icon-state-default",
-                        "opened": true,
-                        "children2": [
-                            {
-                                "text2": "Another node"
-                            }
-                        ]
-                    },
-                    {
-                        "text2": "custom icon",
-                        "icon": "fa fa-warning icon-state-warning"
-                    },
-                    {
-                        "text2": "disabled node",
-                        "icon": "fa fa-check icon-state-success",
-                        "disabled": true
-                    }
-                ]
-            },
-            {
-                "text2": "Same but with checkboxes",
-                "opened": true,
-                "children2": [
-                    {
-                        "text2": "initially selected",
-                        "selected": true
-                    },
-                    {
-                        "text2": "custom icon",
-                        "icon": "fa fa-warning icon-state-danger"
-                    },
-                    {
-                        "text2": "initially open",
-                        "icon": "fa fa-folder icon-state-default",
-                        "opened": true,
-                        "children2": [
-                            {
-                                "text2": "Another node"
-                            }
-                        ]
-                    },
-                    {
-                        "text2": "custom icon",
-                        "icon": "fa fa-warning icon-state-warning"
-                    },
-                    {
-                        "text2": "disabled node",
-                        "icon": "fa fa-check icon-state-success",
-                        "disabled": true
-                    }
-                ]
-            },
-            {
-                "text2": "And wholerow selection"
-            }
-        ],
-        asyncData: [],
-        loadData: function (oriNode, resolve) {
-            var id = oriNode.data.id ? oriNode.data.id : 0
-            setTimeout(() => {
-                let data = []
-                if (id > 200) {
-                    data = []
-                }
-                else {
-                    data = [
-                        {
-                            "text": "New Item 1..." + id, "isLeaf": id > 100
-                        },
-                        {
-                            "text": "New Item 2..." + id, "isLeaf": id > 100
-                        }
-                    ]
-                }
-                resolve(data)
-            }, 500)
+        contextmenu: function () {
+          console.log(arguments[2])
+          arguments[2].preventDefault()
+          console.log('contextmenu')
         }
-    },
-    methods: {
-        itemClick (node) {
-            this.editingNode = node
-            this.editingItem = node.model
-            console.log(node.model.text + ' clicked !')
-        },
-        itemDragStart (node) {
-            console.log(node.model.text + ' drag start !')
-        },
-        itemDragEnd (node) {
-            console.log(node.model.text + ' drag end !')
-        },
-        itemDropBefore (node, item, draggedItem , e) {
-            if (!draggedItem) {
-                item.addChild({
-                    text: "newNode",
-                    value: "newNode"
-                })
-            }
-        },
-        itemDrop (node, item, draggedItem , e) {
-            var sortBy = function(attr,rev) {
-                if (rev == undefined) {
-                    rev = 1;
-                } else {
-                    rev = (rev) ? 1 : -1;
+      },
+      data: [
+        {
+          'text': 'Same but with checkboxes',
+          'children': [
+            {
+              'text': 'initially selected',
+              'selected': true
+            },
+            {
+              'text': 'custom icon',
+              'icon': 'fa fa-warning icon-state-danger'
+            },
+            {
+              'text': 'initially open',
+              'icon': 'fa fa-folder icon-state-default',
+              'opened': true,
+              'children': [
+                {
+                  'text': 'Another node'
                 }
-                return function (a, b) {
-                    a = a[attr];
-                    b = b[attr];
-                    if (a < b) {
-                        return rev * -1;
-                    }
-                    if (a > b) {
-                        return rev * 1;
-                    }
-                    return 0;
+              ]
+            },
+            {
+              'text': 'custom icon',
+              'icon': 'fa fa-warning icon-state-warning'
+            },
+            {
+              'text': 'disabled node',
+              'icon': 'fa fa-check icon-state-success',
+              'disabled': true
+            }
+          ]
+        },
+        {
+          'text': 'Same but with checkboxes',
+          'opened': true,
+          'children': [
+            {
+              'text': 'initially selected',
+              'selected': true
+            },
+            {
+              'text': 'custom icon',
+              'icon': 'fa fa-warning icon-state-danger'
+            },
+            {
+              'text': 'initially open',
+              'icon': 'fa fa-folder icon-state-default',
+              'opened': true,
+              'children': [
+                {
+                  'text': 'Another node'
                 }
+              ]
+            },
+            {
+              'text': 'custom icon',
+              'icon': 'fa fa-warning icon-state-warning'
+            },
+            {
+              'text': 'disabled node',
+              'icon': 'fa fa-check icon-state-success',
+              'disabled': true
             }
-            item.children.sort(sortBy('text', true))
-            this.$refs.tree.handleRecursionNodeChildren(draggedItem, function (childrenItem) {
-                childrenItem.selected = item.selected
-            })
-            console.log(node.model.text + ' drop !')
+          ]
         },
-        inputKeyUp: function () {
-            var text = this.searchText
-            const patt = new RegExp(text);
-            this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, function (node) {
-                if (text !== '' && node.model !== undefined) {
-                    const str = node.model.text
-                    if (patt.test(str)) {
-                        node.$el.querySelector('.tree-anchor').style.color = 'red'
-                    } else {
-                        node.$el.querySelector('.tree-anchor').style.color = '#000'
-                    } // or other operations
-                } else {
-                    node.$el.querySelector('.tree-anchor').style.color = '#000'
+        {
+          'text': 'And wholerow selection'
+        },
+        {
+          'text': 'drag disabled',
+          'icon': 'fa fa-warning icon-state-danger',
+          'dragDisabled': true
+        },
+        {
+          'text': 'drop disabled',
+          'icon': 'fa fa-warning icon-state-danger',
+          'dropDisabled': true
+        }
+      ],
+      data2: [
+        {
+          'text2': 'Same but with checkboxes',
+          'children2': [
+            {
+              'text2': 'initially selected',
+              'selected': true
+            },
+            {
+              'text2': 'custom icon',
+              'icon': 'fa fa-warning icon-state-danger'
+            },
+            {
+              'text2': 'initially open',
+              'icon': 'fa fa-folder icon-state-default',
+              'opened': true,
+              'children2': [
+                {
+                  'text2': 'Another node'
                 }
-            })
-        },
-        addChildNode: function () {
-            if (this.editingItem.id !== undefined) {
-                this.editingItem.addChild({
-                    text: "newNode",
-                    value: "newNode"
-                })
+              ]
+            },
+            {
+              'text2': 'custom icon',
+              'icon': 'fa fa-warning icon-state-warning'
+            },
+            {
+              'text2': 'disabled node',
+              'icon': 'fa fa-check icon-state-success',
+              'disabled': true
             }
+          ]
         },
-        removeNode: function () {
-            if (this.editingItem.id !== undefined) {
-                var index = this.editingNode.parentItem.indexOf(this.editingItem)
-                this.editingNode.parentItem.splice(index, 1)
+        {
+          'text2': 'Same but with checkboxes',
+          'opened': true,
+          'children2': [
+            {
+              'text2': 'initially selected',
+              'selected': true
+            },
+            {
+              'text2': 'custom icon',
+              'icon': 'fa fa-warning icon-state-danger'
+            },
+            {
+              'text2': 'initially open',
+              'icon': 'fa fa-folder icon-state-default',
+              'opened': true,
+              'children2': [
+                {
+                  'text2': 'Another node'
+                }
+              ]
+            },
+            {
+              'text2': 'custom icon',
+              'icon': 'fa fa-warning icon-state-warning'
+            },
+            {
+              'text2': 'disabled node',
+              'icon': 'fa fa-check icon-state-success',
+              'disabled': true
             }
+          ]
         },
-        addBeforeNode: function () {
-            if (this.editingItem.id !== undefined) {
-                this.editingItem.addBefore({
-                    text: "newNode",
-                    value: "newNode"
-                }, this.editingNode)
-            }
-        },
-        addAfterNode: function () {
-            if (this.editingItem.id !== undefined) {
-                this.editingItem.addAfter({
-                    text: "newNode",
-                    value: "newNode"
-                }, this.editingNode)
-            }
-        },
-        openChildren: function () {
-            if (this.editingItem.id !== undefined) {
-                this.editingItem.openChildren()
-            }
-        },
-        closeChildren: function () {
-            if (this.editingItem.id !== undefined) {
-                this.editingItem.closeChildren()
-            }
-        },
-        refreshNode: function () {
-            this.asyncData = [
-                this.$refs.tree2.initializeLoading()
+        {
+          'text2': 'And wholerow selection'
+        }
+      ],
+      asyncData: [],
+      loadData: function (oriNode, resolve) {
+        var id = oriNode.data.id ? oriNode.data.id : 0
+        setTimeout(() => {
+          let data = []
+          if (id > 200) {
+            data = []
+          } else {
+            data = [
+              {
+                'text': 'New Item 1...' + id, 'isLeaf': id > 100
+              },
+              {
+                'text': 'New Item 2...' + id, 'isLeaf': id > 100
+              }
             ]
-            this.$refs.tree2.handleAsyncLoad(this.asyncData, this.$refs.tree2)
-        },
-        customItemClick: function (node ,item, e) {
-            e.stopPropagation()
-            var index = node.parentItem.indexOf(item)
-            node.parentItem.splice(index, 1)
-        },
-        customItemClickWithCtrl: function () {
-            console.log('click + ctrl')
-        }
+          }
+          resolve(data)
+        }, 500)
+      }
     }
+  },
+  methods: {
+    itemClick (node) {
+      this.editingNode = node
+      this.editingItem = node.model
+      console.log(node.model.text + ' clicked !')
+    },
+    itemDragStart (node) {
+      console.log(node.model.text + ' drag start !')
+    },
+    itemDragEnd (node) {
+      console.log(node.model.text + ' drag end !')
+    },
+    itemDropBefore (node, item, draggedItem, e) {
+      if (!draggedItem) {
+        item.addChild({
+          text: 'newNode',
+          value: 'newNode'
+        })
+      }
+    },
+    itemDrop (node, item, draggedItem, e) {
+      var sortBy = function (attr, rev) {
+        if (rev == undefined) {
+          rev = 1
+        } else {
+          rev = (rev) ? 1 : -1
+        }
+        return function (a, b) {
+          a = a[attr]
+          b = b[attr]
+          if (a < b) {
+            return rev * -1
+          }
+          if (a > b) {
+            return rev * 1
+          }
+          return 0
+        }
+      }
+      item.children.sort(sortBy('text', true))
+      this.$refs.tree.handleRecursionNodeChildren(draggedItem, function (childrenItem) {
+        childrenItem.selected = item.selected
+      })
+      console.log(node.model.text + ' drop !')
+    },
+    inputKeyUp: function () {
+      var text = this.searchText
+      const patt = new RegExp(text)
+      this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, function (node) {
+        if (text !== '' && node.model !== undefined) {
+          const str = node.model.text
+          if (patt.test(str)) {
+            node.$el.querySelector('.tree-anchor').style.color = 'red'
+          } else {
+            node.$el.querySelector('.tree-anchor').style.color = '#000'
+          } // or other operations
+        } else {
+          node.$el.querySelector('.tree-anchor').style.color = '#000'
+        }
+      })
+    },
+    addChildNode: function () {
+      if (this.editingItem.id !== undefined) {
+        this.editingItem.addChild({
+          text: 'newNode',
+          value: 'newNode'
+        })
+      }
+    },
+    removeNode: function () {
+      if (this.editingItem.id !== undefined) {
+        var index = this.editingNode.parentItem.indexOf(this.editingItem)
+        this.editingNode.parentItem.splice(index, 1)
+      }
+    },
+    addBeforeNode: function () {
+      if (this.editingItem.id !== undefined) {
+        this.editingItem.addBefore({
+          text: 'newNode',
+          value: 'newNode'
+        }, this.editingNode)
+      }
+    },
+    addAfterNode: function () {
+      if (this.editingItem.id !== undefined) {
+        this.editingItem.addAfter({
+          text: 'newNode',
+          value: 'newNode'
+        }, this.editingNode)
+      }
+    },
+    openChildren: function () {
+      if (this.editingItem.id !== undefined) {
+        this.editingItem.openChildren()
+      }
+    },
+    closeChildren: function () {
+      if (this.editingItem.id !== undefined) {
+        this.editingItem.closeChildren()
+      }
+    },
+    refreshNode: function () {
+      this.asyncData = [
+        this.$refs.tree2.initializeLoading()
+      ]
+      this.$refs.tree2.handleAsyncLoad(this.asyncData, this.$refs.tree2)
+    },
+    customItemClick: function (node, item, e) {
+      e.stopPropagation()
+      var index = node.parentItem.indexOf(item)
+      node.parentItem.splice(index, 1)
+    },
+    customItemClickWithCtrl: function () {
+      console.log('click + ctrl')
+    }
+  }
 }
 </script>
-
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
