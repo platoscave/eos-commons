@@ -1,27 +1,25 @@
 <template>
-    <div  v-if="items.length">
+    <div  v-if="tabs.length > 1">
         <v-tabs v-model="active">
-            <v-tab v-for="(item, n) in items" :key="n" ripple>{{ item.title }}</v-tab>
-            <v-tab-item v-for="(item, n) in items" :key="n">
-                <div v-if="item.widgets">
+            <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
+            <v-tab-item v-for="(tab, n) in tabs" :key="n">
+                <div v-if="tab.widgets">
                     <!-- This tab has widgets -->
-                    {{ item.widgets }}
-                    <widgets v-bind:level="level" v-bind:widgets="item.widgets"></widgets>
+                    <widgets v-bind:level="level" v-bind:widgets="tab.widgets"></widgets>
                 </div>
-                <div v-if="item.pageId">
+                <div v-if="tab.pageId">
                     <!-- This tab has a sub-page -->
-                    {{ item.pageId }}
                     <layout v-bind:level="level+1"></layout>
                 </div>
             </v-tab-item>
         </v-tabs>
     </div>
-    <div v-else>
-        <div v-if="items[0].widgets">
+    <div v-else-if="tabs.length > 0">
+        <div v-if="tabs[0].widgets">
             <!-- This tab has widgets -->
-            <widgets v-bind:level="level" v-bind:widgets="item.widgets"></widgets>
+            <widgets v-bind:level="level" v-bind:widgets="tabs[0].widgets"></widgets>
         </div>
-        <div v-if="items[0].pageId">
+        <div v-if="tabs[0].pageId">
             <!-- This tab has a sub-page -->
             <layout v-bind:level="level+1"></layout>
         </div>
@@ -43,45 +41,19 @@ export default {
     level: {
       type: Number,
       default: 0
-    }
+    },
   },
   data () {
     return {
-      items: [
-        {
-          title: 'First Item',
-          text: 'This is the first text',
-          id: 1,
-          widgets: [ {
-            displayType: 'HomePage',
-            name: 'Home Page',
-            viewId: '578921fe3c6d3cd598a5a3a4'
-          } ]
-        },
-        {
-          title: 'Second Item',
-          text: 'This is the second text',
-          id: 2,
-          pageId: '575d4c3f2cf3d6dc3ed83150'
-        },
-        {
-          title: 'Third Text',
-          text: 'This is the third text',
-          id: 3
-        }
-      ],
-      active: null
+      active: null,
+      tabs: []
     }
   },
-  computed: {
-    moreThanOneTab () {
-      // return this.$store.getters.getMessage;
-      return true
-    },
-    hasSubPage () {
-      // return this.$store.getters.getMessage;
-      return true
-    }
+  created () {
+    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then( (page) => {
+      this.tabs = page.tabs
+    })
+
   }
 }
 </script>

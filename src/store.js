@@ -100,31 +100,38 @@ const store = new Vuex.Store({
         })
     },
     loadPage (store, id) {
-      let pageState = store.state.pageStates[id]
-      if (!pageState) {
-        store.commit('SET_PAGE_LOADING', {[id]: {
-          pageLoaded: false,
-          selectedTab: 0,
-          tabs: []
-        }})
-      }
+      return new Promise((resolve, reject) => {
+        let pageState = store.state.pageStates[id]
+        if (!pageState) {
+          store.commit('SET_PAGE_LOADING', {
+            [id]: {
+              pageLoaded: false,
+              selectedTab: 0,
+              tabs: []
+            }
+          })
+        }
 
-      let page = store.state.classes[id]
-      if (page) {
-        store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
-      } else {
-        store.dispatch('loadCommon').then(() => {
+        let page = store.state.classes[id]
+        if (page) {
           store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
-        }).error(() => {
-          store.commit('SET_PAGE_ERROR')
-        })
-      }
+          resolve(page)
+        } else {
+          store.dispatch('loadCommon').then((response) => {
+            store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
+            resolve(response.data)
+          }).error((error) => {
+            store.commit('SET_PAGE_ERROR')
+            reject(error)
+          })
+        }
+      })
     },
     loadCommon (store, id) {
       return new Promise((resolve, reject) => {
         if (store.state.classes[id]) resolve(store.state.classes[id])
         else {
-          this.$http('classes.json').then(response => {
+          this.$http('ipfs.io/ipfs/' + id).then(response => {
             this.store.state[id] = response.data
             resolve(response.data)
           }, error => {
@@ -132,33 +139,31 @@ const store = new Vuex.Store({
           })
         }
       })
+    },
+    materializedView (store, viewId) {
+      return store.dispatch('loadCommon', viewId).then((viewObj) => {
+        if (viewObj.classId) {
+          return store.dispatch('mergeAncestorClasses', viewObj.classId).then((classObj) => {
+            const mergedView = Vue._.merge({}, viewObj, classObj)
+            Object.keys(mergedView.properties).forEach(propName => {
+              if (!viewObj.properties[propName]) delete mergedView.properties[propName]
+            })
+            return mergedView
+          })
+        } else return viewObj
+      })
+    },
+    mergeAncestorClasses (store, classId) {
+      return store.dispatch('loadCommon', classId).then((classObj) => {
+        if (classObj.parentId) {
+          return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
+            return Vue._.merge({}, parentClassObj, classObj)
+          })
+        } else return classObj
+      })
     }
   }
 })
-
-const materializedView = (viewId) => {
-  return store.dispatch('loadCommon', viewId).then((viewObj) => {
-    if (viewObj.classId) {
-      return this.mergeAnsesstorClasses(viewObj.classId).then((classObj) => {
-        const mergedView = Vue._.merge(viewObj, classObj)
-        Object.keys(mergedView.properties).forEach(propName => {
-          if (!viewObj.properties[propName]) delete mergedView[propName]
-        })
-        return mergedView
-      })
-    } else return viewObj
-  })
-}
-
-const mergeAnsesstorClasses = (classId) => {
-  return store.dispatch('loadCommon', classId).then((classObj) => {
-    if (classObj.parentId) {
-      return this.mergeAnsesstorClasses(classObj.parentId).then((parentClassObj) => {
-        return Vue._.merge(classObj, parentClassObj)
-      })
-    } else return classObj
-  })
-}
 
 // store.dispatch('loadClasses')
 

@@ -1,13 +1,13 @@
 <template>
-    <div  v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
-        <multipane class="vertical-panes" layout="vertical">
-            <div class="pane" :style="{ width: '200px'}">
+    <div  v-if="page.divider === 'Vertical' || page.divider === 'Horizontal'">
+        <multipane class="container" layout="vertical">
+            <div class="left" :style="{ width: '300px'}">
                 <!-- Navigation content -->
                 <tabs v-bind:level="level"></tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
-            <div class="pane">
+            <div class="right">
                 <!-- Main content -->
                 <tabs v-bind:level="level + 1"></tabs>
             </div>
@@ -36,34 +36,42 @@ export default {
   },
   data () {
     return {
-      pageObj: {},
-      xloaded: false
+      page: {},
     }
   },
   computed: {
     loaded () {
-      // return this.$store.getters.getPageLoaded('575d4c3f2cf3d6dc3ed83146')
-      // return Vue._.get('this.$store.state.pageStates["575d4c3f2cf3d6dc3ed83146"]')
       return this.$store.state.pageStates['575d4c3f2cf3d6dc3ed83146']
     }
   },
   watch: {
     loaded (pageLoaded) {
-      if (pageLoaded) this.pageObj = this.$store.getters.getObjById('575d4c3f2cf3d6dc3ed83146')
+      if (pageLoaded) this.page = this.$store.getters.getObjById('575d4c3f2cf3d6dc3ed83146')
       else this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146')
     }
   },
   created () {
-    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146')
+    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then( (page) => {
+      this.page = page
+    })
+    /* this.$store.dispatch('materializedView', '575d4c3f2cf3d6dc3ed8314d').then( (view) => {
+      console.log('view', view)
+    }) */
   }
 }
 </script>
 <style scoped>
-    .vertical-panes {
-        height: 100%;
-    }
-    .vertical-panes > .pane {
+    .container {
+        height: 100vh;
+        width: 100%;
         padding: 0px;
     }
-
+    .left {
+        height: 100vh;
+    }
+    .right {
+        flex-grow: 1;
+        height: 100vh;
+        border-left: 5px solid blue;
+    }
 </style>

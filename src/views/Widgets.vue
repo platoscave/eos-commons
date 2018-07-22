@@ -9,8 +9,7 @@
 
         <!-- Tree-->
         <div v-if="widget.displayType === 'Tree'">
-            <nq-tree v-bind:level="level" v-bind:view-id="widget.viewId""></nq-tree>
-            <!-- <nq-tree2 level="level" view-id="widget.viewId" doc-id="computeDocId(level, route"></nq-tree2>-->
+            <tree v-bind:level="level" v-bind:widget="widget"></tree>
         </div>
 
         <!-- Table -->
@@ -20,7 +19,7 @@
 
         <!-- 3dClassModel-->
         <div v-if="widget.displayType === '3D Class Model'">
-            <nq-threejs-viewport v-bind:level="level" v-bind:view-id="widget.viewId"></nq-threejs-viewport>
+            <webgl v-bind:level="level" v-bind:widget="widget"></webgl>
         </div>
 
         <!-- ProcessModel-->
@@ -30,64 +29,31 @@
 
         <!-- Form-->
         <div v-if="widget.displayType === 'Form'">
-            <nq-form v-bind:level="level" v-bind:view-id="widget.viewId"></nq-form>
+            <form v-bind:level="level" v-bind:widget="widget"></form>
         </div>
 
         <!-- HomePage-->
         <div v-if="widget.displayType === 'HomePage'">
             <div>Widget {{ widget.displayType }}</div>
-            <!--<nq-home v-bind:level="level" v-bind:view-id="widget.viewId"></nq-home>-->
         </div>
     </div>
     </div>
 </template>
 
 <script>
-import Tree from './Tree.vue'
+  import Tree from './Tree.vue'
+  import WebGl from './WebGl.vue'
 
 export default {
   components: {
-    widgets: Document
+    tree: Tree,
+    webgl: WebGl
   },
   props: {
-    level: {
-      type: Number,
-      default: 0
-    },
+    level: Number,
     widgets: {
       type: Array,
-      default: []
-    }
-  },
-  data () {
-    return {
-      items: [
-        {
-          title: 'First Item',
-          text: 'This is the first text',
-          id: 1
-        },
-        {
-          title: 'Second Item',
-          text: 'This is the second text',
-          id: 2
-        },
-        {
-          title: 'Third Text',
-          text: 'This is the third text',
-          id: 3
-        }
-      ]
-    }
-  },
-  computed: {
-    moreThanOneTab () {
-      // return this.$store.getters.getMessage;
-      return true
-    },
-    hasSubPage () {
-      // return this.$store.getters.getMessage;
-      return true
+      default: () => []
     }
   }
 }
