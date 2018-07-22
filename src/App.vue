@@ -53,7 +53,7 @@ export default {
       items: [{
         icon: 'bubble_chart',
         title: 'Home',
-        link: 'home'
+        link: '/'
       }, {
         icon: 'bubble_chart',
         title: 'Classes',
@@ -70,6 +70,10 @@ export default {
         icon: 'bubble_chart',
         title: 'Page',
         link: 'page'
+      }, {
+        icon: 'bubble_chart',
+        title: 'WebGl',
+        link: 'webgl'
       }]
     }
   },

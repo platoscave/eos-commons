@@ -4,11 +4,14 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueLodash from 'vue-lodash'
 import VJstree from 'vue-jstree'
-/* import Multipane from 'vue-multipane'
-import MultipaneResizer from 'vue-multipaneresizer'
-import { Multipane, MultipaneResizer } from 'vue-multipane' */
+import * as VueGL from 'vue-gl'
 
+Object.keys(VueGL).forEach(name => {
+  Vue.component(name, VueGL[name])
+})
+Vue.use(VueLodash)
 Vue.config.productionTip = false
 
 new Vue({

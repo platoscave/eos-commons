@@ -1,21 +1,21 @@
 <template>
-    <div  v-if="{{ hasDivider }}">
+    <div  v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
         <multipane class="vertical-panes" layout="vertical">
             <div class="pane" :style="{ width: '200px'}">
                 <!-- Navigation content -->
-                <tabs level="{{ level }}"></tabs>
+                <tabs v-bind:level="level"></tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
             <div class="pane">
                 <!-- Main content -->
-                <tabs level="{{ level + 1 }}"></tabs>
+                <tabs v-bind:level="level + 1"></tabs>
             </div>
         </multipane>
     </div>
     <div v-else>
         <!-- Only header layout content -->
-        <tabs level="{{ level }}"></tabs>
+        <tabs v-bind:level="level"></tabs>
     </div>
 </template>
 
@@ -29,34 +29,41 @@ export default {
     MultipaneResizer,
     tabs: Tabs
   },
+  props: {
+    level: {
+      type: Number
+    }
+  },
   data () {
     return {
-      level: {
-        type: Number
-      }
+      pageObj: {},
+      xloaded: false
     }
   },
   computed: {
-    hasDivider () {
-      // return this.$store.getters.getMessage;
-      return true
+    loaded () {
+      // return this.$store.getters.getPageLoaded('575d4c3f2cf3d6dc3ed83146')
+      // return Vue._.get('this.$store.state.pageStates["575d4c3f2cf3d6dc3ed83146"]')
+      return this.$store.state.pageStates['575d4c3f2cf3d6dc3ed83146']
     }
+  },
+  watch: {
+    loaded (pageLoaded) {
+      if (pageLoaded) this.pageObj = this.$store.getters.getObjById('575d4c3f2cf3d6dc3ed83146')
+      else this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146')
+    }
+  },
+  created () {
+    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146')
   }
 }
 </script>
-<style>
+<style scoped>
     .vertical-panes {
-        width: 100%;
         height: 100%;
     }
-
     .vertical-panes > .pane {
-        text-align: left;
-        padding: 15px;
-        overflow: hidden;
+        padding: 0px;
     }
 
-    .vertical-panes > .pane ~ .pane {
-        border-left: 3px solid blue;
-    }
 </style>

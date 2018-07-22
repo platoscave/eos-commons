@@ -5,12 +5,32 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
+
   state: {
     classes: {},
     objects: {},
     loading: false,
     statusCode: null,
-    message: ''
+    message: '',
+    pageStates: {},
+    pageStateExp: {
+      'xxxxxxxxxxxxxxxxx': {
+        pageLoaded: false,
+        selectedTab: 0,
+        tabs: [
+          [
+            {
+              viewId: '',
+              viewLoaded: false,
+              selectedObjId: '',
+              selectedObjLoaded: false,
+              selectedTab: 0
+            }
+          ]
+        ]
+      }
+    }
   },
   getters: {
     getMessage: (state) => {
@@ -20,8 +40,17 @@ const store = new Vuex.Store({
       // return state.todos.filter(todo => todo.done)
       return state.classes
     },
-    getClassById: (state) => (id) => {
-      return state.classes.find(classObj => classObj.id === id)
+    getObjByIdx: (state) => (id) => {
+      return state.classes.find(obj => obj.id === id)
+    },
+    getObjById: (state) => (id) => {
+      return state.classes[id]
+    },
+    getPageLoaded: (state) => (id) => {
+      return Vue._.get('state.pageStates[id].pageLoaded')
+    },
+    getMaterializedView: (store) => (id) => {
+      return this.materializedView(id)
     }
   },
   mutations: {
@@ -38,6 +67,18 @@ const store = new Vuex.Store({
     SET_CLASSES_FAILURE (state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
+    },
+
+    SET_PAGE_LOADING (state, payload) {
+      state.message = 'loading...'
+      state.pageStates = Vue._.merge(state.pageStates, payload)
+    },
+    SET_PAGE_SUCCESS (state, payload) {
+      state.message = 'ok'
+      state.pageStates = Vue._.merge(state.pageStates, payload)
+    },
+    SET_STATE_FAILURE (state, payload) {
+      state.message = 'Failed to load page'
     }
   },
   actions: {
@@ -57,10 +98,68 @@ const store = new Vuex.Store({
             message: error.statusText
           })
         })
+    },
+    loadPage (store, id) {
+      let pageState = store.state.pageStates[id]
+      if (!pageState) {
+        store.commit('SET_PAGE_LOADING', {[id]: {
+          pageLoaded: false,
+          selectedTab: 0,
+          tabs: []
+        }})
+      }
+
+      let page = store.state.classes[id]
+      if (page) {
+        store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
+      } else {
+        store.dispatch('loadCommon').then(() => {
+          store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
+        }).error(() => {
+          store.commit('SET_PAGE_ERROR')
+        })
+      }
+    },
+    loadCommon (store, id) {
+      return new Promise((resolve, reject) => {
+        if (store.state.classes[id]) resolve(store.state.classes[id])
+        else {
+          this.$http('classes.json').then(response => {
+            this.store.state[id] = response.data
+            resolve(response.data)
+          }, error => {
+            reject(error)
+          })
+        }
+      })
     }
   }
 })
 
-store.dispatch('loadClasses')
+const materializedView = (viewId) => {
+  return store.dispatch('loadCommon', viewId).then((viewObj) => {
+    if (viewObj.classId) {
+      return this.mergeAnsesstorClasses(viewObj.classId).then((classObj) => {
+        const mergedView = Vue._.merge(viewObj, classObj)
+        Object.keys(mergedView.properties).forEach(propName => {
+          if (!viewObj.properties[propName]) delete mergedView[propName]
+        })
+        return mergedView
+      })
+    } else return viewObj
+  })
+}
+
+const mergeAnsesstorClasses = (classId) => {
+  return store.dispatch('loadCommon', classId).then((classObj) => {
+    if (classObj.parentId) {
+      return this.mergeAnsesstorClasses(classObj.parentId).then((parentClassObj) => {
+        return Vue._.merge(classObj, parentClassObj)
+      })
+    } else return classObj
+  })
+}
+
+// store.dispatch('loadClasses')
 
 export default store

@@ -1,51 +1,63 @@
 <template>
-    <div is="dom-repeat" items="{{widgets}}" as="widget">
+    <div>
+    <div v-for="widget in widgets">
 
         <!-- Document-->
-        <div v-if="{{displayType === 'Document'}}">
-            <div>Widget {{widget.displayType}}</div>
+        <div v-if="widget.displayType === 'Document'">
+            <div>Widget {{ widget.displayType }}</div>
         </div>
 
         <!-- Tree-->
-        <div v-if="{{displayType === 'Tree'}}">
-            <nq-tree level="{{level}}" view-id="{{widget.viewId}}" doc-id="{{computeDocId(level, route}}"></nq-tree>
-            <!-- <nq-tree2 level="{{level}}" view-id="{{widget.viewId}}" doc-id="{{computeDocId(level, route}}"></nq-tree2>-->
+        <div v-if="widget.displayType === 'Tree'">
+            <nq-tree v-bind:level="level" v-bind:view-id="widget.viewId""></nq-tree>
+            <!-- <nq-tree2 level="level" view-id="widget.viewId" doc-id="computeDocId(level, route"></nq-tree2>-->
         </div>
 
         <!-- Table -->
-        <div v-if="{{displayType === 'Table'}}">
-            <div>Widget {{widget.displayType}}</div>
+        <div v-if="widget.displayType === 'Table'">
+            <div>Widget {{ widget.displayType }}</div>
         </div>
 
         <!-- 3dClassModel-->
-        <div v-if="{{displayType === '3D Class Model'}}">
-            <nq-threejs-viewport level="{{level}}" view-id="{{widget.viewId}}" doc-id="{{computeDocId(level, route}}"></nq-threejs-viewport>
+        <div v-if="widget.displayType === '3D Class Model'">
+            <nq-threejs-viewport v-bind:level="level" v-bind:view-id="widget.viewId"></nq-threejs-viewport>
         </div>
 
         <!-- ProcessModel-->
-        <div v-if="{{displayType === 'Process Model'}}">
-            <div>Widget {{widget.displayType}}</div>
+        <div v-if="widget.displayType === 'Process Model'">
+            <div>Widget {{ widget.displayType }}</div>
         </div>
 
         <!-- Form-->
-        <div v-if="{{displayType === 'Form'}}">
-            <nq-form level="{{level}}" view-id="{{widget.viewId}}" doc-id="{{computeDocId(level, route}}"></nq-form>
+        <div v-if="widget.displayType === 'Form'">
+            <nq-form v-bind:level="level" v-bind:view-id="widget.viewId"></nq-form>
         </div>
 
         <!-- HomePage-->
-        <div v-if="{{displayType === 'HomePage'}}">
-            <nq-home level="{{level}}" view-id="{{widget.viewId}}" doc-id="{{computeDocId(level, route}}"></nq-home>
+        <div v-if="widget.displayType === 'HomePage'">
+            <div>Widget {{ widget.displayType }}</div>
+            <!--<nq-home v-bind:level="level" v-bind:view-id="widget.viewId"></nq-home>-->
         </div>
+    </div>
     </div>
 </template>
 
 <script>
-import Document from './Document.vue'
 import Tree from './Tree.vue'
 
 export default {
   components: {
     widgets: Document
+  },
+  props: {
+    level: {
+      type: Number,
+      default: 0
+    },
+    widgets: {
+      type: Array,
+      default: []
+    }
   },
   data () {
     return {
