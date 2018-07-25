@@ -1,42 +1,42 @@
 <template>
     <div>
-    <div v-for="widget in widgets">
+        <div v-for="widget in widgets">
 
-        <!-- Document-->
-        <div v-if="widget.displayType === 'Document'">
-            <div>Widget {{ widget.displayType }}</div>
-        </div>
+            <!-- Document-->
+            <div v-if="widget.displayType === 'Document'">
+                <div>Widget {{ widget.displayType }}</div>
+            </div>
 
-        <!-- Tree-->
-        <div v-if="widget.displayType === 'Tree'">
-            <tree v-bind:level="level" v-bind:widget="widget"></tree>
-        </div>
+            <!-- Tree-->
+            <div v-if="widget.displayType === 'Tree'">
+                <tree v-bind:level="level" v-bind:widget="widget"></tree>
+            </div>
 
-        <!-- Table -->
-        <div v-if="widget.displayType === 'Table'">
-            <div>Widget {{ widget.displayType }}</div>
-        </div>
+            <!-- Table -->
+            <div v-if="widget.displayType === 'Table'">
+                <div>Widget {{ widget.displayType }}</div>
+            </div>
 
-        <!-- 3dClassModel-->
-        <div v-if="widget.displayType === '3D Class Model'">
-            <webgl v-bind:level="level" v-bind:widget="widget"></webgl>
-        </div>
+            <!-- 3dClassModel-->
+            <div v-if="widget.displayType === '3D Class Model'">
+                <webgl v-bind:level="level" v-bind:widget="widget"></webgl>
+            </div>
 
-        <!-- ProcessModel-->
-        <div v-if="widget.displayType === 'Process Model'">
-            <div>Widget {{ widget.displayType }}</div>
-        </div>
+            <!-- ProcessModel-->
+            <div v-if="widget.displayType === 'Process Model'">
+                <div>Widget {{ widget.displayType }}</div>
+            </div>
 
-        <!-- Form-->
-        <div v-if="widget.displayType === 'Form'">
-            <form v-bind:level="level" v-bind:widget="widget"></form>
-        </div>
+            <!-- Form-->
+            <div v-if="widget.displayType === 'Form'">
+                <form v-bind:level="level" v-bind:widget="widget"></form>
+            </div>
 
-        <!-- HomePage-->
-        <div v-if="widget.displayType === 'HomePage'">
-            <div>Widget {{ widget.displayType }}</div>
+            <!-- HomePage-->
+            <div v-if="widget.displayType === 'HomePage'">
+                <div>Widget {{ widget.displayType }}</div>
+            </div>
         </div>
-    </div>
     </div>
 </template>
 

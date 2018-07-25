@@ -36,7 +36,7 @@ export default {
   },
   data () {
     return {
-      page: {},
+      page: {}
     }
   },
   computed: {
@@ -51,12 +51,9 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then( (page) => {
+    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then((page) => {
       this.page = page
     })
-    /* this.$store.dispatch('materializedView', '575d4c3f2cf3d6dc3ed8314d').then( (view) => {
-      console.log('view', view)
-    }) */
   }
 }
 </script>

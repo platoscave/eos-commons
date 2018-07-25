@@ -56,20 +56,8 @@ export default {
         link: '/'
       }, {
         icon: 'bubble_chart',
-        title: 'Classes',
-        link: 'classes'
-      }, {
-        icon: 'bubble_chart',
-        title: 'Tree',
-        link: 'tree'
-      }, {
-        icon: 'bubble_chart',
         title: 'Ipfs',
         link: 'ipfs'
-      }, {
-        icon: 'bubble_chart',
-        title: 'Page',
-        link: 'page'
       }, {
         icon: 'bubble_chart',
         title: 'WebGl',

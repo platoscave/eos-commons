@@ -24,7 +24,6 @@
             <layout v-bind:level="level+1"></layout>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -41,7 +40,7 @@ export default {
     level: {
       type: Number,
       default: 0
-    },
+    }
   },
   data () {
     return {
@@ -50,10 +49,9 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then( (page) => {
+    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then((page) => {
       this.tabs = page.tabs
     })
-
   }
 }
 </script>

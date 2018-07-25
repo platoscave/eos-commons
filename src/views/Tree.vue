@@ -1,8 +1,9 @@
 <template>
-    <div class="tree">
+    <div v-if="view" class="tree">
         <v-jstree
                 :data="asyncData"
                 :async="loadData"
+                :text-field-name="title"
                 allow-batch
                 whole-row
                 draggable
@@ -33,7 +34,7 @@ export default {
   },
   data () {
     return {
-      view: {},
+      view: null,
       rootNode: {},
       itemEvents: {
         mouseover: function () {
@@ -46,24 +47,10 @@ export default {
         }
       },
       asyncData: [],
-      loadData: function (oriNode, resolve) {
-        var id = oriNode.data.id ? oriNode.data.id : 0
-        setTimeout(() => {
-          let data = []
-          if (id > 200) {
-            data = []
-          } else {
-            data = [
-              {
-                'text': 'New Item 1...' + id, 'isLeaf': id > 100
-              },
-              {
-                'text': 'New Item 2...' + id, 'isLeaf': id > 100
-              }
-            ]
-          }
-          resolve(data)
-        }, 500)
+      loadData: (oriNode, resolve) => {
+        this.$store.dispatch('query', oriNode.data.queryObj).then((result) => {
+          resolve([result])
+        })
       }
     }
   },
@@ -195,9 +182,10 @@ export default {
     }
   },*/
   created () {
-    console.log('mountedwidget', this.widget)
+    //console.log('mountedwidget', this.widget)
     this.$store.dispatch('materializedView', this.widget.viewId).then( (view) => {
       this.view = view
+      this.asyncData = {id:12, queryObj: {query: view.query, id: 10}}
     })
   }
 }
