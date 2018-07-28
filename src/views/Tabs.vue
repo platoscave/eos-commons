@@ -48,6 +48,16 @@ export default {
       tabs: []
     }
   },
+  computed: {
+    selectedTab: {
+      get () {
+        return this.$store.state.a
+      },
+      set (value) {
+        this.$store.commit('setSelectedTab', value)
+      }
+    }
+  },
   created () {
     this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then((page) => {
       this.tabs = page.tabs

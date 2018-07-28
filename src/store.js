@@ -82,22 +82,18 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    loadClasses (store) {
-      store.commit('SET_CLASSES_LOADING', { loading: true })
-      return axios('classes.json')
-        .then(response => {
-          store.commit('SET_CLASSES_SUCCESS', {
-            statusCode: response.status,
-            message: response.statusText,
-            data: response.data
+    loadCommon (store, id) {
+      return new Promise((resolve, reject) => {
+        if (store.state.classes[id]) resolve(Vue._.cloneDeep(store.state.classes[id]))
+        else {
+          this.$http('ipfs.io/ipfs/' + id).then(response => {
+            this.store.state[id] = response.data
+            resolve(Vue._.cloneDeep(response.data))
+          }, error => {
+            reject(error)
           })
-        })
-        .catch(error => {
-          store.commit('SET_CLASSES_FAILURE', {
-            statusCode: error.status,
-            message: error.statusText
-          })
-        })
+        }
+      })
     },
     loadPage (store, id) {
       return new Promise((resolve, reject) => {
@@ -127,70 +123,93 @@ const store = new Vuex.Store({
         }
       })
     },
-    loadCommon (store, id) {
-      return new Promise((resolve, reject) => {
-        if (store.state.classes[id]) resolve(Object.assign({}, store.state.classes[id]))
+    queryArrObj (store, queryObj) {
+      let promises = []
+      queryObj.queryArr.forEach((query) => {
+        promises.push(store.dispatch('query', {fk: queryObj.fk, query: query, queryNames: queryObj.queryNames}))
+      })
+      return Promise.all(promises).then((values) => {
+        return Vue._.union.apply(null, values)
+      })
+    },
+    query (store, queryObj) {
+      // Run the query, return a results object
+      const getResultsObj = (queryObj) => {
+        let resultsObj = {}
+        const docProp = queryObj.query.where.docProp
+        const operator = queryObj.query.where.operator
+        let value = queryObj.query.where.value
+        if (value === '$parentNode.$key') value = queryObj.fk
+        if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value]
         else {
-          this.$http('ipfs.io/ipfs/' + id).then(response => {
-            this.store.state[id] = response.data
-            resolve(Object.assign({}, response.data))
-          }, error => {
-            reject(error)
+          resultsObj = Vue._.pickBy(store.state.classes, function (item, key) {
+            if (operator === 'eq') return item[docProp] === value
+            if (operator === 'lt') return item[docProp] < value
+            if (operator === 'gt') return item[docProp] > value
           })
         }
+        return resultsObj
+      }
+      let resultsObj = getResultsObj(queryObj)
+
+      // Normalize the results so that they are suited for the tree
+      let resultsArr = []
+      Object.keys(resultsObj).forEach(key => {
+        const item = resultsObj[key]
+        // Create a query array for the children, based on join predicate
+        let queryArr = []
+        if (queryObj.query.join) {
+          queryObj.query.join.forEach((query) => {
+            // Query referenced by name
+            if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName])
+            // Query as object
+            else queryArr.push(query)
+          })
+        }
+
+        // The tree node result
+        let result = {
+          id: key,
+          title: item.title ? item.title : item.name,
+          data: {queryArr: queryArr, queryNames: queryObj.queryNames},
+          isLeaf: false
+        }
+
+        // Find out if the node is a leaf by running the queries
+        result.isLeaf = !queryArr.some((query) => {
+          let obj = getResultsObj({fk: key, query: query})
+          return Object.keys(obj).length > 0
+        })
+
+        resultsArr.push(result)
       })
+
+      return resultsArr
     },
     materializedView (store, viewId) {
       return store.dispatch('loadCommon', viewId).then((viewObj) => {
         if (viewObj.classId) {
           return store.dispatch('mergeAncestorClasses', viewObj.classId).then((classObj) => {
-            // TODO we need a smart merge here
-            /* Object.keys(viewObj.properties).forEach(propName => {
-              if (classObj.properties[propName]) {
-                Object.keys(classObj.properties.propName).forEach(propProp => {
-                  const classProp = viewObj.properties.propName.propProp
-                  let viewProp = viewObj.properties.propName.propProp
-                  debugger
-                  switch (propProp) {
-                    case 'type':
-                      viewProp = viewProp ? viewProp:classProp
-                      break
-                    case 'title':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'default':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'enum':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'pattern':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'query':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'maxLength':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'minLength':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                    case 'items':
-                      viewProp = viewProp?viewProp:classProp
-                      break
-                  }
-                })
-              }
-            }) */
-            const mergedView = Vue._.merge({}, classObj, viewObj)
-            Object.keys(mergedView.properties).forEach(propName => {
-              if (!viewObj.properties[propName]) delete mergedView.properties[propName]
+            // Smart Merge
+            Object.keys(viewObj.properties).forEach(propName => {
+              const classProp = classObj.properties[propName]
+              const viewProp = viewObj.properties[propName]
+              viewProp.type = classProp.type
+              if (!viewProp.title && classProp.title) viewProp.title = classProp.title
+              if (!viewProp.default && classProp.default) viewProp.default = classProp.default
+              if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
+              if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
+              if (!viewProp.query && classProp.query) viewProp.query = classProp.query
+              if (!viewProp.items && classProp.items) viewProp.items = classProp.items
+              if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+              if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+              if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
+              if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
             })
-            return mergedView
+            viewObj.required = Vue._.merge(viewObj.required, classObj.required)
+            return viewObj
           })
-        }
-        return viewObj
+        } else return viewObj
       })
     },
     mergeAncestorClasses (store, classId) {
@@ -202,15 +221,22 @@ const store = new Vuex.Store({
         } else return classObj
       })
     },
-    query (store, queryObj) {
-      if (queryObj.query.where.docProp === '$key' && queryObj.query.where.operator === 'eq') {
-        return store.dispatch('loadCommon', queryObj.query.where.value).then((resObj) => {
-          resObj.id = queryObj.query.where.value
-          resObj.query = queryObj.query
-          return resObj
-          // return {[queryObj.query.where.value]: resObj}
+    loadClasses (store) {
+      store.commit('SET_CLASSES_LOADING', { loading: true })
+      return axios('classes.json')
+        .then(response => {
+          store.commit('SET_CLASSES_SUCCESS', {
+            statusCode: response.status,
+            message: response.statusText,
+            data: response.data
+          })
         })
-      } else return 'error'
+        .catch(error => {
+          store.commit('SET_CLASSES_FAILURE', {
+            statusCode: error.status,
+            message: error.statusText
+          })
+        })
     }
   }
 })

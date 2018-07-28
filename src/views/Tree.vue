@@ -3,7 +3,7 @@
         <v-jstree
                 :data="asyncData"
                 :async="loadData"
-                :text-field-name="title"
+                text-field-name="title"
                 allow-batch
                 whole-row
                 draggable
@@ -13,11 +13,6 @@
                 @item-drop-before = "itemDropBefore"
                 @item-drop="itemDrop"
                 ref="tree2"></v-jstree>
-
-        <br>
-        <textarea  style="height:300px; width:100%;">
-          {{asyncData}}
-        </textarea>
     </div>
 </template>
 
@@ -47,10 +42,22 @@ export default {
         }
       },
       asyncData: [],
-      loadData: (oriNode, resolve) => {
-        this.$store.dispatch('query', oriNode.data.queryObj).then((result) => {
-          resolve([result])
-        })
+      loadData: function (oriNode, resolve) {
+        if (!oriNode || !oriNode.data.id) {
+          let viewQueryObj = this.$parent.viewRootQueryObj()
+          this.$store.dispatch('query', viewQueryObj).then((result) => {
+            resolve(result)
+          })
+        } else {
+          const queryArrObj = {
+            fk: oriNode.data.id,
+            queryArr: oriNode.data.data.queryArr,
+            queryNames: oriNode.data.data.queryNames
+          }
+          this.$store.dispatch('queryArrObj', queryArrObj).then((result) => {
+            resolve(result)
+          })
+        }
       }
     }
   },
@@ -168,24 +175,26 @@ export default {
     },
     customItemClickWithCtrl: function () {
       console.log('click + ctrl')
+    },
+    viewRootQueryObj: function () {
+      const getQueriesByName = (query) => {
+        let queryNames = {}
+        if (query.queryName) queryNames[query.queryName] = query
+        if (query.join) {
+          query.join.forEach((item) => {
+            queryNames = Object.assign(queryNames, getQueriesByName(item))
+          })
+        }
+        return queryNames
+      }
+      const queryNames = getQueriesByName(this.view.query)
+
+      return { fk: null, query: this.view.query, queryNames: queryNames}
     }
   },
-/*  computed :{
-    getfullname : function(){
-      console.log('computedwidget', this.widget)
-      return this.widget
-    }
-  },
-  watch:{
-    widget: function(val){
-      console.log('warchwidget', this.widget)
-    }
-  },*/
   created () {
-    //console.log('mountedwidget', this.widget)
-    this.$store.dispatch('materializedView', this.widget.viewId).then( (view) => {
+    this.$store.dispatch('materializedView', this.widget.viewId).then((view) => {
       this.view = view
-      this.asyncData = {id:12, queryObj: {query: view.query, id: 10}}
     })
   }
 }
