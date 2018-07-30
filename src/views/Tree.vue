@@ -7,6 +7,7 @@
                 allow-batch
                 whole-row
                 draggable
+                sort
                 @item-click="itemClick"
                 @item-drag-start="itemDragStart"
                 @item-drag-end="itemDragEnd"
@@ -63,9 +64,9 @@ export default {
   },
   methods: {
     itemClick (node) {
-      this.editingNode = node
-      this.editingItem = node.model
-      console.log(node.model.text + ' clicked !')
+      this.pageId = node.model.data.pageId ? node.model.data.pageId : node.model.data.item.pageId
+      if (pageId) this.$router.push({path: '/' + pageId})
+      console.log('clicked !', pageId)
     },
     itemDragStart (node) {
       console.log(node.model.text + ' drag start !')

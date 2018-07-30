@@ -1,6 +1,6 @@
 <template>
     <div  v-if="tabs.length > 1">
-        <v-tabs v-model="active">
+        <v-tabs v-model="selectedTab">
             <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
             <v-tab-item v-for="(tab, n) in tabs" :key="n">
                 <div v-if="tab.widgets">
@@ -44,17 +44,17 @@ export default {
   },
   data () {
     return {
-      active: null,
-      tabs: []
+      tabs: [],
+      pageId: '575d4c3f2cf3d6dc3ed83146'
     }
   },
   computed: {
     selectedTab: {
       get () {
-        return this.$store.state.a
+        return this.$store.state.pageStates[this.pageId].selectedTab
       },
       set (value) {
-        this.$store.commit('setSelectedTab', value)
+        this.$store.commit('SET_SELECTED_TAB', {selectedTab: value, pageId: this.pageId})
       }
     }
   },

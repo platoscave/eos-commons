@@ -13,21 +13,23 @@ const store = new Vuex.Store({
     loading: false,
     statusCode: null,
     message: '',
+    levels: [],
     pageStates: {},
     pageStateExp: {
       'xxxxxxxxxxxxxxxxx': {
         pageLoaded: false,
+        paneWidth: '300px',
         selectedTab: 0,
         tabs: [
-          [
-            {
-              viewId: '',
-              viewLoaded: false,
-              selectedObjId: '',
-              selectedObjLoaded: false,
-              selectedTab: 0
-            }
-          ]
+          {
+            selectedWidget: 0,
+            widgets: [
+              {
+                selectedObj: '',
+                expanded: []
+              }
+            ]
+          }
         ]
       }
     }
@@ -35,22 +37,6 @@ const store = new Vuex.Store({
   getters: {
     getMessage: (state) => {
       return state.statusCode + ' ' + state.message
-    },
-    getClasses: state => {
-      // return state.todos.filter(todo => todo.done)
-      return state.classes
-    },
-    getObjByIdx: (state) => (id) => {
-      return state.classes.find(obj => obj.id === id)
-    },
-    getObjById: (state) => (id) => {
-      return state.classes[id]
-    },
-    getPageLoaded: (state) => (id) => {
-      return Vue._.get('state.pageStates[id].pageLoaded')
-    },
-    getMaterializedView: (store) => (id) => {
-      return this.materializedView(id)
     }
   },
   mutations: {
@@ -73,12 +59,19 @@ const store = new Vuex.Store({
       state.message = 'loading...'
       state.pageStates = Vue._.merge(state.pageStates, payload)
     },
-    SET_PAGE_SUCCESS (state, payload) {
+    SET_PAGE_STATE (state, payload) {
       state.message = 'ok'
       state.pageStates = Vue._.merge(state.pageStates, payload)
     },
     SET_STATE_FAILURE (state, payload) {
       state.message = 'Failed to load page'
+    },
+
+    SET_SELECTED_TAB (state, payload) {
+      state.pageStates[payload.pageId].selectedTab = payload.selectedTab
+    },
+    SET_PANE_WIDTH (state, payload) {
+      state.pageStates[payload.pageId].paneWidth = payload.paneWidth
     }
   },
   actions: {
@@ -102,6 +95,7 @@ const store = new Vuex.Store({
           store.commit('SET_PAGE_LOADING', {
             [id]: {
               pageLoaded: false,
+              paneWidth: '400px',
               selectedTab: 0,
               tabs: []
             }
@@ -110,11 +104,11 @@ const store = new Vuex.Store({
 
         let page = store.state.classes[id]
         if (page) {
-          store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
+          store.commit('SET_PAGE_STATE', {[id]: {pageLoaded: true}})
           resolve(page)
         } else {
           store.dispatch('loadCommon').then((response) => {
-            store.commit('SET_PAGE_SUCCESS', {[id]: {pageLoaded: true}})
+            store.commit('SET_PAGE_STATE', {[id]: {pageLoaded: true}})
             resolve(response.data)
           }).error((error) => {
             store.commit('SET_PAGE_ERROR')
@@ -171,7 +165,7 @@ const store = new Vuex.Store({
         let result = {
           id: key,
           title: item.title ? item.title : item.name,
-          data: {queryArr: queryArr, queryNames: queryObj.queryNames},
+          data: {queryArr: queryArr, queryNames: queryObj.queryNames, item: item, pageId: queryObj.query.pageId},
           isLeaf: false
         }
 
@@ -186,6 +180,15 @@ const store = new Vuex.Store({
 
       return resultsArr
     },
+    mergeAncestorClasses (store, classId) {
+      return store.dispatch('loadCommon', classId).then((classObj) => {
+        if (classObj.parentId) {
+          return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
+            return Vue._.merge(parentClassObj, classObj)
+          })
+        } else return classObj
+      })
+    },
     materializedView (store, viewId) {
       return store.dispatch('loadCommon', viewId).then((viewObj) => {
         if (viewObj.classId) {
@@ -197,6 +200,7 @@ const store = new Vuex.Store({
               viewProp.type = classProp.type
               if (!viewProp.title && classProp.title) viewProp.title = classProp.title
               if (!viewProp.default && classProp.default) viewProp.default = classProp.default
+              if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
               if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
               if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
               if (!viewProp.query && classProp.query) viewProp.query = classProp.query
@@ -210,15 +214,6 @@ const store = new Vuex.Store({
             return viewObj
           })
         } else return viewObj
-      })
-    },
-    mergeAncestorClasses (store, classId) {
-      return store.dispatch('loadCommon', classId).then((classObj) => {
-        if (classObj.parentId) {
-          return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
-            return Vue._.merge(parentClassObj, classObj)
-          })
-        } else return classObj
       })
     },
     loadClasses (store) {
@@ -238,6 +233,19 @@ const store = new Vuex.Store({
           })
         })
     }
+  }
+})
+store.watch(state => state.route, (newPath, oldPath) => {
+  const levelsArr = newPath.path.split('/')
+  for (let i = 1; i < levelsArr.length; i++) {
+    let pageStateArr = levelsArr[i].split('.')
+    const pageId = pageStateArr[1]
+    store.commit('SET_PAGE_STATE', {
+      [pageId]: {
+        selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
+        selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+      }
+    })
   }
 })
 

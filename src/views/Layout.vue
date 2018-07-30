@@ -1,7 +1,7 @@
 <template>
     <div  v-if="page.divider === 'Vertical' || page.divider === 'Horizontal'">
-        <multipane class="container" layout="vertical">
-            <div class="left" :style="{ width: '300px'}">
+        <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
+            <div class="left" v-bind:style="{ width: paneWidth }">
                 <!-- Navigation content -->
                 <tabs v-bind:level="level"></tabs>
             </div>
@@ -22,6 +22,7 @@
 <script>
 import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Tabs from './Tabs.vue'
+import router from 'vue-router'
 
 export default {
   components: {
@@ -40,18 +41,34 @@ export default {
     }
   },
   computed: {
-    loaded () {
-      return this.$store.state.pageStates['575d4c3f2cf3d6dc3ed83146']
+    pageId: function () {
+      const levelsArr = this.$route.path.split('/')
+      const levelArr = levelsArr[this.level + 1].split('.')
+      console.log('layout compute', levelArr[0])
+      return levelArr[0]
+    },
+    paneWidth: function () {
+      return this.$store.state.pageStates[this.pageId].paneWidth
     }
   },
   watch: {
-    loaded (pageLoaded) {
-      if (pageLoaded) this.page = this.$store.getters.getObjById('575d4c3f2cf3d6dc3ed83146')
-      else this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146')
+    '$route'(to, from) {
+      // this.loadPage(this.pageId)
+    }
+  },
+  methods: {
+    paneResizeStop(pane, resizer, size) {
+      this.$store.commit('SET_PANE_WIDTH', {paneWidth: size, pageId: this.pageId})
+    },
+    loadPage(pageId) {
+      debugger
+      this.$store.dispatch('loadPage', pageId).then((page) => {
+        this.page = page
+      })
     }
   },
   created () {
-    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then((page) => {
+    this.$store.dispatch('loadPage', this.pageId).then((page) => {
       this.page = page
     })
   }

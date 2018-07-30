@@ -9,11 +9,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
       path: '/ipfs',
       name: 'ipfs',
       component: Ipfs
@@ -22,6 +17,11 @@ export default new Router({
       path: '/webgl',
       name: 'WebGl',
       component: WebGl
+    },
+    {
+      path: '*',
+      name: 'home',
+      component: Home
     }
   ]
 })
