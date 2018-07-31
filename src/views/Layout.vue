@@ -1,5 +1,5 @@
 <template>
-    <div  v-if="page.divider === 'Vertical' || page.divider === 'Horizontal'">
+    <div  v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
         <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
             <div class="left" v-bind:style="{ width: paneWidth }">
                 <!-- Navigation content -->
@@ -37,41 +37,40 @@ export default {
   },
   data () {
     return {
-      page: {}
+      pageObj: {}
     }
   },
   computed: {
     pageId: function () {
-      const levelsArr = this.$route.path.split('/')
-      const levelArr = levelsArr[this.level + 1].split('.')
-      console.log('layout compute', levelArr[0])
-      return levelArr[0]
+      return this.$store.state.pages[this.level].pageId
     },
     paneWidth: function () {
       return this.$store.state.pageStates[this.pageId].paneWidth
     }
   },
   watch: {
-    '$route'(to, from) {
-      // this.loadPage(this.pageId)
+    pageId (pageId, from) {
+      if(pageId) this.$store.dispatch('loadCommon', pageId).then((pageObj) => {
+        this.pageObj = pageObj
+      })
     }
   },
   methods: {
     paneResizeStop(pane, resizer, size) {
       this.$store.commit('SET_PANE_WIDTH', {paneWidth: size, pageId: this.pageId})
     },
-    loadPage(pageId) {
+/*    loadPage(pageId) {
       debugger
-      this.$store.dispatch('loadPage', pageId).then((page) => {
-        this.page = page
+      this.$store.dispatch('loadPage', pageId).then((pageObj) => {
+        this.pageObj = pageObj
       })
-    }
+    }*/
   },
-  created () {
-    this.$store.dispatch('loadPage', this.pageId).then((page) => {
-      this.page = page
+/*  created () {
+    this.$store.dispatch('loadPage', this.pageId).then((pageObj) => {
+      this.pageObj = pageObj
     })
-  }
+  }*/
 }
 </script>
 <style scoped>

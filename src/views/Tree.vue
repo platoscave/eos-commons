@@ -3,7 +3,6 @@
         <v-jstree
                 :data="asyncData"
                 :async="loadData"
-                text-field-name="title"
                 allow-batch
                 whole-row
                 draggable
@@ -64,9 +63,13 @@ export default {
   },
   methods: {
     itemClick (node) {
-      this.pageId = node.model.data.pageId ? node.model.data.pageId : node.model.data.item.pageId
-      if (pageId) this.$router.push({path: '/' + pageId})
-      console.log('clicked !', pageId)
+      const levelsArr = this.$route.path.split('/')
+      const levelArr = levelsArr[this.level + 2].split('.')
+      levelArr[0] = node.model.id
+      levelArr[1] = node.model.data.pageId
+      levelsArr[this.level + 2] = levelArr.join('.')
+      const newPath = levelsArr.join('/')
+      this.$router.push(newPath)
     },
     itemDragStart (node) {
       console.log(node.model.text + ' drag start !')

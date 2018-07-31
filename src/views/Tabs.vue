@@ -54,12 +54,17 @@ export default {
         return this.$store.state.pageStates[this.pageId].selectedTab
       },
       set (value) {
-        this.$store.commit('SET_SELECTED_TAB', {selectedTab: value, pageId: this.pageId})
+        const levelsArr = this.$route.path.split('/')
+        const levelArr = levelsArr[this.level + 1].split('.')
+        levelArr[2] = value // Set the tab for this level
+        levelsArr[this.level + 1] = levelArr.join('.')
+        const newPath = levelsArr.join('/')
+        this.$router.push(newPath)
       }
     }
   },
   created () {
-    this.$store.dispatch('loadPage', '575d4c3f2cf3d6dc3ed83146').then((page) => {
+    this.$store.dispatch('loadCommon', '575d4c3f2cf3d6dc3ed83146').then((page) => {
       this.tabs = page.tabs
     })
   }

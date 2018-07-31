@@ -9,11 +9,10 @@ const store = new Vuex.Store({
 
   state: {
     classes: {},
-    objects: {},
     loading: false,
     statusCode: null,
     message: '',
-    levels: [],
+    pages: [],
     pageStates: {},
     pageStateExp: {
       'xxxxxxxxxxxxxxxxx': {
@@ -55,16 +54,19 @@ const store = new Vuex.Store({
       state.message = payload.message
     },
 
-    SET_PAGE_LOADING (state, payload) {
-      state.message = 'loading...'
-      state.pageStates = Vue._.merge(state.pageStates, payload)
+    SET_PAGE (state, payload) {
+      state.pages[payload.level] = payload.pageInfo
     },
+
     SET_PAGE_STATE (state, payload) {
-      state.message = 'ok'
-      state.pageStates = Vue._.merge(state.pageStates, payload)
-    },
-    SET_STATE_FAILURE (state, payload) {
-      state.message = 'Failed to load page'
+      const defaultPageState = {
+        [Object.keys(payload)[0]]: {
+          paneWidth: '400px',
+          selectedTab: 0,
+          tabs: []
+        }
+      }
+      state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
     },
 
     SET_SELECTED_TAB (state, payload) {
@@ -88,7 +90,7 @@ const store = new Vuex.Store({
         }
       })
     },
-    loadPage (store, id) {
+/*    loadPage (store, id) {
       return new Promise((resolve, reject) => {
         let pageState = store.state.pageStates[id]
         if (!pageState) {
@@ -116,7 +118,7 @@ const store = new Vuex.Store({
           })
         }
       })
-    },
+    }, */
     queryArrObj (store, queryObj) {
       let promises = []
       queryObj.queryArr.forEach((query) => {
@@ -164,12 +166,18 @@ const store = new Vuex.Store({
         // The tree node result
         let result = {
           id: key,
-          title: item.title ? item.title : item.name,
-          data: {queryArr: queryArr, queryNames: queryObj.queryNames, item: item, pageId: queryObj.query.pageId},
+          text: item.title ? item.title : item.name,
+          data: {
+            queryArr: queryArr,
+            queryNames: queryObj.queryNames,
+            item: item,
+            pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
+            'icon-background': queryObj.query.icon ? queryObj.query.icon : item.icon
+          },
           isLeaf: false
         }
 
-        // Find out if the node is a leaf by running the queries
+        // Find out if the node is a leaf by running the child queries
         result.isLeaf = !queryArr.some((query) => {
           let obj = getResultsObj({fk: key, query: query})
           return Object.keys(obj).length > 0
@@ -237,13 +245,20 @@ const store = new Vuex.Store({
 })
 store.watch(state => state.route, (newPath, oldPath) => {
   const levelsArr = newPath.path.split('/')
-  for (let i = 1; i < levelsArr.length; i++) {
-    let pageStateArr = levelsArr[i].split('.')
+  for (let level = 1; level < levelsArr.length; level++) {
+    let pageStateArr = levelsArr[level].split('.')
     const pageId = pageStateArr[1]
     store.commit('SET_PAGE_STATE', {
       [pageId]: {
         selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
         selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+      }
+    })
+    store.commit('SET_PAGE', {
+      level: level - 1,
+      pageInfo: {
+        selectedObj: pageStateArr[0],
+        pageId: pageStateArr[1]
       }
     })
   }
