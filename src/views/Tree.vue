@@ -3,8 +3,6 @@
         <v-jstree
                 :data="asyncData"
                 :async="loadData"
-                allow-batch
-                whole-row
                 draggable
                 sort
                 @item-click="itemClick"
@@ -12,7 +10,15 @@
                 @item-drag-end="itemDragEnd"
                 @item-drop-before = "itemDropBefore"
                 @item-drop="itemDrop"
-                ref="tree2"></v-jstree>
+                ref="tree2">
+            <template slot-scope="_">
+                <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
+                    <img class="tree-icon" :src="_.model.data.icon" role="presentation" v-if="!_.model.loading">
+                    {{_.model.text}}
+                    <button style="border: 0px; background-color: transparent; cursor: pointer;" @click="customItemClick(_.vm, _.model, $event)"><i class="fa fa-remove"></i></button>
+                </div>
+            </template>
+        </v-jstree>
     </div>
 </template>
 
@@ -36,15 +42,15 @@ export default {
           console.log('mouseover')
         },
         contextmenu: function () {
-          console.log(arguments[2])
-          arguments[2].preventDefault()
+          console.log(arguments[2]);
+          arguments[2].preventDefault();
           console.log('contextmenu')
         }
       },
       asyncData: [],
       loadData: function (oriNode, resolve) {
         if (!oriNode || !oriNode.data.id) {
-          let viewQueryObj = this.$parent.viewRootQueryObj()
+          let viewQueryObj = this.$parent.viewRootQueryObj();
           this.$store.dispatch('query', viewQueryObj).then((result) => {
             resolve(result)
           })
@@ -53,7 +59,7 @@ export default {
             fk: oriNode.data.id,
             queryArr: oriNode.data.data.queryArr,
             queryNames: oriNode.data.data.queryNames
-          }
+          };
           this.$store.dispatch('queryArrObj', queryArrObj).then((result) => {
             resolve(result)
           })
@@ -63,12 +69,12 @@ export default {
   },
   methods: {
     itemClick (node) {
-      const levelsArr = this.$route.path.split('/')
-      const levelArr = levelsArr[this.level + 2].split('.')
-      levelArr[0] = node.model.id
-      levelArr[1] = node.model.data.pageId
-      levelsArr[this.level + 2] = levelArr.join('.')
-      const newPath = levelsArr.join('/')
+      const levelsArr = this.$route.path.split('/');
+      const levelArr = levelsArr[this.level + 2].split('.');
+      levelArr[0] = node.model.id;
+      levelArr[1] = node.model.data.pageId;
+      levelsArr[this.level + 2] = levelArr.join('.');
+      const newPath = levelsArr.join('/');
       this.$router.push(newPath)
     },
     itemDragStart (node) {
@@ -93,8 +99,8 @@ export default {
           rev = (rev) ? 1 : -1
         }
         return function (a, b) {
-          a = a[attr]
-          b = b[attr]
+          a = a[attr];
+          b = b[attr];
           if (a < b) {
             return rev * -1
           }
@@ -103,19 +109,19 @@ export default {
           }
           return 0
         }
-      }
-      item.children.sort(sortBy('text', true))
+      };
+      item.children.sort(sortBy('text', true));
       this.$refs.tree.handleRecursionNodeChildren(draggedItem, function (childrenItem) {
         childrenItem.selected = item.selected
-      })
+      });
       console.log(node.model.text + ' drop !')
     },
     inputKeyUp: function () {
-      var text = this.searchText
-      const patt = new RegExp(text)
+      var text = this.searchText;
+      const patt = new RegExp(text);
       this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, function (node) {
         if (text !== '' && node.model !== undefined) {
-          const str = node.model.text
+          const str = node.model.text;
           if (patt.test(str)) {
             node.$el.querySelector('.tree-anchor').style.color = 'red'
           } else {
@@ -136,7 +142,7 @@ export default {
     },
     removeNode: function () {
       if (this.editingItem.id !== undefined) {
-        var index = this.editingNode.parentItem.indexOf(this.editingItem)
+        var index = this.editingNode.parentItem.indexOf(this.editingItem);
         this.editingNode.parentItem.splice(index, 1)
       }
     },
@@ -169,12 +175,12 @@ export default {
     refreshNode: function () {
       this.asyncData = [
         this.$refs.tree2.initializeLoading()
-      ]
+      ];
       this.$refs.tree2.handleAsyncLoad(this.asyncData, this.$refs.tree2)
     },
     customItemClick: function (node, item, e) {
-      e.stopPropagation()
-      var index = node.parentItem.indexOf(item)
+      e.stopPropagation();
+      var index = node.parentItem.indexOf(item);
       node.parentItem.splice(index, 1)
     },
     customItemClickWithCtrl: function () {
@@ -182,16 +188,16 @@ export default {
     },
     viewRootQueryObj: function () {
       const getQueriesByName = (query) => {
-        let queryNames = {}
-        if (query.queryName) queryNames[query.queryName] = query
+        let queryNames = {};
+        if (query.queryName) queryNames[query.queryName] = query;
         if (query.join) {
           query.join.forEach((item) => {
             queryNames = Object.assign(queryNames, getQueriesByName(item))
           })
         }
         return queryNames
-      }
-      const queryNames = getQueriesByName(this.view.query)
+      };
+      const queryNames = getQueriesByName(this.view.query);
 
       return { fk: null, query: this.view.query, queryNames: queryNames}
     }
@@ -204,5 +210,10 @@ export default {
 }
 </script>
 <style scoped>
-
+   /* tree-themeicon-custom {
+        background-color: red;
+    }
+    .jstree-default li a ins {
+        background:url("../images/icoons/search.png") 0px 0px no-repeat !important;
+    }*/
 </style>

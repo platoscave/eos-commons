@@ -1,34 +1,37 @@
 <template>
     <div  v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
         <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
+            <!-- Navigation content -->
             <div class="left" v-bind:style="{ width: paneWidth }">
-                <!-- Navigation content -->
-                <tabs v-bind:level="level"></tabs>
+                <tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
+            <!-- Main content -->
             <div class="right">
-                <!-- Main content -->
-                <tabs v-bind:level="level + 1"></tabs>
+                <layout v-bind:level="level + 1"></layout>
             </div>
         </multipane>
     </div>
     <div v-else>
         <!-- Only header layout content -->
-        <tabs v-bind:level="level"></tabs>
+        <tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></tabs>
     </div>
 </template>
 
 <script>
 import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Tabs from './Tabs.vue'
+import Layout from './Layout.vue'
 import router from 'vue-router'
 
 export default {
+  name: 'layout',
   components: {
     Multipane,
     MultipaneResizer,
-    tabs: Tabs
+    tabs: Tabs,
+    layout: Layout
   },
   props: {
     level: {
@@ -37,40 +40,31 @@ export default {
   },
   data () {
     return {
-      pageObj: {}
+      pageObj: {},
+      pageId: null
     }
   },
   computed: {
-    pageId: function () {
-      return this.$store.state.pages[this.level].pageId
-    },
     paneWidth: function () {
       return this.$store.state.pageStates[this.pageId].paneWidth
-    }
-  },
-  watch: {
-    pageId (pageId, from) {
-      if(pageId) this.$store.dispatch('loadCommon', pageId).then((pageObj) => {
-        this.pageObj = pageObj
-      })
     }
   },
   methods: {
     paneResizeStop(pane, resizer, size) {
       this.$store.commit('SET_PANE_WIDTH', {paneWidth: size, pageId: this.pageId})
     },
-/*    loadPage(pageId) {
-      debugger
-      this.$store.dispatch('loadPage', pageId).then((pageObj) => {
+    handleAuthUpdate(pageDesc) {
+      this.pageId = pageDesc.pageId;
+      this.$store.dispatch('loadCommon', pageDesc.pageId).then((pageObj) => {
         this.pageObj = pageObj
       })
-    }*/
+    }
   },
-/*  created () {
-    this.$store.dispatch('loadPage', this.pageId).then((pageObj) => {
-      this.pageObj = pageObj
-    })
-  }*/
+  created () {
+    this.$store.watch((state) => (this.$store.state.pages[this.level]), this.handleAuthUpdate, {
+      immediate: true
+    });
+  }
 }
 </script>
 <style scoped>

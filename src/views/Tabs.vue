@@ -37,36 +37,27 @@ export default {
     widgets: Widgets
   },
   props: {
-    level: {
-      type: Number,
-      default: 0
-    }
-  },
-  data () {
-    return {
-      tabs: [],
-      pageId: '575d4c3f2cf3d6dc3ed83146'
+    level: Number,
+    tabs: {
+      type: Array,
+      default: () => []
     }
   },
   computed: {
     selectedTab: {
       get () {
-        return this.$store.state.pageStates[this.pageId].selectedTab
+        const pageDesc = this.$store.state.pages[this.level];
+        return this.$store.state.pageStates[pageDesc.pageId].selectedTab
       },
       set (value) {
-        const levelsArr = this.$route.path.split('/')
-        const levelArr = levelsArr[this.level + 1].split('.')
-        levelArr[2] = value // Set the tab for this level
-        levelsArr[this.level + 1] = levelArr.join('.')
-        const newPath = levelsArr.join('/')
+        const levelsArr = this.$route.path.split('/');
+        const levelArr = levelsArr[this.level + 1].split('.');
+        levelArr[2] = value; // Set the tab for this level
+        levelsArr[this.level + 1] = levelArr.join('.');
+        const newPath = levelsArr.join('/');
         this.$router.push(newPath)
       }
     }
-  },
-  created () {
-    this.$store.dispatch('loadCommon', '575d4c3f2cf3d6dc3ed83146').then((page) => {
-      this.tabs = page.tabs
-    })
   }
 }
 </script>
