@@ -1,6 +1,9 @@
 <template>
     <vgl-renderer antialias style="height: 100vh;">
         <vgl-scene>
+            <vgl-box-geometry name="box" :width="50000" :height="50000" :depth="50000"></vgl-box-geometry>
+            <vgl-mesh-standard-material name="std"></vgl-mesh-standard-material>
+            <vgl-mesh geometry="box" material="std"></vgl-mesh>
             <vgl-sphere-geometry name="sphere"></vgl-sphere-geometry>
             <vgl-mesh-standard-material name="std"></vgl-mesh-standard-material>
             <vgl-mesh geometry="sphere" material="std"></vgl-mesh>

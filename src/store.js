@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import createPersistedState from 'vuex-persistedstate'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
+  plugins: [createPersistedState()],
 
   state: {
     classes: {},
@@ -14,24 +16,7 @@ const store = new Vuex.Store({
     message: '',
     levelIdsArr: [],
     pageStates: {},
-    pageStateExp: {
-      'xxxxxxxxxxxxxxxxx': {
-        pageLoaded: false,
-        paneWidth: '300px',
-        selectedTab: 0,
-        tabs: [
-          {
-            selectedWidget: 0,
-            widgets: [
-              {
-                selectedObjId: '',
-                expanded: []
-              }
-            ]
-          }
-        ]
-      }
-    }
+    isOpened: {}
   },
   getters: {
     getMessage: (state) => {
@@ -40,21 +25,21 @@ const store = new Vuex.Store({
   },
   mutations: {
     SET_CLASSES_LOADING (state) {
-      state.loading = true;
+      state.loading = true
       state.message = 'loading...'
     },
     SET_CLASSES_SUCCESS (state, payload) {
-      state.statusCode = payload.statusCode;
-      state.message = payload.message;
-      state.classes = payload.data;
+      state.statusCode = payload.statusCode
+      state.message = payload.message
+      state.classes = payload.data
       state.loading = false
     },
     SET_CLASSES_FAILURE (state, payload) {
-      state.statusCode = payload.statusCode;
+      state.statusCode = payload.statusCode
       state.message = payload.message
     },
 
-    SET_LEVEL_IDS(state, payload) {
+    SET_LEVEL_IDS (state, payload) {
       Vue.set(state.levelIdsArr, payload.level, payload.ids)
     },
 
@@ -65,23 +50,23 @@ const store = new Vuex.Store({
           selectedTab: 0,
           tabs: []
         }
-      };
+      }
       state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
       // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
     },
 
-    SET_NODE_TOGGLE(state, payload) {
-      let levelIds = state.levelIdsArr[payload.level];
-      levelIds.isOpened = Vue._.merge(levelIds.isOpened, {[payload.id]: payload.opened})
+    SET_NODE_TOGGLE (state, payload) {
+      if (payload.opened) state.isOpened[payload.id] = true
+      else delete state.isOpened[payload.id]
     }
   },
   actions: {
     loadCommon (store, id) {
       return new Promise((resolve, reject) => {
-        if (store.state.classes[id]) resolve(Vue._.cloneDeep(store.state.classes[id]));
+        if (store.state.classes[id]) resolve(Vue._.cloneDeep(store.state.classes[id]))
         else {
           this.$http('ipfs.io/ipfs/' + id).then(response => {
-            this.store.state[id] = response.data;
+            this.store.state[id] = response.data
             resolve(Vue._.cloneDeep(response.data))
           }, error => {
             reject(error)
@@ -90,72 +75,77 @@ const store = new Vuex.Store({
       })
     },
     queryArrObj (store, queryObj) {
-      let promises = [];
+      let promises = []
       queryObj.queryArr.forEach((query) => {
-        promises.push(store.dispatch('query', {fk: queryObj.fk, query: query, queryNames: queryObj.queryNames}))
-      });
+        promises.push(store.dispatch('query', {fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level}))
+      })
       return Promise.all(promises).then((values) => {
         return Vue._.union.apply(null, values)
       })
     },
-    query (store, queryObj) {
+    query: function (store, queryObj) {
       // Run the query, return a results object
       const getResultsObj = (queryObj) => {
-        let resultsObj = {};
-        const docProp = Vue._.get(queryObj, 'query.where.docProp');
-        const operator = Vue._.get(queryObj, 'query.where.operator');
-        let value = Vue._.get(queryObj, 'query.where.value');
-        if (value === '$parentNode.$key') value = queryObj.fk;
-        if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value];
+        let resultsObj = {}
+        const docProp = Vue._.get(queryObj, 'query.where.docProp')
+        const operator = Vue._.get(queryObj, 'query.where.operator')
+        let value = Vue._.get(queryObj, 'query.where.value')
+        if (value === '$parentNode.$key') value = queryObj.fk
+        if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value]
         else {
           resultsObj = Vue._.pickBy(store.state.classes, function (item, key) {
-            if (operator === 'eq') return item[docProp] === value;
-            if (operator === 'lt') return item[docProp] < value;
+            if (operator === 'eq') return item[docProp] === value
+            if (operator === 'lt') return item[docProp] < value
             if (operator === 'gt') return item[docProp] > value
           })
         }
         return resultsObj
-      };
-      let resultsObj = getResultsObj(queryObj);
+      }
+      let resultsObj = getResultsObj(queryObj)
 
       // Normalize the results so that they are suited for the tree
-      let resultsArr = [];
+      let resultsArr = []
       Object.keys(resultsObj).forEach(key => {
-        const item = resultsObj[key];
+        let result;
+        const item = resultsObj[key]
         // Create a query array for the children, based on join predicate
-        let queryArr = [];
+        let queryArr = []
         if (queryObj.query.join) {
           queryObj.query.join.forEach((query) => {
             // Query referenced by name
-            if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName]);
+            if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName])
             // Query as object
             else queryArr.push(query)
           })
         }
 
         // The tree node result
-        let result = {
+        const ids = store.state.levelIdsArr[queryObj.level + 1]
+        const selected = ids ? ids.selectedObjId === key : false
+        result = {
           id: key,
           text: item.title ? item.title : item.name,
           data: {
             queryArr: queryArr,
             queryNames: queryObj.queryNames,
+            level: queryObj.level,
             item: item,
             pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
             icon: queryObj.query.icon ? queryObj.query.icon : item.icon
           },
           isLeaf: false,
-          opened: true
-        };
+          opened: !!store.state.isOpened[key],
+          selected: selected
+        }
 
         // Find out if the node is a leaf by running the child queries
         result.isLeaf = !queryArr.some((query) => {
-          let obj = getResultsObj({fk: key, query: query});
+          let obj = getResultsObj({fk: key, query: query})
           return Object.keys(obj).length > 0
-        });
+        })
 
         resultsArr.push(result)
-      });
+      })
 
       return resultsArr
     },
@@ -175,21 +165,21 @@ const store = new Vuex.Store({
             if (viewObj.properties) {
               // Smart Merge
               Object.keys(viewObj.properties).forEach(propName => {
-                const classProp = classObj.properties[propName];
-                const viewProp = viewObj.properties[propName];
-                viewProp.type = classProp.type;
-                if (!viewProp.title && classProp.title) viewProp.title = classProp.title;
-                if (!viewProp.default && classProp.default) viewProp.default = classProp.default;
-                if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly;
-                if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum;
-                if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern;
-                if (!viewProp.query && classProp.query) viewProp.query = classProp.query;
-                if (!viewProp.items && classProp.items) viewProp.items = classProp.items;
-                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength;
-                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength;
-                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max;
+                const classProp = classObj.properties[propName]
+                const viewProp = viewObj.properties[propName]
+                viewProp.type = classProp.type
+                if (!viewProp.title && classProp.title) viewProp.title = classProp.title
+                if (!viewProp.default && classProp.default) viewProp.default = classProp.default
+                if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
+                if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
+                if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
+                if (!viewProp.query && classProp.query) viewProp.query = classProp.query
+                if (!viewProp.items && classProp.items) viewProp.items = classProp.items
+                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
                 if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
-              });
+              })
               viewObj.required = Vue._.merge(viewObj.required, classObj.required)
             }
             return viewObj
@@ -198,7 +188,7 @@ const store = new Vuex.Store({
       })
     },
     loadClasses (store) {
-      store.commit('SET_CLASSES_LOADING', { loading: true });
+      store.commit('SET_CLASSES_LOADING', { loading: true })
       return axios('classes.json')
         .then(response => {
           store.commit('SET_CLASSES_SUCCESS', {
@@ -215,19 +205,19 @@ const store = new Vuex.Store({
         })
     }
   }
-});
+})
 store.watch(state => state.route, (newPath, oldPath) => {
-  const levelsArr = newPath.path.split('/');
+  const levelsArr = newPath.path.split('/')
   for (let level = 1; level < levelsArr.length; level++) {
-    let pageStateArr = levelsArr[level].split('.');
-    const pageId = pageStateArr[1];
+    let pageStateArr = levelsArr[level].split('.')
+    const pageId = pageStateArr[1]
     if (pageId) {
       store.commit('SET_PAGE_STATE', {
         [pageId]: {
           selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
           selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
         }
-      });
+      })
       store.commit('SET_LEVEL_IDS', {
         level: level,
         ids: {
@@ -237,7 +227,7 @@ store.watch(state => state.route, (newPath, oldPath) => {
       })
     }
   }
-});
+})
 
 // store.dispatch('loadClasses')
 

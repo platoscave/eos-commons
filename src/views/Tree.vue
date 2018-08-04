@@ -53,6 +53,7 @@ export default {
         } else {
           const queryArrObj = {
             fk: oriNode.data.id,
+            level: this.$parent.level,
             queryArr: oriNode.data.data.queryArr,
             queryNames: oriNode.data.data.queryNames
           };
@@ -66,7 +67,7 @@ export default {
   methods: {
     itemClick (node) {
       if (node.model.data.pageId) {
-        // Create the pageState, if there isn't one already
+        // Create the next level pageState, if there isn't one already
         this.$store.commit('SET_PAGE_STATE', {[node.model.data.pageId]: {}});
         this.$store.commit('SET_LEVEL_IDS', {
           level: this.level + 1,
@@ -79,7 +80,6 @@ export default {
     },
     itemToggle(oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {
-        level: this.level,
         id: oriItem.id,
         opened: oriItem.opened
       })
@@ -206,7 +206,7 @@ export default {
       };
       const queryNames = getQueriesByName(this.view.query);
 
-      return { fk: null, query: this.view.query, queryNames: queryNames}
+      return { fk: null, query: this.view.query, queryNames: queryNames, level: this.level}
     }
   },
   created () {
@@ -216,14 +216,8 @@ export default {
   }
 }
 </script>
-<style scoped>
-    .tree-default.tree-selected {
-        background: #616161;
+<style>
+    .tree-default .tree-selected {
+        background: #616161 !important;
     }
-   /* tree-themeicon-custom {
-        background-color: red;
-    }
-    .jstree-default li a ins {
-        background:url("../images/icoons/search.png") 0px 0px no-repeat !important;
-    }*/
 </style>
