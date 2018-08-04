@@ -41,14 +41,7 @@
 </template>
 
 <script>
-  import Tree from './Tree.vue'
-  import WebGl from './WebGl.vue'
-
 export default {
-  components: {
-    tree: Tree,
-    webgl: WebGl
-  },
   props: {
     level: Number,
     widgets: {

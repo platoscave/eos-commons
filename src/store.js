@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     loading: false,
     statusCode: null,
     message: '',
-    pages: [],
+    levelIdsArr: [],
     pageStates: {},
     pageStateExp: {
       'xxxxxxxxxxxxxxxxx': {
@@ -24,7 +24,7 @@ const store = new Vuex.Store({
             selectedWidget: 0,
             widgets: [
               {
-                selectedObj: '',
+                selectedObjId: '',
                 expanded: []
               }
             ]
@@ -54,8 +54,8 @@ const store = new Vuex.Store({
       state.message = payload.message
     },
 
-    SET_PAGES (state, payload) {
-      state.pages = payload
+    SET_LEVEL_IDS(state, payload) {
+      Vue.set(state.levelIdsArr, payload.level, payload.ids)
     },
 
     SET_PAGE_STATE (state, payload) {
@@ -67,13 +67,12 @@ const store = new Vuex.Store({
         }
       };
       state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
+      // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
     },
 
-    SET_SELECTED_TAB (state, payload) {
-      state.pageStates[payload.pageId].selectedTab = payload.selectedTab
-    },
-    SET_PANE_WIDTH (state, payload) {
-      state.pageStates[payload.pageId].paneWidth = payload.paneWidth
+    SET_NODE_TOGGLE(state, payload) {
+      let levelIds = state.levelIdsArr[payload.level];
+      levelIds.isOpened = Vue._.merge(levelIds.isOpened, {[payload.id]: payload.opened})
     }
   },
   actions: {
@@ -103,9 +102,9 @@ const store = new Vuex.Store({
       // Run the query, return a results object
       const getResultsObj = (queryObj) => {
         let resultsObj = {};
-        const docProp = queryObj.query.where.docProp;
-        const operator = queryObj.query.where.operator;
-        let value = queryObj.query.where.value;
+        const docProp = Vue._.get(queryObj, 'query.where.docProp');
+        const operator = Vue._.get(queryObj, 'query.where.operator');
+        let value = Vue._.get(queryObj, 'query.where.value');
         if (value === '$parentNode.$key') value = queryObj.fk;
         if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value];
         else {
@@ -145,7 +144,8 @@ const store = new Vuex.Store({
             pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
             icon: queryObj.query.icon ? queryObj.query.icon : item.icon
           },
-          isLeaf: false
+          isLeaf: false,
+          opened: true
         };
 
         // Find out if the node is a leaf by running the child queries
@@ -172,24 +172,26 @@ const store = new Vuex.Store({
       return store.dispatch('loadCommon', viewId).then((viewObj) => {
         if (viewObj.classId) {
           return store.dispatch('mergeAncestorClasses', viewObj.classId).then((classObj) => {
-            // Smart Merge
-            Object.keys(viewObj.properties).forEach(propName => {
-              const classProp = classObj.properties[propName];
-              const viewProp = viewObj.properties[propName];
-              viewProp.type = classProp.type;
-              if (!viewProp.title && classProp.title) viewProp.title = classProp.title;
-              if (!viewProp.default && classProp.default) viewProp.default = classProp.default;
-              if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly;
-              if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum;
-              if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern;
-              if (!viewProp.query && classProp.query) viewProp.query = classProp.query;
-              if (!viewProp.items && classProp.items) viewProp.items = classProp.items;
-              if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength;
-              if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength;
-              if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max;
-              if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
-            });
-            viewObj.required = Vue._.merge(viewObj.required, classObj.required);
+            if (viewObj.properties) {
+              // Smart Merge
+              Object.keys(viewObj.properties).forEach(propName => {
+                const classProp = classObj.properties[propName];
+                const viewProp = viewObj.properties[propName];
+                viewProp.type = classProp.type;
+                if (!viewProp.title && classProp.title) viewProp.title = classProp.title;
+                if (!viewProp.default && classProp.default) viewProp.default = classProp.default;
+                if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly;
+                if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum;
+                if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern;
+                if (!viewProp.query && classProp.query) viewProp.query = classProp.query;
+                if (!viewProp.items && classProp.items) viewProp.items = classProp.items;
+                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength;
+                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength;
+                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max;
+                if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+              });
+              viewObj.required = Vue._.merge(viewObj.required, classObj.required)
+            }
             return viewObj
           })
         } else return viewObj
@@ -216,22 +218,25 @@ const store = new Vuex.Store({
 });
 store.watch(state => state.route, (newPath, oldPath) => {
   const levelsArr = newPath.path.split('/');
-  let pagesArr = [];
   for (let level = 1; level < levelsArr.length; level++) {
     let pageStateArr = levelsArr[level].split('.');
     const pageId = pageStateArr[1];
-    store.commit('SET_PAGE_STATE', {
-      [pageId]: {
-        selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
-        selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
-      }
-    });
-    pagesArr.push({
-      selectedObj: pageStateArr[0],
-      pageId: pageStateArr[1]
-    })
+    if (pageId) {
+      store.commit('SET_PAGE_STATE', {
+        [pageId]: {
+          selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
+          selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+        }
+      });
+      store.commit('SET_LEVEL_IDS', {
+        level: level,
+        ids: {
+          selectedObjId: pageStateArr[0],
+          pageId: pageId
+        }
+      })
+    }
   }
-  store.commit('SET_PAGES', pagesArr)
 });
 
 // store.dispatch('loadClasses')

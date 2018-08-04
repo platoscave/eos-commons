@@ -27,15 +27,7 @@
 </template>
 
 <script>
-import Layout from './Layout.vue'
-import Widgets from './Widgets.vue'
-
 export default {
-  name: 'tabs',
-  components: {
-    layout: Layout,
-    widgets: Widgets
-  },
   props: {
     level: Number,
     tabs: {
@@ -46,16 +38,25 @@ export default {
   computed: {
     selectedTab: {
       get () {
-        const pageDesc = this.$store.state.pages[this.level];
+        const pageDesc = this.$store.state.levelIdsArr[this.level];
         return this.$store.state.pageStates[pageDesc.pageId].selectedTab
       },
       set (value) {
-        const levelsArr = this.$route.path.split('/');
-        const levelArr = levelsArr[this.level + 1].split('.');
-        levelArr[2] = value; // Set the tab for this level
-        levelsArr[this.level + 1] = levelArr.join('.');
-        const newPath = levelsArr.join('/');
-        this.$router.push(newPath)
+        const pageDesc = this.$store.state.levelIdsArr[this.level];
+
+        this.$store.commit('SET_PAGE_STATE', {[pageDesc.pageId]: {selectedTab: value}});
+
+        if (this.tabs[value].pageId) {
+          // Create the pageState, if there isn't one already
+          this.$store.commit('SET_PAGE_STATE', {[this.tabs[value].pageId]: {}});
+          this.$store.commit('SET_LEVEL_IDS', {
+            level: this.level + 1,
+            ids: {
+              selectedObjId: pageDesc.selectedObjId,
+              pageId: this.tabs[value].pageId
+            }
+          })
+        }
       }
     }
   }

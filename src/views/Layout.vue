@@ -20,19 +20,9 @@
 </template>
 
 <script>
-import { Multipane, MultipaneResizer } from 'vue-multipane'
-import Tabs from './Tabs.vue'
-import Layout from './Layout.vue'
 import router from 'vue-router'
 
 export default {
-  name: 'layout',
-  components: {
-    Multipane,
-    MultipaneResizer,
-    tabs: Tabs,
-    layout: Layout
-  },
   props: {
     level: {
       type: Number
@@ -51,9 +41,10 @@ export default {
   },
   methods: {
     paneResizeStop(pane, resizer, size) {
-      this.$store.commit('SET_PANE_WIDTH', {paneWidth: size, pageId: this.pageId})
+      this.$store.commit('SET_PAGE_STATE', {[this.pageId]: {paneWidth: size}})
     },
-    handleAuthUpdate(pageDesc) {
+    handelNewPage(pageDesc) {
+      if (!pageDesc || !pageDesc.pageId) return;
       this.pageId = pageDesc.pageId;
       this.$store.dispatch('loadCommon', pageDesc.pageId).then((pageObj) => {
         this.pageObj = pageObj
@@ -61,8 +52,8 @@ export default {
     }
   },
   created () {
-    this.$store.watch((state) => (this.$store.state.pages[this.level]), this.handleAuthUpdate, {
-      immediate: true
+    this.$store.watch((state) => (this.$store.state.levelIdsArr[this.level]), this.handelNewPage, {
+      immediate: true,
     });
   }
 }

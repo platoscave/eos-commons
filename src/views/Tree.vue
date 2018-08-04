@@ -10,6 +10,7 @@
                 @item-drag-end="itemDragEnd"
                 @item-drop-before = "itemDropBefore"
                 @item-drop="itemDrop"
+                @item-toggle="itemToggle"
                 ref="tree2">
             <template slot-scope="_">
                 <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
@@ -23,12 +24,7 @@
 </template>
 
 <script>
-import VJstree from 'vue-jstree'
 export default {
-  name: 'Tree',
-  components: {
-    VJstree
-  },
   props: {
     level: Number,
     widget: Object
@@ -69,13 +65,24 @@ export default {
   },
   methods: {
     itemClick (node) {
-      const levelsArr = this.$route.path.split('/');
-      const levelArr = levelsArr[this.level + 2].split('.');
-      levelArr[0] = node.model.id;
-      levelArr[1] = node.model.data.pageId;
-      levelsArr[this.level + 2] = levelArr.join('.');
-      const newPath = levelsArr.join('/');
-      this.$router.push(newPath)
+      if (node.model.data.pageId) {
+        // Create the pageState, if there isn't one already
+        this.$store.commit('SET_PAGE_STATE', {[node.model.data.pageId]: {}});
+        this.$store.commit('SET_LEVEL_IDS', {
+          level: this.level + 1,
+          ids: {
+            selectedObjId: node.model.id,
+            pageId: node.model.data.pageId
+          }
+        })
+      }
+    },
+    itemToggle(oriNode, oriItem, e) {
+      this.$store.commit('SET_NODE_TOGGLE', {
+        level: this.level,
+        id: oriItem.id,
+        opened: oriItem.opened
+      })
     },
     itemDragStart (node) {
       console.log(node.model.text + ' drag start !')
@@ -210,6 +217,9 @@ export default {
 }
 </script>
 <style scoped>
+    .tree-default.tree-selected {
+        background: #616161;
+    }
    /* tree-themeicon-custom {
         background-color: red;
     }
