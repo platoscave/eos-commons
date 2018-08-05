@@ -3,19 +3,19 @@
         <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
             <!-- Navigation content -->
             <div class="left" v-bind:style="{ width: paneWidth }">
-                <tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></tabs>
+                <ec-tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
             <!-- Main content -->
             <div class="right">
-                <layout v-bind:level="level + 1"></layout>
+                <ec-layout v-bind:level="level + 1"></ec-layout>
             </div>
         </multipane>
     </div>
     <div v-else>
         <!-- Only header layout content -->
-        <tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></tabs>
+        <ec-tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
     </div>
 </template>
 
@@ -40,12 +40,12 @@ export default {
     }
   },
   methods: {
-    paneResizeStop(pane, resizer, size) {
+    paneResizeStop (pane, resizer, size) {
       this.$store.commit('SET_PAGE_STATE', {[this.pageId]: {paneWidth: size}})
     },
-    handelNewPage(pageDesc) {
-      if (!pageDesc || !pageDesc.pageId) return;
-      this.pageId = pageDesc.pageId;
+    handelNewPage (pageDesc) {
+      if (!pageDesc || !pageDesc.pageId) return
+      this.pageId = pageDesc.pageId
       this.$store.dispatch('loadCommon', pageDesc.pageId).then((pageObj) => {
         this.pageObj = pageObj
       })
@@ -53,8 +53,8 @@ export default {
   },
   created () {
     this.$store.watch((state) => (this.$store.state.levelIdsArr[this.level]), this.handelNewPage, {
-      immediate: true,
-    });
+      immediate: true
+    })
   }
 }
 </script>

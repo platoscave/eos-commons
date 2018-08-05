@@ -9,7 +9,7 @@
 
             <!-- Tree-->
             <div v-if="widget.displayType === 'Tree'">
-                <tree v-bind:level="level" v-bind:widget="widget"></tree>
+                <ec-tree v-bind:level="level" v-bind:widget="widget"></ec-tree>
             </div>
 
             <!-- Table -->
@@ -19,7 +19,7 @@
 
             <!-- 3dClassModel-->
             <div v-if="widget.displayType === '3D Class Model'">
-                <webgl v-bind:level="level" v-bind:widget="widget"></webgl>
+                <ec-webgl v-bind:level="level" v-bind:widget="widget"></ec-webgl>
             </div>
 
             <!-- ProcessModel-->
@@ -29,7 +29,7 @@
 
             <!-- Form-->
             <div v-if="widget.displayType === 'Form'">
-                <form v-bind:level="level" v-bind:widget="widget"></form>
+                <ec-form v-bind:level="level" v-bind:widget="widget"></ec-form>
             </div>
 
             <!-- HomePage-->
@@ -41,13 +41,22 @@
 </template>
 
 <script>
-export default {
-  props: {
-    level: Number,
-    widgets: {
-      type: Array,
-      default: () => []
+  import WebGl from './WebGl.vue'
+  import Tree from './Tree.vue'
+  import Form from './Form.vue'
+
+  export default {
+    components: {
+      'ec-webgl': WebGl,
+      'ec-tree': Tree,
+      'ec-form': Form
+    },
+    props: {
+      level: Number,
+      widgets: {
+        type: Array,
+        default: () => []
+      }
     }
   }
-}
 </script>

@@ -14,7 +14,7 @@
                 ref="tree2">
             <template slot-scope="_">
                 <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
-                    <img class="tree-icon" :src="_.model.data.icon" role="presentation" v-if="!_.model.loading">
+                    <img class="tree-default tree-icon" :src="_.model.data.icon" role="presentation" v-if="!_.model.loading">
                     {{_.model.text}}
                     <button style="border: 0px; background-color: transparent; cursor: pointer;" @click="customItemClick(_.vm, _.model, $event)"><i class="fa fa-remove"></i></button>
                 </div>
@@ -24,7 +24,11 @@
 </template>
 
 <script>
+  import VJstree from 'vue-jstree'
 export default {
+  components: {
+    VJstree
+  },
   props: {
     level: Number,
     widget: Object
@@ -32,21 +36,20 @@ export default {
   data () {
     return {
       view: null,
-      rootNode: {},
       itemEvents: {
         mouseover: function () {
           console.log('mouseover')
         },
         contextmenu: function () {
-          console.log(arguments[2]);
-          arguments[2].preventDefault();
+          console.log(arguments[2])
+          arguments[2].preventDefault()
           console.log('contextmenu')
         }
       },
       asyncData: [],
       loadData: function (oriNode, resolve) {
         if (!oriNode || !oriNode.data.id) {
-          let viewQueryObj = this.$parent.viewRootQueryObj();
+          let viewQueryObj = this.$parent.viewRootQueryObj()
           this.$store.dispatch('query', viewQueryObj).then((result) => {
             resolve(result)
           })
@@ -56,7 +59,7 @@ export default {
             level: this.$parent.level,
             queryArr: oriNode.data.data.queryArr,
             queryNames: oriNode.data.data.queryNames
-          };
+          }
           this.$store.dispatch('queryArrObj', queryArrObj).then((result) => {
             resolve(result)
           })
@@ -68,7 +71,7 @@ export default {
     itemClick (node) {
       if (node.model.data.pageId) {
         // Create the next level pageState, if there isn't one already
-        this.$store.commit('SET_PAGE_STATE', {[node.model.data.pageId]: {}});
+        this.$store.commit('SET_PAGE_STATE', {[node.model.data.pageId]: {}})
         this.$store.commit('SET_LEVEL_IDS', {
           level: this.level + 1,
           ids: {
@@ -78,7 +81,7 @@ export default {
         })
       }
     },
-    itemToggle(oriNode, oriItem, e) {
+    itemToggle (oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {
         id: oriItem.id,
         opened: oriItem.opened
@@ -99,15 +102,15 @@ export default {
       }
     },
     itemDrop (node, item, draggedItem, e) {
-      var sortBy = function (attr, rev) {
-        if (rev == undefined) {
+      let sortBy = function (attr, rev) {
+        if (rev === undefined) {
           rev = 1
         } else {
           rev = (rev) ? 1 : -1
         }
         return function (a, b) {
-          a = a[attr];
-          b = b[attr];
+          a = a[attr]
+          b = b[attr]
           if (a < b) {
             return rev * -1
           }
@@ -116,19 +119,19 @@ export default {
           }
           return 0
         }
-      };
-      item.children.sort(sortBy('text', true));
+      }
+      item.children.sort(sortBy('text', true))
       this.$refs.tree.handleRecursionNodeChildren(draggedItem, function (childrenItem) {
         childrenItem.selected = item.selected
-      });
+      })
       console.log(node.model.text + ' drop !')
     },
     inputKeyUp: function () {
-      var text = this.searchText;
-      const patt = new RegExp(text);
+      var text = this.searchText
+      const patt = new RegExp(text)
       this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, function (node) {
         if (text !== '' && node.model !== undefined) {
-          const str = node.model.text;
+          const str = node.model.text
           if (patt.test(str)) {
             node.$el.querySelector('.tree-anchor').style.color = 'red'
           } else {
@@ -149,7 +152,7 @@ export default {
     },
     removeNode: function () {
       if (this.editingItem.id !== undefined) {
-        var index = this.editingNode.parentItem.indexOf(this.editingItem);
+        let index = this.editingNode.parentItem.indexOf(this.editingItem)
         this.editingNode.parentItem.splice(index, 1)
       }
     },
@@ -182,12 +185,12 @@ export default {
     refreshNode: function () {
       this.asyncData = [
         this.$refs.tree2.initializeLoading()
-      ];
+      ]
       this.$refs.tree2.handleAsyncLoad(this.asyncData, this.$refs.tree2)
     },
     customItemClick: function (node, item, e) {
-      e.stopPropagation();
-      var index = node.parentItem.indexOf(item);
+      e.stopPropagation()
+      let index = node.parentItem.indexOf(item)
       node.parentItem.splice(index, 1)
     },
     customItemClickWithCtrl: function () {
@@ -195,18 +198,18 @@ export default {
     },
     viewRootQueryObj: function () {
       const getQueriesByName = (query) => {
-        let queryNames = {};
-        if (query.queryName) queryNames[query.queryName] = query;
+        let queryNames = {}
+        if (query.queryName) queryNames[query.queryName] = query
         if (query.join) {
           query.join.forEach((item) => {
             queryNames = Object.assign(queryNames, getQueriesByName(item))
           })
         }
         return queryNames
-      };
-      const queryNames = getQueriesByName(this.view.query);
+      }
+      const queryNames = getQueriesByName(this.view.query)
 
-      return { fk: null, query: this.view.query, queryNames: queryNames, level: this.level}
+      return {fk: null, query: this.view.query, queryNames: queryNames, level: this.level}
     }
   },
   created () {

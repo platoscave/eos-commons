@@ -84,6 +84,12 @@ const store = new Vuex.Store({
       })
     },
     query: function (store, queryObj) {
+      const getIconFromClassId = (classId) => {
+        const classObj = store.state.classes[classId]
+        if (classObj.icon) return classObj.icon
+        else if (classObj.parentId) return getIconFromClassId(classObj.parentId)
+        return ''
+      }
       // Run the query, return a results object
       const getResultsObj = (queryObj) => {
         let resultsObj = {}
@@ -106,7 +112,7 @@ const store = new Vuex.Store({
       // Normalize the results so that they are suited for the tree
       let resultsArr = []
       Object.keys(resultsObj).forEach(key => {
-        let result;
+        let result
         const item = resultsObj[key]
         // Create a query array for the children, based on join predicate
         let queryArr = []
@@ -122,6 +128,8 @@ const store = new Vuex.Store({
         // The tree node result
         const ids = store.state.levelIdsArr[queryObj.level + 1]
         const selected = ids ? ids.selectedObjId === key : false
+        let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
+        if (!icon) icon = getIconFromClassId(item.classId)
         result = {
           id: key,
           text: item.title ? item.title : item.name,
@@ -131,7 +139,7 @@ const store = new Vuex.Store({
             level: queryObj.level,
             item: item,
             pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
-            icon: queryObj.query.icon ? queryObj.query.icon : item.icon
+            icon: icon
           },
           isLeaf: false,
           opened: !!store.state.isOpened[key],
@@ -166,21 +174,23 @@ const store = new Vuex.Store({
               // Smart Merge
               Object.keys(viewObj.properties).forEach(propName => {
                 const classProp = classObj.properties[propName]
-                const viewProp = viewObj.properties[propName]
-                viewProp.type = classProp.type
-                if (!viewProp.title && classProp.title) viewProp.title = classProp.title
-                if (!viewProp.default && classProp.default) viewProp.default = classProp.default
-                if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
-                if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
-                if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
-                if (!viewProp.query && classProp.query) viewProp.query = classProp.query
-                if (!viewProp.items && classProp.items) viewProp.items = classProp.items
-                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
-                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
-                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
-                if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+                if (classProp) {
+                  const viewProp = viewObj.properties[propName]
+                  viewProp.type = classProp.type
+                  if (!viewProp.title && classProp.title) viewProp.title = classProp.title
+                  if (!viewProp.default && classProp.default) viewProp.default = classProp.default
+                  if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
+                  if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
+                  if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
+                  if (!viewProp.query && classProp.query) viewProp.query = classProp.query
+                  if (!viewProp.items && classProp.items) viewProp.items = classProp.items
+                  if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+                  if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+                  if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
+                  if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+                }
               })
-              viewObj.required = Vue._.merge(viewObj.required, classObj.required)
+              viewObj.required = Vue._.union(viewObj.required, classObj.required)
             }
             return viewObj
           })
@@ -228,6 +238,7 @@ store.watch(state => state.route, (newPath, oldPath) => {
     }
   }
 })
+
 
 // store.dispatch('loadClasses')
 

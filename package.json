@@ -14,6 +14,7 @@
     "vue": "^2.5.16",
     "vue-gl": "^0.7.1",
     "vue-json-editor-block-view": "^1.0.21",
+    "vue-json-ui-editor": "^0.9.0",
     "vue-jstree": "^2.1.6",
     "vue-lodash": "^2.0.0",
     "vue-multipane": "^0.9.5",

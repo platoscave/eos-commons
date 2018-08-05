@@ -1,6 +1,6 @@
 <template>
     <div  v-if="!computeLoading">
-        <layout class="pane" v-bind:level="1"></layout>
+        <ec-layout class="pane" v-bind:level="1"></ec-layout>
     </div>
 </template>
 <script>
