@@ -84,10 +84,10 @@ const store = new Vuex.Store({
       })
     },
     query: function (store, queryObj) {
-      const getIconFromClassId = (classId) => {
+      const getIconFromClassById = (classId) => {
         const classObj = store.state.classes[classId]
         if (classObj.icon) return classObj.icon
-        else if (classObj.parentId) return getIconFromClassId(classObj.parentId)
+        else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
         return ''
       }
       // Run the query, return a results object
@@ -129,7 +129,7 @@ const store = new Vuex.Store({
         const ids = store.state.levelIdsArr[queryObj.level + 1]
         const selected = ids ? ids.selectedObjId === key : false
         let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
-        if (!icon) icon = getIconFromClassId(item.classId)
+        if (!icon) icon = getIconFromClassById(item.classId)
         result = {
           id: key,
           text: item.title ? item.title : item.name,
@@ -191,6 +191,7 @@ const store = new Vuex.Store({
                 }
               })
               viewObj.required = Vue._.union(viewObj.required, classObj.required)
+              viewObj.classIcon = classObj.icon
             }
             return viewObj
           })

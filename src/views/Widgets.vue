@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="widget in widgets">
+        <div v-for="(widget, n) in widgets" :key="n" >
 
             <!-- Document-->
             <div v-if="widget.displayType === 'Document'">
