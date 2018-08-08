@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(widget, n) in widgets" :key="n" >
+        <template v-for="(widget, n) in widgets">
 
             <!-- Document-->
             <div v-if="widget.displayType === 'Document'">
@@ -36,7 +36,7 @@
             <div v-if="widget.displayType === 'HomePage'">
                 <div>Widget {{ widget.displayType }}</div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 

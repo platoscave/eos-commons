@@ -3,13 +3,15 @@
         <v-tabs v-model="selectedTab">
             <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
             <v-tab-item v-for="(tab, n) in tabs" :key="n">
-                <div v-if="tab.widgets">
-                    <!-- This tab has widgets -->
-                    <ec-widgets v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
-                </div>
-                <div v-if="tab.pageId">
-                    <!-- This tab has a sub-page -->
-                    <ec-layout v-bind:level="level+1"></ec-layout>
+                <div v-if="selectedTab === n">
+                    <div v-if="tab.widgets">
+                        <!-- This tab has widgets -->
+                        <ec-widgets v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
+                    </div>
+                    <div v-if="tab.pageId">
+                        <!-- This tab has a sub-page -->
+                        <ec-layout v-bind:level="level+1"></ec-layout>
+                    </div>
                 </div>
             </v-tab-item>
         </v-tabs>

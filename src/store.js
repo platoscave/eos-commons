@@ -63,7 +63,11 @@ const store = new Vuex.Store({
   actions: {
     loadCommon (store, id) {
       return new Promise((resolve, reject) => {
-        if (store.state.classes[id]) resolve(Vue._.cloneDeep(store.state.classes[id]))
+        if (store.state.classes[id]) {
+          let common = Vue._.cloneDeep(store.state.classes[id])
+          common.id = id
+          resolve(common)
+        }
         else {
           this.$http('ipfs.io/ipfs/' + id).then(response => {
             this.store.state[id] = response.data
@@ -168,8 +172,9 @@ const store = new Vuex.Store({
     },
     materializedView (store, viewId) {
       return store.dispatch('loadCommon', viewId).then((viewObj) => {
-        if (viewObj.classId) {
-          return store.dispatch('mergeAncestorClasses', viewObj.classId).then((classObj) => {
+        const classId = Vue._.get(viewObj, 'query.from')
+        if (classId && classId !== 'classes') {
+          return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
             if (viewObj.properties) {
               // Smart Merge
               Object.keys(viewObj.properties).forEach(propName => {
@@ -178,6 +183,7 @@ const store = new Vuex.Store({
                   const viewProp = viewObj.properties[propName]
                   viewProp.type = classProp.type
                   if (!viewProp.title && classProp.title) viewProp.title = classProp.title
+                  if (!viewProp.media && classProp.media) viewProp.media = classProp.media
                   if (!viewProp.default && classProp.default) viewProp.default = classProp.default
                   if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
                   if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
