@@ -29,7 +29,7 @@
 
             <!-- Form-->
             <div v-if="widget.displayType === 'Form'">
-                <ec-form v-bind:level="level" v-bind:widget="widget"></ec-form>
+                <ec-form v-bind:level="level" v-bind:viewId="widget.viewId"></ec-form>
             </div>
 
             <!-- HomePage-->
@@ -41,22 +41,22 @@
 </template>
 
 <script>
-  import WebGl from './WebGl.vue'
-  import Tree from './Tree.vue'
-  import Form from './Form.vue'
+import WebGl from './WebGl.vue'
+import Tree from './Tree.vue'
+import Form from './Form.vue'
 
-  export default {
-    components: {
-      'ec-webgl': WebGl,
-      'ec-tree': Tree,
-      'ec-form': Form
-    },
-    props: {
-      level: Number,
-      widgets: {
-        type: Array,
-        default: () => []
-      }
+export default {
+  components: {
+    'ec-webgl': WebGl,
+    'ec-tree': Tree,
+    'ec-form': Form
+  },
+  props: {
+    level: Number,
+    widgets: {
+      type: Array,
+      default: () => []
     }
   }
+}
 </script>
