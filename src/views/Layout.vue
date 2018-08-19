@@ -63,6 +63,7 @@ export default {
         height: 100vh;
         width: 100%;
         padding: 0px;
+        margin: 0px;
     }
     .left {
         height: 100vh;

@@ -171,34 +171,39 @@ const store = new Vuex.Store({
       })
     },
     materializedView (store, viewId) {
+      const smartMergeProperties = (viewObj, classObj) => {
+        if (!viewObj.properties) return
+        Object.keys(viewObj.properties).forEach(propName => {
+          const classProp = classObj.properties[propName]
+          if (classProp) {
+            const viewProp = viewObj.properties[propName]
+            if (classProp.type) viewProp.type = classProp.type
+            if (classProp.additionalProperties) viewProp.additionalProperties = classProp.additionalProperties
+            if (!viewProp.title && classProp.title) viewProp.title = classProp.title
+            if (!viewProp.media && classProp.media) viewProp.media = classProp.media
+            if (!viewProp.default && classProp.default) viewProp.default = classProp.default
+            if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
+            if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
+            if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
+            if (!viewProp.query && classProp.query) viewProp.query = classProp.query
+            if (!viewProp.items && classProp.items) viewProp.items = classProp.items
+            if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+            if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+            if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
+            if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+            // Smart merge sub-properties recursively, if needed
+            if (viewProp.items && classProp.items) smartMergeProperties(viewProp.items, classProp.items)
+            if (viewProp.properties && classProp.items) smartMergeProperties(viewProp.properties, classProp.properties)
+          }
+        })
+        viewObj.required = Vue._.union(viewObj.required, classObj.required)
+        viewObj.classIcon = classObj.icon
+      }
       return store.dispatch('loadCommon', viewId).then((viewObj) => {
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
-            if (viewObj.properties) {
-              // Smart Merge
-              Object.keys(viewObj.properties).forEach(propName => {
-                const classProp = classObj.properties[propName]
-                if (classProp) {
-                  const viewProp = viewObj.properties[propName]
-                  viewProp.type = classProp.type
-                  if (!viewProp.title && classProp.title) viewProp.title = classProp.title
-                  if (!viewProp.media && classProp.media) viewProp.media = classProp.media
-                  if (!viewProp.default && classProp.default) viewProp.default = classProp.default
-                  if (!viewProp.readOnly && classProp.readOnly) viewProp.readOnly = classProp.readOnly
-                  if (!viewProp.enum && classProp.enum) viewProp.enum = classProp.enum
-                  if (!viewProp.pattern && classProp.pattern) viewProp.pattern = classProp.pattern
-                  if (!viewProp.query && classProp.query) viewProp.query = classProp.query
-                  if (!viewProp.items && classProp.items) viewProp.items = classProp.items
-                  if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
-                  if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
-                  if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
-                  if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
-                }
-              })
-              viewObj.required = Vue._.union(viewObj.required, classObj.required)
-              viewObj.classIcon = classObj.icon
-            }
+            smartMergeProperties(viewObj, classObj)
             return viewObj
           })
         } else return viewObj

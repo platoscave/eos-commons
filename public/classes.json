@@ -2369,7 +2369,7 @@
     "name" : "Class Model Tree View",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
     "properties" : {
-      "_key" : {
+      "id" : {
         "readOnly" : true,
         "title" : "Key",
         "type" : "string"
@@ -3381,7 +3381,7 @@
     "name" : "Page Form View",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
     "properties" : {
-      "_key" : {
+      "id" : {
         "readOnly" : true,
         "title" : "Key",
         "type" : "string"
@@ -3447,7 +3447,7 @@
     "name" : "View Form View",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
     "properties" : {
-      "_key" : {
+      "id" : {
         "readOnly" : true,
         "title" : "Key",
         "type" : "string"
@@ -4710,7 +4710,7 @@
     "name" : "Standard Model Form View",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
     "properties" : {
-      "_key" : {
+      "id" : {
         "readOnly" : true,
         "title" : "Key",
         "type" : "string"
