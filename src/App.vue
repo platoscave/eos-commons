@@ -1,13 +1,13 @@
 <template>
     <v-app dark>
-        <v-content>
+        <v-content class="noPadding">
             <router-view/>
         </v-content>
 
         <v-footer app>
-            <span>{{message}}</span>
+            <div class="padding">{{message}}</div>
             <v-spacer></v-spacer>
-            <span>eos-commons.io</span>
+            <div class="padding">eos-commons.io</div>
         </v-footer>
     </v-app>
 </template>
@@ -23,7 +23,15 @@ export default {
 }
 </script>
 <style scoped>
-    span {
-        padding: 5px;
+    .noPadding{
+        padding: 0 !important;
+    }
+    .padding {
+        padding: 10px
+    }
+</style>
+<style>
+    html {
+        overflow-y: auto;
     }
 </style>

@@ -1,5 +1,7 @@
 <template>
     <div>
+        <v-container fluid>
+            <v-layout flex column>
         <template v-for="(widget, n) in widgets">
 
             <!-- Document-->
@@ -36,7 +38,10 @@
             <div v-if="widget.displayType === 'HomePage'">
                 <div>Widget {{ widget.displayType }}</div>
             </div>
+
         </template>
+            </v-layout>
+        </v-container>
     </div>
 </template>
 
@@ -60,3 +65,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+    .container {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+        overflow-y: auto
+    }
+</style>

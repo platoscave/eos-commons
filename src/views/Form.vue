@@ -207,7 +207,7 @@
         return !!(Vue._.get(property, path))
       },
       replacer(name, val) {
-        console.log(name, val)
+        //console.log(name, val)
         if ( name === 'icon' ) {
           return undefined; // remove from result
         } else {
@@ -253,6 +253,12 @@
     }
     .container {
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+        scroll: auto
     }
     p {
         margin-bottom: 0;

@@ -64,13 +64,15 @@ export default {
         width: 100%;
         padding: 0px;
         margin: 0px;
+        max-width: none;
     }
     .left {
         height: 100vh;
     }
     .right {
         flex-grow: 1;
+        /*width: 100%;*/
         height: 100vh;
-        border-left: 5px solid blue;
+        border-left: 8px solid blue;
     }
 </style>

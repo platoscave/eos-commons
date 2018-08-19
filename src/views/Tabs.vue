@@ -1,8 +1,8 @@
 <template>
     <div  v-if="tabs.length > 1">
-        <v-tabs v-model="selectedTab">
+        <v-tabs v-model="selectedTab" show-arrows>
             <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
-            <v-tab-item v-for="(tab, n) in tabs" :key="n">
+            <v-tab-item class="my-component" v-for="(tab, n) in tabs" :key="n">
                 <div v-if="selectedTab === n">
                     <div v-if="tab.widgets">
                         <!-- This tab has widgets -->
@@ -64,3 +64,13 @@ export default {
   }
 }
 </script>
+<style scoped>
+    .tabs__content {
+        min-height: 100vh;
+    }
+
+    .my-component .v-tab__items
+    {
+        min-height: 100vh;
+    }
+</style>
