@@ -1,8 +1,8 @@
 <template>
-    <div  v-if="tabs.length > 1">
-        <v-tabs v-model="selectedTab" show-arrows>
+    <div class="tabs-container-div" v-if="tabs.length > 1">
+        <v-tabs  v-model="selectedTab" show-arrows>
             <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
-            <v-tab-item class="my-component" v-for="(tab, n) in tabs" :key="n">
+            <v-tab-item class="tab-item-element" v-for="(tab, n) in tabs" :key="n">
                 <div v-if="selectedTab === n">
                     <div v-if="tab.widgets">
                         <!-- This tab has widgets -->
@@ -65,12 +65,24 @@ export default {
 }
 </script>
 <style scoped>
-    .tabs__content {
-        min-height: 100vh;
+    /* See https://codesandbox.io/s/w0r9po19kw */
+    .tabs-container-div {
+        position: relative;
+        height: 100%;
     }
-
-    .my-component .v-tab__items
-    {
-        min-height: 100vh;
+    .tab-item-element {
+        position: absolute;
+        top: 0;
+        /*height: calc(100% - 48px) !important;*/
+        height: 100%;
+        overflow: auto;
+    }
+    >>> .v-tabs__items {
+        position: relative;
+        height: calc(100% - 48px) !important;
+    }
+    .tabs-container-div .v-tabs  {
+        position: relative;
+        height: 100%;
     }
 </style>

@@ -1,14 +1,10 @@
 <template>
     <v-app dark>
-        <v-content class="noPadding">
-            <router-view/>
-        </v-content>
-
-        <v-footer app>
-            <div class="padding">{{message}}</div>
-            <v-spacer></v-spacer>
-            <div class="padding">eos-commons.io</div>
-        </v-footer>
+        <ec-layout class="pane" v-bind:level="1"></ec-layout>
+        <div class="footer">
+            <div>{{message}}</div>
+            <div>eos-commons.io</div>
+        </div>
     </v-app>
 </template>
 
@@ -19,15 +15,27 @@ export default {
     message () {
       return this.$store.getters.getMessage
     }
+  },
+  created () {
+    this.$store.dispatch('loadClasses')
   }
 }
 </script>
 <style scoped>
-    .noPadding{
-        padding: 0 !important;
+    .pane {
+        width: 100vw;
+        height: calc(100vh - 35);
     }
-    .padding {
-        padding: 10px
+    .footer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 10px 0px 10px;
+        background: #212121;
+        color: #fff;
+        height: 35px;
+        width: 100vw;
     }
 </style>
 <style>

@@ -24,7 +24,7 @@ export default {
 <style scoped>
     .pane {
         width: 100%;
-        height: 100vh;
-        overflow: hidden;
+        height: 100%;
+        overflow: auto;
     }
 </style>
