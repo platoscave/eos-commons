@@ -147,7 +147,7 @@
                                                  v-bind:parent-schema="property"></ec-form>
                                     </template>
                                     <template v-else>
-                                        <code>{{ JSON.stringify(data[key], replacer, 2) }}></code>
+                                        <div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>
                                         <!--<div>{{ JSON.stringify(data[key], replacer, 2) }}></div>-->
                                     </template>
                                 </div>
@@ -159,12 +159,16 @@
                                     <div class="readOnlyInput">{{ JSON.stringify(data[key], null, 2) }}></div>
                                 </template>
                                 <template v-else>
-                                    <div>{{ JSON.stringify(data[key], null, 2) }}></div>
+                                    <div class="monoSpaced">{{ JSON.stringify(data[key], null, 2) }}></div>
                                 </template>
                             </template>
 
                             <template v-else>
-                                <code>Unknown property: <br> {{ property }} <br> <br>{{ data }}</code>
+                                <div>Unknown property: <br>
+                                    <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
+                                    Data: <br>
+                                    <div class="monoSpaced">{{ JSON.stringify(data, replacer, 2) }}></div>
+                                </div>
                             </template>
                         </v-flex>
                     </v-layout>
@@ -250,6 +254,10 @@
         min-height: 20px;
         padding-left: 4px;
         margin-bottom: 0;
+    }
+    .monoSpaced {
+        font-family: monospace,monospace;
+        white-space: pre;
     }
     .container {
         padding: 0;
