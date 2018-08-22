@@ -79,7 +79,7 @@
                             <!-- Query -->
                             <template v-else-if="propertyHas( property, 'query' )">
                                 <template v-if="!editMode || property.readOnly">
-                                    <text class="readOnlyInput">{{ JSON.stringify(data[key], replacer, 2) }}></text>
+                                    <div class="readOnlyInput">{{ getCommon(data[key]) }}</div>
                                 </template>
                                 <template v-else>
                                     <div>{{ data[key] }}</div>
@@ -125,13 +125,18 @@
 
                             <!-- Array -->
                             <template v-else-if="propertyHas( property, 'type', 'array') ">
-                                <div class="readOnlyInput">
+                                <div >
+                                    <!--<v-layout column>-->
                                     <template v-for="(childData, n) in data[key]">
-                                        <ec-form v-bind:level="level"
+                                        <!--<flex>-->
+                                        <ec-form class="readOnlyInput" v-bind:level="level"
                                                  v-bind:editMode="editMode"
                                                  v-bind:parent-data="childData"
                                                  v-bind:parent-schema="property.items"></ec-form>
+                                        <!--</flex>-->
+                                        <br>
                                     </template>
+                                    <!--</v-layout>-->
                                 </div>
                             </template>
 
@@ -139,12 +144,12 @@
                             <template v-else-if="propertyHas( property, 'type', 'object') ">
                                 <div class="readOnlyInput">
                                     <template v-if="property.properties">
-                                        <!--{{ data[key]  }} <br>
-                                        {{ property.properties }} <br>-->
+                                        <!--{{ data[key]  }} <br>-->
+                                        {{ property.properties }} <br>
                                         <ec-form v-bind:level="level"
                                                  v-bind:editMode="editMode"
                                                  v-bind:parent-data="data[key]"
-                                                 v-bind:parent-schema="property"></ec-form>
+                                                 v-bind:parent-schema="property.properties"></ec-form>
                                     </template>
                                     <template v-else>
                                         <div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>
@@ -217,6 +222,11 @@
         } else {
           return val
         }
+      },
+      getCommon(id) {
+        if (!id) return '[null]'
+        const obj = this.$store.state.classes[id]
+        return obj.name ? obj.name : obj.title
       }
     },
 /*    watch: {
@@ -251,8 +261,10 @@
 <style scoped>
     .readOnlyInput {
         background-color: #ffffff0d;
-        min-height: 20px;
+        min-height: 24px;
         padding-left: 4px;
+    }
+    >>> p {
         margin-bottom: 0;
     }
     .monoSpaced {
@@ -267,8 +279,5 @@
         padding: 0;
         max-width: none;
         scroll: auto
-    }
-    p {
-        margin-bottom: 0;
     }
 </style>

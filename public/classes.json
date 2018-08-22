@@ -659,7 +659,113 @@
       }
     },
     "title" : "Views",
-    "type" : "object"
+    "type" : "object",
+    "definitions": {
+      "query" : {
+        "additionalProperties" : false,
+        "properties" : {
+          "from" : {
+            "pattern" : "[a-f0-9]{24}",
+            "query" : {
+              "from" : "classes"
+            },
+            "title" : "From",
+            "type" : "string"
+          },
+          "icon" : {
+            "maxLength" : 2000,
+            "media" : {
+              "binaryEncoding" : "base64",
+              "type" : "image/png"
+            },
+            "minLength" : 0,
+            "title" : "Icon",
+            "type" : "string"
+          },
+          "join" : {
+            "items" : {
+              "$ref" : "#/definitions/query"
+            },
+            "title" : "Join",
+            "type" : "array"
+          },
+          "menu" : {
+            "items" : {
+              "properties" : {
+                "action" : {
+                  "enum" : [ "add", "delete", "login", "signup" ],
+                  "title" : "Action",
+                  "type" : "string"
+                },
+                "iconClass" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0,
+                  "title" : "Icon Class",
+                  "type" : "string"
+                },
+                "label" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0,
+                  "title" : "Label",
+                  "type" : "string"
+                }
+              },
+              "type" : "object"
+            },
+            "title" : "Menu",
+            "type" : "array"
+          },
+          "pageId" : {
+            "pattern" : "[a-f0-9]{24}",
+            "query" : {
+              "from" : "56f87ec55dde184ccfb9fc74"
+            },
+            "title" : "Page",
+            "type" : "string"
+          },
+          "queryName" : {
+            "maxLength" : 1000,
+            "minLength" : 0,
+            "title" : "Query Name",
+            "type" : "string"
+          },
+          "select" : {
+            "maxLength" : 1000,
+            "minLength" : 0,
+            "title" : "Select",
+            "type" : "string"
+          },
+          "where" : {
+            "additionalProperties" : false,
+            "properties" : {
+              "docProp" : {
+                "maxLength" : 1000,
+                "minLength" : 0,
+                "title" : "Document Property",
+                "type" : "string"
+              },
+              "operator" : {
+                "enum" : [ "eq" ],
+                "title" : "Operator",
+                "type" : "string"
+              },
+              "value" : {
+                "maxLength" : 1000,
+                "minLength" : 0,
+                "title" : "Value",
+                "type" : "string"
+              }
+            },
+            "title" : "Where",
+            "type" : "object"
+          }
+        },
+        "title" : "Query",
+        "type" : "object"
+      },
+      "title": "Query",
+      "type": "object"
+    }
   },
   "573435f03c6d3cd598a5a2e1" : {
     "description" : "<p>Paragraphs owned by users/organizations</p>",

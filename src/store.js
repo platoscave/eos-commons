@@ -193,7 +193,7 @@ const store = new Vuex.Store({
             if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
             // Smart merge sub-properties recursively, if needed
             if (viewProp.items && classProp.items) smartMergeProperties(viewProp.items, classProp.items)
-            if (viewProp.properties && classProp.items) smartMergeProperties(viewProp.properties, classProp.properties)
+            if (viewProp.properties && classProp.properties) smartMergeProperties(viewProp.properties, classProp.properties)
           }
         })
         viewObj.required = Vue._.union(viewObj.required, classObj.required)
@@ -229,7 +229,7 @@ const store = new Vuex.Store({
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
-  const levelsArr = newPath.path.split('/')
+  const levelsArr = newPath.hash.split('/')
   for (let level = 1; level < levelsArr.length; level++) {
     let pageStateArr = levelsArr[level].split('.')
     const pageId = pageStateArr[1]
