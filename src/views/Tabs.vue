@@ -71,11 +71,23 @@ export default {
         height: 100%;
     }
     .tab-item-element {
-        position: absolute;
+        /*position: absolute;*/
         top: 0;
         /*height: calc(100% - 48px) !important;*/
         height: 100%;
         overflow: auto;
+    }
+    .tab-item-element > div {
+        position: relative;
+        height: 100%;
+    }
+    .tab-item-element > div > div  {
+        position: relative;
+        height: 100%;
+    }
+    .tab-item-element > div > div > div {
+        position: relative;
+        height: 100%;
     }
     >>> .v-tabs__items {
         position: relative;
