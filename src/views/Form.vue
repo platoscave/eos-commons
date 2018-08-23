@@ -4,6 +4,11 @@
             <v-container fluid grid-list-md>
                 <!--{{ data }} <br>-->
                 <template v-for="(property, key) in schema.properties">
+
+                    <!--<div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>-->
+                    <!--<br>-->
+                    <!--<div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>-->
+                    <!--<br>-->
                     <v-layout justify-start>
                         <!--{{ property }} <br>-->
                         <!--
@@ -144,12 +149,14 @@
                             <template v-else-if="propertyHas( property, 'type', 'object') ">
                                 <div class="readOnlyInput">
                                     <template v-if="property.properties">
-                                        <!--{{ data[key]  }} <br>-->
-                                        {{ property.properties }} <br>
+                                        <!--<div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>-->
+                                        <!--<br>-->
+                                        <!--<div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>-->
+                                        <!--{{ JSON.stringify( property.properties, replacer, 2) }}<br>-->
                                         <ec-form v-bind:level="level"
                                                  v-bind:editMode="editMode"
                                                  v-bind:parent-data="data[key]"
-                                                 v-bind:parent-schema="property.properties"></ec-form>
+                                                 v-bind:parent-schema="property"></ec-form>
                                     </template>
                                     <template v-else>
                                         <div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>
@@ -169,10 +176,11 @@
                             </template>
 
                             <template v-else>
-                                <div>Unknown property: <br>
-                                    <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
+                                <div>Unknown property: {{ key }} <br>
+                                    <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div><!--
                                     Data: <br>
-                                    <div class="monoSpaced">{{ JSON.stringify(data, replacer, 2) }}></div>
+                                    <div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>-->
+                                    <br>
                                 </div>
                             </template>
                         </v-flex>
@@ -212,6 +220,7 @@
     },
     methods: {
       propertyHas(property, path, value) {
+        if(value === 'object') debugger
         if (value) return (Vue._.get(property, path) === value)
         return !!(Vue._.get(property, path))
       },
@@ -271,7 +280,7 @@
         font-family: monospace,monospace;
         white-space: pre;
     }
-    .container {
+    .xcontainer {
         padding: 0;
         display: flex;
         flex-direction: column;

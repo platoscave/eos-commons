@@ -1,7 +1,7 @@
 <template>
     <div>
-        <v-container fluid>
-            <v-layout flex column>
+        <!--<v-container fluid>-->
+            <!--<v-layout flex column>-->
         <template v-for="(widget, n) in widgets">
 
             <!-- Document-->
@@ -40,8 +40,8 @@
             </div>
 
         </template>
-            </v-layout>
-        </v-container>
+            <!--</v-layout>-->
+        <!--</v-container>-->
     </div>
 </template>
 

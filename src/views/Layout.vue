@@ -15,7 +15,7 @@
     </div>
     <div v-else>
         <!-- Only header layout content -->
-        <ec-tabs v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
+        <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
     </div>
 </template>
 
@@ -60,6 +60,7 @@ export default {
 </script>
 <style scoped>
     .container {
+        /*position: relative;*/
         height: 100%;
         width: 100%;
         padding: 0px;
@@ -75,7 +76,21 @@ export default {
         border-left: 8px solid blue;
     }
     .pane {
+        /*position: absolute;*/
+        /*position: relative;*/
+        /*top: 0;*/
         width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    .xtabs-container-div {
+        position: relative;
+        height: 100%;
+    }
+    .xtab-item-element {
+        position: absolute;
+        top: 0;
+        /*height: calc(100% - 48px) !important;*/
         height: 100%;
         overflow: auto;
     }
