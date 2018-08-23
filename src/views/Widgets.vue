@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="height">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
         <template v-for="(widget, n) in widgets">
@@ -66,7 +66,10 @@ export default {
 }
 </script>
 <style scoped>
-    .container {
+    .height {
+        height: 500px;
+    }
+    .xcontainer {
         padding: 0;
         margin: 0;
         max-width: none;

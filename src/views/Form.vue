@@ -3,12 +3,13 @@
         <template v-if="schema && data">
             <v-container fluid grid-list-md>
                 <!--{{ data }} <br>-->
+
                 <template v-for="(property, key) in schema.properties">
 
-                    <!--<div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>-->
-                    <!--<br>-->
-                    <!--<div class="monoSpaced">{{ JSON.stringify(data[key], replacer, 2) }}></div>-->
-                    <!--<br>-->
+                    <div class="monoSpaced">DATA: {{key}} {{ JSON.stringify(data[key], replacer, 2) }}></div>
+                    <br>
+                    <div class="monoSpaced">PROPERY:  {{key}} {{ JSON.stringify(property, replacer, 2) }}></div>
+                    <br>
                     <v-layout justify-start>
                         <!--{{ property }} <br>-->
                         <!--
@@ -250,7 +251,8 @@
       }
     },*/
     created() {
-      if (this.viewId) {
+      if (this.parentSchema) this.schema = this.parentSchema
+      else if (this.viewId) {
         this.$store.dispatch('materializedView', this.viewId).then((view) => {
           console.log('view', view)
           this.schema = view

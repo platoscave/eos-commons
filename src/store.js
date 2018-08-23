@@ -193,7 +193,7 @@ const store = new Vuex.Store({
             if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
             // Smart merge sub-properties recursively, if needed
             if (viewProp.items && classProp.items) smartMergeProperties(viewProp.items, classProp.items)
-            if (viewProp.properties && classProp.properties) smartMergeProperties(viewProp.properties, classProp.properties)
+            if (viewProp.properties && classProp.properties) smartMergeProperties(viewProp, classProp)
           }
         })
         viewObj.required = Vue._.union(viewObj.required, classObj.required)

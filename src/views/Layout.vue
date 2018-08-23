@@ -83,6 +83,15 @@ export default {
         height: 100%;
         overflow: auto;
     }
+    .pane > div {
+        height: 100%;
+    }
+    .pane > div > div {
+        height: 100%;
+    }
+    .pane > div > div > div {
+        height: 100%;
+    }
     .xtabs-container-div {
         position: relative;
         height: 100%;
