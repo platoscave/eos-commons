@@ -67,8 +67,7 @@ const store = new Vuex.Store({
           let common = Vue._.cloneDeep(store.state.classes[id])
           common.id = id
           resolve(common)
-        }
-        else {
+        } else {
           this.$http('ipfs.io/ipfs/' + id).then(response => {
             this.store.state[id] = response.data
             resolve(Vue._.cloneDeep(response.data))
@@ -250,7 +249,6 @@ store.watch(state => state.route, (newPath, oldPath) => {
     }
   }
 })
-
 
 // store.dispatch('loadClasses')
 

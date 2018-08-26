@@ -340,6 +340,21 @@
                               "title" : "Icon",
                               "type" : "string"
                             },
+                            "select" : {
+                              "items" : {
+                                "properties" : {
+                                  "label" : {
+                                    "maxLength" : 1000,
+                                    "minLength" : 0,
+                                    "title" : "Label",
+                                    "type" : "string"
+                                  }
+                                },
+                                "type" : "object"
+                              },
+                              "title" : "Select",
+                              "type" : "array"
+                            },
                             "menu" : {
                               "items" : {
                                 "additionalProperties" : false,
@@ -363,6 +378,21 @@
                                   }
                                 },
                                 "type" : "object"
+                              },
+                              "select" : {
+                                "items" : {
+                                  "properties" : {
+                                    "label" : {
+                                      "maxLength" : 1000,
+                                      "minLength" : 0,
+                                      "title" : "Label",
+                                      "type" : "string"
+                                    }
+                                  },
+                                  "type" : "object"
+                                },
+                                "title" : "Select",
+                                "type" : "array"
                               },
                               "title" : "Menu",
                               "type" : "array"
@@ -417,6 +447,21 @@
                         "title" : "Join",
                         "type" : "array"
                       },
+                      "select" : {
+                        "items" : {
+                          "properties" : {
+                            "label" : {
+                              "maxLength" : 1000,
+                              "minLength" : 0,
+                              "title" : "Label",
+                              "type" : "string"
+                            }
+                          },
+                          "type" : "object"
+                        },
+                        "title" : "Select",
+                        "type" : "array"
+                      },
                       "menu" : {
                         "items" : {
                           "additionalProperties" : false,
@@ -440,6 +485,21 @@
                             }
                           },
                           "type" : "object"
+                        },
+                        "select" : {
+                          "items" : {
+                            "properties" : {
+                              "label" : {
+                                "maxLength" : 1000,
+                                "minLength" : 0,
+                                "title" : "Label",
+                                "type" : "string"
+                              }
+                            },
+                            "type" : "object"
+                          },
+                          "title" : "Select",
+                          "type" : "array"
                         },
                         "title" : "Menu",
                         "type" : "array"
@@ -494,6 +554,21 @@
                   "title" : "Join",
                   "type" : "array"
                 },
+                "select" : {
+                  "items" : {
+                    "properties" : {
+                      "label" : {
+                        "maxLength" : 1000,
+                        "minLength" : 0,
+                        "title" : "Label",
+                        "type" : "string"
+                      }
+                    },
+                    "type" : "object"
+                  },
+                  "title" : "Select",
+                  "type" : "array"
+                },
                 "menu" : {
                   "items" : {
                     "additionalProperties" : false,
@@ -519,6 +594,21 @@
                     "type" : "object"
                   },
                   "title" : "Menu",
+                  "select" : {
+                    "items" : {
+                      "properties" : {
+                        "label" : {
+                          "maxLength" : 1000,
+                          "minLength" : 0,
+                          "title" : "Label",
+                          "type" : "string"
+                        }
+                      },
+                      "type" : "object"
+                    },
+                    "title" : "Select",
+                    "type" : "array"
+                  },
                   "type" : "array"
                 },
                 "pageId" : {
@@ -571,6 +661,21 @@
             "title" : "Join",
             "type" : "array"
           },
+          "select" : {
+            "items" : {
+              "properties" : {
+                "label" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0,
+                  "title" : "Label",
+                  "type" : "string"
+                }
+              },
+              "type" : "object"
+            },
+            "title" : "Select",
+            "type" : "array"
+          },
           "menu" : {
             "items" : {
               "properties" : {
@@ -612,10 +717,19 @@
             "type" : "string"
           },
           "select" : {
-            "maxLength" : 1000,
-            "minLength" : 0,
+            "items" : {
+              "properties" : {
+                "label" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0,
+                  "title" : "Label",
+                  "type" : "string"
+                }
+              },
+              "type" : "object"
+            },
             "title" : "Select",
-            "type" : "string"
+            "type" : "array"
           },
           "where" : {
             "additionalProperties" : false,
@@ -730,10 +844,19 @@
             "type" : "string"
           },
           "select" : {
-            "maxLength" : 1000,
-            "minLength" : 0,
+            "items" : {
+              "properties" : {
+                "label" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0,
+                  "title" : "Label",
+                  "type" : "string"
+                }
+              },
+              "type" : "object"
+            },
             "title" : "Select",
-            "type" : "string"
+            "type" : "array"
           },
           "where" : {
             "additionalProperties" : false,
@@ -2556,7 +2679,7 @@
     "docType" : "object",
     "name" : "Class Model Page",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
-    "tabs" : [ null, {
+    "tabs" : [ {
       "name" : "Properties",
       "widgets" : [ {
         "displayType" : "Form",

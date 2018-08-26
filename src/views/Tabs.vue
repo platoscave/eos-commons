@@ -1,7 +1,7 @@
 <template>
     <div class="tabs-container-div" v-if="tabs.length > 1">
         <v-tabs  v-model="selectedTab" show-arrows>
-            <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name }}</v-tab>
+            <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name ? tab.name : '[no name]' }}</v-tab>
             <v-tab-item class="tab-item-element" v-for="(tab, n) in tabs" :key="n">
                 <div v-if="selectedTab === n">
                     <div v-if="tab.widgets">

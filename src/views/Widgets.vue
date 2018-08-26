@@ -1,8 +1,8 @@
 <template>
-    <div class="height">
+    <div class="widget-container">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
-        <template v-for="(widget, n) in widgets">
+        <template  class="widget-container" v-for="(widget, n) in widgets">
 
             <!-- Document-->
             <div v-if="widget.displayType === 'Document'">
@@ -20,8 +20,8 @@
             </div>
 
             <!-- 3dClassModel-->
-            <div v-if="widget.displayType === '3D Class Model'">
-                <ec-webgl v-bind:level="level" v-bind:widget="widget"></ec-webgl>
+            <div  class="widget-container" v-if="widget.displayType === '3D Class Model'">
+                <ec-webgl class="widget-container" v-bind:level="level" v-bind:widget="widget"></ec-webgl>
             </div>
 
             <!-- ProcessModel-->
@@ -66,8 +66,10 @@ export default {
 }
 </script>
 <style scoped>
-    .height {
-        height: 500px;
+    .widget-container {
+        /*position: absolute;*/
+        height: 100%;
+        width: 100%;
     }
     .xcontainer {
         padding: 0;
