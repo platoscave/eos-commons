@@ -87,6 +87,7 @@ const store = new Vuex.Store({
       })
     },
     query: function (store, queryObj) {
+      // Traverse class hierarchy, find nearest icon
       const getIconFromClassById = (classId) => {
         const classObj = store.state.classes[classId]
         if (classObj.icon) return classObj.icon
@@ -111,6 +112,7 @@ const store = new Vuex.Store({
         return resultsObj
       }
       let resultsObj = getResultsObj(queryObj)
+      console.log('QUERY', queryObj)
 
       // Normalize the results so that they are suited for the tree
       let resultsArr = []
@@ -157,6 +159,8 @@ const store = new Vuex.Store({
 
         resultsArr.push(result)
       })
+
+      console.log('RESULTS', resultsArr)
 
       return resultsArr
     },

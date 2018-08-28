@@ -2638,10 +2638,10 @@
         "from" : "classes",
         "icon" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
         "join" : [ {
-          "queryByName" : "viewQuery"
+          "queryByName" : "subClasses"
         } ],
         "pageId" : "575d4c3f2cf3d6dc3ed8314c",
-        "queryName" : "classes",
+        "queryName" : "subClasses",
         "select" : "title",
         "where" : {
           "docProp" : "parentId",

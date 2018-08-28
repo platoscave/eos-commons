@@ -6,18 +6,6 @@
 
 <script>
   import VueMixinTween from 'vue-mixin-tween';
-//  import * as THREE from '../../node_modules/three/three.js' global.
-//  const THREE = require('../../node_modules/three/three.js')
-//  import * as Detector from '../../node_modules/three/examples/js/Detector.js'
-//  import * as TWEEN from '../../node_modules/three/examples/js/libs/tween.min.js'
-//  import  * as Projector from '../../node_modules/three/examples/js/renderers/Projector.js'
-//  import * as TrackballControls from '../../node_modules/three/examples/js/controls/TrackballControls.js'
-/*  import THREE from '../../node_modules/three/three.min.js'
-  import Detector from '../../node_modules/three/examples/js/Detector.js'
-  import TrackballControls from '../../node_modules/three/examples/js/controls/TrackballControls.js'
-  import Projector from '../../node_modules/three/examples/js/renderers/Projector.js'
-  import stats from '../../node_modules/three/examples/js/libs/stats.min.js'
-  import tween from '../../node_modules/three/examples/js/libs/tween.min.js'*/
 
   const _log = console.log.bind(console);
 
@@ -36,22 +24,22 @@
         type: Array,
         default: () => {
           return [
-            '../images/space_3_right.jpg',
-            '../images/space_3_left.jpg',
-            '../images/space_3_top.jpg?',
-            '../images/space_3_bottom.jpg',
-            '../images/space_3_front.jpg',
-            '../images/space_3_back.jpg'
+            'space_3_right.jpg',
+            'space_3_left.jpg',
+            'space_3_top.jpg?',
+            'space_3_bottom.jpg',
+            'space_3_front.jpg',
+            'space_3_back.jpg'
           ]
         }
       },
       width: {
         type: Number,
-        default: 500
+        default: undefined
       },
       height: {
         type: Number,
-        default: 500
+        default: undefined
       }
     },
     data () {
@@ -73,20 +61,17 @@
     methods: {
       onResize () {
         if (this.width === undefined || this.height === undefined) {
-//          var heightString = this.$refs.canvasParent.clientHeightvar height = document.getElementById('myDiv').style.height;
-          var rect = this.$el.getBoundingClientRect();
-          console.log(rect.height);
-
-          let style = window.getComputedStyle(this.$el).getPropertyValue("height");
-          let width = style.width.substring(0, style.width.length-2)
-          let height = style.height.substring(0, style.height.length-2)
           this.$nextTick(() => {
-
+            let widthPx = window.getComputedStyle(this.$el).getPropertyValue("width");
+            let heightPx = window.getComputedStyle(this.$el).getPropertyValue("height");
+            let width = widthPx.substring(0, widthPx.length-2)
+            let height = heightPx.substring(0, heightPx.length-2)
             this.renderer.setSize( width, height );
-            /*this.size = {
-              width: this.$el.clientWidth,
-              height: this.$el.clientHeight
-            }*/
+          })
+        }
+        else {
+          this.$nextTick(() => {
+            this.renderer.setSize(this.width, this.height)
           })
         }
       },
@@ -186,9 +171,6 @@
 
 
 
-
-//        this.addEventListener('iron-resize', e => this.resize(e));
-
 //        this.scene.container.addEventListener('click', e => this.onClick(e));
 
 
@@ -268,130 +250,14 @@
       }
     }
   }
-
-  /*function addHotspot (scene, targetScene) {
-    var pos = {
-      x: targetScene.x,
-      y: targetScene.y,
-      z: targetScene.z
-    }
-
-    var geometry = new THREE.RingGeometry(8, 13, 100, 100)
-    var material = new THREE.MeshPhongMaterial({
-      color: 1668818,
-      emissive: 0xffffff,
-      transparent: true,
-      opacity: 1,
-      side: THREE.DoubleSide,
-      polygonOffset: !0,
-      polygonOffsetFactor: -4,
-      polygonOffsetUnits: -4
-    })
-
-    var geometryBorder = new THREE.CircleGeometry(9, 32, 32)
-    var materialBorder = new THREE.MeshPhongMaterial()
-    materialBorder.copy(material)
-
-    materialBorder.opacity = 0.5
-
-    var circle = new THREE.Mesh(geometryBorder)
-
-    var hotspot = new THREE.Mesh(geometry)
-
-    var merged = new THREE.Geometry()
-
-    circle.updateMatrix()
-    merged.merge(circle.geometry, circle.matrix, 0)
-    hotspot.updateMatrix()
-
-    merged.merge(hotspot.geometry, hotspot.matrix, 1)
-
-    var group = new THREE.Mesh(merged, new THREE.MeshFaceMaterial([material, materialBorder]))
-
-    group.rotation.set(toRadian(90), 0, 0)
-    group.position.set(pos.x, pos.y - 100, pos.z)
-
-    group.type = 'hotspot'
-
-    group.targetScene = targetScene
-
-    return group
-  }
-
-  function addArrow (scene, targetScene) {
-    var arrowGeometry = makeArrowGeometry()
-    var arrowMaterial = new THREE.MeshBasicMaterial({
-      transparent: true,
-      opacity: 0.8,
-      color: 1668818,
-      emissive: 0xffffff,
-      side: THREE.DoubleSide,
-      polygonOffset: !0,
-      polygonOffsetFactor: -4,
-      polygonOffsetUnits: -4
-    })
-
-    var arrow = new THREE.Mesh(arrowGeometry, arrowMaterial)
-
-    var x1 = targetScene.x
-    var z1 = targetScene.z
-    var x2 = scene.x
-    var z2 = scene.z
-
-    var ath = toDegree(Math.atan2((z1 - z2), (x1 - x2)))
-
-    arrow.rotation.set(toRadian(90), 0, toRadian(ath))
-
-    var arrowPos = sphereToWorld(ath, 0)
-
-    arrow.position.set(arrowPos.x, arrowPos.y, arrowPos.z)
-    arrow.type = 'arrow'
-    arrow.targetScene = targetScene
-    return arrow
-  }
-
-  function makeArrowGeometry () {
-    var t = 1 / 10.0
-    var i = 2 * t / 3
-    var n = t * Math.cos(60 * THREE.Math.DEG2RAD)
-    var r = t * Math.sin(60 * THREE.Math.DEG2RAD)
-    var o = new THREE.Shape()
-    o.moveTo(i, 0)
-    o.lineTo(i - n, r)
-    o.lineTo(-n, r)
-    o.lineTo(0, 0)
-    o.lineTo(-n, -r)
-    o.lineTo(i - n, -r)
-    o.lineTo(i, 0)
-    return new THREE.ShapeGeometry(o)
-  }
-
-  function sphereToWorld (ath, atv) {
-    var d = 1 / 2.0
-    ath += 90
-    var mY = -d * Math.sin(toRadian(atv))
-    var r = -d * Math.cos(toRadian(atv))
-    var mX = r * Math.sin(toRadian(-ath))
-    var mZ = r * Math.cos(toRadian(-ath))
-
-    return new THREE.Vector3(mX, mY, mZ)
-  }
-  function toRadian (a) {
-    return a * Math.PI / 180.0
-  }
-
-  function toDegree (a) {
-    return a * 180.0 / Math.PI
-  }*/
 </script>
 
 <style scoped>
     .webglContainer {
-        /*cursor: pointer;*/
         position: absolute;
-        height: 100%;
-        width: 100%;
         top: 0;
+        right: 0;
+        bottom: 0;
         left: 0;
         margin: 0;
         border: 0;
