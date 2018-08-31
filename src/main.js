@@ -21,7 +21,7 @@ Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)
 Vue.component('ec-scene', Scene)
-Vue.component('ec-classmodel', ClassModel)
+Vue.component('ec-class-model', ClassModel)
 
 global.THREE = require('../node_modules/three/three.js')
 global.TrackballControls = require('../node_modules/three/examples/js/controls/TrackballControls.js')

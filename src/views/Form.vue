@@ -184,80 +184,80 @@
     </div>
 </template>
 <script>
-  import Vue from 'vue'
+import Vue from 'vue'
 
-  export default {
-    components: {},
-    props: {
-      level: Number,
-      viewId: String,
-      parentSchema: {
-        type: Object,
-        default: null
-      },
-      parentData: {
-        type: Object,
-        default: null
-      },
+export default {
+  components: {},
+  props: {
+    level: Number,
+    viewId: String,
+    parentSchema: {
+      type: Object,
+      default: null
     },
-    data() {
-      return {
-        editMode: false,
-        schema: this.parentSchema,
-        data: this.parentData,
-        childData: Object,
-        model: {
-          name: 'Yourtion'
-        }
+    parentData: {
+      type: Object,
+      default: null
+    }
+  },
+  data () {
+    return {
+      editMode: false,
+      schema: this.parentSchema,
+      data: this.parentData,
+      childData: Object,
+      model: {
+        name: 'Yourtion'
+      }
+    }
+  },
+  methods: {
+    propertyHas (property, path, value) {
+      if (value) return (Vue._.get(property, path) === value)
+      return !!(Vue._.get(property, path))
+    },
+    replacer (name, val) {
+      // console.log(name, val)
+      if (name === 'icon') {
+        return undefined // remove from result
+      } else {
+        return val
       }
     },
-    methods: {
-      propertyHas(property, path, value) {
-        if (value) return (Vue._.get(property, path) === value)
-        return !!(Vue._.get(property, path))
-      },
-      replacer(name, val) {
-        //console.log(name, val)
-        if (name === 'icon') {
-          return undefined; // remove from result
-        } else {
-          return val
-        }
-      },
-      getCommon(id) {
-        if (!id) return '[null]'
-        const obj = this.$store.state.classes[id]
-        if (!obj) return '[not found: ' + id + ']'
-        return obj.name ? obj.name : obj.title
-      },
-    },
-    created() {
-      if (!this.parentData) {
-        this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
-          console.log('selectedObjId Changed!', newVal);
-          this.$store.dispatch('loadCommon', newVal).then((data) => {
-            console.log('data', data)
-            this.data = data
-          })
-        }, {immediate: true})
-      }
-
-      if (!this.parentSchema && this.viewId) {
-        this.$store.dispatch('materializedView', this.viewId).then((view) => {
-          console.log('view', view)
-          this.schema = view
+    getCommon (id) {
+      if (!id) return '[null]'
+      const obj = this.$store.state.classes[id]
+      if (!obj) return '[not found: ' + id + ']'
+      return obj.name ? obj.name : obj.title
+    }
+  },
+  created () {
+    if (!this.parentData) {
+      this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
+        console.log('selectedObjId Changed!', newVal)
+        this.$store.dispatch('loadCommon', newVal).then((data) => {
+          console.log('data', data)
+          this.data = data
         })
-      }
-      /*if (this.parentData) this.data = this.parentData
+      }, {immediate: true})
+    }
+
+    if (!this.parentSchema && this.viewId) {
+      this.$store.dispatch('materializedView', this.viewId).then((view) => {
+        console.log('view', view)
+        this.schema = view
+      })
+    }
+    /* if (this.parentData) this.data = this.parentData
       else {
         const pageDesc = this.$store.state.levelIdsArr[this.level]
         this.$store.dispatch('loadCommon', pageDesc.selectedObjId).then((data) => {
           console.log('data', data)
           this.data = data
         })
-      }*/
-    }
+      } */
   }
+}
 
 </script>
 <style scoped>

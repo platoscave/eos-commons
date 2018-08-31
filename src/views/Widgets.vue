@@ -21,7 +21,7 @@
 
             <!-- 3dClassModel-->
             <div  class="widget-container" v-if="widget.displayType === '3D Class Model'">
-                <ec-classmodel class="widget-container" v-bind:level="level" v-bind:widget="widget"></ec-classmodel>
+                <ec-class-model class="widget-container" v-bind:level="level" v-bind:widget="widget"></ec-class-model>
             </div>
 
             <!-- ProcessModel-->

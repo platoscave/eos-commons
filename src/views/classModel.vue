@@ -1,19 +1,16 @@
 <template>
-    <div id="canvas-parent" v-resize="onResize" class="webglContainer">
+    <div class="webglContainer" v-resize="onResize">
     </div>
 </template>
 
-
 <script>
-  import Scene from "@/lib/sceneMixin.js";
-  // import classObject3D from '@/lib/classObject3D'
+import Scene from '../lib/sceneMixin.js'
+// import classObject3d from '../lib/classObject3d.js'
 
-  export default {
-    name: 'classModel',
-    components: {
-      Scene,
-    }
-  }
+export default {
+  name: 'classModel',
+  mixins: [Scene]
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,10 @@
-module.exports = class modelObject3d extends THREE.Object3D {
-  constructor(doc, key, pos, geometry, material, font, textMaterial, connectorMaterial) {
-    super()
+global.THREE = require('../../node_modules/three/three.js')
+const TrackballControls = require('../../node_modules/three/examples/js/controls/TrackballControls.js')
+const Detector = require('../../node_modules/three/examples/js/Detector.js')
 
+export default class modelObject3d extends THREE.Object3D {
+  constructor (doc, key, pos, geometry, material, font, textMaterial, connectorMaterial) {
+    super()
     this.name = doc.name ? doc.name : doc.title
     this.userData.key = key
     this.userData.doc = doc
@@ -9,13 +12,10 @@ module.exports = class modelObject3d extends THREE.Object3D {
     this.userData.instances = []
     this.userData.connectorMaterial = connectorMaterial
     this.userData.material = material
-
     this.position.set(pos.x, pos.y, pos.z)
-
     let classMesh = new THREE.Mesh(geometry, material)
     classMesh.scale.set(100, 100, 100)
     this.add(classMesh)
-
     let text3d = new THREE.TextGeometry(this.name, {size: 30, height: 1, font: font})
     text3d.computeBoundingBox()
     let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
@@ -28,15 +28,13 @@ module.exports = class modelObject3d extends THREE.Object3D {
     textMesh.rotation.y = Math.PI * 2
     this.add(textMesh)
   }
-
-  calculateX(x) {
+  calculateX (x) {
     let ourX = x
     let maxXUntilNow = x
     this.userData.children.forEach(function (child) {
       maxXUntilNow = child.calculateX(x)
       x = maxXUntilNow + 800
-    }.bind(this))
-
+    })
     if (this.userData.children.length > 1) {
       let minX = this.userData.children[0].position.x
       let maxX = this.userData.children[(this.userData.children.length - 1)].position.x
@@ -45,36 +43,31 @@ module.exports = class modelObject3d extends THREE.Object3D {
     this.position.set(ourX, this.position.y, this.position.z)
     return maxXUntilNow
   }
-
-  collectSelectableMeshes(selectableMeshArr) {
+  collectSelectableMeshes (selectableMeshArr) {
     selectableMeshArr.push(this.children[0])
     this.userData.instances.forEach(function (child) {
       selectableMeshArr.push(child.children[0])
-    }.bind(this))
+    })
     this.userData.children.forEach(function (child) {
       child.collectSelectableMeshes(selectableMeshArr)
-    }.bind(this))
+    })
   }
-
-  getModelObject3DByKey(key) {
+  getModelObject3DByKey (key) {
     if (this.userData.key === key) return this
-
     let resObj = this.userData.instances.find(function (child) {
       return (child.userData.key === key)
     })
     if (resObj) return resObj
-
     this.userData.children.some(function (child) {
       let obj = child.getModelObject3DByKey(key)
       if (obj) {
         resObj = obj
         return true
       }
-    }.bind(this))
+    })
     return resObj
   }
-
-  selectByKey(key) {
+  selectByKey (key) {
     // Select/unselect this Objec3D
     if (this.userData.key === key) this.children[0].material = new THREE.MeshLambertMaterial({color: 0xFFFF33})
     else this.children[0].material = this.userData.material
@@ -82,96 +75,79 @@ module.exports = class modelObject3d extends THREE.Object3D {
       // Select/unselect child Objec3D
       if (child.userData.key === key) child.children[0].material = new THREE.MeshLambertMaterial({color: 0xFFFF33})
       else child.children[0].material = child.userData.material
-    }.bind(this))
+    })
     this.userData.children.forEach(function (child) {
       child.selectByKey(key)
-    }.bind(this))
+    })
   }
-
-  findMinY() {
+  findMinY () {
     let minYUntilNow = this.position.y
     this.userData.children.forEach(function (child) {
       let minY = child.findMinY()
       minYUntilNow = minY < minYUntilNow ? minY : minYUntilNow
-    }.bind(this))
+    })
     return minYUntilNow
   }
-
-  drawClassConnectors(modelObject3D) {
-    if (this.userData.children.length > 0)
-    //vertical beam from parent class
+  drawClassConnectors (modelObject3D) {
+    if (this.userData.children.length > 0) {
+      // vertical beam from parent class
       let parentEndVector = new THREE.Vector3(this.position.x, this.position.y - 200, this.position.z)
-    modelObject3D.add(this.drawBeam(this.position, parentEndVector, this.userData.connectorMaterial))
-
-    //horizontal beam
-    let beamStartX = this.userData.children[0].position.x
-    let beamEndX = this.userData.children[this.userData.children.length - 1].position.x
-    let beamStartVector = new THREE.Vector3(beamStartX, this.position.y - 200, this.position.z)
-    let beamtEndVector = new THREE.Vector3(beamEndX, this.position.y - 200, this.position.z)
-    modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, this.userData.connectorMaterial))
-
-
-    //sphere at the left end
-    let sphereGeometry = new THREE.SphereGeometry(10)
-    let sphereMesh = new THREE.Mesh(sphereGeometry, this.userData.connectorMaterial)
-    sphereMesh.position.set(beamStartVector.x, beamStartVector.y, beamStartVector.z)
-    modelObject3D.add(sphereMesh)
-
-
-    //sphere at the right end
-    let sphereGeometry = new THREE.SphereGeometry(10)
-    let sphereMesh = new THREE.Mesh(sphereGeometry, this.userData.connectorMaterial)
-    sphereMesh.position.set(beamtEndVector.x, beamtEndVector.y, beamtEndVector.z)
-    modelObject3D.add(sphereMesh)
-
-    //for each of the child classes
-    this.userData.children.forEach(function (child) {
-
-      //beam from child class to horizontal beam
-      let childStartVector = new THREE.Vector3(child.position.x, child.position.y + 200, child.position.z)
-      modelObject3D.add(this.drawBeam(childStartVector, child.position, this.userData.connectorMaterial))
-
-      //tell the child class to do the same
-      child.drawClassConnectors(modelObject3D)
-    }.bind(this))
+      modelObject3D.add(this.drawBeam(this.position, parentEndVector, this.userData.connectorMaterial))
+      // horizontal beam
+      let beamStartX = this.userData.children[0].position.x
+      let beamEndX = this.userData.children[this.userData.children.length - 1].position.x
+      let beamStartVector = new THREE.Vector3(beamStartX, this.position.y - 200, this.position.z)
+      let beamtEndVector = new THREE.Vector3(beamEndX, this.position.y - 200, this.position.z)
+      modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, this.userData.connectorMaterial))
+      // sphere at the left end
+      let sphereGeometryLeft = new THREE.SphereGeometry(10)
+      let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, this.userData.connectorMaterial)
+      sphereMeshLeft.position.set(beamStartVector.x, beamStartVector.y, beamStartVector.z)
+      modelObject3D.add(sphereMeshLeft)
+      // sphere at the right end
+      let sphereGeometry = new THREE.SphereGeometry(10)
+      let sphereMesh = new THREE.Mesh(sphereGeometry, this.userData.connectorMaterial)
+      sphereMesh.position.set(beamtEndVector.x, beamtEndVector.y, beamtEndVector.z)
+      modelObject3D.add(sphereMesh)
+      // for each of the child classes
+      this.userData.children.forEach(function (child) {
+        // beam from child class to horizontal beam
+        let childStartVector = new THREE.Vector3(child.position.x, child.position.y + 200, child.position.z)
+        modelObject3D.add(this.drawBeam(childStartVector, child.position, this.userData.connectorMaterial))
+        // tell the child class to do the same
+        child.drawClassConnectors(modelObject3D)
+      }.bind(this))
+    }
   }
-
-  drawObjectConnectors(modelObject3D) {
+  drawObjectConnectors (modelObject3D) {
     if (this.userData.instances.length > 0) {
       let endVector = this.userData.instances[this.userData.instances.length - 1].position
       modelObject3D.add(this.drawBeam(this.position, endVector, this.userData.connectorMaterial))
     }
     this.userData.children.forEach(function (child) {
       child.drawObjectConnectors(modelObject3D)
-    }.bind(this))
+    })
   }
-
-  drawBeam(p1, p2, material, sceneObject3D, name) {
-    //https://stackoverflow.com/questions/15139649/three-js-two-points-one-cylinder-align-issue/15160850#15160850
-    let HALF_PI = Math.PI * .5
+  drawBeam (p1, p2, material, sceneObject3D, name) {
+    // https://stackoverflow.com/questions/15139649/three-js-two-points-one-cylinder-align-issue/15160850#15160850
+    let HALF_PI = Math.PI * 0.5
     let distance = p1.distanceTo(p2)
     let position = p2.clone().add(p1).divideScalar(2)
-
     let cylinder = new THREE.CylinderGeometry(10, 10, distance, 10, 10, false)
-
-    let orientation = new THREE.Matrix4()//a new orientation matrix to offset pivot
-    let offsetRotation = new THREE.Matrix4()//a matrix to fix pivot rotation
-    let offsetPosition = new THREE.Matrix4()//a matrix to fix pivot position
-    orientation.lookAt(p1, p2, new THREE.Vector3(0, 1, 0))//look at destination
-    offsetRotation.makeRotationX(HALF_PI)//rotate 90 degs on X
-    orientation.multiply(offsetRotation)//combine orientation with rotation transformations
+    let orientation = new THREE.Matrix4()// a new orientation matrix to offset pivot
+    let offsetRotation = new THREE.Matrix4()// a matrix to fix pivot rotation
+    let offsetPosition = new THREE.Matrix4()// a matrix to fix pivot position
+    orientation.lookAt(p1, p2, new THREE.Vector3(0, 1, 0))// look at destination
+    offsetRotation.makeRotationX(HALF_PI)// rotate 90 degs on X
+    orientation.multiply(offsetRotation)// combine orientation with rotation transformations
     cylinder.applyMatrix(orientation)
-
     let mesh = new THREE.Mesh(cylinder, material)
     mesh.position.set(position.x, position.y, position.z)
     return mesh
-
-    let diffVector = new THREE.Vector3()
+    /* let diffVector = new THREE.Vector3()
     diffVector.subVectors(p2, p1)
-
     let beamVector = new THREE.Vector3(0, 1, 0)
     let theta = beamVector.angleTo(diffVector)
-
     let rotationAxis = new THREE.Vector3()
     rotationAxis.crossVectors(beamVector, diffVector)
     if (rotationAxis.length() < 0.000001) {
@@ -181,35 +157,31 @@ module.exports = class modelObject3d extends THREE.Object3D {
       rotationAxis.set(1, 0, 0)
     }
     rotationAxis.normalize()
-
     let postionVec = new THREE.Vector3()
     postionVec.copy(diffVector)
     postionVec.divideScalar(2)
     postionVec.add(p1)
-
     let orientation = new THREE.Matrix4()
     orientation.matrixAutoUpdate = false
     orientation.makeRotationAxis(rotationAxis, theta)
     orientation.setPosition(postionVec)
-
     let beamLength = diffVector.length()
     let beamGeometry = new THREE.CylinderGeometry(10, 10, beamLength, 12, 1, true)
-    beamGeometry.applyMatrix(orientation)//apply transformation for geometry
+    beamGeometry.applyMatrix(orientation)// apply transformation for geometry
     let beamMesh = new THREE.Mesh(beamGeometry, beamMaterial)
-    //beamMesh.position.set(p2.x,p2.y,p2.z)
-
+    // beamMesh.position.set(p2.x,p2.y,p2.z)
     if (name) {
       let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
       let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: 'helvetiker'})
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       text3d.computeBoundingBox()
-      let xOffset = -0.5 * ( text3d.boundingBox.max.x - text3d.boundingBox.min.x )
+      let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
       textMesh.position = postionVec
       textMesh.position.x += xOffset
       textMesh.position.z += 20
       textMesh.rotation.y = Math.PI * 2
       sceneObject3D.add(textMesh)
     }
-    return (beamMesh)
+    return (beamMesh) */
   }
 }

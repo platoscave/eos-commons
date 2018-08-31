@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import VJstree from 'vue-jstree'
+import VJstree from 'vue-jstree'
 export default {
   components: {
     VJstree
