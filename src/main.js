@@ -11,6 +11,7 @@ import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
 import Scene from './views/Scene.vue'
+import ClassModel from './views/classModel.vue'
 import { sync } from 'vuex-router-sync'
 
 Vue.component('ec-layout', Layout)
@@ -20,11 +21,12 @@ Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)
 Vue.component('ec-scene', Scene)
+Vue.component('ec-classmodel', ClassModel)
 
 global.THREE = require('../node_modules/three/three.js')
 global.TrackballControls = require('../node_modules/three/examples/js/controls/TrackballControls.js')
 global.Detector = require('../node_modules/three/examples/js/Detector.js')
-// global.TWEEN = require('../node_modules/three/examples/js/libs/tween.js')
+// global.TWEEN = require('../node_modules/three/examples/lib/libs/tween.lib')
 
 Vue.use(VueLodash)
 Vue.config.productionTip = false

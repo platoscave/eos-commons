@@ -6,11 +6,11 @@
 
 <script>
   import VueMixinTween from 'vue-mixin-tween';
+  // import classObject3D from '@/lib/classObject3D'
 
   const _log = console.log.bind(console);
 
   export default {
-
     name: 'Scene',
     mixins: [
       // The only required argument is the name of the property to tween.
