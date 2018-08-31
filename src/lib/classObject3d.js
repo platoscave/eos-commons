@@ -1,4 +1,4 @@
-class modelObject3d extends THREE.Object3D {
+module.exports = class modelObject3d extends THREE.Object3D {
   constructor(doc, key, pos, geometry, material, font, textMaterial, connectorMaterial) {
     super()
 
@@ -213,4 +213,3 @@ class modelObject3d extends THREE.Object3D {
     return (beamMesh)
   }
 }
-export default modelObject3d
