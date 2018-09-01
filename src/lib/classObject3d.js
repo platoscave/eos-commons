@@ -3,10 +3,9 @@ const TrackballControls = require('../../node_modules/three/examples/js/controls
 const Detector = require('../../node_modules/three/examples/js/Detector.js')
 
 export default class modelObject3d extends THREE.Object3D {
-  constructor (doc, key, pos, geometry, material, font, textMaterial, connectorMaterial) {
+  constructor (doc, pos, geometry, material, font, textMaterial, connectorMaterial) {
     super()
     this.name = doc.name ? doc.name : doc.title
-    this.userData.key = key
     this.userData.doc = doc
     this.userData.children = []
     this.userData.instances = []
@@ -16,7 +15,7 @@ export default class modelObject3d extends THREE.Object3D {
     let classMesh = new THREE.Mesh(geometry, material)
     classMesh.scale.set(100, 100, 100)
     this.add(classMesh)
-    let text3d = new THREE.TextGeometry(this.name, {size: 30, height: 1, font: font})
+    let text3d = new THREE.TextGeometry(doc.text, {size: 30, height: 1, font: font})
     text3d.computeBoundingBox()
     let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
     let yOffset = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y)

@@ -31,7 +31,7 @@ export default {
   },
   props: {
     level: Number,
-    widget: Object
+    viewId: String
   },
   data () {
     return {
@@ -213,7 +213,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('materializedView', this.widget.viewId).then((view) => {
+    this.$store.dispatch('materializedView', this.viewId).then((view) => {
       this.view = view
     })
   }

@@ -2,7 +2,7 @@
     <div class="widget-container">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
-        <template  class="widget-container" v-for="(widget, n) in widgets">
+        <template  class="widget-container" v-for="(widget) in widgets">
 
             <!-- Document-->
             <div v-if="widget.displayType === 'Document'">
@@ -11,7 +11,7 @@
 
             <!-- Tree-->
             <div v-if="widget.displayType === 'Tree'">
-                <ec-tree v-bind:level="level" v-bind:widget="widget"></ec-tree>
+                <ec-tree v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
             </div>
 
             <!-- Table -->
@@ -21,7 +21,7 @@
 
             <!-- 3dClassModel-->
             <div  class="widget-container" v-if="widget.displayType === '3D Class Model'">
-                <ec-class-model class="widget-container" v-bind:level="level" v-bind:widget="widget"></ec-class-model>
+                <ec-class-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-class-model>
             </div>
 
             <!-- ProcessModel-->

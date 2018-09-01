@@ -128,7 +128,7 @@
                                 <template v-else-if="propertyHas( property, 'type', 'array') ">
                                     <div>
                                         <!--<v-layout column>-->
-                                        <template v-for="(childData, n) in data[key]">
+                                        <template v-for="(childData) in data[key]">
                                             <!--<flex>-->
                                             <ec-form class="readOnlyInput" v-bind:level="level"
                                                      v-bind:editMode="editMode"
@@ -187,7 +187,6 @@
 import Vue from 'vue'
 
 export default {
-  components: {},
   props: {
     level: Number,
     viewId: String,

@@ -10,19 +10,8 @@ export default {
     VueMixinTween('numberOfAlligators', 5000, (pos) => pos)
   ],
   props: {
-    skyboxArray: {
-      type: Array,
-      default: () => {
-        return [
-          'space_3_right.jpg',
-          'space_3_left.jpg',
-          'space_3_top.jpg?',
-          'space_3_bottom.jpg',
-          'space_3_front.jpg',
-          'space_3_back.jpg'
-        ]
-      }
-    },
+    level: Number,
+    viewId: String,
     width: {
       type: Number,
       default: undefined
@@ -34,10 +23,7 @@ export default {
   },
   data () {
     return {
-      size: {
-        width: this.width,
-        height: this.height
-      }
+      skyboxArray: []
     }
   },
   mounted () {
@@ -153,7 +139,7 @@ export default {
       // this.connect(this.domNode, "onclick", "onClick");
       sceneObject3D.name = 'Boilerplate'
       //        this.scene.container.addEventListener('click', e => this.onClick(e));
-
+      this.render()
       this.animate()
     },
     render () {

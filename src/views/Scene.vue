@@ -144,7 +144,7 @@ export default {
         let materialArray = []
         for (let i = 0; i < 6; i++) {
           materialArray.push(new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(this.skyboxArray[i]),
+            map: THREE.TextureLoader(this.skyboxArray[i]),
             side: THREE.BackSide
           }))
         }
@@ -239,6 +239,22 @@ export default {
         controls.target = tweenTargetPos
       })
       tween.start()
+    }
+  },
+  created () {
+    /* this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
+      console.log('selectedObjId Changed!', newVal)
+      this.$store.dispatch('loadCommon', newVal).then((data) => {
+        console.log('data', data)
+        this.data = data
+      })
+    }, {immediate: true}) */
+
+    if (!this.parentSchema && this.viewId) {
+      this.$store.dispatch('materializedView', this.viewId).then((view) => {
+        console.log('view', view)
+        this.schema = view
+      })
     }
   }
 }

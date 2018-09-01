@@ -214,7 +214,7 @@ const store = new Vuex.Store({
     },
     loadClasses (store) {
       store.commit('SET_CLASSES_LOADING', { loading: true })
-      return axios('classes.json')
+      return axios('classes.json', {headers: {'Content-Type': 'application/json; charset=UTF-8'}, data: {}})
         .then(response => {
           store.commit('SET_CLASSES_SUCCESS', {
             statusCode: response.status,
