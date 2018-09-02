@@ -112,7 +112,6 @@ const store = new Vuex.Store({
         return resultsObj
       }
       let resultsObj = getResultsObj(queryObj)
-      console.log('QUERY', queryObj)
 
       // Normalize the results so that they are suited for the tree
       let resultsArr = []
@@ -160,7 +159,8 @@ const store = new Vuex.Store({
         resultsArr.push(result)
       })
 
-      console.log('RESULTS', resultsArr)
+      // console.log('QUERY', queryObj)
+      // console.log('RESULTS', resultsArr)
 
       return resultsArr
     },

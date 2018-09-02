@@ -13,13 +13,21 @@ export default {
   data () {
     return {
       skyboxArray: [
+        'posx.jpg',
+        'negx.jpg',
+        'posy.jpg?',
+        'negy.jpg',
+        'posz.jpg',
+        'negz.jpg'
+      ]
+      /*skyboxArray: [
         'space_3_right.jpg',
         'space_3_left.jpg',
         'space_3_top.jpg?',
         'space_3_bottom.jpg',
         'space_3_front.jpg',
         'space_3_back.jpg'
-      ]
+      ]*/
     }
   },
   methods: {

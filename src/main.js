@@ -25,6 +25,7 @@ Vue.component('ec-class-model', ClassModel)
 
 global.THREE = require('../node_modules/three/three.js')
 global.TrackballControls = require('../node_modules/three/examples/js/controls/TrackballControls.js')
+global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')
 global.Detector = require('../node_modules/three/examples/js/Detector.js')
 // global.TWEEN = require('../node_modules/three/examples/lib/libs/tween.lib')
 

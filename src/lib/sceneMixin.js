@@ -40,7 +40,11 @@ export default {
           let heightStr = heightPx.substring(0, heightPx.length - 2)
           let width = Number(widthStr)
           let height = Number(heightStr) - 3
+          this.camera.aspect = width / height
+          this.camera.updateProjectionMatrix()
           this.renderer.setSize(width, height)
+          this.controls.handleResize()
+          this.render();
         })
       } else {
         this.$nextTick(() => {
@@ -70,33 +74,20 @@ export default {
 
       // camera
       this.camera = new THREE.PerspectiveCamera(60, 3 / 2, 1, 100000)
-      this.camera.position.z = 2000
-      // by changing the eulerOrder we can force the camera to keep its head level
-      // see: http://stackoverflow.com/questions/17517937/three-js-camera-tilt-up-or-down-and-keep-horizon-level
-      // this.camera.rotation.order = "YXZ";
+      this.camera.position.z = 4000
 
       // renderer
       // this.renderer = new THREE.WebGLRenderer( {antialias: true} );
       if (Detector.webgl) this.renderer = new THREE.WebGLRenderer({antialias: true})
       else this.renderer = new THREE.CanvasRenderer()
-      //        this.renderer.setSize( this.size.width, this.size.height );
-      this.onResize()
       this.$el.appendChild(this.renderer.domElement)
 
       // controls
-      this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement)
-      this.controls.rotateSpeed = 1.0
-      this.controls.zoomSpeed = 1.2
-      this.controls.panSpeed = 0.8
-      this.controls.noRotate = false
-      this.controls.noZoom = false
-      this.controls.noPan = false
-      this.controls.staticMoving = true
-      this.controls.dynamicDampingFactor = 0.3
-      this.controls.keys = [ 65, 83, 68 ]
-      // this.controls.addEventListener( 'change', this.render );
-      //        this.controls.addEventListener('change', e => this.render(e));
-      this.controls.update()
+      this.controls = new THREE.OrbitControls(this.camera)
+      this.controls.autoRotate = true
+      this.controls.autoRotateSpeed = 0.125
+      this.controls.minPolarAngle = Math.PI / 4
+      this.controls.maxPolarAngle = Math.PI / 1.5
 
       // lights
       let light1 = new THREE.DirectionalLight(0xffffff)
@@ -112,8 +103,46 @@ export default {
       //        this.projector = new THREE.Projector();
       this.raycaster = new THREE.Raycaster()
 
+      // this.scene.background = new THREE.CubeTextureLoader().load(this.skyboxArray)
+
+      //cubemap
+      /* vvar path = "textures/cube/SwedishRoyalCastle/";
+      var format = '.jpg';
+      var urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+      ];*/
+/*
       // See https://stemkoski.github.io/Three.js/Skybox.html
-      if (this.skyboxArray.length == 6) {
+      let loader = new THREE.TextureLoader()
+      let promises = []
+      this.skyboxArray.forEach(textureLocation => {
+        promises.push(new Promise((resolve, reject) => {
+          loader.load(textureLocation, (texture) => {
+            resolve(texture)
+          }, undefined, (err) => { debugger; console.error(err) })
+        }))
+      })
+      Promise.all(promises).then(resultsArr => {
+        debugger
+        let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
+        let materialArray = []
+        resultsArr.forEach(texture => {
+          materialArray.push(new THREE.MeshBasicMaterial({
+            map: texture,
+            side: THREE.BackSide
+          }))
+        })
+        let skyMaterial = new THREE.MeshFaceMaterial(materialArray)
+        this.skyBox = new THREE.Mesh(skyGeometry, skyMaterial)
+        sceneObject3D.add(this.skyBox)
+        this.$forceUpdate()
+        this.animate()
+      }, (err) => console.error(err))
+*/
+      // See https://stemkoski.github.io/Three.js/Skybox.html
+       if (this.skyboxArray.length == 6) {
         let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
         let materialArray = []
         for (let i = 0; i < 6; i++) {
@@ -129,17 +158,18 @@ export default {
 
       // else see http://threejs.org/examples/webgl_multiple_views.html
       // for canvas gradient
-      if (this.displayFPS) {
+      /* if (this.displayFPS) {
         stats = new Stats()
         stats.domElement.style.position = 'absolute'
         stats.domElement.style.top = '0px'
         this.domNode.appendChild(stats.domElement)
-      }
+      } */
 
       // this.connect(this.domNode, "onclick", "onClick");
       sceneObject3D.name = 'Boilerplate'
       //        this.scene.container.addEventListener('click', e => this.onClick(e));
-      this.render()
+
+      this.onResize()
       this.animate()
     },
     render () {
