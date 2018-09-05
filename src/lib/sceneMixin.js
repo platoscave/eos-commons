@@ -1,14 +1,15 @@
-
-import VueMixinTween from 'vue-mixin-tween'
+import TWEEN from '@tweenjs/tween.js'
+// import * as TWEEN from '../../node_modules/three/examples/js/libs/tween.min.js';
+// const TWEEN = require('../../node_modules/three/examples/js/libs/tween.min.js')
 export default {
   name: 'Scene',
-  mixins: [
+  /*mixins: [
     // The only required argument is the name of the property to tween.
     // The default duration is 500 milliseconds.
     // The default timing function is TWEEN.Easing.Quadratic.Out
     // We're using a "custom" linear timing function here.
     VueMixinTween('numberOfAlligators', 5000, (pos) => pos)
-  ],
+  ],*/
   props: {
     level: Number,
     viewId: String,
@@ -29,6 +30,12 @@ export default {
   mounted () {
     this.loadScene()
   },
+  created () {
+    this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
+      console.log('selectedObjId Changed!', newVal)
+      this.moveCameraToPos()
+    }, {immediate: true})
+  },
   methods: {
     onResize () {
       if (!this.renderer) return
@@ -43,8 +50,8 @@ export default {
           this.camera.aspect = width / height
           this.camera.updateProjectionMatrix()
           this.renderer.setSize(width, height)
-          this.controls.handleResize()
-          this.render();
+          // this.controls.handleResize()
+          this.render()
         })
       } else {
         this.$nextTick(() => {
@@ -77,7 +84,6 @@ export default {
       this.camera.position.z = 4000
 
       // renderer
-      // this.renderer = new THREE.WebGLRenderer( {antialias: true} );
       if (Detector.webgl) this.renderer = new THREE.WebGLRenderer({antialias: true})
       else this.renderer = new THREE.CanvasRenderer()
       this.$el.appendChild(this.renderer.domElement)
@@ -105,44 +111,44 @@ export default {
 
       // this.scene.background = new THREE.CubeTextureLoader().load(this.skyboxArray)
 
-      //cubemap
+      // cubemap
       /* vvar path = "textures/cube/SwedishRoyalCastle/";
       var format = '.jpg';
       var urls = [
         path + 'px' + format, path + 'nx' + format,
         path + 'py' + format, path + 'ny' + format,
         path + 'pz' + format, path + 'nz' + format
-      ];*/
-/*
+      ]; */
+      /*
+            // See https://stemkoski.github.io/Three.js/Skybox.html
+            let loader = new THREE.TextureLoader()
+            let promises = []
+            this.skyboxArray.forEach(textureLocation => {
+              promises.push(new Promise((resolve, reject) => {
+                loader.load(textureLocation, (texture) => {
+                  resolve(texture)
+                }, undefined, (err) => { debugger; console.error(err) })
+              }))
+            })
+            Promise.all(promises).then(resultsArr => {
+              debugger
+              let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
+              let materialArray = []
+              resultsArr.forEach(texture => {
+                materialArray.push(new THREE.MeshBasicMaterial({
+                  map: texture,
+                  side: THREE.BackSide
+                }))
+              })
+              let skyMaterial = new THREE.MeshFaceMaterial(materialArray)
+              this.skyBox = new THREE.Mesh(skyGeometry, skyMaterial)
+              sceneObject3D.add(this.skyBox)
+              this.$forceUpdate()
+              this.animate()
+            }, (err) => console.error(err))
+      */
       // See https://stemkoski.github.io/Three.js/Skybox.html
-      let loader = new THREE.TextureLoader()
-      let promises = []
-      this.skyboxArray.forEach(textureLocation => {
-        promises.push(new Promise((resolve, reject) => {
-          loader.load(textureLocation, (texture) => {
-            resolve(texture)
-          }, undefined, (err) => { debugger; console.error(err) })
-        }))
-      })
-      Promise.all(promises).then(resultsArr => {
-        debugger
-        let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
-        let materialArray = []
-        resultsArr.forEach(texture => {
-          materialArray.push(new THREE.MeshBasicMaterial({
-            map: texture,
-            side: THREE.BackSide
-          }))
-        })
-        let skyMaterial = new THREE.MeshFaceMaterial(materialArray)
-        this.skyBox = new THREE.Mesh(skyGeometry, skyMaterial)
-        sceneObject3D.add(this.skyBox)
-        this.$forceUpdate()
-        this.animate()
-      }, (err) => console.error(err))
-*/
-      // See https://stemkoski.github.io/Three.js/Skybox.html
-       if (this.skyboxArray.length == 6) {
+      if (this.skyboxArray.length === 6) {
         let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
         let materialArray = []
         for (let i = 0; i < 6; i++) {
@@ -157,17 +163,9 @@ export default {
       }
 
       // else see http://threejs.org/examples/webgl_multiple_views.html
-      // for canvas gradient
-      /* if (this.displayFPS) {
-        stats = new Stats()
-        stats.domElement.style.position = 'absolute'
-        stats.domElement.style.top = '0px'
-        this.domNode.appendChild(stats.domElement)
-      } */
 
-      // this.connect(this.domNode, "onclick", "onClick");
       sceneObject3D.name = 'Boilerplate'
-      //        this.scene.container.addEventListener('click', e => this.onClick(e));
+      this.$el.addEventListener('click', this.onClick, false)
 
       this.onResize()
       this.animate()
@@ -180,8 +178,8 @@ export default {
 
     animate () {
       requestAnimationFrame(this.animate.bind(this))
-      // TWEEN.update();
-      this.camera.up = new THREE.Vector3(0, 1, 0)// Keep the camera level
+      TWEEN.update()
+      // this.camera.up = new THREE.Vector3(0, 1, 0)// Keep the camera level
       this.skyBox.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z) // keep skybox centred around the camera
       this.controls.update()
       this.renderer.render(this.scene, this.camera)
@@ -203,33 +201,34 @@ export default {
       let intersects = this.raycaster.intersectObjects(this.selectableMeshArr)
       if (intersects.length > 0) {
         let selectedMesh = intersects[0].object
-        let key = selectedMesh.parent.userData.key
-
-        // Update the hash so that is reflects the current selected object3D
-        // Ths will trigger the route.path observer
-        let pathArr = this.route.path.split('.')
-        let idx = (this.level + 1) * 4
-        let prevIdx = (this.level) * 4
-        pathArr[prevIdx] = key
-        pathArr[idx] = key
-        // let pathArr = pathArr.slice(0, idx+2);
-        let newPath = pathArr.join('.')
-        this.set('route.path', newPath)
+        this.$store.commit('SET_LEVEL_IDS', {
+          level: this.level,
+          ids: {
+            selectedObjId: selectedMesh.parent.userData.doc.id
+          }
+        })
       }
     },
-    moveCameraToPos (modelObj) {
+    moveCameraToPos () {
       // console.log('selected modelObj', modelObj.name);
 
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
-      newTargetPos.setFromMatrixPosition(modelObj.matrixWorld)
+      newTargetPos.setFromMatrixPosition(this.modelObject3D.matrixWorld)
 
       let newCameraPos = newTargetPos.clone()
       newCameraPos.z = 2000
       let cameraPos = this.camera.position
       let target = this.controls.target
       let fromPos = {tx: target.x, ty: target.y, tz: target.z, cx: cameraPos.x, cy: cameraPos.y, cz: cameraPos.z}
-      let toPos = {tx: newTargetPos.x, ty: newTargetPos.y, tz: newTargetPos.z, cx: newCameraPos.x, cy: newCameraPos.y, cz: newCameraPos.z}
+      let toPos = {
+        tx: newTargetPos.x,
+        ty: newTargetPos.y,
+        tz: newTargetPos.z,
+        cx: newCameraPos.x,
+        cy: newCameraPos.y,
+        cz: newCameraPos.z
+      }
       let tween = new TWEEN.Tween(fromPos).to(toPos, 1500)
       tween.easing(TWEEN.Easing.Quadratic.Out)
 
@@ -237,7 +236,7 @@ export default {
       tween.onUpdate(function () {
         let tweenTargetPos = new THREE.Vector3(this.tx, this.ty, this.tz)
         let tweenCameraPos = new THREE.Vector3(this.cx, this.cy, this.cz)
-        // console.log('tweenCameraPos', tweenCameraPos);
+        console.log('tweenCameraPos', tweenCameraPos);
         controls.object.position.set(tweenCameraPos.x, tweenCameraPos.y, tweenCameraPos.z)
         controls.target = tweenTargetPos
       })

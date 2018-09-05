@@ -1,5 +1,5 @@
 <template>
-    <div class="webglContainer" v-resize="onResize">
+    <div class="webglContainer" v-resize="onResize" v-on:click="onClick">
     </div>
 </template>
 
@@ -20,14 +20,14 @@ export default {
         'posz.jpg',
         'negz.jpg'
       ]
-      /*skyboxArray: [
+      /* skyboxArray: [
         'space_3_right.jpg',
         'space_3_left.jpg',
         'space_3_top.jpg?',
         'space_3_bottom.jpg',
         'space_3_front.jpg',
         'space_3_back.jpg'
-      ]*/
+      ] */
     }
   },
   methods: {
@@ -157,7 +157,7 @@ export default {
           let minY = rootObj.findMinY() - 400
           // Collect all the objects that we will be using.
           // This is done recusivly and asyncronosly.
-          this.collectAndDrawObjects(rootObj, minY).then(res => {
+          /* this.collectAndDrawObjects(rootObj, minY).then(res => {
             // Tell the classes to draw their object connectors
             rootObj.drawObjectConnectors(this.modelObject3D)
             // Get an array of selectable meshes
@@ -166,7 +166,9 @@ export default {
             // Highlight the slected object and naviagte to it.
             // To do this we just call the path observer.
             this.routePathChanged(this.route.path)
-          })
+          }) */
+
+          rootObj.collectSelectableMeshes(this.selectableMeshArr)
         })
       })
     }, (err) => console.log(err))

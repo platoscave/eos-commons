@@ -3,7 +3,10 @@
         <ec-layout class="pane" v-bind:level="1"></ec-layout>
         <div class="footer">
             <div>{{message}}</div>
+
+            <button @click="onSave()">Save</button>
             <div>eos-commons.io</div>
+
         </div>
     </v-app>
 </template>
@@ -14,6 +17,11 @@ export default {
   computed: {
     message () {
       return this.$store.getters.getMessage
+    }
+  },
+  methods: {
+    onSave (e) {
+      this.$store.commit('SAVE', {})
     }
   },
   created () {

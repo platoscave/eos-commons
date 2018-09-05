@@ -80,12 +80,27 @@ export default {
           }
         })
       }
+      // pageId is destroyed. wrong kind of merg?
+      /*this.$store.commit('SET_LEVEL_IDS', {
+        level: this.level,
+        ids: {
+          selectedObjId: node.model.id
+        }
+      })*/
     },
     itemToggle (oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {
         id: oriItem.id,
         opened: oriItem.opened
       })
+      /*  Send all expanded nodes to page state
+      this.selectedItems = []
+        this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, node => {
+          if (node.model.selected) {
+            this.selectedItems.push(node.model.id)
+          }
+        })
+       */
     },
     itemDragStart (node) {
       console.log(node.model.text + ' drag start !')

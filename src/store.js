@@ -4,6 +4,8 @@ import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
+const IPFS = require('ipfs-api')
+const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -58,6 +60,14 @@ const store = new Vuex.Store({
     SET_NODE_TOGGLE (state, payload) {
       if (payload.opened) state.isOpened[payload.id] = true
       else delete state.isOpened[payload.id]
+    },
+
+    SAVE (state, payload) {
+      let buf = Buffer.from('eos-commons', 'utf8')
+      ipfs.add(buf).then((response) => {
+        let hash = response[0].hash
+        console.log('Hash from IPFS: ' + hash)
+      })
     }
   },
   actions: {
