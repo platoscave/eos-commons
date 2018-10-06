@@ -52,9 +52,9 @@ export default class modelObject3d extends THREE.Object3D {
     })
   }
   getModelObject3DByKey (key) {
-    if (this.userData.key === key) return this
+    if (this.userData.doc.id === key) return this
     let resObj = this.userData.instances.find(function (child) {
-      return (child.userData.key === key)
+      return (child.userData.doc.id === key)
     })
     if (resObj) return resObj
     this.userData.children.some(function (child) {

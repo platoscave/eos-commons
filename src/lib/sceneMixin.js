@@ -3,13 +3,6 @@ import TWEEN from '@tweenjs/tween.js'
 // const TWEEN = require('../../node_modules/three/examples/js/libs/tween.min.js')
 export default {
   name: 'Scene',
-  /*mixins: [
-    // The only required argument is the name of the property to tween.
-    // The default duration is 500 milliseconds.
-    // The default timing function is TWEEN.Easing.Quadratic.Out
-    // We're using a "custom" linear timing function here.
-    VueMixinTween('numberOfAlligators', 5000, (pos) => pos)
-  ],*/
   props: {
     level: Number,
     viewId: String,
@@ -33,8 +26,8 @@ export default {
   created () {
     this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
       console.log('selectedObjId Changed!', newVal)
-      this.moveCameraToPos()
-    }, {immediate: true})
+      this.moveCameraToPos(newVal)
+    }, {immediate: false})
   },
   methods: {
     onResize () {
@@ -171,15 +164,12 @@ export default {
       this.animate()
     },
     render () {
-      // console.log(camera.position.x);
-      // this.camera.rotation.z = 0;// this is used to keep the camera level
       this.renderer.render(this.scene, this.camera)
     },
 
     animate () {
       requestAnimationFrame(this.animate.bind(this))
       TWEEN.update()
-      // this.camera.up = new THREE.Vector3(0, 1, 0)// Keep the camera level
       this.skyBox.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z) // keep skybox centred around the camera
       this.controls.update()
       this.renderer.render(this.scene, this.camera)
@@ -209,38 +199,25 @@ export default {
         })
       }
     },
-    moveCameraToPos () {
-      // console.log('selected modelObj', modelObj.name);
-
+    moveCameraToPos (key) {
+      let selectedModelObj = this.rootObject3D.getModelObject3DByKey(key)
+      // console.log('selectedModelObj', selectedModelObj.userData.doc.text)
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
-      newTargetPos.setFromMatrixPosition(this.modelObject3D.matrixWorld)
+      newTargetPos.setFromMatrixPosition(selectedModelObj.matrixWorld)
 
+      new TWEEN.Tween(this.controls.target).easing(TWEEN.Easing.Quadratic.Out).to(newTargetPos, 1500).start()
+
+      let cameraPos = this.controls.object.position.clone()
       let newCameraPos = newTargetPos.clone()
       newCameraPos.z = 2000
-      let cameraPos = this.camera.position
-      let target = this.controls.target
-      let fromPos = {tx: target.x, ty: target.y, tz: target.z, cx: cameraPos.x, cy: cameraPos.y, cz: cameraPos.z}
-      let toPos = {
-        tx: newTargetPos.x,
-        ty: newTargetPos.y,
-        tz: newTargetPos.z,
-        cx: newCameraPos.x,
-        cy: newCameraPos.y,
-        cz: newCameraPos.z
-      }
-      let tween = new TWEEN.Tween(fromPos).to(toPos, 1500)
-      tween.easing(TWEEN.Easing.Quadratic.Out)
-
-      let controls = this.controls
-      tween.onUpdate(function () {
-        let tweenTargetPos = new THREE.Vector3(this.tx, this.ty, this.tz)
-        let tweenCameraPos = new THREE.Vector3(this.cx, this.cy, this.cz)
-        console.log('tweenCameraPos', tweenCameraPos);
-        controls.object.position.set(tweenCameraPos.x, tweenCameraPos.y, tweenCameraPos.z)
-        controls.target = tweenTargetPos
+      let cameraTween = new TWEEN.Tween(cameraPos).to(newCameraPos, 1500)
+      cameraTween.easing(TWEEN.Easing.Quadratic.Out)
+      cameraTween.onUpdate(() => {
+        // console.log('cameraPos', cameraPos)
+        this.controls.object.position.set(cameraPos.x, cameraPos.y, cameraPos.z)
       })
-      tween.start()
+      cameraTween.start()
     }
   }
 }
