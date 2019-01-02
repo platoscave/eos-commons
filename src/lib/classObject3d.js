@@ -3,22 +3,19 @@ const TrackballControls = require('../../node_modules/three/examples/js/controls
 const Detector = require('../../node_modules/three/examples/js/Detector.js')
 
 export default class modelObject3d extends THREE.Object3D {
-  constructor (doc, pos, geometry, material, font, textMaterial, connectorMaterial) {
+  constructor (geometry, material, pos, queryResult, font) {
     super()
-    this.name = doc.name ? doc.name : doc.title
-    this.userData.doc = doc
+    this.key = queryResult.id
     this.userData.children = []
     this.userData.instances = []
-    this.userData.connectorMaterial = connectorMaterial
-    this.userData.material = material
     this.position.set(pos.x, pos.y, pos.z)
-    let classMesh = new THREE.Mesh(geometry, material)
-    classMesh.scale.set(100, 100, 100)
-    this.add(classMesh)
-    let text3d = new THREE.TextGeometry(doc.text, {size: 30, height: 1, font: font})
+    let mesh = new THREE.Mesh(geometry, material)
+    this.add(mesh)
+    let text3d = new THREE.TextGeometry(queryResult.text, {size: 30, height: 1, font: font})
     text3d.computeBoundingBox()
     let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
     let yOffset = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y)
+    let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
     let textMesh = new THREE.Mesh(text3d, textMaterial)
     textMesh.position.x = xOffset
     textMesh.position.y = yOffset
@@ -42,7 +39,7 @@ export default class modelObject3d extends THREE.Object3D {
     this.position.set(ourX, this.position.y, this.position.z)
     return maxXUntilNow
   }
-  collectSelectableMeshes (selectableMeshArr) {
+  collectSelectableMeshes(selectableMeshArr){
     selectableMeshArr.push(this.children[0])
     this.userData.instances.forEach(function (child) {
       selectableMeshArr.push(child.children[0])
@@ -52,9 +49,9 @@ export default class modelObject3d extends THREE.Object3D {
     })
   }
   getModelObject3DByKey (key) {
-    if (this.userData.doc.id === key) return this
+    if (this.key === key) return this
     let resObj = this.userData.instances.find(function (child) {
-      return (child.userData.doc.id === key)
+      return (child.key === key)
     })
     if (resObj) return resObj
     this.userData.children.some(function (child) {
@@ -89,30 +86,31 @@ export default class modelObject3d extends THREE.Object3D {
   }
   drawClassConnectors (modelObject3D) {
     if (this.userData.children.length > 0) {
+      let connectorMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
       // vertical beam from parent class
       let parentEndVector = new THREE.Vector3(this.position.x, this.position.y - 200, this.position.z)
-      modelObject3D.add(this.drawBeam(this.position, parentEndVector, this.userData.connectorMaterial))
+      modelObject3D.add(this.drawBeam(this.position, parentEndVector, connectorMaterial))
       // horizontal beam
       let beamStartX = this.userData.children[0].position.x
       let beamEndX = this.userData.children[this.userData.children.length - 1].position.x
       let beamStartVector = new THREE.Vector3(beamStartX, this.position.y - 200, this.position.z)
       let beamtEndVector = new THREE.Vector3(beamEndX, this.position.y - 200, this.position.z)
-      modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, this.userData.connectorMaterial))
+      modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, connectorMaterial))
       // sphere at the left end
       let sphereGeometryLeft = new THREE.SphereGeometry(10)
-      let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, this.userData.connectorMaterial)
+      let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, connectorMaterial)
       sphereMeshLeft.position.set(beamStartVector.x, beamStartVector.y, beamStartVector.z)
       modelObject3D.add(sphereMeshLeft)
       // sphere at the right end
       let sphereGeometry = new THREE.SphereGeometry(10)
-      let sphereMesh = new THREE.Mesh(sphereGeometry, this.userData.connectorMaterial)
+      let sphereMesh = new THREE.Mesh(sphereGeometry, connectorMaterial)
       sphereMesh.position.set(beamtEndVector.x, beamtEndVector.y, beamtEndVector.z)
       modelObject3D.add(sphereMesh)
       // for each of the child classes
       this.userData.children.forEach(function (child) {
         // beam from child class to horizontal beam
         let childStartVector = new THREE.Vector3(child.position.x, child.position.y + 200, child.position.z)
-        modelObject3D.add(this.drawBeam(childStartVector, child.position, this.userData.connectorMaterial))
+        modelObject3D.add(this.drawBeam(childStartVector, child.position, connectorMaterial))
         // tell the child class to do the same
         child.drawClassConnectors(modelObject3D)
       }.bind(this))

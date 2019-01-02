@@ -12,6 +12,7 @@ import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
 import Scene from './views/Scene.vue'
 import ClassModel from './views/classModel.vue'
+import ProcessModel from './views/processModel.vue'
 import { sync } from 'vuex-router-sync'
 
 Vue.component('ec-layout', Layout)
@@ -22,6 +23,7 @@ Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)
 Vue.component('ec-scene', Scene)
 Vue.component('ec-class-model', ClassModel)
+Vue.component('ec-process-model', ProcessModel)
 
 global.THREE = require('../node_modules/three/three.js')
 global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')

@@ -12,34 +12,35 @@ export default {
   mixins: [Scene],
   data () {
     return {
+      /*skyboxArray: [
+        'grass/sbox_px.jpg',
+        'grass/sbox_nx.jpg',
+        'grass/sbox_py.jpg',
+        'grass/sbox_ny.jpg',
+        'grass/sbox_pz.jpg',
+        'grass/sbox_nz.jpg'
+      ]*/
       skyboxArray: [
-        'posx.jpg',
-        'negx.jpg',
-        'posy.jpg?',
-        'negy.jpg',
-        'posz.jpg',
-        'negz.jpg'
+        'milkyway/posx.jpg',
+        'milkyway/negx.jpg',
+        'milkyway/posy.jpg',
+        'milkyway/negy.jpg',
+        'milkyway/posz.jpg',
+        'milkyway/negz.jpg'
       ]
       /* skyboxArray: [
-        'space_3_right.jpg',
-        'space_3_left.jpg',
-        'space_3_top.jpg?',
-        'space_3_bottom.jpg',
-        'space_3_front.jpg',
-        'space_3_back.jpg'
+        'jupiter/space_3_right.jpg',
+        'jupiter/space_3_left.jpg',
+        'jupiter/space_3_top.jpg',
+        'jupiter/space_3_bottom.jpg',
+        'jupiter/space_3_front.jpg',
+        'jupiter/space_3_back.jpg'
       ] */
     }
   },
   methods: {
     collectAndDrawClasses (queryResult, position) {
-      let obj = new classObject3d(
-        queryResult,
-        position,
-        this.classGeometry,
-        this.classMaterial,
-        this.font,
-        this.textMaterial,
-        this.connectorMaterial)
+      let obj = new classObject3d(this.classGeometry, this.classMaterial, position, queryResult, this.font)
       this.modelObject3D.add(obj)
 
       this.render()
@@ -111,10 +112,6 @@ export default {
     }
   },
   mounted () {
-    this.classMaterial = new THREE.MeshLambertMaterial({color: 0x8904B1})
-    this.objectMaterial = new THREE.MeshLambertMaterial({color: 0x00A300})// 0x00A300
-    this.connectorMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-    this.textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
     let loader = new THREE.JSONLoader(true)
     let fontLoader = new THREE.FontLoader()
 
@@ -138,8 +135,14 @@ export default {
     return Promise.all(promises).then((resultsArr) => {
       this.view = resultsArr[0]
       this.classGeometry = resultsArr[1]
+      this.classGeometry.scale(100, 100, 100)
       this.objectGeometry = resultsArr[2]
+      this.objectGeometry.scale(100, 100, 100)
       this.font = resultsArr[3]
+
+      this.classMaterial = new THREE.MeshLambertMaterial({color: 0x8904B1})
+
+      this.objectMaterial = new THREE.MeshLambertMaterial({color: 0x00A300})
 
       let viewQueryObj = this.viewRootQueryObj()
       this.$store.dispatch('query', viewQueryObj).then((resultsArr) => {

@@ -12,6 +12,7 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
 
   state: {
+    commons: {},
     classes: {},
     loading: false,
     statusCode: null,
@@ -63,10 +64,30 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
-      let buf = Buffer.from('eos-commons', 'utf8')
-      ipfs.add(buf).then((response) => {
+      const updateHash = (newVal, oldVal) => {
+        for (let key in state.classes) {
+          let obj = state.classes[key]
+          if (obj.parentId === oldVal) {
+            let newObj = Vue._.cloneDeep(obj)
+            newObj.parentId = newVal
+            let objStr = JSON.stringify(state.classes[key])
+            ipfs.files.add(objStr, {'onlyHash': true}).then((response) => {
+              let hash = response[0].hash
+              console.log('Hash from IPFS: ' + hash)
+              state.commons[hash] = rooObj
+              this.updateHash(hash, key)
+            })
+          }
+        }
+      }
+      let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
+      console.log('rooObj', rooObj)
+      let buf = Buffer.from(rooObj, 'utf8')
+      ipfs.files.add(buf, {'onlyHash': true}).then((response) => {
         let hash = response[0].hash
         console.log('Hash from IPFS: ' + hash)
+        state.commons[hash] = rooObj
+        updateHash(hash, '56f86c6a5dde184ccfb9fc6a')
       })
     }
   },
@@ -216,6 +237,7 @@ const store = new Vuex.Store({
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
+            debugger
             smartMergeProperties(viewObj, classObj)
             return viewObj
           })

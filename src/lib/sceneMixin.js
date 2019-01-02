@@ -194,7 +194,7 @@ export default {
         this.$store.commit('SET_LEVEL_IDS', {
           level: this.level,
           ids: {
-            selectedObjId: selectedMesh.parent.userData.doc.id
+            selectedObjId: selectedMesh.parent.key
           }
         })
       }

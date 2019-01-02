@@ -3778,21 +3778,21 @@
     "name" : "States Tree View",
     "ownerId" : "575d4c3f2cf3d6dc3ed83148",
     "query" : {
-      "from" : "56f870a55dde184ccfb9fc6c",
+      "from" : "classes",
       "join" : [ {
-        "from" : "5745eaa53c6d3cd598a5a371",
+        "from" : "classes",
         "join" : [ {
           "from" : "5745eaa53c6d3cd598a5a371",
           "join" : [ {
-            "queryByName" : "state"
+            "queryByName" : "viewQuery"
           } ],
           "pageId" : "57b72a3c2d8cd20920e6d839",
           "queryName" : "state",
           "select" : "name",
           "where" : {
-            "in" : {
-              "_id" : "$parent.nextStateIds"
-            }
+            "docProp" : "parentId",
+            "operator" : "eq",
+            "value" : "$parentNode.$key"
           }
         } ],
         "pageId" : "57b72a3c2d8cd20920e6d839",

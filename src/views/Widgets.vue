@@ -26,7 +26,7 @@
 
             <!-- ProcessModel-->
             <div v-if="widget.displayType === 'Process Model'">
-                <div>Widget {{ widget.displayType }}</div>
+                <ec-process-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
             </div>
 
             <!-- Form-->
