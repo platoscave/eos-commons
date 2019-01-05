@@ -8,7 +8,7 @@
         "pattern": "[a-f0-9]{24}",
         "readOnly": true,
         "title": "id",
-        "type": "object"
+        "type": "string"
       },
       "classId": {
         "pattern": "[a-f0-9]{24}",
@@ -1619,6 +1619,49 @@
     "docType": "class",
     "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQ1JREFUeNpi/P//PwMlgImBQjDwBrAETGAkSiEopP79Y5j19z9DKjMjAyMT0GqwTlAgEotdOxn+33yy5L9zO4j7n8GvH2iITy/D+t9/GQKApjP8x2M90GYGG1UGBkVRBgYjhdkMxctTGfZU/Gdk+QPU3BWTyvDrzx8GfDH67z/ItcwMl5/OYTjzNJWhNbyNwbOb8T8LyB/X3s8GGsCA1wCQ3F+gKxnYIUH/9c87sDijSy3DOlZehsB/BDSDvGhtDPSCPAOD8P9UhokbZjPsqWQwAckDhRiMicHuHQz/N9wK+e/WDg4uY3Ag+vcTH+cfnzFM4xZnyNxawmAC1HyWkYx0Iwl1DRwwDv3MBBBgAJlZhvyadk3fAAAAAElFTkSuQmCC",
     "parentId": "573435803c6d3cd598a5a2dd",
+    "properties": {
+      "nextStateIds": {
+        "items": {
+          "properties": {
+            "action": {
+              "maxLength": 100,
+              "title": "Height",
+              "type": "string"
+            },
+            "stateId": {
+              "pattern": "[a-f0-9]{24}",
+              "query": {
+                "from": "5745eaa53c6d3cd598a5a371"
+              },
+              "title": "State",
+              "type": "string"
+            }
+          },
+          "required": [
+            "action",
+            "stateId"
+          ],
+          "type": "object"
+        },
+        "title": "Next States",
+        "type": "array"
+      },
+      "substateId": {
+        "pattern": "[a-f0-9]{24}",
+        "query": {
+          "from": "574724823c6d3cd598a5a372"
+        },
+        "title": "Substate",
+        "type": "string"
+      },
+      "execute": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Execute",
+        "type": "array"
+      }
+    },
     "title": "States",
     "type": "object"
   },
@@ -1630,16 +1673,29 @@
     "properties": {
       "nextStateIds": {
         "items": {
-          "pattern": "[a-f0-9]{24}",
-          "type": "string"
-        },
-        "minItems": 0,
-        "query": {
-          "from": "5745eaa53c6d3cd598a5a371"
+          "properties": {
+            "action": {
+              "maxLength": 100,
+              "title": "Height",
+              "type": "string"
+            },
+            "stateId": {
+              "pattern": "[a-f0-9]{24}",
+              "query": {
+                "from": "5745eaa53c6d3cd598a5a371"
+              },
+              "title": "State",
+              "type": "string"
+            }
+          },
+          "required": [
+            "action",
+            "stateId"
+          ],
+          "type": "object"
         },
         "title": "Next States",
-        "type": "array",
-        "uniqueItems": true
+        "type": "array"
       }
     },
     "title": "Open",
@@ -1668,12 +1724,14 @@
     "docType": "class",
     "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGZpbGw9IiNiZjAwMDAiIGlkPSJzdmdfMSIgZD0ibTE1LjM3NSw3bC01LjM3NSwtNC40NmMtMC4zMDUsLTAuMjUzIC0wLjUzOSwtMC41NCAtMSwtMC41NGMtMC42MjUsMCAtMSwwLjUxNiAtMSwxbDAsM2wtNywwYy0wLjU1LDAgLTEsMC40NSAtMSwxbDAsMmMwLDAuNTUgMC40NSwxIDEsMWw3LDBsMCwzYzAsMC40ODQgMC4zNzUsMSAxLDFjMC40NjEsMCAwLjY5NSwtMC4yODcgMSwtMC41NGw1LjM3NSwtNC40NmMwLjM4MywtMC4zMTIgMC42MjUsLTAuNTU1IDAuNjI1LC0xcy0wLjI0MiwtMC42ODcgLTAuNjI1LC0xeiIvPgogPC9nPgo8L3N2Zz4=",
     "parentId": "574724823c6d3cd598a5a372",
-    "execute": {
-      "items": {
-        "type": "string"
-      },
-      "title": "Execute",
-      "type": "array"
+    "properties": {
+      "execute": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Execute",
+        "type": "array"
+      }
     },
     "title": "Execute",
     "type": "object"
@@ -3485,9 +3543,36 @@
     "docType": "object",
     "name": "Purchase",
     "nextStateIds": [
-      "57b715662d8cd20920e6d829",
-      "57b719fe2d8cd20920e6d82b"
+      {
+        "action": "unhappy",
+        "stateId": "57b719fe2d8cd20920e6d82b"
+      },
+      {
+        "action": "happy",
+        "stateId": "574725843c6d3cd598a5a37d"
+      },
+      {
+        "action": "reject",
+        "stateId": "574726f43c6d3cd598a5a37f"
+      }
     ],
+    "substateId": "57b715662d8cd20920e6d829",
+    "ownerId": "575d4c3f2cf3d6dc3ed8315b"
+  },
+  "57790e503c6d3cd598a5a3a1": {
+    "classId": "574724823c6d3cd598a5a373",
+    "description": "<p>Bicycle Shop Purchase Process</p>",
+    "docType": "object",
+    "name": "Bicycle Shop",
+    "nextStateIds": [
+      {
+        "action": "unhappy"
+      },
+      {
+        "action": "happy"
+      }
+    ],
+    "substateId": "583225ed425310133a49f120",
     "ownerId": "575d4c3f2cf3d6dc3ed8315b"
   },
   "578921fe3c6d3cd598a5a3a4": {
@@ -4269,7 +4354,19 @@
     "docType": "object",
     "name": "Validate",
     "nextStateIds": [
-      "57b71a302d8cd20920e6d82d"
+      {
+        "action": "happy",
+        "stateId": "58322689425310133a49f11b"
+      },
+      {
+        "action": "reject",
+        "stateId": "57790e503c6d3cd598a5a3a0"
+      }
+    ],
+    "execute": [
+      "validate ownership",
+      "product escrow",
+      "payment escrow"
     ],
     "ownerId": "575d4c3f2cf3d6dc3ed8315b"
   },
@@ -4278,6 +4375,15 @@
     "description": "<p>Rollback</p>",
     "docType": "object",
     "name": "Rollback",
+    "nextStateIds": [
+      {
+        "action": "unhappy",
+        "stateId": "57790e503c6d3cd598a5a3a0"
+      }
+    ],
+    "execute": [
+      "return payment"
+    ],
     "ownerId": "575d4c3f2cf3d6dc3ed8315b"
   },
   "57b71a302d8cd20920e6d82d": {
@@ -4547,10 +4653,13 @@
     "name": "State Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "description": {
-        "readOnly": false
+      "_id": {
+        "readOnly": true
       },
       "name": {
+        "readOnly": false
+      },
+      "description": {
         "readOnly": false
       },
       "nextStateIds": {
@@ -4688,11 +4797,11 @@
       }
     },
     "query": {
-      "from": "5745eaa53c6d3cd598a5a371",
+      "from": "574724823c6d3cd598a5a373",
       "where": {
-        "docProp": "$key",
+        "docProp": "classId",
         "operator": "eq",
-        "value": "$docId"
+        "value": "574724823c6d3cd598a5a373"
       }
     },
     "type": "object"
@@ -5192,7 +5301,7 @@
   },
   "583221c9425310133a49f117": {
     "classId": "574234113c6d3cd598a5a30b",
-    "description": "<p>Repsonde to question</p>",
+    "description": "<p>Respond to question</p>",
     "docType": "object",
     "fromDate": "2008-10-17T00:00:00Z",
     "initialStateId": "583225ed425310133a49f119",
@@ -5205,8 +5314,48 @@
     "docType": "object",
     "name": "Agreement",
     "nextStateIds": [
-      "58322689425310133a49f11b",
-      "583226da425310133a49f11d"
+      {
+        "action": "happy",
+        "stateId": "583226fa425310133a49f11f"
+      },
+      {
+        "action": "unhappy",
+        "stateId": "57b719fe2d8cd20920e6d82b"
+      }
+    ],
+    "ownerId": "575d4c3f2cf3d6dc3ed83148"
+  },
+  "583225ed425310133a49f120": {
+    "classId": "5747251e3c6d3cd598a5a398",
+    "description": "<p>Order Pick</p>",
+    "docType": "object",
+    "name": "Order Pick",
+    "nextStateIds": [
+      {
+        "action": "happy",
+        "stateId": "583225ed425310133a49f121"
+      },
+      {
+        "action": "unhappy",
+        "stateId": "57790e503c6d3cd598a5a3a1"
+      }
+    ],
+    "ownerId": "575d4c3f2cf3d6dc3ed83148"
+  },
+  "583225ed425310133a49f121": {
+    "classId": "5747251e3c6d3cd598a5a398",
+    "description": "<p>Expedite</p>",
+    "docType": "object",
+    "name": "Expedite",
+    "nextStateIds": [
+      {
+        "action": "happy",
+        "stateId": "57790e503c6d3cd598a5a3a1"
+      },
+      {
+        "action": "unhappy",
+        "stateId": "57790e503c6d3cd598a5a3a1"
+      }
     ],
     "ownerId": "575d4c3f2cf3d6dc3ed83148"
   },
@@ -5216,8 +5365,14 @@
     "docType": "object",
     "name": "Perform",
     "nextStateIds": [
-      "583225ed425310133a49f119",
-      "583226fa425310133a49f11f"
+      {
+        "action": "happy",
+        "stateId": "583225ed425310133a49f119"
+      },
+      {
+        "action": "unhappy",
+        "stateId": "57b719fe2d8cd20920e6d82b"
+      }
     ],
     "ownerId": "575d4c3f2cf3d6dc3ed83148"
   },
@@ -5233,6 +5388,16 @@
     "description": "<p>Transact</p>",
     "docType": "object",
     "name": "Transact",
+    "nextStateIds": [
+      {
+        "action": "happy",
+        "stateId": "57790e503c6d3cd598a5a3a0"
+      }
+    ],
+    "execute": [
+      "transfer product ownership",
+      "transfer payment"
+    ],
     "ownerId": "575d4c3f2cf3d6dc3ed83148"
   },
   "583238be425310133a49f121": {

@@ -237,7 +237,6 @@ const store = new Vuex.Store({
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
-            debugger
             smartMergeProperties(viewObj, classObj)
             return viewObj
           })

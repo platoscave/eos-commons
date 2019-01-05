@@ -128,15 +128,22 @@
                                 <template v-else-if="propertyHas( property, 'type', 'array') ">
                                     <div>
                                         <!--<v-layout column>-->
-                                        <template v-for="(childData) in data[key]">
-                                            <!--<flex>-->
-                                            <ec-form class="readOnlyInput" v-bind:level="level"
-                                                     v-bind:editMode="editMode"
-                                                     v-bind:parent-data="childData"
-                                                     v-bind:parent-schema="property.items"></ec-form>
-                                            <!--</flex>-->
-                                            <br>
+                                        <template v-if="propertyHas( property.items, 'type', 'object') ">
+                                            <template v-for="(childData) in data[key]">
+                                                <!--<flex>-->
+                                                <ec-form class="readOnlyInput" v-bind:level="level"
+                                                         v-bind:editMode="editMode"
+                                                         v-bind:parent-data="childData"
+                                                         v-bind:parent-schema="property.items"></ec-form>
+                                                <!--</flex>-->
+                                                <br>
+                                            </template>                                       </template>
+                                        <template v-else>
+                                            <template v-for="(childData) in data[key]">
+                                                <div class="readOnlyInput">{{ childData }}</div>
+                                            </template>
                                         </template>
+
                                         <!--</v-layout>-->
                                     </div>
                                 </template>
