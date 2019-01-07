@@ -81,12 +81,12 @@ export default {
         })
       }
       // pageId is destroyed. wrong kind of merg?
-      /*this.$store.commit('SET_LEVEL_IDS', {
+      /* this.$store.commit('SET_LEVEL_IDS', {
         level: this.level,
         ids: {
           selectedObjId: node.model.id
         }
-      })*/
+      }) */
     },
     itemToggle (oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {

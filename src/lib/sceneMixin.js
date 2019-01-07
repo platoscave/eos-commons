@@ -161,6 +161,7 @@ export default {
       this.$el.addEventListener('click', this.onClick, false)
 
       this.onResize()
+      // this.render()
       this.animate()
     },
     render () {

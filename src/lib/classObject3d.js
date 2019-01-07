@@ -5,13 +5,16 @@ const Detector = require('../../node_modules/three/examples/js/Detector.js')
 export default class modelObject3d extends THREE.Object3D {
   constructor (geometry, material, pos, queryResult, font) {
     super()
+
     this.key = queryResult.id
-    this.userData.children = []
-    this.userData.instances = []
+    this.name = queryResult.name ? queryResult.name : queryResult.text
+    this.userData = queryResult
+    // this.userData.children = []
+    // this.userData.instances = []
     this.position.set(pos.x, pos.y, pos.z)
     let mesh = new THREE.Mesh(geometry, material)
     this.add(mesh)
-    let text3d = new THREE.TextGeometry(queryResult.text, {size: 30, height: 1, font: font})
+    let text3d = new THREE.TextGeometry(this.name, {size: 30, height: 1, font: font})
     text3d.computeBoundingBox()
     let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
     let yOffset = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y)
@@ -39,7 +42,7 @@ export default class modelObject3d extends THREE.Object3D {
     this.position.set(ourX, this.position.y, this.position.z)
     return maxXUntilNow
   }
-  collectSelectableMeshes(selectableMeshArr){
+  collectSelectableMeshes (selectableMeshArr) {
     selectableMeshArr.push(this.children[0])
     this.userData.instances.forEach(function (child) {
       selectableMeshArr.push(child.children[0])

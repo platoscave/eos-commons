@@ -4359,8 +4359,7 @@
         "stateId": "58322689425310133a49f11b"
       },
       {
-        "action": "reject",
-        "stateId": "57790e503c6d3cd598a5a3a0"
+        "action": "reject"
       }
     ],
     "execute": [
@@ -4377,8 +4376,7 @@
     "name": "Rollback",
     "nextStateIds": [
       {
-        "action": "unhappy",
-        "stateId": "57790e503c6d3cd598a5a3a0"
+        "action": "unhappy"
       }
     ],
     "execute": [
@@ -5336,8 +5334,7 @@
         "stateId": "583225ed425310133a49f121"
       },
       {
-        "action": "unhappy",
-        "stateId": "57790e503c6d3cd598a5a3a1"
+        "action": "unhappy"
       }
     ],
     "ownerId": "575d4c3f2cf3d6dc3ed83148"
@@ -5349,12 +5346,10 @@
     "name": "Expedite",
     "nextStateIds": [
       {
-        "action": "happy",
-        "stateId": "57790e503c6d3cd598a5a3a1"
+        "action": "happy"
       },
       {
-        "action": "unhappy",
-        "stateId": "57790e503c6d3cd598a5a3a1"
+        "action": "unhappy"
       }
     ],
     "ownerId": "575d4c3f2cf3d6dc3ed83148"
@@ -5390,8 +5385,7 @@
     "name": "Transact",
     "nextStateIds": [
       {
-        "action": "happy",
-        "stateId": "57790e503c6d3cd598a5a3a0"
+        "action": "happy"
       }
     ],
     "execute": [

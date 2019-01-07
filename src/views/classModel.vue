@@ -12,14 +12,14 @@ export default {
   mixins: [Scene],
   data () {
     return {
-      /*skyboxArray: [
+      /* skyboxArray: [
         'grass/sbox_px.jpg',
         'grass/sbox_nx.jpg',
         'grass/sbox_py.jpg',
         'grass/sbox_ny.jpg',
         'grass/sbox_pz.jpg',
         'grass/sbox_nz.jpg'
-      ]*/
+      ] */
       skyboxArray: [
         'milkyway/posx.jpg',
         'milkyway/negx.jpg',
