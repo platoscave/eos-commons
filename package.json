@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "async-es": "^2.6.1",
     "axios": "^0.18.0",
     "eosjs": "^14.1.0",
     "ipfs-api": "^22.0.1",
