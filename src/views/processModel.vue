@@ -169,7 +169,6 @@ export default {
     },
     setPositionY (placeholderObject3d, stateId, y) {
       let state = placeholderObject3d.getObjectByProperty('key', stateId)
-      console.log(state.name, state.position, y)
       if(state.position.y > y) state.position.setY(y)
       if(!state.userData.nextStateIds) return state.position.y
       let minY = y
@@ -201,7 +200,7 @@ export default {
       let toPosition = toState.position
       let material = this.mapActionNameToMaterial(name)
 
-      let fromPos = new THREE.Vector3(fromPosition.x - HEIGHT / 3, fromPosition.y, fromPosition.z)
+      let fromPos = new THREE.Vector3(fromPosition.x - WIDTH / 4, fromPosition.y, fromPosition.z)
       let toPos = new THREE.Vector3(toPosition.x - WIDTH / 2, toPosition.y, toPosition.z)
 
       let y1 = toPos.y + (fromPos.y - toPos.y) / 2 + 50
@@ -250,19 +249,21 @@ export default {
       let material = this.mapActionNameToMaterial(name)
 
       let fromPos = new THREE.Vector3(fromPosition.x + HEIGHT, fromPosition.y, fromPosition.z)
-      let toPos = new THREE.Vector3(toPosition.x + WIDTH / 3, toPosition.y - HEIGHT / 2, toPosition.z)
+      let toPos = new THREE.Vector3(toPosition.x + WIDTH / 4, toPosition.y - HEIGHT / 2, toPosition.z)
 
       let x1 = fromPos.x + WIDTH / 2 -50
       let x2 = fromPos.x + WIDTH / 2
       let y2 = fromPos.y + 50
-      let y3 = fromPos.y + (toPos.y - fromPos.y) / 2 -50
+      let y3 = toPos.y - HEIGHT * 2 - 50
       let x4 = x2 - 50
       if(x2 < toPos.x) x4 = x2 + 50
-      let y4 = fromPos.y + (toPos.y - fromPos.y) / 2
+      let y4 = toPos.y - HEIGHT * 2
       let x5 = toPos.x + 50
       if(x2 < toPos.x) x5 = toPos.x - 50
       let y6 = y4 + 50
       let y7 = toPos.y - 40
+
+      let textPosition = new THREE.Vector3(x2, y2 + (y3 - y2) / 2, toPos.z + 20)
 
       let points = [ ]
       points.push(fromPos)
@@ -284,13 +285,12 @@ export default {
       rightCone.position.set(toPos.x, toPos.y -40, toPos.z)
       placeholderObject3d.add(rightCone)
 
-      if (name === 'a') {
+      if (name) {
         let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
         let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: this.font})
         text3d.center()
         let textMesh = new THREE.Mesh(text3d, textMaterial)
-        text3d.computeBoundingBox()
-        textMesh.position.set(x3 + (x2 - x3) / 2, y2, fromPos.z + 20)
+        textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)
         placeholderObject3d.add(textMesh)
       }
     },
@@ -299,40 +299,21 @@ export default {
       let toPosition = toState.position
       let material = this.mapActionNameToMaterial(name)
 
-      let fromPos = new THREE.Vector3(fromPosition.x + HEIGHT, fromPosition.y, fromPosition.z)
-      let toPos = new THREE.Vector3(toPosition.x - HEIGHT, toPosition.y, toPosition.z)
-      let textPosition = new THREE.Vector3()
+      let fromPos = new THREE.Vector3(fromPosition.x + WIDTH / 2, fromPosition.y, fromPosition.z)
+      let toPos = new THREE.Vector3(toPosition.x - WIDTH / 2 - 40, toPosition.y, toPosition.z)
+      let textPosition = new THREE.Vector3(fromPos.x + (toPos.x - fromPos.x) /2, fromPos.y - (fromPos.y - toPos.y) /2, toPos.z + 20)
 
       let points = [ ]
-      if(toPos.x - fromPos.x <= 800){
+      if(toPos.x - fromPos.x <= WIDTH && toPos.y == fromPos.y) {
         points.push(fromPos)
-        points.push(new THREE.Vector3(toPos.x - 40, toPos.y, toPos.z))
-        textPosition.set(fromPos.x + (toPos.x - fromPos.x) /2, toPos.y, toPos.z + 20)
-      }
-      else{
-
-        points.push(fromPos)
-
         points.push(toPos)
-        /*let y1 = toPos.y + (fromPos.y - toPos.y) / 2 + 50
-        let y2 = toPos.y + (fromPos.y - toPos.y) / 2
-        let x2 = fromPos.x - 50
-        let x3 = toPos.x - HEIGHT + 50
-        let x4 = toPos.x - HEIGHT
-        let y4 = y2 - 50
-        let y5 = toPos.y + 50
-        let x6 = x4 + 50
-        let x7 = toPos.x - 40
-        points.push(fromPos)
-        points.push(new THREE.Vector3(fromPos.x, y1, fromPos.z))
-        points.push(new THREE.Vector3(x2, y2, fromPos.z))
-        points.push(new THREE.Vector3(x3, y2, toPos.z))
-        points.push(new THREE.Vector3(x4, y4, toPos.z))
-        points.push(new THREE.Vector3(x4, y5, toPos.z))
-        points.push(new THREE.Vector3(x6, toPos.y, toPos.z))
-        points.push(new THREE.Vector3(x7, toPos.y, toPos.z))*/
       }
-
+      else {
+        points.push(fromPos)
+        points.push(new THREE.Vector3(fromPos.x + 50, fromPos.y, fromPos.z))
+        points.push(new THREE.Vector3(toPos.x - 40 - 50, toPos.y, toPos.z))
+        points.push(new THREE.Vector3(toPos.x - 40, toPos.y, toPos.z))
+      }
 
       let path = new THREE.CatmullRomCurve3(points)
       let geometry = new THREE.TubeGeometry(path, 64, 10, 8, false)
@@ -341,7 +322,7 @@ export default {
 
       let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
       let rightCone = new THREE.Mesh(coneGeometry, material)
-      rightCone.position.set(toPos.x - 40, toPos.y, toPos.z)
+      rightCone.position.set(toPos.x, toPos.y, toPos.z)
       rightCone.rotation.z = -Math.PI / 2
       placeholderObject3d.add(rightCone)
 
@@ -351,7 +332,7 @@ export default {
         text3d.center()
         let textMesh = new THREE.Mesh(text3d, textMaterial)
         text3d.computeBoundingBox()
-        textMesh.position.set(textPosition)
+        textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)
         placeholderObject3d.add(textMesh)
       }
     },
