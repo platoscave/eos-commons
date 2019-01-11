@@ -6,8 +6,8 @@
 <script>
 import Scene from '../lib/sceneMixin.js'
 import classObject3d from '../lib/classObject3d.js'
-import { series } from "async-es"
-//let async = require('async')
+const WIDTH = 400
+const HEIGHT = 200
 
 export default {
   name: 'processModel',
@@ -39,14 +39,12 @@ export default {
 
     // Rounded rectangle
     let roundedRectShape = new THREE.Shape()
-    roundedRect(roundedRectShape, 0, 0, 400, 200, 20) // negative numbers not allowed
+    roundedRect(roundedRectShape, 0, 0, WIDTH, 200, 20) // negative numbers not allowed
     // extruded shape
     let extrudeSettings = { depth: 10, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
     this.geometry = new THREE.ExtrudeGeometry(roundedRectShape, extrudeSettings)
     this.geometry.center()
 
-    this.interfaceMaterial = new THREE.MeshLambertMaterial({color: 0x00A300})
-    this.executeMaterial = new THREE.MeshLambertMaterial({color: 0x8904B1})
 
     let fontLoader = new THREE.FontLoader()
 
@@ -63,36 +61,36 @@ export default {
 
       let viewQueryObj = this.viewRootQueryObj()
       this.$store.dispatch('query', viewQueryObj).then((resultsArr) => {
-        let z = 0
+        let zz = 0
         resultsArr.forEach(interfaceState => {
           let placeholderObject3d = new THREE.Object3D()
+          placeholderObject3d.position.setZ(zz)
           this.modelObject3D.add(placeholderObject3d)
-          let position = new THREE.Vector3(0, 0, z)
-          let interfaceStateObj = new classObject3d(this.geometry, this.interfaceMaterial, position, interfaceState, this.font)
+          let interfaceMaterial = this.mapStateToMaterial(interfaceState)
+          let position = new THREE.Vector3(0, 0, 0)
+          let interfaceStateObj = new classObject3d(this.geometry, interfaceMaterial, position, interfaceState, this.font)
           placeholderObject3d.add(interfaceStateObj)
 
           const substateId = interfaceState.data.item.substateId
           if (substateId) {
-            //let substatePosition = new THREE.Vector3(-1, position.y - 800, position.z)
-            let collectedSubstates = {}
-            this.collectSubstates(placeholderObject3d, substateId, collectedSubstates).then(stateIdArr => {
-              let unique = stateIdArr.filter((it, i, ar) => ar.indexOf(it) === i)
-
-              unique.forEach(substate => {
-                //let substate = placeholderObject3d.getObjectByProperty('key', stateId)
-                let pos = new THREE.Vector3(-1, 1, z)
-                let obj = new classObject3d(this.geometry, this.interfaceMaterial, pos, substate, this.font)
+            /* We have a problem when collecting substates from interfaceState since the are
+             * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
+             * The workaround is to collect the substates in and object with the stateId as key */
+            this.collectSubstates(substateId).then(stateIdObj => {
+              for(let key in stateIdObj) {
+                let stateObj = stateIdObj[key]
+                let pos = new THREE.Vector3(0, 0, 0)
+                let stateMaterial = this.mapStateToMaterial(stateObj)
+                let obj = new classObject3d(this.geometry, stateMaterial, pos, stateObj, this.font)
                 placeholderObject3d.add(obj)
-              })
+              }
+
               let maxX = this.setPositionX (placeholderObject3d, substateId, 0)
               let minY = this.setPositionY (placeholderObject3d, substateId, position.y - 800)
               
               let bbox = new THREE.Box3().setFromObject(placeholderObject3d)
               let offsetX = bbox.min.x + (bbox.max.x - bbox.min.x) / 2
               interfaceStateObj.position.setX(offsetX)
-
-              //let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
-              //this.modelObject3D.add(box)
 
               // Draw interface connector to first substate
               let fromState = placeholderObject3d.getObjectByProperty('key', interfaceState.id)
@@ -103,8 +101,11 @@ export default {
 
               placeholderObject3d.position.setX(-offsetX)
             })
+
+            //let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
+            //this.modelObject3D.add(box)
           }
-          z -= 1600
+          zz -= 1600
         })
         /* this.drawInterfaceState(resultsArr[0].id, new THREE.Vector3(0, 0, 0)).then(rootObj => {
           this.rootObject3D = rootObj
@@ -115,7 +116,7 @@ export default {
           // Tell the classes to draw their connectors
           rootObj.drawClassConnectors(this.modelObject3D)
           // Get the lowest Y so we know where to start drawing objects
-          let minY = rootObj.findMinY() - 400
+          let minY = rootObj.findMinY() - WIDTH
           // Collect all the objects that we will be using.
           // This is done recusivly and asyncronosly.
           /!* this.collectAndDrawObjects(rootObj, minY).then(res => {
@@ -134,102 +135,48 @@ export default {
     }, (err) => console.log(err))
   },
   methods: {
-    collectSubstates(placeholderObject3d, stateId, collectedSubstates) {
-      collectedSubstates[stateId] = true
+    collectSubstates(stateId) {
       return this.$store.dispatch('loadCommon', stateId).then(substate => {
-        console.log('substate name', substate.name)
         let promises = []
         if(substate.nextStateIds) {
           substate.nextStateIds.forEach(nextStateActionId => {
-            // console.log(nextStateActionId)
-            if (nextStateActionId.stateId) promises.push(this.collectSubstates(placeholderObject3d, nextStateActionId.stateId, collectedSubstates))
+            if (nextStateActionId.stateId) promises.push(this.collectSubstates(nextStateActionId.stateId))
           })
         }
         return Promise.all(promises).then(resultsArr => {
-          let res = [substate]
-          resultsArr.forEach(resStateIdArr => {
-            res = res.concat(resStateIdArr)
+          let res = {}
+          res[stateId] = substate
+          resultsArr.forEach(resStateIdObj => {
+            for(let key in resStateIdObj) {
+              res[key] = resStateIdObj[key]
+            }
           })
           return res
         })
       })
     },
-    drawSubstates (placeholderObject3d, stateId, z) {
-      return this.$store.dispatch('loadCommon', stateId).then(substate => {
-        console.log('substate name', substate.name)
-        let position = new THREE.Vector3(0, 0, z)
-        let obj = new classObject3d(this.geometry, this.interfaceMaterial, position, substate, this.font)
-        placeholderObject3d.add(obj)
-        substate.nextStateIds.forEach(nextStateActionId => {
-          //console.log(nextStateActionId)
-          if (nextStateActionId.stateId) this.drawSubstates(placeholderObject3d, nextStateActionId.stateId, z)
-        })
-        operations.reduce((promiseChain, currentArray) => {
-          return promiseChain.then(chainResults =>
-            Promise.all(currentArray).then(currentResult =>
-              [...chainResults, currentResult]
-            )
-          );
-        }, Promise.resolve([])).then(arrayOfArraysOfResults => {
-          console.log('arrayOfArraysOfResults', arrayOfArraysOfResults)
-          debugger
-          // Do something with all results
-          return true
-
-        })
-        /*series(operations, (err, contents) => {
-          debugger
-          if (err) throw err
-          console.log(contents)
-        })*/
-      })
-      /*
-      return this.$store.dispatch('loadCommon', stateId).then(substate => {
-        console.log('substate name', substate.name)
-        let obj = new classObject3d(this.geometry, this.interfaceMaterial, position, substate, this.font)
-        placeholderObject3d.add(obj)
-        let y = position.y
-        let promises = []
-        substate.nextStateIds.forEach(nextStateActionId => {
-          console.log(nextStateActionId)
-          if(nextStateActionId.stateId){
-            let nextState = placeholderObject3d.getObjectByProperty('key', nextStateActionId.stateId)
-            if(nextState) {nextState.position.setX(position.x + 800)}
-            else {
-              let newPosition = new THREE.Vector3(position.x + 800, y, position.z)
-              promises.push(this.drawSubstates(placeholderObject3d, nextStateActionId.stateId, newPosition))
-            }
-          }
-          y -= 400
-        })
-        return Promise.all(promises).then(resultsArr => {
-          let maxPosition = new THREE.Vector3(position)
-          resultsArr.forEach(substatePos => {
-            maxPosition.set(Math.max(substatePos.x, maxPosition.x), Math.max(substatePos.y, maxPosition.y), Math.max(substatePos.z, maxPosition.z))
-          })
-          return maxPosition
-        })
-      })*/
-    },
     setPositionX (placeholderObject3d, stateId, x) {
       let state = placeholderObject3d.getObjectByProperty('key', stateId)
       if(state.position.x < x) state.position.setX(x)
-      if(!state.userData.nextStateIds) return
+      if(!state.userData.nextStateIds) return state.position.x
+      let maxX = x
       state.userData.nextStateIds.forEach(nextStateActionId => {
-        //console.log(nextStateActionId)
-        if(nextStateActionId.stateId) this.setPositionX(placeholderObject3d, nextStateActionId.stateId, x + 800)
+        if(nextStateActionId.stateId) {
+          maxX = Math.max(x, this.setPositionX(placeholderObject3d, nextStateActionId.stateId, x + 800))
+        }
       })
+      return maxX
     },
     setPositionY (placeholderObject3d, stateId, y) {
       let state = placeholderObject3d.getObjectByProperty('key', stateId)
+      console.log(state.name, state.position, y)
       if(state.position.y > y) state.position.setY(y)
       if(!state.userData.nextStateIds) return state.position.y
       let minY = y
       state.userData.nextStateIds.forEach(nextStateActionId => {
-        //console.log(nextStateActionId)
         if(nextStateActionId.stateId) {
           minY = Math.min(y, this.setPositionY(placeholderObject3d, nextStateActionId.stateId, y))
-          y = minY - 400
+          y = minY - HEIGHT * 2
         }
       })
       return minY
@@ -254,14 +201,14 @@ export default {
       let toPosition = toState.position
       let material = this.mapActionNameToMaterial(name)
 
-      let fromPos = new THREE.Vector3(fromPosition.x - 200 / 3, fromPosition.y, fromPosition.z)
-      let toPos = new THREE.Vector3(toPosition.x - 400 / 2, toPosition.y, toPosition.z)
+      let fromPos = new THREE.Vector3(fromPosition.x - HEIGHT / 3, fromPosition.y, fromPosition.z)
+      let toPos = new THREE.Vector3(toPosition.x - WIDTH / 2, toPosition.y, toPosition.z)
 
       let y1 = toPos.y + (fromPos.y - toPos.y) / 2 + 50
       let y2 = toPos.y + (fromPos.y - toPos.y) / 2
       let x2 = fromPos.x - 50
-      let x3 = toPos.x - 200 + 50
-      let x4 = toPos.x - 200
+      let x3 = toPos.x - HEIGHT + 50
+      let x4 = toPos.x - HEIGHT
       let y4 = y2 - 50
       let y5 = toPos.y + 50
       let x6 = x4 + 50
@@ -302,11 +249,11 @@ export default {
       let toPosition = toState.position
       let material = this.mapActionNameToMaterial(name)
 
-      let fromPos = new THREE.Vector3(fromPosition.x + 200, fromPosition.y, fromPosition.z)
-      let toPos = new THREE.Vector3(toPosition.x + 200 / 3, toPosition.y - 200/2, toPosition.z)
+      let fromPos = new THREE.Vector3(fromPosition.x + HEIGHT, fromPosition.y, fromPosition.z)
+      let toPos = new THREE.Vector3(toPosition.x + WIDTH / 3, toPosition.y - HEIGHT / 2, toPosition.z)
 
-      let x1 = fromPos.x + 400 / 2 -50
-      let x2 = fromPos.x + 400 / 2
+      let x1 = fromPos.x + WIDTH / 2 -50
+      let x2 = fromPos.x + WIDTH / 2
       let y2 = fromPos.y + 50
       let y3 = fromPos.y + (toPos.y - fromPos.y) / 2 -50
       let x4 = x2 - 50
@@ -352,8 +299,8 @@ export default {
       let toPosition = toState.position
       let material = this.mapActionNameToMaterial(name)
 
-      let fromPos = new THREE.Vector3(fromPosition.x + 200, fromPosition.y, fromPosition.z)
-      let toPos = new THREE.Vector3(toPosition.x - 200, toPosition.y, toPosition.z)
+      let fromPos = new THREE.Vector3(fromPosition.x + HEIGHT, fromPosition.y, fromPosition.z)
+      let toPos = new THREE.Vector3(toPosition.x - HEIGHT, toPosition.y, toPosition.z)
       let textPosition = new THREE.Vector3()
 
       let points = [ ]
@@ -363,11 +310,15 @@ export default {
         textPosition.set(fromPos.x + (toPos.x - fromPos.x) /2, toPos.y, toPos.z + 20)
       }
       else{
+
+        points.push(fromPos)
+
+        points.push(toPos)
         /*let y1 = toPos.y + (fromPos.y - toPos.y) / 2 + 50
         let y2 = toPos.y + (fromPos.y - toPos.y) / 2
         let x2 = fromPos.x - 50
-        let x3 = toPos.x - 200 + 50
-        let x4 = toPos.x - 200
+        let x3 = toPos.x - HEIGHT + 50
+        let x4 = toPos.x - HEIGHT
         let y4 = y2 - 50
         let y5 = toPos.y + 50
         let x6 = x4 + 50
@@ -412,8 +363,11 @@ export default {
       return new THREE.MeshLambertMaterial({color: 0xAAAAFF})
     },
     mapStateToMaterial(stateObj) {
-      if(classId === 'interface') return new THREE.MeshLambertMaterial({color: 0x00A300})
-      if(classId === 'interface') return new THREE.MeshLambertMaterial({color: 0x8904B1})
+      if(stateObj.classId === '5747251e3c6d3cd598a5a398') return new THREE.MeshLambertMaterial({color: 0x5200A3}) // User input Seller
+      if(stateObj.classId === '574724b43c6d3cd598a5a375') return new THREE.MeshLambertMaterial({color: 0xA30000}) // Execute
+      if(stateObj.classId === '5747251e3c6d3cd598a5a377') return new THREE.MeshLambertMaterial({color: 0x0000A3}) // Delegate
+      if(stateObj.classId === '5747251e3c6d3cd598a5a388') return new THREE.MeshLambertMaterial({color: 0xA30052}) // User input Buyer
+      return new THREE.MeshLambertMaterial({color: 0x00A300}) // Interface
     },
     viewRootQueryObj: function () {
       const getQueriesByName = (query) => {
