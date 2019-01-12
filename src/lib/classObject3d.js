@@ -9,6 +9,7 @@ export default class modelObject3d extends THREE.Object3D {
     this.key = queryResult.id
     this.name = queryResult.name ? queryResult.name : queryResult.text
     this.userData = queryResult
+    this.material = material
     // this.userData.children = []
     // this.userData.instances = []
     this.position.set(pos.x, pos.y, pos.z)
@@ -51,7 +52,7 @@ export default class modelObject3d extends THREE.Object3D {
       child.collectSelectableMeshes(selectableMeshArr)
     })
   }
-  getModelObject3DByKey (key) {
+  /* getModelObject3DByKey (key) {
     if (this.key === key) return this
     let resObj = this.userData.instances.find(function (child) {
       return (child.key === key)
@@ -78,7 +79,7 @@ export default class modelObject3d extends THREE.Object3D {
     this.userData.children.forEach(function (child) {
       child.selectByKey(key)
     })
-  }
+  } */
   findMinY () {
     let minYUntilNow = this.position.y
     this.userData.children.forEach(function (child) {

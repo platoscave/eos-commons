@@ -24,8 +24,9 @@ export default {
     this.loadScene()
   },
   created () {
-    this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
-      console.log('selectedObjId Changed!', newVal)
+    this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, (newVal, oldVal) => {
+      console.log('selectedObjId Changed!', newVal, oldVal)
+      this.highlight(newVal, oldVal)
       this.moveCameraToPos(newVal)
     }, {immediate: false})
   },
@@ -161,7 +162,7 @@ export default {
       this.$el.addEventListener('click', this.onClick, false)
 
       this.onResize()
-      // this.render()
+      this.render()
       this.animate()
     },
     render () {
@@ -200,8 +201,16 @@ export default {
         })
       }
     },
+    highlight (newVal, oldVal) {
+      let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
+      currentlySelected.children[0].material = currentlySelected.material
+      currentlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+      let newlySelected = this.modelObject3D.getObjectByProperty('key', newVal)
+      newlySelected.children[0].material = new THREE.MeshLambertMaterial({color: 0xEEEE00})
+      newlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0x666666})
+    },
     moveCameraToPos (key) {
-      let selectedModelObj = this.rootObject3D.getModelObject3DByKey(key)
+      let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
       // console.log('selectedModelObj', selectedModelObj.userData.doc.text)
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
