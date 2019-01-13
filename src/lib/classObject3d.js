@@ -43,43 +43,6 @@ export default class modelObject3d extends THREE.Object3D {
     this.position.set(ourX, this.position.y, this.position.z)
     return maxXUntilNow
   }
-  collectSelectableMeshes (selectableMeshArr) {
-    selectableMeshArr.push(this.children[0])
-    this.userData.instances.forEach(function (child) {
-      selectableMeshArr.push(child.children[0])
-    })
-    this.userData.children.forEach(function (child) {
-      child.collectSelectableMeshes(selectableMeshArr)
-    })
-  }
-  /* getModelObject3DByKey (key) {
-    if (this.key === key) return this
-    let resObj = this.userData.instances.find(function (child) {
-      return (child.key === key)
-    })
-    if (resObj) return resObj
-    this.userData.children.some(function (child) {
-      let obj = child.getModelObject3DByKey(key)
-      if (obj) {
-        resObj = obj
-        return true
-      }
-    })
-    return resObj
-  }
-  selectByKey (key) {
-    // Select/unselect this Objec3D
-    if (this.userData.key === key) this.children[0].material = new THREE.MeshLambertMaterial({color: 0xFFFF33})
-    else this.children[0].material = this.userData.material
-    this.userData.instances.forEach(function (child) {
-      // Select/unselect child Objec3D
-      if (child.userData.key === key) child.children[0].material = new THREE.MeshLambertMaterial({color: 0xFFFF33})
-      else child.children[0].material = child.userData.material
-    })
-    this.userData.children.forEach(function (child) {
-      child.selectByKey(key)
-    })
-  } */
   findMinY () {
     let minYUntilNow = this.position.y
     this.userData.children.forEach(function (child) {

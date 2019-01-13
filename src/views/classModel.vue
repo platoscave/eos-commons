@@ -41,6 +41,7 @@ export default {
   methods: {
     collectAndDrawClasses (queryResult, position) {
       let obj = new classObject3d(this.classGeometry, this.classMaterial, position, queryResult, this.font)
+      this.selectableMeshArr.push(obj.children[0])
       this.modelObject3D.add(obj)
 
       this.render()
@@ -85,6 +86,7 @@ export default {
             this.textMaterial,
             this.connectorMaterial)
           this.modelObject3D.add(obj)
+          this.selectableMeshArr.push(obj.children[0])
           object3D.userData.instances.push(obj)
           minY -= 400
         }.bind(this))
@@ -171,7 +173,7 @@ export default {
             this.routePathChanged(this.route.path)
           }) */
 
-          rootObj.collectSelectableMeshes(this.selectableMeshArr)
+          //rootObj.collectSelectableMeshes(this.selectableMeshArr)
         })
       })
     }, (err) => console.log(err))
