@@ -7,6 +7,18 @@ Vue.use(Vuex)
 const IPFS = require('ipfs-api')
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
+const updateRoute = (state) => {
+  let newRoute = ''
+  for (let level = 1; level < state.levelIdsArr.length; level++) {
+    let levelId = state.levelIdsArr[level]
+    let levelArr = []
+    levelArr.push(levelId.selectedObjId)
+    levelArr.push(levelId.pageId)
+    levelArr.push(state.pageStates[levelId.selectedObjId.pageId].selectedTab)
+    newRoute = newRoute + '/' + levelArr.join('.')
+  }
+  state.route = newRoute
+}
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   plugins: [createPersistedState()],
@@ -44,6 +56,7 @@ const store = new Vuex.Store({
 
     SET_LEVEL_IDS (state, payload) {
       Vue.set(state.levelIdsArr, payload.level, payload.ids)
+      updateRoute(state)
     },
 
     SET_PAGE_STATE (state, payload) {
@@ -56,6 +69,7 @@ const store = new Vuex.Store({
       }
       state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
       // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
+      updateRoute(state)
     },
 
     SET_NODE_TOGGLE (state, payload) {
@@ -260,10 +274,14 @@ const store = new Vuex.Store({
           })
         })
     }
+  },
+  methods: {
+
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
   const levelsArr = newPath.hash.split('/')
+  //store.state.levelIdsArr = []
   for (let level = 1; level < levelsArr.length; level++) {
     let pageStateArr = levelsArr[level].split('.')
     const pageId = pageStateArr[1]
