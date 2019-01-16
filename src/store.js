@@ -15,7 +15,7 @@ const updateRoute = (state) => {
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
-    levelArr.push(state.pageStates[levelId.selectedObjId.pageId].selectedTab)
+    levelArr.push(state.pageStates[levelId.pageId].selectedTab)
     newRoute = newRoute + '/' + levelArr.join('.')
   }
   window.location.hash = newRoute
@@ -84,8 +84,12 @@ const store = new Vuex.Store({
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
-          state.pageStates[pageId].selectedTab = pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
-          state.pageStates[pageId].selectedWidget = pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+          const defaultPageState = { paneWidth: '400px', selectedTab: 0 }
+          const newPageState = {
+            selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
+            selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+          }
+          state.pageStates[pageId] = Vue._.merge(defaultPageState, state.pageStates[pageId], newPageState)
         }
       })
       // concatenate the original levelIdsArr
