@@ -8,7 +8,7 @@ const IPFS = require('ipfs-api')
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const updateRoute = (state) => {
-  let newRoute = ''
+  let newRoute = '/#'
   for (let level = 1; level < state.levelIdsArr.length; level++) {
     let levelId = state.levelIdsArr[level]
     let levelArr = []
@@ -70,6 +70,24 @@ const store = new Vuex.Store({
       state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
       // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
       updateRoute(state)
+    },
+
+    SET_PAGE_STATE_FROM_ROUTE (state, payload) {
+      const levelsArr = payload.hash.split('/')
+      for (let level = 1; level < levelsArr.length; level++) {
+        let pageStateArr = levelsArr[level].split('.')
+        const pageId = pageStateArr[1]
+        if (pageId) {
+          Vue.set(state.levelIdsArr, level, {
+            selectedObjId: pageStateArr[0],
+            pageId: pageId
+          })
+          state.pageStates[pageId].selectedTab = pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
+          state.pageStates[pageId].selectedWidget = pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
+        }
+      }
+      // concatenate the original levelIdsArr
+      state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
     },
 
     SET_NODE_TOGGLE (state, payload) {
@@ -280,27 +298,7 @@ const store = new Vuex.Store({
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
-  const levelsArr = newPath.hash.split('/')
-  //store.state.levelIdsArr = []
-  for (let level = 1; level < levelsArr.length; level++) {
-    let pageStateArr = levelsArr[level].split('.')
-    const pageId = pageStateArr[1]
-    if (pageId) {
-      store.commit('SET_PAGE_STATE', {
-        [pageId]: {
-          selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
-          selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
-        }
-      })
-      store.commit('SET_LEVEL_IDS', {
-        level: level,
-        ids: {
-          selectedObjId: pageStateArr[0],
-          pageId: pageId
-        }
-      })
-    }
-  }
+  store.commit('SET_PAGE_STATE_FROM_ROUTE', newPath)
 })
 
 // store.dispatch('loadClasses')
