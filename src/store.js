@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import Router from 'vue-router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -8,7 +9,7 @@ const IPFS = require('ipfs-api')
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const updateRoute = (state) => {
-  let newRoute = '/#'
+  let newRoute = ''
   for (let level = 1; level < state.levelIdsArr.length; level++) {
     let levelId = state.levelIdsArr[level]
     let levelArr = []
@@ -17,7 +18,7 @@ const updateRoute = (state) => {
     levelArr.push(state.pageStates[levelId.selectedObjId.pageId].selectedTab)
     newRoute = newRoute + '/' + levelArr.join('.')
   }
-  state.route = newRoute
+  window.location.hash = newRoute
 }
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -73,21 +74,22 @@ const store = new Vuex.Store({
     },
 
     SET_PAGE_STATE_FROM_ROUTE (state, payload) {
-      const levelsArr = payload.hash.split('/')
-      for (let level = 1; level < levelsArr.length; level++) {
-        let pageStateArr = levelsArr[level].split('.')
+      let levelsArr = payload.split('/')
+      levelsArr = levelsArr.slice(1)
+      levelsArr.forEach((levelStr, level) => {
+        let pageStateArr = levelStr.split('.')
         const pageId = pageStateArr[1]
         if (pageId) {
-          Vue.set(state.levelIdsArr, level, {
+          Vue.set(state.levelIdsArr, level + 1, {
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
           state.pageStates[pageId].selectedTab = pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
           state.pageStates[pageId].selectedWidget = pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
         }
-      }
+      })
       // concatenate the original levelIdsArr
-      state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
+      state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length + 1)
     },
 
     SET_NODE_TOGGLE (state, payload) {
@@ -298,7 +300,7 @@ const store = new Vuex.Store({
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
-  store.commit('SET_PAGE_STATE_FROM_ROUTE', newPath)
+  store.commit('SET_PAGE_STATE_FROM_ROUTE', newPath.hash)
 })
 
 // store.dispatch('loadClasses')
