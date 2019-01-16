@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import Router from 'vue-router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -61,13 +60,7 @@ const store = new Vuex.Store({
     },
 
     SET_PAGE_STATE (state, payload) {
-      const defaultPageState = {
-        [Object.keys(payload)[0]]: {
-          paneWidth: '400px',
-          selectedTab: 0,
-          tabs: []
-        }
-      }
+      const defaultPageState = { paneWidth: '400px', selectedTab: 0, selectedWidget: 0 }
       state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
       // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
       updateRoute(state)
@@ -84,7 +77,7 @@ const store = new Vuex.Store({
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
-          const defaultPageState = { paneWidth: '400px', selectedTab: 0 }
+          const defaultPageState = { paneWidth: '400px', selectedTab: 0, selectedWidget: 0 }
           const newPageState = {
             selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
             selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
