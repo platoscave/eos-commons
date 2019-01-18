@@ -1,6 +1,14 @@
 <template>
     <v-app dark>
         <ec-layout class="pane" v-bind:level="1"></ec-layout>
+        <!--<div class="pane">
+            <div v-if="loading">
+                Loading...
+            </div>
+            <div v-else>
+                <ec-layout v-bind:level="1"></ec-layout>
+            </div>
+        </div>-->
         <div class="footer">
             <div>{{message}}</div>
 
@@ -14,6 +22,11 @@
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+      loading: false
+    }
+  },
   computed: {
     message () {
       return this.$store.getters.getMessage
@@ -25,14 +38,16 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loadClasses')
+    this.$store.dispatch('loadClasses').then(res => {
+      this.loading = false
+    })
   }
 }
 </script>
 <style scoped>
     .pane {
         width: 100vw;
-        height: calc(100vh - 35);
+        height: calc(100vh - 35px);
     }
     .footer {
         display: flex;

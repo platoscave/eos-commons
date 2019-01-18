@@ -283,12 +283,14 @@ const store = new Vuex.Store({
             message: response.statusText,
             data: response.data
           })
+          return true
         })
         .catch(error => {
           store.commit('SET_CLASSES_FAILURE', {
             statusCode: error.status,
             message: error.statusText
           })
+          return false
         })
     }
   },
