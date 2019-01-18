@@ -1,20 +1,10 @@
 <template>
     <v-app dark>
-        <ec-layout class="pane" v-bind:level="1"></ec-layout>
-        <!--<div class="pane">
-            <div v-if="loading">
-                Loading...
-            </div>
-            <div v-else>
-                <ec-layout v-bind:level="1"></ec-layout>
-            </div>
-        </div>-->
+        <ec-layout v-if="!loading" class="pane" v-bind:level="1"></ec-layout>
         <div class="footer">
             <div>{{message}}</div>
-
             <button @click="onSave()">Save</button>
             <div>eos-commons.io</div>
-
         </div>
     </v-app>
 </template>
@@ -39,6 +29,7 @@ export default {
   },
   created () {
     this.$store.dispatch('loadClasses').then(res => {
+      if(!window.location.hash) window.location.hash = '#/.578bff823c6d3cd598a5a3a6' // Demo Page
       this.loading = false
     })
   }

@@ -5913,5 +5913,36 @@
         ]
       }
     ]
+  },
+  "578bff823c6d3cd598a5a3a6": {
+    "accordionOrTab": "Tabs",
+    "classId": "56f87ec55dde184ccfb9fc74",
+    "divider": "None",
+    "docType": "object",
+    "name": "Demo Page",
+    "ownerId": "575d4c3f2cf3d6dc3ed8315b",
+    "tabs": [
+
+      {
+        "name": "Home",
+        "pageId": "575d4c3f2cf3d6dc3ed83146"
+      },
+      {
+        "name": "Class Model",
+        "pageId": "5834c2a4425310133a49f129"
+      },
+      {
+        "name": "Process Model",
+        "pageId": "57b7624f2d8cd20920e6d845"
+      },
+      {
+        "name": "Pages",
+        "pageId": "57b762392d8cd20920e6d841"
+      },
+      {
+        "name": "Views",
+        "pageId": "57b762472d8cd20920e6d843"
+      }
+    ]
   }
 }

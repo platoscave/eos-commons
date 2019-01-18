@@ -8,16 +8,16 @@ const IPFS = require('ipfs-api')
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const updateRoute = (state) => {
-  let newRoute = ''
+  let newHash = ''
   for (let level = 1; level < state.levelIdsArr.length; level++) {
     let levelId = state.levelIdsArr[level]
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
     levelArr.push(state.pageStates[levelId.pageId].selectedTab)
-    newRoute = newRoute + '/' + levelArr.join('.')
+    newHash = newHash + '/' + levelArr.join('.')
   }
-  window.location.hash = newRoute
+  window.location.hash = newHash
 }
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
