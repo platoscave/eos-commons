@@ -24,7 +24,7 @@ export default {
   name: 'App',
   data() {
     return {
-      loading: false
+      loading: true
     }
   },
   computed: {
