@@ -32,6 +32,7 @@
 export default {
   props: {
     level: Number,
+    pageId: String,
     tabs: {
       type: Array,
       default: () => []
@@ -40,25 +41,17 @@ export default {
   computed: {
     selectedTab: {
       get () {
-        const pageDesc = this.$store.state.levelIdsArr[this.level]
-        return this.$store.state.pageStates[pageDesc.pageId].selectedTab
+        return this.$store.state.pageStates[this.pageId].selectedTab
       },
       set (value) {
-        const pageDesc = this.$store.state.levelIdsArr[this.level]
-
-        this.$store.commit('SET_PAGE_STATE', {[pageDesc.pageId]: {selectedTab: value}})
-
-        if (this.tabs[value].pageId) {
-          // Create the pageState, if there isn't one already
-          this.$store.commit('SET_PAGE_STATE', {[this.tabs[value].pageId]: {}})
-          this.$store.commit('SET_LEVEL_IDS', {
-            level: this.level + 1,
-            ids: {
-              selectedObjId: pageDesc.selectedObjId,
-              pageId: this.tabs[value].pageId
-            }
-          })
-        }
+        this.$store.commit('SET_PAGE_STATE2', {
+          level: this.level,
+          pageId: this.pageId,
+          selectedTab: value,
+          nextLevel: {
+            pageId: this.tabs[value].pageId
+          }
+        })
       }
     }
   }

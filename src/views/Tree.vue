@@ -70,23 +70,12 @@ export default {
   methods: {
     itemClick (node) {
       if (node.model.data.pageId) {
-        // Create the next level pageState, if there isn't one already
-        this.$store.commit('SET_PAGE_STATE', {[node.model.data.pageId]: {}})
-        this.$store.commit('SET_LEVEL_IDS', {
+        this.$store.commit('SET_PAGE_STATE2', {
           level: this.level + 1,
-          ids: {
-            selectedObjId: node.model.id,
-            pageId: node.model.data.pageId
-          }
+          pageId: node.model.data.pageId,
+          selectedObjId: node.model.id
         })
       }
-      // pageId is destroyed. wrong kind of merg?
-      /* this.$store.commit('SET_LEVEL_IDS', {
-        level: this.level,
-        ids: {
-          selectedObjId: node.model.id
-        }
-      }) */
     },
     itemToggle (oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {

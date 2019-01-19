@@ -3,7 +3,7 @@
         <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
             <!-- Navigation content -->
             <div class="left" v-bind:style="{ width: paneWidth }">
-                <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
+                <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
@@ -15,7 +15,7 @@
     </div>
     <div v-else>
         <!-- Only header layout content -->
-        <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs"></ec-tabs>
+        <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
     </div>
 </template>
 
@@ -41,7 +41,10 @@ export default {
   },
   methods: {
     paneResizeStop (pane, resizer, size) {
-      this.$store.commit('SET_PAGE_STATE', {[this.pageId]: {paneWidth: size}})
+      this.$store.commit('SET_PAGE_STATE2', {
+        pageId: this.pageId,
+        paneWidth: size
+      })
     },
     handelNewPage (pageDesc) {
       if (!pageDesc || !pageDesc.pageId) return

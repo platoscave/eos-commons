@@ -14,7 +14,9 @@ const updateRoute = (state) => {
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
-    levelArr.push(state.pageStates[levelId.pageId].selectedTab)
+    let selectedTab = state.pageStates[levelId.pageId].selectedTab
+    if (selectedTab) levelArr.push(selectedTab)
+    else levelArr.push('')
     newHash = newHash + '/' + levelArr.join('.')
   }
   window.location.hash = newHash
@@ -54,16 +56,34 @@ const store = new Vuex.Store({
       state.message = payload.message
     },
 
-    SET_LEVEL_IDS (state, payload) {
-      Vue.set(state.levelIdsArr, payload.level, payload.ids)
-      updateRoute(state)
-    },
+    SET_PAGE_STATE2 (state, payload) {
+      /* let example = {
+        level: 0,
+        pageId: '',
+        paneWidth: 400,
+        selectedTab: 0,
+        selectedObjId: '',
+        nextLevel: {}
+      } */
+      if (payload.pageId) {
+        let newPageState = {paneWidth: '400px', selectedTab: 0}
+        let pageState = {}
+        if (payload.paneWidth) pageState.paneWidth = payload.paneWidth
+        if (payload.selectedTab) pageState.selectedTab = payload.selectedTab
+        Vue._.merge(newPageState, state.pageStates[payload.pageId], pageState)
+        Vue.set(state.pageStates, payload.pageId, newPageState)
+      }
 
-    SET_PAGE_STATE (state, payload) {
-      const defaultPageState = { paneWidth: '400px', selectedTab: 0, selectedWidget: 0 }
-      state.pageStates = Vue._.merge(defaultPageState, state.pageStates, payload)
-      // Vue.set(state.pageStates, Object.keys(payload)[0], pageState[Object.keys(payload)[0]])
-      updateRoute(state)
+      if (payload.level) {
+        let ids = {pageId: payload.pageId}
+        if (payload.selectedObjId) ids.selectedObjId = payload.selectedObjId
+        Vue.set(state.levelIdsArr, payload.level, ids)
+      }
+
+      if (payload.nextLevel) {
+        payload.nextLevel.level = payload.level + 1
+        store.commit('SET_PAGE_STATE2', payload.nextLevel)
+      } else updateRoute(state)
     },
 
     SET_PAGE_STATE_FROM_ROUTE (state, payload) {
@@ -77,7 +97,7 @@ const store = new Vuex.Store({
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
-          const defaultPageState = { paneWidth: '400px', selectedTab: 0, selectedWidget: 0 }
+          const defaultPageState = { paneWidth: '400px', selectedTab: 0}
           const newPageState = {
             selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
             selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
