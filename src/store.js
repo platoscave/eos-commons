@@ -9,7 +9,7 @@ const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const updateRoute = (state) => {
   let newHash = ''
-  for (let level = 0; level < state.levelIdsArr.length - 1; level++) {
+  for (let level = 0; level < state.levelIdsArr.length; level++) {
     let levelId = state.levelIdsArr[level]
     let levelArr = []
     levelArr.push(levelId.selectedObjId)

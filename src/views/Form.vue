@@ -18,11 +18,10 @@
                                 <!-- Richtext -->
                                 <template v-if="propertyHas( property, 'media.mediaType', 'text/html') ">
                                     <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput"
-                                             v-html="data[key] ? data[key] : property.default"></div>
+                                        <div class="readOnlyInput" v-html="data[key] ? data[key] : property.default"></div>
                                     </template>
                                     <template v-else>
-                                        <div v-html="data[key]"></div>
+                                        <div class="readOnlyInput" v-html="data[key] ? data[key] : property.default"></div>
                                     </template>
                                 </template>
 
@@ -83,7 +82,7 @@
                                         <div class="readOnlyInput">{{ getCommon(data[key]) }}</div>
                                     </template>
                                     <template v-else>
-                                        <div>{{ data[key] }}</div>
+                                        <v-select outline></v-select>
                                     </template>
                                     <!-- <nq-combobox
                                                     query="[[property.query]]"
@@ -100,7 +99,7 @@
                                         <div class="readOnlyInput">{{ data[key] }}</div>
                                     </template>
                                     <template v-else>
-                                        <div>{{ data[key] }}</div>
+                                        <v-text-field outline></v-text-field>
                                     </template>
                                 </template>
 
@@ -120,7 +119,7 @@
                                         <div class="readOnlyInput">{{ data[key] === true ? 'true' : 'false' }}</div>
                                     </template>
                                     <template v-else>
-                                        <div>{{ data[key] === true ? 'true' : 'false' }}</div>
+                                        <v-checkbox></v-checkbox>
                                     </template>
                                 </template>
 
@@ -191,7 +190,7 @@
     </div>
 </template>
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 
 export default {
   props: {
@@ -207,53 +206,57 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       schema: this.parentSchema,
       data: this.parentData,
       childData: Object,
       model: {
-        name: 'Yourtion'
+        name: "Yourtion"
       }
-    }
+    };
   },
   methods: {
-    propertyHas (property, path, value) {
-      if (value) return (Vue._.get(property, path) === value)
-      return !!(Vue._.get(property, path))
+    propertyHas(property, path, value) {
+      if (value) return Vue._.get(property, path) === value;
+      return !!Vue._.get(property, path);
     },
-    replacer (name, val) {
+    replacer(name, val) {
       // console.log(name, val)
-      if (name === 'icon') {
-        return undefined // remove from result
+      if (name === "icon") {
+        return undefined; // remove from result
       } else {
-        return val
+        return val;
       }
     },
-    getCommon (id) {
-      if (!id) return '[null]'
-      const obj = this.$store.state.classes[id]
-      if (!obj) return '[not found: ' + id + ']'
-      return obj.name ? obj.name : obj.title
+    getCommon(id) {
+      if (!id) return "[null]";
+      const obj = this.$store.state.classes[id];
+      if (!obj) return "[not found: " + id + "]";
+      return obj.name ? obj.name : obj.title;
     }
   },
-  created () {
+  created() {
     if (!this.parentData) {
-      this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
-        console.log('selectedObjId Changed!', newVal)
-        if (!newVal) return
-        this.$store.dispatch('loadCommon', newVal).then((data) => {
-          console.log('data', data)
-          this.data = data
-        })
-      }, {immediate: true})
+      this.$store.watch(
+        state => state.levelIdsArr[this.level].selectedObjId,
+        newVal => {
+          console.log("selectedObjId Changed!", newVal);
+          if (!newVal) return;
+          this.$store.dispatch("loadCommon", newVal).then(data => {
+            console.log("data", data);
+            this.data = data;
+          });
+        },
+        { immediate: true }
+      );
     }
 
     if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch('materializedView', this.viewId).then((view) => {
-        console.log('view', view)
-        this.schema = view
-      })
+      this.$store.dispatch("materializedView", this.viewId).then(view => {
+        console.log("view", view);
+        this.schema = view;
+      });
     }
     /* if (this.parentData) this.data = this.parentData
       else {
@@ -264,32 +267,31 @@ export default {
         })
       } */
   }
-}
-
+};
 </script>
 <style scoped>
-    .readOnlyInput {
-        background-color: #ffffff0d;
-        min-height: 24px;
-        padding-left: 4px;
-    }
+.readOnlyInput {
+  background-color: #ffffff0d;
+  min-height: 24px;
+  padding-left: 4px;
+}
 
-    > > > p {
-        margin-bottom: 0;
-    }
+> p {
+  margin-bottom: 0;
+}
 
-    .monoSpaced {
-        font-family: monospace, monospace;
-        white-space: pre;
-    }
+.monoSpaced {
+  font-family: monospace, monospace;
+  white-space: pre;
+}
 
-    .xcontainer {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        padding: 0;
-        max-width: none;
-        scroll: auto
-    }
+.xcontainer {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  scroll: auto;
+}
 </style>
