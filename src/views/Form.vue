@@ -190,7 +190,7 @@
     </div>
 </template>
 <script>
-import Vue from "vue";
+import Vue from 'vue'
 
 export default {
   props: {
@@ -206,57 +206,57 @@ export default {
       default: null
     }
   },
-  data() {
+  data () {
     return {
       schema: this.parentSchema,
       data: this.parentData,
       childData: Object,
       model: {
-        name: "Yourtion"
+        name: 'Yourtion'
       }
-    };
-  },
-  methods: {
-    propertyHas(property, path, value) {
-      if (value) return Vue._.get(property, path) === value;
-      return !!Vue._.get(property, path);
-    },
-    replacer(name, val) {
-      // console.log(name, val)
-      if (name === "icon") {
-        return undefined; // remove from result
-      } else {
-        return val;
-      }
-    },
-    getCommon(id) {
-      if (!id) return "[null]";
-      const obj = this.$store.state.classes[id];
-      if (!obj) return "[not found: " + id + "]";
-      return obj.name ? obj.name : obj.title;
     }
   },
-  created() {
+  methods: {
+    propertyHas (property, path, value) {
+      if (value) return Vue._.get(property, path) === value
+      return !!Vue._.get(property, path)
+    },
+    replacer (name, val) {
+      // console.log(name, val)
+      if (name === 'icon') {
+        return undefined // remove from result
+      } else {
+        return val
+      }
+    },
+    getCommon (id) {
+      if (!id) return '[null]'
+      const obj = this.$store.state.classes[id]
+      if (!obj) return '[not found: ' + id + ']'
+      return obj.name ? obj.name : obj.title
+    }
+  },
+  created () {
     if (!this.parentData) {
       this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
         newVal => {
-          console.log("selectedObjId Changed!", newVal);
-          if (!newVal) return;
-          this.$store.dispatch("loadCommon", newVal).then(data => {
-            console.log("data", data);
-            this.data = data;
-          });
+          console.log('selectedObjId Changed!', newVal)
+          if (!newVal) return
+          this.$store.dispatch('loadCommon', newVal).then(data => {
+            console.log('data', data)
+            this.data = data
+          })
         },
         { immediate: true }
-      );
+      )
     }
 
     if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch("materializedView", this.viewId).then(view => {
-        console.log("view", view);
-        this.schema = view;
-      });
+      this.$store.dispatch('materializedView', this.viewId).then(view => {
+        console.log('view', view)
+        this.schema = view
+      })
     }
     /* if (this.parentData) this.data = this.parentData
       else {
@@ -267,7 +267,7 @@ export default {
         })
       } */
   }
-};
+}
 </script>
 <style scoped>
 .readOnlyInput {

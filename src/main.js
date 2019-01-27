@@ -15,7 +15,6 @@ import ClassModel from './views/classModel.vue'
 import ProcessModel from './views/processModel.vue'
 import { sync } from 'vuex-router-sync'
 
-
 Vue.component('ec-layout', Layout)
 Vue.component('multipane', Multipane)
 Vue.component('multipane-resizer', MultipaneResizer)

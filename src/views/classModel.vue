@@ -43,12 +43,12 @@ export default {
   },
   mounted () {
     const classOctagonal = (ctx, x, y, width, height, radius) => {
-      ctx.moveTo(x, y + height/3)
-      ctx.moveTo(x, (y + height/3)*2)
-      ctx.moveTo(x + width/2, y + height)
-      ctx.moveTo(x + width, (y + height/3)*2)
-      ctx.moveTo(x + width, y + height/3)
-      ctx.moveTo(x + width/2, y)
+      ctx.moveTo(x, y + height / 3)
+      ctx.moveTo(x, (y + height / 3) * 2)
+      ctx.moveTo(x + width / 2, y + height)
+      ctx.moveTo(x + width, (y + height / 3) * 2)
+      ctx.moveTo(x + width, y + height / 3)
+      ctx.moveTo(x + width / 2, y)
     }
 
     // classOctagonal
@@ -65,7 +65,6 @@ export default {
     }
     this.classGeometry = new THREE.ExtrudeGeometry(classOctagonalShape, extrudeSettings)
     this.classGeometry.center()
-
 
     let loader = new THREE.JSONLoader(true)
     let fontLoader = new THREE.FontLoader()
@@ -111,7 +110,7 @@ export default {
             this.routePathChanged(this.route.path)
           }) */
 
-          //rootObj.collectSelectableMeshes(this.selectableMeshArr)
+          // rootObj.collectSelectableMeshes(this.selectableMeshArr)
         })
       })
     }, (err) => console.log(err))
@@ -149,7 +148,7 @@ export default {
         })
       })
     },
-    /*collectAndDrawObjects (object3D, minY) {
+    /* collectAndDrawObjects (object3D, minY) {
       let ref = firebase.database().ref('documents')
       return ref.orderByChild('classId').equalTo(object3D.userData.key).once('value').then(snapshot => {
         snapshot.forEach(function (subClassSnap) {
@@ -174,7 +173,7 @@ export default {
         }.bind(this))
         return Promise.all(promises)
       })
-    },*/
+    }, */
     viewRootQueryObj: function () {
       const getQueriesByName = (query) => {
         let queryNames = {}
