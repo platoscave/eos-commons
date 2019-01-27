@@ -1,6 +1,7 @@
 import '@babel/polyfill'
 import Vue from 'vue'
 import './plugins/vuetify'
+import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -10,7 +11,6 @@ import {Multipane, MultipaneResizer} from 'vue-multipane'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
-import Scene from './views/Scene.vue'
 import ClassModel from './views/classModel.vue'
 import ProcessModel from './views/processModel.vue'
 import { sync } from 'vuex-router-sync'
@@ -21,7 +21,6 @@ Vue.component('multipane-resizer', MultipaneResizer)
 Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)
-Vue.component('ec-scene', Scene)
 Vue.component('ec-class-model', ClassModel)
 Vue.component('ec-process-model', ProcessModel)
 

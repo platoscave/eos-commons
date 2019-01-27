@@ -181,8 +181,6 @@ export default {
       event.preventDefault()
 
       // get 2D coordinates of the mouse, in normalized device coordinates (NDC)
-      // let x = event.offsetX - this.$.threejsNode.offsetLeft;
-      // let y = event.offsetY - this.$.threejsNode.offsetTop;
       let box = event.target.getBoundingClientRect()
       let x = (event.offsetX / box.width) * 2 - 1
       let y = -(event.offsetY / box.height) * 2 + 1
@@ -193,11 +191,9 @@ export default {
       let intersects = this.raycaster.intersectObjects(this.selectableMeshArr)
       if (intersects.length > 0) {
         let selectedMesh = intersects[0].object
-        this.$store.commit('SET_LEVEL_IDS', {
+        this.$store.commit('SET_PAGE_STATE2', {
           level: this.level,
-          ids: {
-            selectedObjId: selectedMesh.parent.key
-          }
+          selectedObjId: selectedMesh.parent.key
         })
       }
     },

@@ -9,12 +9,13 @@ const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 const updateRoute = (state) => {
   let newHash = ''
-  for (let level = 1; level < state.levelIdsArr.length; level++) {
+  for (let level = 0; level < state.levelIdsArr.length - 1; level++) {
     let levelId = state.levelIdsArr[level]
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
-    let selectedTab = state.pageStates[levelId.pageId].selectedTab
+    let selectedTab = 0
+    if(state.pageStates[levelId.pageId].selectedTab) selectedTab = state.pageStates[levelId.pageId].selectedTab
     if (selectedTab) levelArr.push(selectedTab)
     else levelArr.push('')
     newHash = newHash + '/' + levelArr.join('.')
@@ -69,15 +70,23 @@ const store = new Vuex.Store({
         let newPageState = {paneWidth: '400px', selectedTab: 0}
         let pageState = {}
         if (payload.paneWidth) pageState.paneWidth = payload.paneWidth
-        if (payload.selectedTab) pageState.selectedTab = payload.selectedTab
+        if (payload.selectedTab !== undefined) pageState.selectedTab = payload.selectedTab
         Vue._.merge(newPageState, state.pageStates[payload.pageId], pageState)
         Vue.set(state.pageStates, payload.pageId, newPageState)
       }
 
-      if (payload.level) {
-        let ids = {pageId: payload.pageId}
+      if (payload.selectedTab) {
+        const newLevelIdsArr = state.levelIdsArr.slice(0, payload.level + 1)
+        Vue.set(state, 'levelIdsArr', newLevelIdsArr)
+      }
+      
+      if (payload.level !== undefined) {
+        let newIds = {}
+        let ids = {}
+        if (payload.pageId) ids.pageId = payload.pageId
         if (payload.selectedObjId) ids.selectedObjId = payload.selectedObjId
-        Vue.set(state.levelIdsArr, payload.level, ids)
+        Vue._.merge(newIds, state.levelIdsArr[payload.level], ids)
+        Vue.set(state.levelIdsArr, payload.level, newIds)
       }
 
       if (payload.nextLevel) {
@@ -93,20 +102,20 @@ const store = new Vuex.Store({
         let pageStateArr = levelStr.split('.')
         const pageId = pageStateArr[1]
         if (pageId) {
-          Vue.set(state.levelIdsArr, level + 1, {
+          Vue.set(state.levelIdsArr, level, {
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
-          const defaultPageState = { paneWidth: '400px', selectedTab: 0}
-          const newPageState = {
+          const newPageState = { paneWidth: '400px', selectedTab: 0}
+          const pageState = {
             selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0,
-            selectedWidget: pageStateArr[3] ? parseInt(pageStateArr[3]) : 0
           }
-          state.pageStates[pageId] = Vue._.merge(defaultPageState, state.pageStates[pageId], newPageState)
+          state.pageStates[pageId] = Vue._.merge(newPageState, state.pageStates[pageId], pageState)
+          Vue.set(state.pageStates, pageId, newPageState)
         }
       })
       // concatenate the original levelIdsArr
-      state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length + 1)
+      state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
     },
 
     SET_NODE_TOGGLE (state, payload) {
@@ -313,9 +322,6 @@ const store = new Vuex.Store({
           return false
         })
     }
-  },
-  methods: {
-
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {

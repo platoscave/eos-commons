@@ -1,6 +1,6 @@
 <template>
     <v-app dark>
-        <ec-layout v-if="!loading" class="pane" v-bind:level="1"></ec-layout>
+        <ec-layout v-if="!loading" class="pane" v-bind:level="0"></ec-layout>
         <div class="footer">
             <div>{{message}}</div>
             <button @click="onSave()">Save</button>

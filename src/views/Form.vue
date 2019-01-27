@@ -3,8 +3,8 @@
         <template v-if="schema && data">
             <v-container fluid grid-list-md>
                 <template v-for="(property, key) in schema.properties">
-                    <template v-if="data[key]">
-                        <v-layout justify-start>
+                    <template v-if="data[key]" >
+                        <v-layout justify-start v-bind:key="key">
                             <!--
                             <vaadin-text-field class="full-width"
                                                    value="{{propValue.value}}"
@@ -197,6 +197,7 @@ export default {
   props: {
     level: Number,
     viewId: String,
+    editMode: Boolean,
     parentSchema: {
       type: Object,
       default: null
@@ -208,7 +209,6 @@ export default {
   },
   data () {
     return {
-      editMode: false,
       schema: this.parentSchema,
       data: this.parentData,
       childData: Object,
@@ -241,6 +241,7 @@ export default {
     if (!this.parentData) {
       this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
         console.log('selectedObjId Changed!', newVal)
+        if(!newVal) return
         this.$store.dispatch('loadCommon', newVal).then((data) => {
           console.log('data', data)
           this.data = data

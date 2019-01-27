@@ -31,7 +31,15 @@
 
             <!-- Form-->
             <div v-if="widget.displayType === 'Form'">
-                <ec-form v-bind:level="level" v-bind:viewId="widget.viewId"></ec-form>
+                <ec-form v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
+                <v-btn absolute dark fab bottom right color="pink" @click="editMode = !editMode">
+                    <template v-if="editMode">
+                        <v-icon>save</v-icon>
+                    </template>
+                    <template v-else>
+                        <v-icon>edit</v-icon>
+                    </template>
+                </v-btn>
             </div>
 
             <!-- HomePage-->
@@ -62,6 +70,11 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  data() {
+      return {
+        editMode: false
+      }
   }
 }
 </script>
