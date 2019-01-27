@@ -241,7 +241,7 @@ export default {
     if (!this.parentData) {
       this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, newVal => {
         console.log('selectedObjId Changed!', newVal)
-        if(!newVal) return
+        if (!newVal) return
         this.$store.dispatch('loadCommon', newVal).then((data) => {
           console.log('data', data)
           this.data = data

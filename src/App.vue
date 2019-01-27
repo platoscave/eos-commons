@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'App',
-  data() {
+  data () {
     return {
       loading: true
     }
@@ -29,7 +29,7 @@ export default {
   },
   created () {
     this.$store.dispatch('loadClasses').then(res => {
-      if(!window.location.hash) window.location.hash = '#/.578bff823c6d3cd598a5a3a7' // Demo Page
+      if (!window.location.hash) window.location.hash = '#/.578bff823c6d3cd598a5a3a7' // Demo Page
       this.loading = false
     })
   }

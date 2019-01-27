@@ -71,10 +71,10 @@ export default {
       default: () => []
     }
   },
-  data() {
-      return {
-        editMode: false
-      }
+  data () {
+    return {
+      editMode: false
+    }
   }
 }
 </script>
