@@ -3,8 +3,8 @@
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
         <template  class="widget-container" v-for="(widget) in widgets">
-            <!-- Get rid of linting error-->
-            <div v-bind:key="widget">
+            <!-- Get rid of linting error
+            <div v-bind:key="widget">-->
                 <!-- Document-->
                 <div v-if="widget.displayType === 'Document'">
                     <div>Widget {{ widget.displayType }}</div>
@@ -47,7 +47,7 @@
                 <div v-if="widget.displayType === 'HomePage'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
-            </div>
+            <!--</div>-->
         </template>
             <!--</v-layout>-->
         <!--</v-container>-->
@@ -56,13 +56,11 @@
 <script src="../node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <script src="../node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js"></script>
 <script>
-import WebGl from './WebGl.vue'
 import Tree from './Tree.vue'
 import Form from './Form.vue'
 
 export default {
   components: {
-    'ec-webgl': WebGl,
     'ec-tree': Tree,
     'ec-form': Form
   },

@@ -70,9 +70,12 @@ export default {
         this.font = resultsArr[1]
 
         let viewQueryObj = this.viewRootQueryObj()
-        this.$store.dispatch('query', viewQueryObj).then((resultsArr) => {
+        this.$store.dispatch('query2', viewQueryObj).then((resultsObj) => {
           let zz = 0
-          resultsArr.forEach(interfaceState => {
+          Object.keys(resultsObj).forEach(key => {
+            let result
+            let interfaceState = resultsObj[key]
+            interfaceState.id = key
             let placeholderObject3d = new THREE.Object3D()
             placeholderObject3d.position.setZ(zz)
             this.modelObject3D.add(placeholderObject3d)
@@ -82,7 +85,7 @@ export default {
             placeholderObject3d.add(interfaceStateObj)
             this.selectableMeshArr.push(interfaceStateObj.children[0])
 
-            const substateId = interfaceState.data.item.substateId
+            const substateId = interfaceState.substateId
             if (substateId) {
               /* We have a problem when collecting substates from interfaceState since the are
                  * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.

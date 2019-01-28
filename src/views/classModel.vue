@@ -84,7 +84,7 @@ export default {
       this.objectMaterial = new THREE.MeshLambertMaterial({color: 0x00A300})
 
       let viewQueryObj = this.viewRootQueryObj()
-      this.$store.dispatch('query', viewQueryObj).then((resultsArr) => {
+      this.$store.dispatch('treeQuery', viewQueryObj).then((resultsArr) => {
         // Collect all the classes that we will be using.
         // This is done recursively and asynchronously. the result is promise to the rootObject3D.
         this.collectAndDrawClasses(resultsArr[0], new THREE.Vector3(0, 0, 0)).then(rootObj => {
@@ -134,7 +134,7 @@ export default {
         queryNames: queryResult.data.queryNames
       }
 
-      return this.$store.dispatch('queryArrObj', queryArrObj).then((resultsArr) => {
+      return this.$store.dispatch('treeQueryArr', queryArrObj).then((resultsArr) => {
         let promises = []
         resultsArr.forEach(function (subQueryResult) {
           // console.log(subClassSnap.key, subClassSnap.val().title)

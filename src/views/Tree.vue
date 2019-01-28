@@ -50,7 +50,7 @@ export default {
       loadData: function (oriNode, resolve) {
         if (!oriNode || !oriNode.data.id) {
           let viewQueryObj = this.$parent.viewRootQueryObj()
-          this.$store.dispatch('query', viewQueryObj).then((result) => {
+          this.$store.dispatch('treeQuery', viewQueryObj).then((result) => {
             resolve(result)
           })
         } else {
@@ -60,7 +60,7 @@ export default {
             queryArr: oriNode.data.data.queryArr,
             queryNames: oriNode.data.data.queryNames
           }
-          this.$store.dispatch('queryArrObj', queryArrObj).then((result) => {
+          this.$store.dispatch('treeQueryArr', queryArrObj).then((result) => {
             resolve(result)
           })
         }

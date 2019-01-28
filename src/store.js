@@ -42,22 +42,22 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    SET_CLASSES_LOADING (state) {
+    SET_CLASSES_LOADING(state) {
       state.loading = true
       state.message = 'loading...'
     },
-    SET_CLASSES_SUCCESS (state, payload) {
+    SET_CLASSES_SUCCESS(state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
       state.classes = payload.data
       state.loading = false
     },
-    SET_CLASSES_FAILURE (state, payload) {
+    SET_CLASSES_FAILURE(state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
     },
 
-    SET_PAGE_STATE2 (state, payload) {
+    SET_PAGE_STATE2(state, payload) {
       /* let example = {
         level: 0,
         pageId: '',
@@ -67,7 +67,7 @@ const store = new Vuex.Store({
         nextLevel: {}
       } */
       if (payload.pageId) {
-        let newPageState = {paneWidth: '400px', selectedTab: 0}
+        let newPageState = { paneWidth: '400px', selectedTab: 0 }
         let pageState = {}
         if (payload.paneWidth) pageState.paneWidth = payload.paneWidth
         if (payload.selectedTab !== undefined) pageState.selectedTab = payload.selectedTab
@@ -95,7 +95,7 @@ const store = new Vuex.Store({
       } else updateRoute(state)
     },
 
-    SET_PAGE_STATE_FROM_ROUTE (state, payload) {
+    SET_PAGE_STATE_FROM_ROUTE(state, payload) {
       let levelsArr = payload.split('/')
       levelsArr = levelsArr.slice(1)
       levelsArr.forEach((levelStr, level) => {
@@ -106,7 +106,7 @@ const store = new Vuex.Store({
             selectedObjId: pageStateArr[0],
             pageId: pageId
           })
-          const newPageState = { paneWidth: '400px', selectedTab: 0}
+          const newPageState = { paneWidth: '400px', selectedTab: 0 }
           const pageState = {
             selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
           }
@@ -118,12 +118,12 @@ const store = new Vuex.Store({
       state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
     },
 
-    SET_NODE_TOGGLE (state, payload) {
+    SET_NODE_TOGGLE(state, payload) {
       if (payload.opened) state.isOpened[payload.id] = true
       else delete state.isOpened[payload.id]
     },
 
-    SAVE (state, payload) {
+    SAVE(state, payload) {
       const updateHash = (newVal, oldVal) => {
         for (let key in state.classes) {
           let obj = state.classes[key]
@@ -131,7 +131,7 @@ const store = new Vuex.Store({
             let newObj = Vue._.cloneDeep(obj)
             newObj.parentId = newVal
             let objStr = JSON.stringify(state.classes[key])
-            ipfs.files.add(objStr, {'onlyHash': true}).then((response) => {
+            ipfs.files.add(objStr, { 'onlyHash': true }).then((response) => {
               let hash = response[0].hash
               console.log('Hash from IPFS: ' + hash)
               state.commons[hash] = rooObj
@@ -143,7 +143,7 @@ const store = new Vuex.Store({
       let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
       console.log('rooObj', rooObj)
       let buf = Buffer.from(rooObj, 'utf8')
-      ipfs.files.add(buf, {'onlyHash': true}).then((response) => {
+      ipfs.files.add(buf, { 'onlyHash': true }).then((response) => {
         let hash = response[0].hash
         console.log('Hash from IPFS: ' + hash)
         state.commons[hash] = rooObj
@@ -152,7 +152,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    loadCommon (store, id) {
+    loadCommon(store, id) {
       return new Promise((resolve, reject) => {
         if (store.state.classes[id]) {
           let common = Vue._.cloneDeep(store.state.classes[id])
@@ -168,25 +168,17 @@ const store = new Vuex.Store({
         }
       })
     },
-    queryArrObj (store, queryObj) {
+    treeQueryArr(store, queryObj) {
       let promises = []
       queryObj.queryArr.forEach((query) => {
-        promises.push(store.dispatch('query', {fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level}))
+        promises.push(store.dispatch('treeQuery', { fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level }))
       })
       return Promise.all(promises).then((values) => {
         return Vue._.union.apply(null, values)
       })
     },
-    query: function (store, queryObj) {
-      // Traverse class hierarchy, find nearest icon
-      const getIconFromClassById = (classId) => {
-        const classObj = store.state.classes[classId]
-        if (classObj.icon) return classObj.icon
-        else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
-        return ''
-      }
-      // Run the query, return a results object
-      const getResultsObj = (queryObj) => {
+    query2: function (store, queryObj) {
+      return new Promise((resolve, reject) => {
         let resultsObj = {}
         const docProp = Vue._.get(queryObj, 'query.where.docProp')
         const operator = Vue._.get(queryObj, 'query.where.operator')
@@ -200,62 +192,91 @@ const store = new Vuex.Store({
             if (operator === 'gt') return item[docProp] > value
           })
         }
-        return resultsObj
-      }
-      let resultsObj = getResultsObj(queryObj)
+        resolve(resultsObj)
+      })
+    },
+    treeQuery: function (store, queryObj) {
+      return store.dispatch('query2', queryObj).then(resultsObj => {
+        // Traverse class hierarchy, find nearest icon
+        const getIconFromClassById = (classId) => {
+          const classObj = store.state.classes[classId]
+          if (classObj.icon) return classObj.icon
+          else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
+          return ''
+        }
 
-      // Normalize the results so that they are suited for the tree
-      let resultsArr = []
-      Object.keys(resultsObj).forEach(key => {
-        let result
-        const item = resultsObj[key]
-        // Create a query array for the children, based on join predicate
-        let queryArr = []
-        if (queryObj.query.join) {
-          queryObj.query.join.forEach((query) => {
-            // Query referenced by name
-            if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName])
-            // Query as object
-            else queryArr.push(query)
+        // Normalize the results so that they are suited for the tree
+        let resultsArr = []
+        Object.keys(resultsObj).forEach(key => {
+          let result
+          const item = resultsObj[key]
+          // Create a query array for the children, based on join predicate
+          let queryArr = []
+          if (queryObj.query.join) {
+            queryObj.query.join.forEach((query) => {
+              // Query referenced by name
+              if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName])
+              // Query as object
+              else queryArr.push(query)
+            })
+          }
+
+          // The tree node result
+          const ids = store.state.levelIdsArr[queryObj.level + 1]
+          const selected = ids ? ids.selectedObjId === key : false
+          let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
+          if (!icon) icon = getIconFromClassById(item.classId)
+          result = {
+            id: key,
+            text: item.title ? item.title : item.name,
+            data: {
+              queryArr: queryArr,
+              queryNames: queryObj.queryNames,
+              level: queryObj.level,
+              item: item,
+              pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
+              icon: icon
+            },
+            isLeaf: false,
+            opened: !!store.state.isOpened[key],
+            selected: selected
+          }
+
+          // Find out if the node is a leaf by running the child queries
+          // Run the query, return a results object
+          const getResultsObj = (queryObj) => {
+            let resultsObj = {}
+            const docProp = Vue._.get(queryObj, 'query.where.docProp')
+            const operator = Vue._.get(queryObj, 'query.where.operator')
+            let value = Vue._.get(queryObj, 'query.where.value')
+            if (value === '$parentNode.$key') value = queryObj.fk
+            if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value]
+            else {
+              resultsObj = Vue._.pickBy(store.state.classes, function (item, key) {
+                if (operator === 'eq') return item[docProp] === value
+                if (operator === 'lt') return item[docProp] < value
+                if (operator === 'gt') return item[docProp] > value
+              })
+            }
+            return resultsObj
+          }
+
+          result.isLeaf = !queryArr.some((query) => {
+            let obj = getResultsObj({ fk: key, query: query })
+            return Object.keys(obj).length > 0
           })
-        }
 
-        // The tree node result
-        const ids = store.state.levelIdsArr[queryObj.level + 1]
-        const selected = ids ? ids.selectedObjId === key : false
-        let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
-        if (!icon) icon = getIconFromClassById(item.classId)
-        result = {
-          id: key,
-          text: item.title ? item.title : item.name,
-          data: {
-            queryArr: queryArr,
-            queryNames: queryObj.queryNames,
-            level: queryObj.level,
-            item: item,
-            pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
-            icon: icon
-          },
-          isLeaf: false,
-          opened: !!store.state.isOpened[key],
-          selected: selected
-        }
-
-        // Find out if the node is a leaf by running the child queries
-        result.isLeaf = !queryArr.some((query) => {
-          let obj = getResultsObj({fk: key, query: query})
-          return Object.keys(obj).length > 0
+          resultsArr.push(result)
         })
 
-        resultsArr.push(result)
+        // console.log('QUERY', queryObj)
+        // console.log('RESULTS', resultsArr)
+
+        return resultsArr
       })
 
-      // console.log('QUERY', queryObj)
-      // console.log('RESULTS', resultsArr)
-
-      return resultsArr
     },
-    mergeAncestorClasses (store, classId) {
+    mergeAncestorClasses(store, classId) {
       return store.dispatch('loadCommon', classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
@@ -264,7 +285,7 @@ const store = new Vuex.Store({
         } else return classObj
       })
     },
-    materializedView (store, viewId) {
+    materializedView(store, viewId) {
       const smartMergeProperties = (viewObj, classObj) => {
         if (!viewObj.properties) return
         Object.keys(viewObj.properties).forEach(propName => {
@@ -303,9 +324,9 @@ const store = new Vuex.Store({
         } else return viewObj
       })
     },
-    loadClasses (store) {
+    loadClasses(store) {
       store.commit('SET_CLASSES_LOADING', { loading: true })
-      return axios('classes.json', {headers: {'Content-Type': 'application/json; charset=UTF-8'}, data: {}})
+      return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} })
         .then(response => {
           store.commit('SET_CLASSES_SUCCESS', {
             statusCode: response.status,
