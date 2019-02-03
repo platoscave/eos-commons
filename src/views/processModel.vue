@@ -104,7 +104,7 @@ export default {
                 let minY = this.setPositionY(placeholderObject3d, substateId, position.y - 800)
 
                 interfaceStateObj.position.setX(maxX / 2)
-                interfaceStateObj.updateMatrixWorld ()
+                interfaceStateObj.updateMatrixWorld()
 
                 // Draw interface connector to first substate
                 let toState = placeholderObject3d.getObjectByProperty('key', substateId)

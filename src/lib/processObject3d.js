@@ -12,7 +12,6 @@ export default class processObject3d extends THREE.Object3D {
     this.key = queryResult.id
     this.name = queryResult.name ? queryResult.name : queryResult.text
     this.userData = queryResult
-    //this.material = this.mapStateToMaterial(interfaceState)
     this.font = font
     this.position.set(pos.x, pos.y, pos.z)
     let mesh = new THREE.Mesh(geometry, this.mapStateToMaterial())

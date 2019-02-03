@@ -14,7 +14,7 @@ const updateRoute = (state) => {
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
-    let selectedTab = _.get(state, 'pageStates.'+levelId.pageId+'.selectedTab', 0)
+    let selectedTab = _.get(state, 'pageStates.' + levelId.pageId + '.selectedTab', 0)
     // if (state.pageStates[levelId.pageId].selectedTab) selectedTab = state.pageStates[levelId.pageId].selectedTab
     if (selectedTab) levelArr.push(selectedTab)
     else levelArr.push('')
@@ -42,22 +42,22 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    SET_CLASSES_LOADING(state) {
+    SET_CLASSES_LOADING (state) {
       state.loading = true
       state.message = 'loading...'
     },
-    SET_CLASSES_SUCCESS(state, payload) {
+    SET_CLASSES_SUCCESS (state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
       state.classes = payload.data
       state.loading = false
     },
-    SET_CLASSES_FAILURE(state, payload) {
+    SET_CLASSES_FAILURE (state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
     },
 
-    SET_PAGE_STATE2(state, payload) {
+    SET_PAGE_STATE2 (state, payload) {
       /* let example = {
         level: 0,
         pageId: '',
@@ -95,7 +95,7 @@ const store = new Vuex.Store({
       } else updateRoute(state)
     },
 
-    SET_PAGE_STATE_FROM_ROUTE(state, payload) {
+    SET_PAGE_STATE_FROM_ROUTE (state, payload) {
       let levelsArr = payload.split('/')
       levelsArr = levelsArr.slice(1)
       levelsArr.forEach((levelStr, level) => {
@@ -118,12 +118,12 @@ const store = new Vuex.Store({
       state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
     },
 
-    SET_NODE_TOGGLE(state, payload) {
+    SET_NODE_TOGGLE (state, payload) {
       if (payload.opened) state.isOpened[payload.id] = true
       else delete state.isOpened[payload.id]
     },
 
-    SAVE(state, payload) {
+    SAVE (state, payload) {
       const updateHash = (newVal, oldVal) => {
         for (let key in state.classes) {
           let obj = state.classes[key]
@@ -152,7 +152,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    loadCommon(store, id) {
+    loadCommon (store, id) {
       return new Promise((resolve, reject) => {
         if (store.state.classes[id]) {
           let common = Vue._.cloneDeep(store.state.classes[id])
@@ -168,7 +168,7 @@ const store = new Vuex.Store({
         }
       })
     },
-    treeQueryArr(store, queryObj) {
+    treeQueryArr (store, queryObj) {
       let promises = []
       queryObj.queryArr.forEach((query) => {
         promises.push(store.dispatch('treeQuery', { fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level }))
@@ -274,9 +274,8 @@ const store = new Vuex.Store({
 
         return resultsArr
       })
-
     },
-    mergeAncestorClasses(store, classId) {
+    mergeAncestorClasses (store, classId) {
       return store.dispatch('loadCommon', classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
@@ -285,7 +284,7 @@ const store = new Vuex.Store({
         } else return classObj
       })
     },
-    materializedView(store, viewId) {
+    materializedView (store, viewId) {
       const smartMergeProperties = (viewObj, classObj) => {
         if (!viewObj.properties) return
         Object.keys(viewObj.properties).forEach(propName => {
@@ -324,7 +323,7 @@ const store = new Vuex.Store({
         } else return viewObj
       })
     },
-    loadClasses(store) {
+    loadClasses (store) {
       store.commit('SET_CLASSES_LOADING', { loading: true })
       return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} })
         .then(response => {

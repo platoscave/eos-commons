@@ -49,28 +49,26 @@ export default class modelObject3d extends THREE.Object3D {
     })
     return minYUntilNow
   }
-  /* sides: bottomRight, rightLeft, rightBottom, bottomTop, topBottom, 
+  /* sides: bottomRight, rightLeft, rightBottom, bottomTop, topBottom,
   */
   drawTube (fromSide, toSide, toPosition) {
     const getSidePos = (side, pos) => {
-      if(side === 'top') return new THREE.Vector3(pos.x, pos.y + HEIGTH / 2, pos.z)
-      if(side === 'right') return new THREE.Vector3(pos.x + WIDTH / 2, pos.y, pos.z)
-      if(side === 'bottom') return new THREE.Vector3(pos.x, pos.y - HEIGHT / 2, pos.z)
-      if(side === 'left') return new THREE.Vector3(pos.x - WIDTH / 2, pos.y, pos.z)
-      if(side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
-      if(side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
+      if (side === 'top') return new THREE.Vector3(pos.x, pos.y + HEIGTH / 2, pos.z)
+      if (side === 'right') return new THREE.Vector3(pos.x + WIDTH / 2, pos.y, pos.z)
+      if (side === 'bottom') return new THREE.Vector3(pos.x, pos.y - HEIGHT / 2, pos.z)
+      if (side === 'left') return new THREE.Vector3(pos.x - WIDTH / 2, pos.y, pos.z)
+      if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
+      if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
       return pos
     }
     let points = []
     if (Math.abs(this.position.x - toPosition.x) <= WIDTH * 2 ||
         Math.abs(this.position.y - toPosition.y) <= HEIGHT * 2 ||
-        Math.abs(this.position.z - toPosition.z) <= BREADTH * 2 ) 
-        {
-          points.push(getSidePos(fromSide, this.position))
-          points.push(getSidePos(toSide, toPosition))
-        }
-    else if (1 == 1) {
-      
+        Math.abs(this.position.z - toPosition.z) <= BREADTH * 2) {
+      points.push(getSidePos(fromSide, this.position))
+      points.push(getSidePos(toSide, toPosition))
+    } else if (1 === 1) {
+
     }
   }
   drawClassConnectors (modelObject3D) {
