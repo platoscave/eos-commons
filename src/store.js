@@ -14,8 +14,8 @@ const updateRoute = (state) => {
     let levelArr = []
     levelArr.push(levelId.selectedObjId)
     levelArr.push(levelId.pageId)
-    let selectedTab = 0
-    if (state.pageStates[levelId.pageId].selectedTab) selectedTab = state.pageStates[levelId.pageId].selectedTab
+    let selectedTab = _.get(state, 'pageStates.'+levelId.pageId+'.selectedTab', 0)
+    // if (state.pageStates[levelId.pageId].selectedTab) selectedTab = state.pageStates[levelId.pageId].selectedTab
     if (selectedTab) levelArr.push(selectedTab)
     else levelArr.push('')
     newHash = newHash + '/' + levelArr.join('.')
