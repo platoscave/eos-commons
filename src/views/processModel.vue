@@ -26,40 +26,9 @@ export default {
     }
   },
   mounted () {
+    // Wait for DOM updated. Vue.nextTick() does not work
     setTimeout(() => {
-      // DOM updated
-
-      const roundedRect = (ctx, x, y, width, height, radius) => {
-        ctx.moveTo(x, y + radius)
-        ctx.lineTo(x, y + height - radius)
-        ctx.quadraticCurveTo(x, y + height, x + radius, y + height)
-        ctx.lineTo(x + width - radius, y + height)
-        ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius)
-        ctx.lineTo(x + width, y + radius)
-        ctx.quadraticCurveTo(x + width, y, x + width - radius, y)
-        ctx.lineTo(x + radius, y)
-        ctx.quadraticCurveTo(x, y, x, y + radius)
-      }
-
-      // Rounded rectangle
-      let roundedRectShape = new THREE.Shape()
-      roundedRect(roundedRectShape, 0, 0, WIDTH, 200, 20) // negative numbers not allowed
-      // extruded shape
-      let extrudeSettings = {
-        depth: 10,
-        bevelEnabled: true,
-        bevelSegments: 2,
-        steps: 2,
-        bevelSize: 1,
-        bevelThickness: 1
-      }
-      let geometry = new THREE.ExtrudeGeometry(roundedRectShape, extrudeSettings)
-      geometry.center()
-      let buffgeom = new THREE.BufferGeometry()
-      buffgeom.fromGeometry(geometry)
-
       let fontLoader = new THREE.FontLoader()
-
       let promises = []
       promises.push(this.$store.dispatch('materializedView', this.viewId))
       promises.push(new Promise((resolve, reject) => {
@@ -75,16 +44,15 @@ export default {
         this.$store.dispatch('query2', viewQueryObj).then((resultsObj) => {
           let zz = 0
           Object.keys(resultsObj).forEach(key => {
-            let result
             let interfaceState = resultsObj[key]
             interfaceState.id = key
             let placeholderObject3d = new THREE.Object3D()
             placeholderObject3d.position.setZ(zz)
             this.modelObject3D.add(placeholderObject3d)
             let position = new THREE.Vector3(0, 0, 0)
-            let interfaceStateObj = new processObject3d(buffgeom, position, interfaceState, this.font)
-            placeholderObject3d.add(interfaceStateObj)
-            this.selectableMeshArr.push(interfaceStateObj.children[0])
+            let interfaceStateObj3d = new processObject3d(position, interfaceState, this.font)
+            placeholderObject3d.add(interfaceStateObj3d)
+            this.selectableMeshArr.push(interfaceStateObj3d.children[0])
 
             const substateId = interfaceState.substateId
             if (substateId) {
@@ -95,7 +63,7 @@ export default {
                 for (let key in stateIdObj) {
                   let stateObj = stateIdObj[key]
                   let pos = new THREE.Vector3(0, 0, 0)
-                  let obj = new processObject3d(buffgeom, pos, stateObj, this.font)
+                  let obj = new processObject3d(pos, stateObj, this.font)
                   placeholderObject3d.add(obj)
                   this.selectableMeshArr.push(obj.children[0])
                 }
@@ -103,16 +71,16 @@ export default {
                 let maxX = this.setPositionX(placeholderObject3d, substateId, 0)
                 let minY = this.setPositionY(placeholderObject3d, substateId, position.y - 800)
 
-                interfaceStateObj.position.setX(maxX / 2)
-                interfaceStateObj.updateMatrixWorld()
+                interfaceStateObj3d.position.setX(maxX / 2)
+                interfaceStateObj3d.updateMatrixWorld()
 
                 // Draw interface connector to first substate
                 let toState = placeholderObject3d.getObjectByProperty('key', substateId)
-                interfaceStateObj.drawTubeBottomToLeftSide(placeholderObject3d, toState, 'happy')
+                interfaceStateObj3d.drawTubeBottomToLeftSide(placeholderObject3d, toState, 'happy')
 
                 // Tell the subSates to draw their connetors
                 let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)
-                subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj)
+                subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
 
                 placeholderObject3d.position.setX(-maxX / 2)
               })

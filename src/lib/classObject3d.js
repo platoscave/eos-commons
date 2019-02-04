@@ -1,32 +1,25 @@
 global.THREE = require('../../node_modules/three/three.js')
 
+const WIDTH = 400
+const HEIGHT = 200
+const BREADTH = 40
+const RADIUS = 50
+
 export default class modelObject3d extends THREE.Object3D {
-  constructor (geometry, material, pos, queryResult, font) {
+  constructor (queryResult, font) {
     super()
 
     this.key = queryResult.id
-    this.name = queryResult.name ? queryResult.name : queryResult.text
+    this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
-    this.material = material
-    // this.userData.children = []
-    // this.userData.instances = []
-    this.position.set(pos.x, pos.y, pos.z)
-    let mesh = new THREE.Mesh(geometry, material)
+    this.font = font
+    let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
-    let text3d = new THREE.TextGeometry(this.name, {size: 30, height: 1, font: font})
-    text3d.computeBoundingBox()
-    let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
-    let yOffset = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y)
-    let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-    let textMesh = new THREE.Mesh(text3d, textMaterial)
-    textMesh.position.x = xOffset
-    textMesh.position.y = yOffset
-    textMesh.position.z = 55
-    textMesh.rotation.x = 0
-    textMesh.rotation.y = Math.PI * 2
-    this.add(textMesh)
+    let textPosition = this.position.clone()
+    textPosition.setZ(textPosition.z + BREADTH + 20)
+    this.addTextMesh(this.name, textPosition)
   }
-  calculateX (x) {
+  /* calculateX (x) {
     let ourX = x
     let maxXUntilNow = x
     this.userData.children.forEach(function (child) {
@@ -48,38 +41,16 @@ export default class modelObject3d extends THREE.Object3D {
       minYUntilNow = minY < minYUntilNow ? minY : minYUntilNow
     })
     return minYUntilNow
-  }
-  /* sides: bottomRight, rightLeft, rightBottom, bottomTop, topBottom,
-  */
-  drawTube (fromSide, toSide, toPosition) {
-    const getSidePos = (side, pos) => {
-      if (side === 'top') return new THREE.Vector3(pos.x, pos.y + HEIGTH / 2, pos.z)
-      if (side === 'right') return new THREE.Vector3(pos.x + WIDTH / 2, pos.y, pos.z)
-      if (side === 'bottom') return new THREE.Vector3(pos.x, pos.y - HEIGHT / 2, pos.z)
-      if (side === 'left') return new THREE.Vector3(pos.x - WIDTH / 2, pos.y, pos.z)
-      if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
-      if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
-      return pos
-    }
-    let points = []
-    if (Math.abs(this.position.x - toPosition.x) <= WIDTH * 2 ||
-        Math.abs(this.position.y - toPosition.y) <= HEIGHT * 2 ||
-        Math.abs(this.position.z - toPosition.z) <= BREADTH * 2) {
-      points.push(getSidePos(fromSide, this.position))
-      points.push(getSidePos(toSide, toPosition))
-    } else if (1 === 1) {
-
-    }
-  }
+  } */
   drawClassConnectors (modelObject3D) {
-    if (this.userData.children.length > 0) {
+    if (this.userData.subclasses.length > 0) {
       let connectorMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
       // vertical beam from parent class
       let parentEndVector = new THREE.Vector3(this.position.x, this.position.y - 200, this.position.z)
       modelObject3D.add(this.drawBeam(this.position, parentEndVector, connectorMaterial))
       // horizontal beam
-      let beamStartX = this.userData.children[0].position.x
-      let beamEndX = this.userData.children[this.userData.children.length - 1].position.x
+      let beamStartX = this.userData.subclasses[0].position.x
+      let beamEndX = this.userData.subclasses[this.userData.subclasses.length - 1].position.x
       let beamStartVector = new THREE.Vector3(beamStartX, this.position.y - 200, this.position.z)
       let beamtEndVector = new THREE.Vector3(beamEndX, this.position.y - 200, this.position.z)
       modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, connectorMaterial))
@@ -94,7 +65,7 @@ export default class modelObject3d extends THREE.Object3D {
       sphereMesh.position.set(beamtEndVector.x, beamtEndVector.y, beamtEndVector.z)
       modelObject3D.add(sphereMesh)
       // for each of the child classes
-      this.userData.children.forEach(function (child) {
+      this.userData.subclasses.forEach(function (child) {
         // beam from child class to horizontal beam
         let childStartVector = new THREE.Vector3(child.position.x, child.position.y + 200, child.position.z)
         modelObject3D.add(this.drawBeam(childStartVector, child.position, connectorMaterial))
@@ -108,7 +79,7 @@ export default class modelObject3d extends THREE.Object3D {
       let endVector = this.userData.instances[this.userData.instances.length - 1].position
       modelObject3D.add(this.drawBeam(this.position, endVector, this.userData.connectorMaterial))
     }
-    this.userData.children.forEach(function (child) {
+    this.userData.subclasses.forEach(function (child) {
       child.drawObjectConnectors(modelObject3D)
     })
   }
@@ -167,5 +138,91 @@ export default class modelObject3d extends THREE.Object3D {
       sceneObject3D.add(textMesh)
     }
     return (beamMesh) */
+  }
+  mapAssocNameToMaterial (name) {
+    if (name === 'happy') return new THREE.MeshLambertMaterial({color: 0xAAEFAA})
+    if (name === 'unhappy') return new THREE.MeshLambertMaterial({color: 0xFFAAAA})
+    if (name === 'invalid') return new THREE.MeshLambertMaterial({color: 0xFFAAAA})
+    if (name === 'timeout') return new THREE.MeshLambertMaterial({color: 0xFFFFAA})
+    return new THREE.MeshLambertMaterial({color: 0xAAAAFF})
+  }
+  getMaterial () {
+    if (this.userData.docType === 'class') return new THREE.MeshLambertMaterial({color: 0x8904B1})
+    return new THREE.MeshLambertMaterial({color: 0x00A300})
+  }
+  getSidePos (side, pos) {
+    if (side === 'top') return new THREE.Vector3(pos.x, pos.y + HEIGHT / 2, pos.z)
+    if (side === 'right') return new THREE.Vector3(pos.x + WIDTH / 2, pos.y, pos.z)
+    if (side === 'bottom') return new THREE.Vector3(pos.x, pos.y - HEIGHT / 2, pos.z)
+    if (side === 'left') return new THREE.Vector3(pos.x - WIDTH / 2, pos.y, pos.z)
+    if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
+    if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
+    return pos
+  }
+  getGeometry () {
+    const classHexagonal = (ctx, x, y, width, height, radius) => {
+      ctx.moveTo(x, y + height / 3)
+      ctx.moveTo(x, (y + height / 3) * 2)
+      ctx.moveTo(x + width / 2, y + height)
+      ctx.moveTo(x + width, (y + height / 3) * 2)
+      ctx.moveTo(x + width, y + height / 3)
+      ctx.moveTo(x + width / 2, y)
+    }
+    const objectPentagonal = (ctx, x, y, width, height, radius) => {
+      ctx.moveTo(x, y)
+      ctx.moveTo(x, y + height / 2)
+      ctx.moveTo(x + width / 2, y + height)
+      ctx.moveTo(x + width, y + height / 2)
+      ctx.moveTo(x + width, y)
+    }
+    let shape = new THREE.Shape()
+    if (this.userData.docType === 'class') classHexagonal(shape, 0, 0, WIDTH, HEIGHT, 20)
+    else objectPentagonal(shape, 0, 0, WIDTH, HEIGHT, 20)
+
+    // extruded shape
+    let extrudeSettings = {depth: 10, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1}
+    let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+    geometry.center()
+    let buffgeom = new THREE.BufferGeometry()
+    buffgeom.fromGeometry(geometry)
+    return buffgeom
+  }
+  straightenPoints (points) {
+    let newPoints = []
+    points.forEach((point, i) => {
+      if (i === 0) newPoints.push(point)
+      else {
+        let direction = new THREE.Vector3()
+        direction.subVectors(point, points[i - 1])
+        direction.setLength(RADIUS)
+        let newPoint = new THREE.Vector3()
+        newPoint.subVectors(point, direction)
+        newPoints.push(newPoint)
+        if (i < points.length - 1) {
+          let direction = new THREE.Vector3()
+          direction.subVectors(point, points[i + 1])
+          direction.setLength(RADIUS)
+          let newPoint = new THREE.Vector3()
+          newPoint.subVectors(point, direction)
+          newPoints.push(newPoint)
+        } else newPoints.push(point)
+      }
+    })
+    return newPoints
+  }
+  addTextMeshBetween (name, pointA, pointB) {
+    let textPosition = new THREE.Vector3()
+    textPosition.subVectors(pointB, pointA).divideScalar(2)
+    textPosition.add(pointA)
+    textPosition.setZ(textPosition.z + 20)
+    this.addTextMesh(name, textPosition)
+  }
+  addTextMesh (name, textPosition) {
+    let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+    let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: this.font})
+    text3d.center()
+    let textMesh = new THREE.Mesh(text3d, textMaterial)
+    textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)
+    this.add(textMesh)
   }
 }

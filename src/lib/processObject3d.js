@@ -6,15 +6,15 @@ const BREADTH = 40
 const RADIUS = 50
 
 export default class processObject3d extends THREE.Object3D {
-  constructor (geometry, pos, queryResult, font) {
+  constructor (pos, queryResult, font) {
     super()
 
     this.key = queryResult.id
-    this.name = queryResult.name ? queryResult.name : queryResult.text
+    this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
     this.font = font
     this.position.set(pos.x, pos.y, pos.z)
-    let mesh = new THREE.Mesh(geometry, this.mapStateToMaterial())
+    let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
     let textPosition = this.position.clone()
     textPosition.setZ(textPosition.z + BREADTH + 20)
@@ -140,7 +140,7 @@ export default class processObject3d extends THREE.Object3D {
     if (name === 'timeout') return new THREE.MeshLambertMaterial({color: 0xFFFFAA})
     return new THREE.MeshLambertMaterial({color: 0xAAAAFF})
   }
-  mapStateToMaterial (stateObj) {
+  getMaterial () {
     if (this.userData.classId === '5747251e3c6d3cd598a5a398') return new THREE.MeshLambertMaterial({color: 0x5200A3}) // User input Seller
     if (this.userData.classId === '574724b43c6d3cd598a5a375') return new THREE.MeshLambertMaterial({color: 0xA30000}) // Execute
     if (this.userData.classId === '5747251e3c6d3cd598a5a377') return new THREE.MeshLambertMaterial({color: 0x0000A3}) // Delegate
@@ -155,6 +155,36 @@ export default class processObject3d extends THREE.Object3D {
     if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
     if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
     return pos
+  }
+  getGeometry () {
+    const roundedRect = (ctx, x, y, width, height, radius) => {
+      ctx.moveTo(x, y + radius)
+      ctx.lineTo(x, y + height - radius)
+      ctx.quadraticCurveTo(x, y + height, x + radius, y + height)
+      ctx.lineTo(x + width - radius, y + height)
+      ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius)
+      ctx.lineTo(x + width, y + radius)
+      ctx.quadraticCurveTo(x + width, y, x + width - radius, y)
+      ctx.lineTo(x + radius, y)
+      ctx.quadraticCurveTo(x, y, x, y + radius)
+    }
+    // Rounded rectangle
+    let roundedRectShape = new THREE.Shape()
+    roundedRect(roundedRectShape, 0, 0, WIDTH, 200, 20) // negative numbers not allowed
+    // extruded shape
+    let extrudeSettings = {
+      depth: 10,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 2,
+      bevelSize: 1,
+      bevelThickness: 1
+    }
+    let geometry = new THREE.ExtrudeGeometry(roundedRectShape, extrudeSettings)
+    geometry.center()
+    let buffgeom = new THREE.BufferGeometry()
+    buffgeom.fromGeometry(geometry)
+    return buffgeom
   }
   straightenPoints (points) {
     let newPoints = []

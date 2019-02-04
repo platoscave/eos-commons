@@ -199,7 +199,7 @@ export default {
     },
     highlight (newVal, oldVal) {
       let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
-      currentlySelected.children[0].material = currentlySelected.material
+      currentlySelected.children[0].material = currentlySelected.getMaterial()
       currentlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
       let newlySelected = this.modelObject3D.getObjectByProperty('key', newVal)
       newlySelected.children[0].material = new THREE.MeshLambertMaterial({color: 0xEEEE00})

@@ -42,82 +42,89 @@ export default {
     }
   },
   mounted () {
-    const classOctagonal = (ctx, x, y, width, height, radius) => {
-      ctx.moveTo(x, y + height / 3)
-      ctx.moveTo(x, (y + height / 3) * 2)
-      ctx.moveTo(x + width / 2, y + height)
-      ctx.moveTo(x + width, (y + height / 3) * 2)
-      ctx.moveTo(x + width, y + height / 3)
-      ctx.moveTo(x + width / 2, y)
-    }
-
-    // classOctagonal
-    let classOctagonalShape = new THREE.Shape()
-    classOctagonal(classOctagonalShape, 0, 0, WIDTH, HEIGHT, 20) // negative numbers not allowed
-    // extruded shape
-    let extrudeSettings = {
-      depth: 10,
-      bevelEnabled: true,
-      bevelSegments: 2,
-      steps: 2,
-      bevelSize: 1,
-      bevelThickness: 1
-    }
-    this.classGeometry = new THREE.ExtrudeGeometry(classOctagonalShape, extrudeSettings)
-    this.classGeometry.center()
-
-    let loader = new THREE.JSONLoader(true)
-    let fontLoader = new THREE.FontLoader()
-
-    let promises = []
-    promises.push(this.$store.dispatch('materializedView', this.viewId))
-    promises.push(new Promise((resolve, reject) => {
+    // Wait for DOM updated. Vue.nextTick() does not work
+    setTimeout(() => {
+      let fontLoader = new THREE.FontLoader()
       fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-        resolve(font)
-      })
-    }))
-    return Promise.all(promises).then((resultsArr) => {
-      this.view = resultsArr[0]
-      this.font = resultsArr[1]
+        this.font = font
+        let queryObj = {
+          query: {
+            where: {
+              docProp: '$key',
+              operator: 'eq',
+              value: '56f86c6a5dde184ccfb9fc6a'
+            }
+          }
+        }
+        this.$store.dispatch('query2', queryObj).then((resultsObj) => {
+          let key = Object.keys(resultsObj)[0]
+          let rootClass = resultsObj[key]
+          rootClass.id = key
+          let placeholderObject3d = new THREE.Object3D()
+          this.modelObject3D.add(placeholderObject3d)
 
-      this.classMaterial = new THREE.MeshLambertMaterial({color: 0x8904B1})
-      this.objectMaterial = new THREE.MeshLambertMaterial({color: 0x00A300})
+          this.collectClasses(placeholderObject3d, rootClass).then(res => {
 
-      let viewQueryObj = this.viewRootQueryObj()
-      this.$store.dispatch('treeQuery', viewQueryObj).then((resultsArr) => {
-        // Collect all the classes that we will be using.
-        // This is done recursively and asynchronously. the result is promise to the rootObject3D.
-        this.collectAndDrawClasses(resultsArr[0], new THREE.Vector3(0, 0, 0)).then(rootObj => {
-          this.rootObject3D = rootObj
-          // Determine and set the x position, depending on children width
-          rootObj.calculateX(0)
-          // Shift the model to the left so that the camera is looking at it
-          this.modelObject3D.position.set(-(rootObj.position.x), 0, 0)
-          // Tell the classes to draw their connectors
-          rootObj.drawClassConnectors(this.modelObject3D)
-          // Get the lowest Y so we know where to start drawing objects
-          let minY = rootObj.findMinY() - 400
-          // Collect all the objects that we will be using.
-          // This is done recusivly and asyncronosly.
-          /* this.collectAndDrawObjects(rootObj, minY).then(res => {
-            // Tell the classes to draw their object connectors
-            rootObj.drawObjectConnectors(this.modelObject3D)
-            // Get an array of selectable meshes
-            rootObj.collectSelectableMeshes(this.selectableMeshArr)
-            // console.log('done', rootObj)
-            // Highlight the slected object and naviagte to it.
-            // To do this we just call the path observer.
-            this.routePathChanged(this.route.path)
-          }) */
+            let rootClassObj3d = placeholderObject3d.getObjectByProperty('key', rootClass.id)
+            let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
+            let minY = this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
 
-          // rootObj.collectSelectableMeshes(this.selectableMeshArr)
+            rootClassObj3d.drawClassConnectors (placeholderObject3d)
+
+          })
         })
-      })
-    }, (err) => console.log(err))
+      }, (err) => console.log(err))
+    }, 1000)
   },
   methods: {
-    collectAndDrawClasses (queryResult, position) {
-      let obj = new classObject3d(this.classGeometry, this.classMaterial, position, queryResult, this.font)
+    collectClasses (placeholderObject3d, classObj) {
+      let rootClassObj3d = new classObject3d(classObj, this.font)
+      placeholderObject3d.add(rootClassObj3d)
+      this.selectableMeshArr.push(rootClassObj3d.children[0])
+      let queryObj = {
+        query: {
+          where: {
+            docProp: 'parentId',
+            operator: 'eq',
+            value: classObj.id
+          }
+        }
+      }
+      return this.$store.dispatch('query2', queryObj).then((resultsObj) => {
+        let promises = []
+        Object.keys(resultsObj).forEach(key => {
+            let subClassObj = resultsObj[key]
+            subClassObj.id = key
+            promises.push(this.collectClasses(placeholderObject3d, subClassObj))
+        })
+        return Promise.all(promises).then(childObjsArr => {
+          classObj.subclasses = childObjsArr
+          return (classObj)
+        })
+      })
+    },
+    setPositionX (placeholderObject3d, classObj3d, x) {
+      let minX = x
+      let maxX = x
+      classObj3d.userData.subclasses.forEach(subClass => {
+        let subClassObj3d = placeholderObject3d.getObjectByProperty('key', subClass.id)
+        maxX = Math.max(x, this.setPositionX(placeholderObject3d, subClassObj3d, x))
+        x = maxX + WIDTH * 2
+      })
+      classObj3d.position.setX(minX + (maxX - minX) / 2)
+      return maxX
+    },
+    setPositionY (placeholderObject3d, classObj3d, y) {
+      classObj3d.position.setY(y)
+      let minY = y
+      classObj3d.userData.subclasses.forEach(subClass => {
+        let subClassObj3d = placeholderObject3d.getObjectByProperty('key', subClass.id)
+        minY = Math.min(y, this.setPositionY(placeholderObject3d, subClassObj3d, y - HEIGHT * 2))
+      })
+      return minY
+    },
+    /* collectAndDrawClasses (queryResult, position) {
+      let obj = new classObject3d(position, queryResult, this.font)
       this.selectableMeshArr.push(obj.children[0])
       this.modelObject3D.add(obj)
 
@@ -147,7 +154,7 @@ export default {
           return (obj)
         })
       })
-    },
+    }, */
     /* collectAndDrawObjects (object3D, minY) {
       let ref = firebase.database().ref('documents')
       return ref.orderByChild('classId').equalTo(object3D.userData.key).once('value').then(snapshot => {
