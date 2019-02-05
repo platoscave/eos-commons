@@ -152,15 +152,16 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    loadCommon (store, id) {
+    loadCommon (store, CID) {
       return new Promise((resolve, reject) => {
-        if (store.state.classes[id]) {
-          let common = Vue._.cloneDeep(store.state.classes[id])
-          common.id = id
+        if (store.state.classes[CID]) {
+          let common = Vue._.cloneDeep(store.state.classes[CID])
+          common.CID = CID
+          common.id = CID
           resolve(common)
         } else {
-          this.$http('ipfs.io/ipfs/' + id).then(response => {
-            this.store.state[id] = response.data
+          this.$http('ipfs.io/ipfs/' + CID).then(response => {
+            this.store.state[CID] = response.data
             resolve(Vue._.cloneDeep(response.data))
           }, error => {
             reject(error)
@@ -195,6 +196,31 @@ const store = new Vuex.Store({
         resolve(resultsObj)
       })
     },
+    query: function (store, queryObj) {
+      return new Promise((resolve, reject) => {
+        let resultsObj = {}
+        const docProp = Vue._.get(queryObj, 'query.where.docProp')
+        const operator = Vue._.get(queryObj, 'query.where.operator')
+        let value = Vue._.get(queryObj, 'query.where.value')
+        if (value === '$parentNode.$key') value = queryObj.fk
+        if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value]
+        else {
+          resultsObj = Vue._.pickBy(store.state.classes, function (item, key) {
+            if (operator === 'eq') return item[docProp] === value
+            if (operator === 'lt') return item[docProp] < value
+            if (operator === 'gt') return item[docProp] > value
+          })
+        }
+        let resultsArr = []
+        Object.keys(resultsObj).forEach(key => {
+          let result = resultsObj[key]
+          result.CID = key
+          result.id = key
+          resultsArr.push(result)
+        })
+        resolve(resultsArr)
+      })
+    },
     treeQuery: function (store, queryObj) {
       return store.dispatch('query2', queryObj).then(resultsObj => {
         // Traverse class hierarchy, find nearest icon
@@ -202,7 +228,7 @@ const store = new Vuex.Store({
           const classObj = store.state.classes[classId]
           if (classObj.icon) return classObj.icon
           else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
-          return ''
+          return '' // set to default icon
         }
 
         // Normalize the results so that they are suited for the tree
@@ -243,7 +269,7 @@ const store = new Vuex.Store({
           }
 
           // Find out if the node is a leaf by running the child queries
-          // Run the query, return a results object
+          // Get rid of this by async call to query
           const getResultsObj = (queryObj) => {
             let resultsObj = {}
             const docProp = Vue._.get(queryObj, 'query.where.docProp')

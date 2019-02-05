@@ -29,23 +29,20 @@ export default {
     // Wait for DOM updated. Vue.nextTick() does not work
     setTimeout(() => {
       let fontLoader = new THREE.FontLoader()
-      let promises = []
-      promises.push(this.$store.dispatch('materializedView', this.viewId))
-      promises.push(new Promise((resolve, reject) => {
-        fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-          resolve(font)
-        })
-      }))
-      return Promise.all(promises).then((resultsArr) => {
-        this.view = resultsArr[0]
-        this.font = resultsArr[1]
-
-        let viewQueryObj = this.viewRootQueryObj()
-        this.$store.dispatch('query2', viewQueryObj).then((resultsObj) => {
+      fontLoader.load('helvetiker_regular.typeface.json', (font) => {
+        this.font = font
+        let queryObj = {
+          query: {
+            where: {
+              docProp: 'classId',
+              operator: 'eq',
+              value: '574724823c6d3cd598a5a373'
+            }
+          }
+        }
+        this.$store.dispatch('query', queryObj).then((resultsArr) => {
           let zz = 0
-          Object.keys(resultsObj).forEach(key => {
-            let interfaceState = resultsObj[key]
-            interfaceState.id = key
+          resultsArr.forEach(interfaceState => {
             let placeholderObject3d = new THREE.Object3D()
             placeholderObject3d.position.setZ(zz)
             this.modelObject3D.add(placeholderObject3d)
