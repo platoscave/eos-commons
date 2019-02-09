@@ -1,19 +1,17 @@
-global.THREE = require('three')
-
+import * as THREE from 'three'
 const WIDTH = 400
 const HEIGHT = 200
 const BREADTH = 40
 const RADIUS = 50
 
 export default class processObject3d extends THREE.Object3D {
-  constructor (pos, queryResult, font) {
+  constructor (queryResult, font) {
     super()
 
     this.key = queryResult.id
     this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
     this.font = font
-    this.position.set(pos.x, pos.y, pos.z)
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
     let textPosition = this.position.clone()
@@ -25,14 +23,14 @@ export default class processObject3d extends THREE.Object3D {
     this.userData.nextStateIds.forEach(nextStateActionId => {
       if (nextStateActionId.stateId) {
         let toState = placeholderObject3d.getObjectByProperty('key', nextStateActionId.stateId)
-        this.drawTubeRightSideToLeftSide(placeholderObject3d, toState, nextStateActionId.action)
+        this.drawTubeRightSideToLeftSide(toState, nextStateActionId.action)
         toState.drawSubstateConnectors(placeholderObject3d, returnState)
       } else {
-        this.drawTubeRightSideToBottom(placeholderObject3d, returnState, nextStateActionId.action)
+        this.drawTubeRightSideToBottom(returnState, nextStateActionId.action)
       }
     })
   }
-  drawTubeBottomToLeftSide (placeholderObject3d, toState, name) {
+  drawTubeBottomToLeftSide (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
     let ourPosition = new THREE.Vector3()
@@ -65,7 +63,7 @@ export default class processObject3d extends THREE.Object3D {
     rightCone.rotation.z = -Math.PI / 2
     this.add(rightCone)
   }
-  drawTubeRightSideToBottom (placeholderObject3d, toState, name) {
+  drawTubeRightSideToBottom (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
     let ourPosition = new THREE.Vector3()
@@ -97,7 +95,7 @@ export default class processObject3d extends THREE.Object3D {
     rightCone.position.set(toPos.x, toPos.y - 40, toPos.z)
     this.add(rightCone)
   }
-  drawTubeRightSideToLeftSide (placeholderObject3d, toState, name) {
+  drawTubeRightSideToLeftSide (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
     let ourPosition = new THREE.Vector3()

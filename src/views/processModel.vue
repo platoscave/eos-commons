@@ -46,8 +46,7 @@ export default {
             let placeholderObject3d = new THREE.Object3D()
             placeholderObject3d.position.setZ(zz)
             this.modelObject3D.add(placeholderObject3d)
-            let position = new THREE.Vector3(0, 0, 0)
-            let interfaceStateObj3d = new processObject3d(position, interfaceState, this.font)
+            let interfaceStateObj3d = new processObject3d(interfaceState, this.font)
             placeholderObject3d.add(interfaceStateObj3d)
             this.selectableMeshArr.push(interfaceStateObj3d.children[0])
 
@@ -60,7 +59,7 @@ export default {
                 for (let key in stateIdObj) {
                   let stateObj = stateIdObj[key]
                   let pos = new THREE.Vector3(0, 0, 0)
-                  let obj = new processObject3d(pos, stateObj, this.font)
+                  let obj = new processObject3d(stateObj, this.font)
                   placeholderObject3d.add(obj)
                   this.selectableMeshArr.push(obj.children[0])
                 }
@@ -73,7 +72,7 @@ export default {
 
                 // Draw interface connector to first substate
                 let toState = placeholderObject3d.getObjectByProperty('key', substateId)
-                interfaceStateObj3d.drawTubeBottomToLeftSide(placeholderObject3d, toState, 'happy')
+                interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
 
                 // Tell the subSates to draw their connetors
                 let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)

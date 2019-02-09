@@ -16,7 +16,7 @@ export default {
   data () {
     return {
       /* skyboxArray: ['grass/sbox_px.jpg','grass/sbox_nx.jpg','grass/sbox_py.jpg','grass/sbox_ny.jpg','grass/sbox_pz.jpg','grass/sbox_nz.jpg'] */
-      skyboxArray: ['milkyway/posx.jpg','milkyway/negx.jpg','milkyway/posy.jpg','milkyway/negy.jpg','milkyway/posz.jpg','milkyway/negz.jpg']
+      skyboxArray: ['milkyway/posx.jpg', 'milkyway/negx.jpg', 'milkyway/posy.jpg', 'milkyway/negy.jpg', 'milkyway/posz.jpg', 'milkyway/negz.jpg']
       /* skyboxArray: ['jupiter/space_3_right.jpg','jupiter/space_3_left.jpg','jupiter/space_3_top.jpg','jupiter/space_3_bottom.jpg','jupiter/space_3_front.jpg','jupiter/space_3_back.jpg'] */
     }
   },
@@ -41,13 +41,15 @@ export default {
           this.modelObject3D.add(placeholderObject3d)
 
           this.collectClasses(placeholderObject3d, rootClass).then(res => {
-
             let rootClassObj3d = placeholderObject3d.getObjectByProperty('key', rootClass.id)
             let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
             let minY = this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
 
-            rootClassObj3d.drawClassConnectors (placeholderObject3d)
+            rootClassObj3d.drawClassConnectors()
 
+            this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
+              // rootClassObj3d.drawObjectConnectors ()
+            })
           })
         })
       }, (err) => console.log(err))
@@ -63,7 +65,7 @@ export default {
           where: {
             docProp: 'parentId',
             operator: 'eq',
-            value: classObj.id
+            value: classObj.cid
           }
         }
       }
@@ -73,16 +75,43 @@ export default {
           promises.push(this.collectClasses(placeholderObject3d, subClassObj))
         })
         return Promise.all(promises).then(childObjsArr => {
-          classObj.subclasses = childObjsArr
-          return (classObj)
+          rootClassObj3d.subclassesObj3ds = childObjsArr
+          return (rootClassObj3d)
         })
+      })
+    },
+    collectObjects (placeholderObject3d, classObj3d) {
+      let queryObj = {
+        query: {
+          where: {
+            docProp: 'classId',
+            operator: 'eq',
+            value: classObj3d.cid
+          }
+        }
+      }
+      return this.$store.dispatch('query', queryObj).then((resultsArr) => {
+        classObj3d.instancesObj3d = resultsArr
+        let z = classObj3d.position.z + WIDTH * 4
+        resultsArr.forEach(objectObj => {
+          let objectObj3d = new classObject3d(objectObj, this.font)
+          objectObj3d.position.set(classObj3d.position.x, classObj3d.position.y, z)
+          objectObj3d.rotateY(Math.PI * 0.5)
+          placeholderObject3d.add(objectObj3d)
+          this.selectableMeshArr.push(objectObj3d.children[0])
+          z += WIDTH * 4
+        })
+        let promises = []
+        classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
+          promises.push(this.collectObjects(placeholderObject3d, subClassObj3d))
+        })
+        return Promise.all(promises)
       })
     },
     setPositionX (placeholderObject3d, classObj3d, x) {
       let minX = x
       let maxX = x
-      classObj3d.userData.subclasses.forEach(subClass => {
-        let subClassObj3d = placeholderObject3d.getObjectByProperty('key', subClass.id)
+      classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
         maxX = Math.max(x, this.setPositionX(placeholderObject3d, subClassObj3d, x))
         x = maxX + WIDTH * 2
       })
@@ -92,9 +121,8 @@ export default {
     setPositionY (placeholderObject3d, classObj3d, y) {
       classObj3d.position.setY(y)
       let minY = y
-      classObj3d.userData.subclasses.forEach(subClass => {
-        let subClassObj3d = placeholderObject3d.getObjectByProperty('key', subClass.id)
-        minY = Math.min(y, this.setPositionY(placeholderObject3d, subClassObj3d, y - HEIGHT * 2))
+      classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
+        minY = Math.min(y, this.setPositionY(placeholderObject3d, subClassObj3d, y - HEIGHT * 4))
       })
       return minY
     }

@@ -1,4 +1,4 @@
-global.THREE = require('../../node_modules/three/three.js')
+import * as THREE from 'three'
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -10,6 +10,7 @@ export default class modelObject3d extends THREE.Object3D {
     super()
 
     this.key = queryResult.id
+    this.cid = queryResult.cid
     this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
     this.font = font
@@ -19,58 +20,48 @@ export default class modelObject3d extends THREE.Object3D {
     textPosition.setZ(textPosition.z + BREADTH + 20)
     this.addTextMesh(this.name, textPosition)
   }
-  /* calculateX (x) {
-    let ourX = x
-    let maxXUntilNow = x
-    this.userData.children.forEach(function (child) {
-      maxXUntilNow = child.calculateX(x)
-      x = maxXUntilNow + 800
-    })
-    if (this.userData.children.length > 1) {
-      let minX = this.userData.children[0].position.x
-      let maxX = this.userData.children[(this.userData.children.length - 1)].position.x
-      ourX = (maxX - minX) / 2 + minX
-    }
-    this.position.set(ourX, this.position.y, this.position.z)
-    return maxXUntilNow
-  }
-  findMinY () {
-    let minYUntilNow = this.position.y
-    this.userData.children.forEach(function (child) {
-      let minY = child.findMinY()
-      minYUntilNow = minY < minYUntilNow ? minY : minYUntilNow
-    })
-    return minYUntilNow
-  } */
-  drawClassConnectors (modelObject3D) {
-    if (this.userData.subclasses.length > 0) {
-      let connectorMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+  drawClassConnectors () {
+    if (this.subclassesObj3ds.length > 0) {
+      let connectorMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+
+      let ourWorldPosition = new THREE.Vector3()
+      this.getWorldPosition(ourWorldPosition)
+
       // vertical beam from parent class
-      let parentEndVector = new THREE.Vector3(this.position.x, this.position.y - 200, this.position.z)
-      modelObject3D.add(this.drawBeam(this.position, parentEndVector, connectorMaterial))
+      let parentEndPosition = new THREE.Vector3(0, HEIGHT * -2, 0)
+      this.add(this.drawBeam(new THREE.Vector3(), parentEndPosition, connectorMaterial))
+
       // horizontal beam
-      let beamStartX = this.userData.subclasses[0].position.x
-      let beamEndX = this.userData.subclasses[this.userData.subclasses.length - 1].position.x
-      let beamStartVector = new THREE.Vector3(beamStartX, this.position.y - 200, this.position.z)
-      let beamtEndVector = new THREE.Vector3(beamEndX, this.position.y - 200, this.position.z)
-      modelObject3D.add(this.drawBeam(beamStartVector, beamtEndVector, connectorMaterial))
+      let beamStartPos = this.subclassesObj3ds[0].position.clone()
+      beamStartPos.sub(ourWorldPosition)
+      beamStartPos.setY(HEIGHT * -2)
+      let beamEndPos = this.subclassesObj3ds[this.subclassesObj3ds.length - 1].position.clone()
+      beamEndPos.sub(ourWorldPosition)
+      beamEndPos.setY(HEIGHT * -2)
+      this.add(this.drawBeam(beamStartPos, beamEndPos, connectorMaterial))
+
       // sphere at the left end
       let sphereGeometryLeft = new THREE.SphereGeometry(10)
       let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, connectorMaterial)
-      sphereMeshLeft.position.set(beamStartVector.x, beamStartVector.y, beamStartVector.z)
-      modelObject3D.add(sphereMeshLeft)
+      sphereMeshLeft.position.set(beamStartPos.x, beamStartPos.y, beamStartPos.z)
+      this.add(sphereMeshLeft)
       // sphere at the right end
       let sphereGeometry = new THREE.SphereGeometry(10)
       let sphereMesh = new THREE.Mesh(sphereGeometry, connectorMaterial)
-      sphereMesh.position.set(beamtEndVector.x, beamtEndVector.y, beamtEndVector.z)
-      modelObject3D.add(sphereMesh)
+      sphereMesh.position.set(beamEndPos.x, beamEndPos.y, beamEndPos.z)
+      this.add(sphereMesh)
+
       // for each of the child classes
-      this.userData.subclasses.forEach(function (child) {
+      this.subclassesObj3ds.forEach(function (childObj3d) {
         // beam from child class to horizontal beam
-        let childStartVector = new THREE.Vector3(child.position.x, child.position.y + 200, child.position.z)
-        modelObject3D.add(this.drawBeam(childStartVector, child.position, connectorMaterial))
-        // tell the child class to do the same
-        child.drawClassConnectors(modelObject3D)
+        let childBeamStartPos = childObj3d.position.clone()
+        childBeamStartPos.sub(ourWorldPosition)
+        childBeamStartPos.setY(HEIGHT * -2)
+        let childBeamEndPos = childObj3d.position.clone()
+        childBeamEndPos.sub(ourWorldPosition)
+        childBeamEndPos.setY(HEIGHT * -4)
+        this.add(this.drawBeam(childBeamStartPos, childBeamEndPos, connectorMaterial))
+        childObj3d.drawClassConnectors()
       }.bind(this))
     }
   }
@@ -91,7 +82,7 @@ export default class modelObject3d extends THREE.Object3D {
     let cylinder = new THREE.CylinderGeometry(10, 10, distance, 10, 10, false)
     let orientation = new THREE.Matrix4()// a new orientation matrix to offset pivot
     let offsetRotation = new THREE.Matrix4()// a matrix to fix pivot rotation
-    let offsetPosition = new THREE.Matrix4()// a matrix to fix pivot position
+    // let offsetPosition = new THREE.Matrix4()// a matrix to fix pivot position
     orientation.lookAt(p1, p2, new THREE.Vector3(0, 1, 0))// look at destination
     offsetRotation.makeRotationX(HALF_PI)// rotate 90 degs on X
     orientation.multiply(offsetRotation)// combine orientation with rotation transformations
@@ -140,15 +131,15 @@ export default class modelObject3d extends THREE.Object3D {
     return (beamMesh) */
   }
   mapAssocNameToMaterial (name) {
-    if (name === 'happy') return new THREE.MeshLambertMaterial({color: 0xAAEFAA})
-    if (name === 'unhappy') return new THREE.MeshLambertMaterial({color: 0xFFAAAA})
-    if (name === 'invalid') return new THREE.MeshLambertMaterial({color: 0xFFAAAA})
-    if (name === 'timeout') return new THREE.MeshLambertMaterial({color: 0xFFFFAA})
-    return new THREE.MeshLambertMaterial({color: 0xAAAAFF})
+    if (name === 'happy') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })
+    if (name === 'unhappy') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+    if (name === 'invalid') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+    if (name === 'timeout') return new THREE.MeshLambertMaterial({ color: 0xFFFFAA })
+    return new THREE.MeshLambertMaterial({ color: 0xAAAAFF })
   }
   getMaterial () {
-    if (this.userData.docType === 'class') return new THREE.MeshLambertMaterial({color: 0x8904B1})
-    return new THREE.MeshLambertMaterial({color: 0x00A300})
+    if (this.userData.docType === 'class') return new THREE.MeshLambertMaterial({ color: 0x8904B1 })
+    return new THREE.MeshLambertMaterial({ color: 0x00A300 })
   }
   getSidePos (side, pos) {
     if (side === 'top') return new THREE.Vector3(pos.x, pos.y + HEIGHT / 2, pos.z)
@@ -180,7 +171,7 @@ export default class modelObject3d extends THREE.Object3D {
     else objectPentagonal(shape, 0, 0, WIDTH, HEIGHT, 20)
 
     // extruded shape
-    let extrudeSettings = {depth: 10, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1}
+    let extrudeSettings = { depth: 10, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
     let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
     geometry.center()
     let buffgeom = new THREE.BufferGeometry()
@@ -218,8 +209,8 @@ export default class modelObject3d extends THREE.Object3D {
     this.addTextMesh(name, textPosition)
   }
   addTextMesh (name, textPosition) {
-    let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-    let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: this.font})
+    let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+    let text3d = new THREE.TextGeometry(name, { size: 30, height: 1, font: this.font })
     text3d.center()
     let textMesh = new THREE.Mesh(text3d, textMaterial)
     textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)
