@@ -65,14 +65,23 @@ export default class modelObject3d extends THREE.Object3D {
       }.bind(this))
     }
   }
-  drawObjectConnectors (modelObject3D) {
-    if (this.userData.instances.length > 0) {
-      let endVector = this.userData.instances[this.userData.instances.length - 1].position
-      modelObject3D.add(this.drawBeam(this.position, endVector, this.userData.connectorMaterial))
+  drawObjectConnectors (length) {
+    let fomPos = new THREE.Vector3(0, -HEIGHT / 4, 0)
+    let toPos = fomPos.clone()
+    toPos.setZ(length)
+    let connectorMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+    this.add(this.drawBeam(fomPos, toPos, connectorMaterial))
+  }
+  drawObjectAssocs (placeholderObject3d) {
+    if (this.userData.ownerIdX) {
+      let toObj3d = placeholderObject3d.getObjectByProperty('key', this.userData.ownerId)
+      this.drawTubeTopSideToBottom(toObj3d, 'owner')
     }
-    this.userData.subclasses.forEach(function (child) {
-      child.drawObjectConnectors(modelObject3D)
-    })
+    if (this.userData.pageId) {
+      let toObj3d = placeholderObject3d.getObjectByProperty('key', this.userData.pageId)
+      if (!toObj3d) console.log('pageId not found', this.userData.pageId)
+      else this.drawTubeTopSideToBottom(toObj3d, 'page')
+    }
   }
   drawBeam (p1, p2, material, sceneObject3D, name) {
     // https://stackoverflow.com/questions/15139649/three-js-two-points-one-cylinder-align-issue/15160850#15160850
@@ -90,49 +99,42 @@ export default class modelObject3d extends THREE.Object3D {
     let mesh = new THREE.Mesh(cylinder, material)
     mesh.position.set(position.x, position.y, position.z)
     return mesh
-    /* let diffVector = new THREE.Vector3()
-    diffVector.subVectors(p2, p1)
-    let beamVector = new THREE.Vector3(0, 1, 0)
-    let theta = beamVector.angleTo(diffVector)
-    let rotationAxis = new THREE.Vector3()
-    rotationAxis.crossVectors(beamVector, diffVector)
-    if (rotationAxis.length() < 0.000001) {
-      // Special case: if rotationAxis is just about zero, set to X axis,
-      // so that the angle can be given as 0 or PI. This works ONLY
-      // because we know one of the two axes is +Y.
-      rotationAxis.set(1, 0, 0)
-    }
-    rotationAxis.normalize()
-    let postionVec = new THREE.Vector3()
-    postionVec.copy(diffVector)
-    postionVec.divideScalar(2)
-    postionVec.add(p1)
-    let orientation = new THREE.Matrix4()
-    orientation.matrixAutoUpdate = false
-    orientation.makeRotationAxis(rotationAxis, theta)
-    orientation.setPosition(postionVec)
-    let beamLength = diffVector.length()
-    let beamGeometry = new THREE.CylinderGeometry(10, 10, beamLength, 12, 1, true)
-    beamGeometry.applyMatrix(orientation)// apply transformation for geometry
-    let beamMesh = new THREE.Mesh(beamGeometry, beamMaterial)
-    // beamMesh.position.set(p2.x,p2.y,p2.z)
-    if (name) {
-      let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-      let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: 'helvetiker'})
-      let textMesh = new THREE.Mesh(text3d, textMaterial)
-      text3d.computeBoundingBox()
-      let xOffset = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x)
-      textMesh.position = postionVec
-      textMesh.position.x += xOffset
-      textMesh.position.z += 20
-      textMesh.rotation.y = Math.PI * 2
-      sceneObject3D.add(textMesh)
-    }
-    return (beamMesh) */
+  }
+  drawTubeTopSideToBottom (toObj3d, name) {
+    // translate toPosition to our local coordinates
+    let toPosition = toObj3d.position.clone()
+    let ourWorldPosition = new THREE.Vector3()
+    this.getWorldPosition(ourWorldPosition)
+    toPosition.sub(ourWorldPosition)
+
+    let material = this.mapAssocNameToMaterial(name)
+
+    let fromPos = this.getSidePos('top', new THREE.Vector3())
+    let toPos = this.getSidePos('bottom', toPosition)
+    // toPos.setX(toPos.x + WIDTH / 4)
+
+    let points = []
+    points.push(fromPos)
+    points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT / 2, fromPos.z))
+    // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+    points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT / 2, toPos.z))
+    points.push(toPos)
+
+    this.addTextMeshBetween(name, points[1], points[2])
+
+    let path = new THREE.CatmullRomCurve3(this.straightenPoints(points))
+    let geometry = new THREE.TubeGeometry(path, 64, 10, 8, false)
+    let mesh = new THREE.Mesh(geometry, material)
+    this.add(mesh)
+
+    let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
+    let rightCone = new THREE.Mesh(coneGeometry, material)
+    rightCone.position.set(toPos.x, toPos.y - 40, toPos.z)
+    this.add(rightCone)
   }
   mapAssocNameToMaterial (name) {
-    if (name === 'happy') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })
-    if (name === 'unhappy') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+    if (name === 'owner') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })
+    if (name === 'page') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
     if (name === 'invalid') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
     if (name === 'timeout') return new THREE.MeshLambertMaterial({ color: 0xFFFFAA })
     return new THREE.MeshLambertMaterial({ color: 0xAAAAFF })

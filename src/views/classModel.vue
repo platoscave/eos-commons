@@ -45,10 +45,12 @@ export default {
             let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
             let minY = this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
 
+            placeholderObject3d.position.setX(-maxX / 2)
+
             rootClassObj3d.drawClassConnectors()
 
             this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
-              // rootClassObj3d.drawObjectConnectors ()
+              this.drawObjectAssocs (placeholderObject3d, rootClassObj3d)
             })
           })
         })
@@ -91,7 +93,8 @@ export default {
         }
       }
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {
-        classObj3d.instancesObj3d = resultsArr
+        classObj3d.userData.resultsArr = resultsArr
+        classObj3d.instancesObj3d = []
         let z = classObj3d.position.z + WIDTH * 4
         resultsArr.forEach(objectObj => {
           let objectObj3d = new classObject3d(objectObj, this.font)
@@ -99,8 +102,12 @@ export default {
           objectObj3d.rotateY(Math.PI * 0.5)
           placeholderObject3d.add(objectObj3d)
           this.selectableMeshArr.push(objectObj3d.children[0])
+          classObj3d.instancesObj3d.push(objectObj3d)
           z += WIDTH * 4
         })
+
+        if (resultsArr.length > 0) classObj3d.drawObjectConnectors(resultsArr.length * WIDTH * 4)
+
         let promises = []
         classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
           promises.push(this.collectObjects(placeholderObject3d, subClassObj3d))
@@ -125,6 +132,14 @@ export default {
         minY = Math.min(y, this.setPositionY(placeholderObject3d, subClassObj3d, y - HEIGHT * 4))
       })
       return minY
+    },
+    drawObjectAssocs (placeholderObject3d, classObj3d) {
+      classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
+        subClassObj3d.instancesObj3d.forEach(instanceObj3d => {
+          instanceObj3d.drawObjectAssocs(placeholderObject3d)
+        })
+        this.drawObjectAssocs(placeholderObject3d, subClassObj3d)
+      })
     }
   }
 }

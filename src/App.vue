@@ -32,6 +32,10 @@ export default {
       if (!window.location.hash) window.location.hash = '#/.578bff823c6d3cd598a5a3a7' // Demo Page
       this.loading = false
     })
+    
+    this.$store.dispatch('loadCommons').then(res => {
+
+    })
   }
 }
 </script>
