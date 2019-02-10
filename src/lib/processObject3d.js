@@ -4,7 +4,7 @@ const HEIGHT = 200
 const BREADTH = 40
 const RADIUS = 50
 
-export default class processObject3d extends THREE.Object3D {
+export default class ProcessObject3d extends THREE.Object3D {
   constructor (queryResult, font) {
     super()
 

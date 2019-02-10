@@ -4,8 +4,9 @@
 </template>
 
 <script>
+import * as THREE from 'three'
 import Scene from '../lib/sceneMixin.js'
-import classObject3d from '../lib/classObject3d.js'
+import ClassObject3d from '../lib/ClassObject3d.js'
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -21,45 +22,45 @@ export default {
     }
   },
   mounted () {
-    // Wait for DOM updated. Vue.nextTick() does not work
-    setTimeout(() => {
-      let fontLoader = new THREE.FontLoader()
-      fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-        this.font = font
-        let queryObj = {
-          query: {
-            where: {
-              docProp: '$key',
-              operator: 'eq',
-              value: '56f86c6a5dde184ccfb9fc6a'
-            }
+    let fontLoader = new THREE.FontLoader()
+    fontLoader.load('helvetiker_regular.typeface.json', (font) => {
+      this.font = font
+      this.addLoadingText()
+      let queryObj = {
+        query: {
+          where: {
+            docProp: '$key',
+            operator: 'eq',
+            value: '56f86c6a5dde184ccfb9fc6a'
           }
         }
-        this.$store.dispatch('query', queryObj).then((resultsArr) => {
-          let rootClass = resultsArr[0]
-          let placeholderObject3d = new THREE.Object3D()
-          this.modelObject3D.add(placeholderObject3d)
+      }
+      this.$store.dispatch('query', queryObj).then((resultsArr) => {
+        let rootClass = resultsArr[0]
+        let placeholderObject3d = new THREE.Object3D()
+        this.modelObject3D.add(placeholderObject3d)
 
-          this.collectClasses(placeholderObject3d, rootClass).then(res => {
-            let rootClassObj3d = placeholderObject3d.getObjectByProperty('key', rootClass.id)
-            let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
-            let minY = this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
+        this.collectClasses(placeholderObject3d, rootClass).then(res => {
+          let rootClassObj3d = placeholderObject3d.getObjectByProperty('key', rootClass.id)
+          let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
+          this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
 
-            placeholderObject3d.position.setX(-maxX / 2)
+          placeholderObject3d.position.setX(-maxX / 2)
 
-            rootClassObj3d.drawClassConnectors()
+          rootClassObj3d.drawClassConnectors()
 
-            this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
-              this.drawObjectAssocs (placeholderObject3d, rootClassObj3d)
-            })
+          this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
+            this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
+
+            this.removeLoadingText()
           })
         })
-      }, (err) => console.log(err))
-    }, 1000)
+      })
+    }, (err) => console.log(err))
   },
   methods: {
     collectClasses (placeholderObject3d, classObj) {
-      let rootClassObj3d = new classObject3d(classObj, this.font)
+      let rootClassObj3d = new ClassObject3d(classObj, this.font)
       placeholderObject3d.add(rootClassObj3d)
       this.selectableMeshArr.push(rootClassObj3d.children[0])
       let queryObj = {
@@ -97,7 +98,7 @@ export default {
         classObj3d.instancesObj3d = []
         let z = classObj3d.position.z + WIDTH * 4
         resultsArr.forEach(objectObj => {
-          let objectObj3d = new classObject3d(objectObj, this.font)
+          let objectObj3d = new ClassObject3d(objectObj, this.font)
           objectObj3d.position.set(classObj3d.position.x, classObj3d.position.y, z)
           objectObj3d.rotateY(Math.PI * 0.5)
           placeholderObject3d.add(objectObj3d)

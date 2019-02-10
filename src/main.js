@@ -10,8 +10,8 @@ import {Multipane, MultipaneResizer} from 'vue-multipane'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
-import ClassModel from './views/classModel.vue'
-import ProcessModel from './views/processModel.vue'
+import ClassModel from './views/ClassModel.vue'
+import ProcessModel from './views/ProcessModel.vue'
 import { sync } from 'vuex-router-sync'
 
 Vue.component('ec-layout', Layout)

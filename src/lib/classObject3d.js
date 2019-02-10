@@ -5,7 +5,7 @@ const HEIGHT = 200
 const BREADTH = 40
 const RADIUS = 50
 
-export default class modelObject3d extends THREE.Object3D {
+export default class ClassObject3d extends THREE.Object3D {
   constructor (queryResult, font) {
     super()
 

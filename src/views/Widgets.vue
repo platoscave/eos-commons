@@ -2,36 +2,36 @@
     <div class="widget-container">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
-        <template  class="widget-container" v-for="(widget) in widgets">
+        <template  class="widget-container" v-for="(widget, key) in widgets">
             <!-- Get rid of linting error
             <div v-bind:key="widget">-->
                 <!-- Document-->
-                <div v-if="widget.displayType === 'Document'">
+                <div v-bind:key="key" v-if="widget.displayType === 'Document'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
 
                 <!-- Tree-->
-                <div v-if="widget.displayType === 'Tree'">
+                <div v-bind:key="key" v-if="widget.displayType === 'Tree'">
                     <ec-tree v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
                 </div>
 
                 <!-- Table -->
-                <div v-if="widget.displayType === 'Table'">
+                <div v-bind:key="key" v-if="widget.displayType === 'Table'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
 
                 <!-- 3dClassModel-->
-                <div  class="widget-container" v-if="widget.displayType === '3D Class Model'">
+                <div  v-bind:key="key" class="widget-container" v-if="widget.displayType === '3D Class Model'">
                     <ec-class-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-class-model>
                 </div>
 
                 <!-- ProcessModel-->
-                <div v-if="widget.displayType === 'Process Model'">
+                <div v-bind:key="key" v-if="widget.displayType === 'Process Model'">
                     <ec-process-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
                 </div>
 
                 <!-- Form-->
-                <div v-if="widget.displayType === 'Form'">
+                <div v-bind:key="key" v-if="widget.displayType === 'Form'">
                     <ec-form v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
                     <v-btn absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                         <template v-if="editMode">
@@ -44,7 +44,7 @@
                 </div>
 
                 <!-- HomePage-->
-                <div v-if="widget.displayType === 'HomePage'">
+                <div v-bind:key="key" v-if="widget.displayType === 'HomePage'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
             <!--</div>-->

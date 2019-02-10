@@ -152,7 +152,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getCommon (store, cid) {
+    getCommonByCid (store, cid) {
       return new Promise((resolve, reject) => {
         const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
         commonsStore.get(cid).onsuccess = event => {
@@ -162,68 +162,15 @@ const store = new Vuex.Store({
             result.id = cid
             resolve(result)
           } else {
-            this.$http('ipfs.io/ipfs/' + cid).then(response => {
+            axios('ipfs.io/ipfs/' + cid, { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
               let result = response.data
               commonsStore.put(result, cid)
               result.cid = cid
               result.id = cid
               resolve(result)
-            }, error => {
-              reject(error)
             })
           }
         }
-      })
-    },
-    loadCommon (store, cid) {
-      return new Promise((resolve, reject) => {
-        if (store.state.classes[cid]) {
-          let common = Vue._.cloneDeep(store.state.classes[cid])
-          common.cid = cid
-          common.id = cid
-          resolve(common)
-        } else {
-          this.$http('ipfs.io/ipfs/' + cid).then(response => {
-            this.store.state[cid] = response.data
-            resolve(Vue._.cloneDeep(response.data))
-          }, error => {
-            reject(error)
-          })
-        }
-      })
-    },
-    treeQueryArr (store, queryObj) {
-      let promises = []
-      queryObj.queryArr.forEach((query) => {
-        promises.push(store.dispatch('treeQuery', { fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level }))
-      })
-      return Promise.all(promises).then((values) => {
-        return Vue._.union.apply(null, values)
-      })
-    },
-    query2: function (store, queryObj) {
-      return new Promise((resolve, reject) => {
-        let resultsObj = {}
-        const docProp = Vue._.get(queryObj, 'query.where.docProp')
-        const operator = Vue._.get(queryObj, 'query.where.operator')
-        let value = Vue._.get(queryObj, 'query.where.value')
-        if (value === '$parentNode.$key') value = queryObj.fk
-        if (docProp === '$key' && operator === 'eq') resultsObj[value] = store.state.classes[value]
-        else {
-          resultsObj = Vue._.pickBy(store.state.classes, function (item, key) {
-            if (operator === 'eq') return item[docProp] === value
-            if (operator === 'lt') return item[docProp] < value
-            if (operator === 'gt') return item[docProp] > value
-          })
-        }
-        let resultsArr = []
-        Object.keys(resultsObj).forEach(key => {
-          let result = resultsObj[key]
-          result.cid = key
-          result.id = key
-          resultsArr.push(result)
-        })
-        resolve(resultsArr)
       })
     },
     query: function (store, queryObj) {
@@ -235,16 +182,14 @@ const store = new Vuex.Store({
 
         if (operator === 'eq') {
           if (docProp === '$key') {
-            store.dispatch('getCommon', value).then(result => {
+            store.dispatch('getCommonByCid', value).then(result => {
               resolve([result])
             })
           } else {
             const transaction = this.db.transaction(['commons'], 'readonly')
             const commonsStore = transaction.objectStore('commons')
             let resultsArr = []
-            let index
-            if (docProp === 'parentId') index = commonsStore.index('parentId')
-            else if (docProp === 'classId') index = commonsStore.index('classId')
+            let index = commonsStore.index(docProp)
             if (index) {
               const request = index.openCursor(IDBKeyRange.bound(value, value))
               request.onerror = event => {
@@ -268,6 +213,15 @@ const store = new Vuex.Store({
             }
           }
         } else console.error('Cannot query with ' + operator + ' operator yet')
+      })
+    },
+    treeQueryArr (store, queryObj) {
+      let promises = []
+      queryObj.queryArr.forEach((query) => {
+        promises.push(store.dispatch('treeQuery', { fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level }))
+      })
+      return Promise.all(promises).then((values) => {
+        return Vue._.union.apply(null, values)
       })
     },
     treeQuery: function (store, queryObj) {
@@ -339,7 +293,7 @@ const store = new Vuex.Store({
       })
     },
     mergeAncestorClasses (store, classId) {
-      return store.dispatch('getCommon', classId).then((classObj) => {
+      return store.dispatch('getCommonByCid', classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
             return Vue._.merge(parentClassObj, classObj)
@@ -376,7 +330,7 @@ const store = new Vuex.Store({
         viewObj.required = Vue._.union(viewObj.required, classObj.required)
         viewObj.classIcon = classObj.icon
       }
-      return store.dispatch('loadCommon', viewId).then((viewObj) => {
+      return store.dispatch('getCommonByCid', viewId).then((viewObj) => {
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
@@ -386,52 +340,36 @@ const store = new Vuex.Store({
         } else return viewObj
       })
     },
-    loadClasses (store) {
-      store.commit('SET_CLASSES_LOADING', { loading: true })
-      return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} })
-        .then(response => {
-          store.commit('SET_CLASSES_SUCCESS', {
-            statusCode: response.status,
-            message: response.statusText,
-            data: response.data
-          })
-          return true
-        })
-        .catch(error => {
-          store.commit('SET_CLASSES_FAILURE', {
-            statusCode: error.status,
-            message: error.statusText
-          })
-          return false
-        })
-    },
     loadCommons () {
-      const openRequest = indexedDB.open('commonsDB', 1)
+      return new Promise((resolve, reject) => {
+        const openRequest = indexedDB.open('commonsDB', 1)
 
-      openRequest.onupgradeneeded = e => {
-        const db = e.target.result
-        const store = db.createObjectStore('commons')
-        store.createIndex('parentId', 'parentId')
-        store.createIndex('classId', 'classId')
-      }
+        openRequest.onupgradeneeded = e => {
+          let db = e.target.result
+          const store = db.createObjectStore('commons')
+          store.createIndex('parentId', 'parentId')
+          store.createIndex('classId', 'classId')
+        }
 
-      openRequest.onsuccess = e => {
-        this.db = e.target.result
+        openRequest.onsuccess = e => {
+          this.db = e.target.result
 
-        return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-          const transaction = this.db.transaction('commons', 'readwrite')
-          const commonsStore = transaction.objectStore('commons')
-          Object.keys(response.data).forEach(key => {
-            let result = response.data[key]
-            commonsStore.put(result, key)
+          return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
+            const transaction = this.db.transaction('commons', 'readwrite')
+            const commonsStore = transaction.objectStore('commons')
+            Object.keys(response.data).forEach(key => {
+              let result = response.data[key]
+              commonsStore.put(result, key)
+            })
+            resolve(true)
           })
-          return true
-        })
-      }
+        }
 
-      openRequest.onerror = e => {
-        console.error(e.error)
-      }
+        openRequest.onerror = e => {
+          console.error(e.error)
+          reject(e.error)
+        }
+      })
     }
   }
 })

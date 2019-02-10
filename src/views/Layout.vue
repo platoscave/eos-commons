@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import router from 'vue-router'
 
 export default {
   props: {
@@ -49,7 +48,7 @@ export default {
     handelNewPage (pageDesc) {
       if (!pageDesc || !pageDesc.pageId) return
       this.pageId = pageDesc.pageId
-      this.$store.dispatch('loadCommon', pageDesc.pageId).then((pageObj) => {
+      this.$store.dispatch('getCommonByCid', pageDesc.pageId).then((pageObj) => {
         this.pageObj = pageObj
       })
     }

@@ -79,7 +79,7 @@
                                 <!-- Query -->
                                 <template v-else-if="propertyHas( property, 'query' )">
                                     <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput">{{ getCommon(data[key]) }}</div>
+                                        <div class="readOnlyInput">{{ getCommonByCid(data[key]) }}</div>
                                     </template>
                                     <template v-else>
                                         <v-select outline></v-select>
@@ -128,18 +128,19 @@
                                     <div>
                                         <!--<v-layout column>-->
                                         <template v-if="propertyHas( property.items, 'type', 'object') ">
-                                            <template v-for="(childData) in data[key]">
+                                            <template v-for="(childData, key) in data[key]">
                                                 <!--<flex>-->
                                                 <ec-form class="readOnlyInput" v-bind:level="level"
                                                          v-bind:editMode="editMode"
                                                          v-bind:parent-data="childData"
-                                                         v-bind:parent-schema="property.items"></ec-form>
+                                                         v-bind:parent-schema="property.items"
+                                                         v-bind:key="key"></ec-form>
                                                 <!--</flex>-->
-                                                <br>
+                                                <br v-bind:key="key">
                                             </template>                                       </template>
                                         <template v-else>
-                                            <template v-for="(childData) in data[key]">
-                                                <div class="readOnlyInput">{{ childData }}</div>
+                                            <template v-for="(childData, key) in data[key]">
+                                                <div class="readOnlyInput" v-bind:key="key">{{ childData }}</div>
                                             </template>
                                         </template>
 
@@ -229,7 +230,7 @@ export default {
         return val
       }
     },
-    getCommon (id) {
+    getCommonByCid (id) {
       if (!id) return '[null]'
       const obj = this.$store.state.classes[id]
       if (!obj) return '[not found: ' + id + ']'
@@ -243,7 +244,7 @@ export default {
         newVal => {
           console.log('selectedObjId Changed!', newVal)
           if (!newVal) return
-          this.$store.dispatch('loadCommon', newVal).then(data => {
+          this.$store.dispatch('getCommonByCid', newVal).then(data => {
             console.log('data', data)
             this.data = data
           })
@@ -261,7 +262,7 @@ export default {
     /* if (this.parentData) this.data = this.parentData
       else {
         const pageDesc = this.$store.state.levelIdsArr[this.level]
-        this.$store.dispatch('loadCommon', pageDesc.selectedObjId).then((data) => {
+        this.$store.dispatch('getCommonByCid', pageDesc.selectedObjId).then((data) => {
           console.log('data', data)
           this.data = data
         })

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Ipfs from './views/Ipfs.vue'
+// import Ipfs from './views/Ipfs.vue'
 
 Vue.use(Router)
 
@@ -9,9 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/ipfs',
-      name: 'ipfs',
-      component: Ipfs
-    },
+      name: 'ipfs'
+    }
 
   ]
 })

@@ -1,4 +1,5 @@
 import TWEEN from '@tweenjs/tween.js'
+import * as THREE from 'three'
 // import * as TWEEN from '../../node_modules/three/examples/js/libs/tween.min.js';
 // const TWEEN = require('../../node_modules/three/examples/js/libs/tween.min.js')
 export default {
@@ -78,8 +79,7 @@ export default {
       this.camera.position.z = 4000
 
       // renderer
-      if (Detector.webgl) this.renderer = new THREE.WebGLRenderer({antialias: true})
-      else this.renderer = new THREE.CanvasRenderer()
+      this.renderer = new THREE.WebGLRenderer({antialias: true})
       this.$el.appendChild(this.renderer.domElement)
 
       // controls
@@ -99,48 +99,10 @@ export default {
       // axes
       sceneObject3D.add(new THREE.AxisHelper(100))
 
-      // projector
-      //        this.projector = new THREE.Projector();
+      // raycaster
       this.raycaster = new THREE.Raycaster()
 
       // this.scene.background = new THREE.CubeTextureLoader().load(this.skyboxArray)
-
-      // cubemap
-      /* vvar path = "textures/cube/SwedishRoyalCastle/";
-      var format = '.jpg';
-      var urls = [
-        path + 'px' + format, path + 'nx' + format,
-        path + 'py' + format, path + 'ny' + format,
-        path + 'pz' + format, path + 'nz' + format
-      ]; */
-      /*
-            // See https://stemkoski.github.io/Three.js/Skybox.html
-            let loader = new THREE.TextureLoader()
-            let promises = []
-            this.skyboxArray.forEach(textureLocation => {
-              promises.push(new Promise((resolve, reject) => {
-                loader.load(textureLocation, (texture) => {
-                  resolve(texture)
-                }, undefined, (err) => { debugger; console.error(err) })
-              }))
-            })
-            Promise.all(promises).then(resultsArr => {
-              debugger
-              let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
-              let materialArray = []
-              resultsArr.forEach(texture => {
-                materialArray.push(new THREE.MeshBasicMaterial({
-                  map: texture,
-                  side: THREE.BackSide
-                }))
-              })
-              let skyMaterial = new THREE.MeshFaceMaterial(materialArray)
-              this.skyBox = new THREE.Mesh(skyGeometry, skyMaterial)
-              sceneObject3D.add(this.skyBox)
-              this.$forceUpdate()
-              this.animate()
-            }, (err) => console.error(err))
-      */
       // See https://stemkoski.github.io/Three.js/Skybox.html
       if (this.skyboxArray.length === 6) {
         let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
@@ -224,6 +186,20 @@ export default {
         this.controls.object.position.set(cameraPos.x, cameraPos.y, cameraPos.z)
       })
       cameraTween.start()
+    },
+    addLoadingText () {
+      let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+      let text3d = new THREE.TextGeometry('Loading...', {size: 200, font: this.font})
+      text3d.center()
+      let textMesh = new THREE.Mesh(text3d, textMaterial)
+      textMesh.name = 'Loading Message'
+      textMesh.position.set(0, 400, 0)
+      this.scene.add(textMesh)
+    },
+    removeLoadingText () {
+      let mesh = this.scene.getObjectByName('Loading Message')
+
+      this.scene.remove(mesh)
     }
   }
 }

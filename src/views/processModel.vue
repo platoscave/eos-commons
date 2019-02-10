@@ -4,10 +4,11 @@
 </template>
 
 <script>
+import * as THREE from 'three'
 import Scene from '../lib/sceneMixin.js'
-import processObject3d from '../lib/processObject3d.js'
+import ProcessObject3d from '../lib/ProcessObject3d.js'
 
-const WIDTH = 400
+// const WIDTH = 400
 const HEIGHT = 200
 
 export default {
@@ -26,73 +27,71 @@ export default {
     }
   },
   mounted () {
-    // Wait for DOM updated. Vue.nextTick() does not work
-    setTimeout(() => {
-      let fontLoader = new THREE.FontLoader()
-      fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-        this.font = font
-        let queryObj = {
-          query: {
-            where: {
-              docProp: 'classId',
-              operator: 'eq',
-              value: '574724823c6d3cd598a5a373'
-            }
+    let fontLoader = new THREE.FontLoader()
+    fontLoader.load('helvetiker_regular.typeface.json', (font) => {
+      this.font = font
+      this.addLoadingText()
+      let queryObj = {
+        query: {
+          where: {
+            docProp: 'classId',
+            operator: 'eq',
+            value: '574724823c6d3cd598a5a373'
           }
         }
-        this.$store.dispatch('query', queryObj).then((resultsArr) => {
-          let zz = 0
-          resultsArr.forEach(interfaceState => {
-            let placeholderObject3d = new THREE.Object3D()
-            placeholderObject3d.position.setZ(zz)
-            this.modelObject3D.add(placeholderObject3d)
-            let interfaceStateObj3d = new processObject3d(interfaceState, this.font)
-            placeholderObject3d.add(interfaceStateObj3d)
-            this.selectableMeshArr.push(interfaceStateObj3d.children[0])
+      }
+      this.$store.dispatch('query', queryObj).then((resultsArr) => {
+        let zz = 0
+        resultsArr.forEach(interfaceState => {
+          let placeholderObject3d = new THREE.Object3D()
+          placeholderObject3d.position.setZ(zz)
+          this.modelObject3D.add(placeholderObject3d)
+          let interfaceStateObj3d = new ProcessObject3d(interfaceState, this.font)
+          placeholderObject3d.add(interfaceStateObj3d)
+          this.selectableMeshArr.push(interfaceStateObj3d.children[0])
 
-            const substateId = interfaceState.substateId
-            if (substateId) {
-              /* We have a problem when collecting substates from interfaceState since the are
-                 * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
-                 * The workaround is to collect the substates in and object with the stateId as key */
-              this.collectSubstates(substateId).then(stateIdObj => {
-                for (let key in stateIdObj) {
-                  let stateObj = stateIdObj[key]
-                  let pos = new THREE.Vector3(0, 0, 0)
-                  let obj = new processObject3d(stateObj, this.font)
-                  placeholderObject3d.add(obj)
-                  this.selectableMeshArr.push(obj.children[0])
-                }
+          const substateId = interfaceState.substateId
+          if (substateId) {
+            /* We have a problem when collecting substates from interfaceState since the are
+                * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
+                * The workaround is to collect the substates in and object with the stateId as key */
+            this.collectSubstates(substateId).then(stateIdObj => {
+              for (let key in stateIdObj) {
+                let stateObj = stateIdObj[key]
+                let obj = new ProcessObject3d(stateObj, this.font)
+                placeholderObject3d.add(obj)
+                this.selectableMeshArr.push(obj.children[0])
+              }
 
-                let maxX = this.setPositionX(placeholderObject3d, substateId, 0)
-                let minY = this.setPositionY(placeholderObject3d, substateId, position.y - 800)
+              let maxX = this.setPositionX(placeholderObject3d, substateId, 0)
+              this.setPositionY(placeholderObject3d, substateId, -HEIGHT * 4)
 
-                interfaceStateObj3d.position.setX(maxX / 2)
-                interfaceStateObj3d.updateMatrixWorld()
+              interfaceStateObj3d.position.setX(maxX / 2)
+              interfaceStateObj3d.updateMatrixWorld()
 
-                // Draw interface connector to first substate
-                let toState = placeholderObject3d.getObjectByProperty('key', substateId)
-                interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
+              // Draw interface connector to first substate
+              let toState = placeholderObject3d.getObjectByProperty('key', substateId)
+              interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
 
-                // Tell the subSates to draw their connetors
-                let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)
-                subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
+              // Tell the subSates to draw their connetors
+              let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)
+              subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
 
-                placeholderObject3d.position.setX(-maxX / 2)
-              })
+              placeholderObject3d.position.setX(-maxX / 2)
+            })
 
-              // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
-              // this.modelObject3D.add(box)
-            }
-            zz -= 1600
-          })
+            // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
+            // this.modelObject3D.add(box)
+          }
+          zz -= 1600
         })
-      }, (err) => console.log(err))
-    }, 1000)
+        this.removeLoadingText()
+      })
+    }, (err) => console.log(err))
   },
   methods: {
     collectSubstates (stateId) {
-      return this.$store.dispatch('loadCommon', stateId).then(substate => {
+      return this.$store.dispatch('getCommonByCid', stateId).then(substate => {
         let promises = []
         if (substate.nextStateIds) {
           substate.nextStateIds.forEach(nextStateActionId => {
