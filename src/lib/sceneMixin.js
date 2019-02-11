@@ -153,7 +153,10 @@ export default {
       let intersects = this.raycaster.intersectObjects(this.selectableMeshArr)
       if (intersects.length > 0) {
         let selectedMesh = intersects[0].object
-        console.log('selectedMesh', selectedMesh)
+        // let normal = intersects[0].face.normal
+        // console.log(normal)
+        // var normalMatrix = new THREE.Matrix3().getNormalMatrix(selectedMesh.matrixWorld)
+        // console.log(normal.clone().applyMatrix3(normalMatrix).normalize())
         this.$store.commit('SET_PAGE_STATE2', {
           level: this.level,
           selectedObjId: selectedMesh.parent.key
@@ -174,7 +177,7 @@ export default {
     },
     moveCameraToPos (key) {
       let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
-      // console.log('selectedModelObj', selectedModelObj.userData.doc.text)
+      console.log('selectedModelObj', selectedModelObj)
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
       newTargetPos.setFromMatrixPosition(selectedModelObj.matrixWorld)
@@ -183,7 +186,7 @@ export default {
 
       let cameraPos = this.controls.object.position.clone()
       let newCameraPos = newTargetPos.clone()
-      newCameraPos.z = 2000
+      newCameraPos.setZ(newCameraPos.z + 2000)
       let cameraTween = new TWEEN.Tween(cameraPos).to(newCameraPos, 1500)
       cameraTween.easing(TWEEN.Easing.Quadratic.Out)
       cameraTween.onUpdate(() => {

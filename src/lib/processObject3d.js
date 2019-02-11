@@ -13,6 +13,8 @@ export default class ProcessObject3d extends THREE.Object3D {
     this.userData = queryResult
     this.font = font
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
+    // let helper = new THREE.VertexNormalsHelper(mesh, 20, 0x00ff00, 1)
+    // this.add(helper)
     this.add(mesh)
     let textPosition = this.position.clone()
     textPosition.setZ(textPosition.z + BREADTH + 20)

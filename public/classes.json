@@ -66,19 +66,6 @@
     "docType": "class",
     "parentId": "56f86c6a5dde184ccfb9fc6a",
     "properties": {
-      "initialDocId": {
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "573435f03c6d3cd598a5a2e1",
-          "where": {
-            "docProp": "ownerId",
-            "operator": "eq",
-            "value": "$docId"
-          }
-        },
-        "title": "Inital Paragraph",
-        "type": "string"
-      },
       "pageId": {
         "pattern": "[a-f0-9]{24}",
         "query": {
@@ -965,95 +952,6 @@
       "type": "object"
     }
   },
-  "573435f03c6d3cd598a5a2e1": {
-    "description": "<p>Paragraphs owned by users/organizations</p>",
-    "docType": "class",
-    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAAE/SURBVDhPpZLdS8JQGIf9J7sNuoiokKKMQvqkQIoo+7opCFIiixApiAihgVcVCdmNYhEDTSxGH7qttbZf52wdP/AdFb7wXOyw5zkvbD4AbUEe/ofarJ+/I7R/50lg+qjhbWJWky8sCFiWBdM0YRgGdF1HtaoiJytOYO0g4x1ZOX2CbdtORAx/+jCBfEl3Ah17CsLRKzqyfFx0bhcjZPUTyBY1JyD4UZpnMf7gmmy4yFE0oKy6pG8BSQKGJxN0YCGWwxdbQIiNcl5xyT4DQ+NxOhDayUBj61aMuiy/ugj5pgwMBA/pwNzWpafM4fL1I+AfjdGBmY1UbWVKvii49Ad26cDUUvJXOSUDvYMROjAxf4LCW6ssAlyW2Ifq8W/TgeBsokVOl+q3c/nsHuju26QDI2NR/IXOrnBzgP03bQDfNy91dEbnT99iAAAAAElFTkSuQmCC",
-    "parentId": "573435803c6d3cd598a5a2dd",
-    "properties": {
-      "childDocs": {
-        "items": {
-          "pattern": "[a-f0-9]{24}",
-          "type": "string"
-        },
-        "minItems": 0,
-        "query": {
-          "from": "573435f03c6d3cd598a5a2e1",
-          "where": {
-            "docProp": "ownerId",
-            "operator": "eq",
-            "value": "$docId"
-          }
-        },
-        "title": "Sub Paragraphs",
-        "type": "array",
-        "uniqueItems": true
-      },
-      "insets": {
-        "items": {
-          "properties": {
-            "height": {
-              "maxLength": 100,
-              "title": "Height",
-              "type": "string"
-            },
-            "media": {
-              "additionalProperties": false,
-              "properties": {
-                "default": {
-                  "mediaType": "text/plain"
-                },
-                "mediaType": {
-                  "enum": [
-                    "text/plain",
-                    "text/html",
-                    "text/json",
-                    "text/javascript",
-                    "image/png"
-                  ],
-                  "title": "Media Type",
-                  "type": "string"
-                }
-              },
-              "title": "Media",
-              "type": "object"
-            },
-            "url": {
-              "maxLength": 1000,
-              "title": "Url",
-              "type": "string"
-            },
-            "width": {
-              "maxLength": 100,
-              "title": "Width",
-              "type": "string"
-            }
-          },
-          "required": [
-            "media"
-          ],
-          "type": "object"
-        },
-        "title": "Insets",
-        "type": "array"
-      },
-      "viewId": {
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "573435c23c6d3cd598a5a2df",
-          "where": {
-            "docProp": "ownerId",
-            "operator": "eq",
-            "value": "$docId"
-          }
-        },
-        "title": "View",
-        "type": "string"
-      }
-    },
-    "title": "Paragraphs",
-    "type": "object"
-  },
   "57343b823c6d3cd598a5a2e3": {
     "description": "<p>Assets owned by users/organizations</p>",
     "docType": "class",
@@ -1105,120 +1003,7 @@
     "title": "Organizations",
     "type": "object"
   },
-  "574225cb3c6d3cd598a5a305": {
-    "description": "<p>Agreements between owners</p>",
-    "docType": "class",
-    "parentId": "56f86c6a5dde184ccfb9fc6a",
-    "properties": {
-      "assetId": {
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "56f87bcc5dde184ccfb9fc70",
-          "where": {
-            "docProp": "_id",
-            "operator": "in",
-            "value": "$self.offeringId"
-          }
-        },
-        "title": "Asset",
-        "type": "string"
-      },
-      "buyerId": {
-        "default": "$userId",
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "56f870a55dde184ccfb9fc6c"
-        },
-        "title": "Buyer",
-        "type": "string"
-      },
-      "offeringId": {
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "574234113c6d3cd598a5a30b",
-          "where": {
-            "docProp": "ownerId",
-            "operator": "eq",
-            "value": "$self.sellerId"
-          }
-        },
-        "title": "Offering",
-        "type": "string"
-      },
-      "sellerId": {
-        "default": "$ownerId",
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "56f870a55dde184ccfb9fc6c"
-        },
-        "title": "Seller",
-        "type": "string"
-      },
-      "stateHistory": {
-        "items": {
-          "additionalProperties": false,
-          "properties": {
-            "date": {
-              "default": "$now",
-              "format": "date-time",
-              "title": "Date",
-              "type": "string"
-            },
-            "description": {
-              "default": "<p>[no text]</p>",
-              "maxLength": 10000,
-              "media": {
-                "mediaType": "text/html"
-              },
-              "readOnly": "$self.date=='$now'?false:true",
-              "title": "Description",
-              "type": "string"
-            },
-            "stateId": {
-              "pattern": "[a-f0-9]{24}",
-              "query": {
-                "from": "5745eaa53c6d3cd598a5a371",
-                "where": {
-                  "docProp": "_id",
-                  "operator": "in",
-                  "value": "$get($self.stateHistory.1.stateId).$self.nextStateIds"
-                }
-              },
-              "readOnly": "$self.date=='$now'?false:true",
-              "title": "State",
-              "type": "string"
-            },
-            "userId": {
-              "default": "$userId",
-              "pattern": "[a-f0-9]{24}",
-              "query": {
-                "from": "57343beb3c6d3cd598a5a2e7"
-              },
-              "title": "By",
-              "type": "string"
-            }
-          },
-          "required": [
-            "date",
-            "stateId"
-          ],
-          "type": "object"
-        },
-        "minItems": 1,
-        "title": "History",
-        "type": "array",
-        "uniqueItems": true
-      }
-    },
-    "required": [
-      "buyerId",
-      "sellerId",
-      "offeringId",
-      "stateHistory"
-    ],
-    "title": "Agreements",
-    "type": "object"
-  },
+
   "574232a53c6d3cd598a5a307": {
     "description": "<p>Menbership Agreements between user and organizations</p>",
     "docType": "class",
@@ -1243,71 +1028,12 @@
     "title": "Purchase",
     "type": "object"
   },
-  "574234113c6d3cd598a5a30b": {
-    "description": "<p>Offerings</p>",
-    "docType": "class",
-    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcRJREFUeNqkU1svA0EU/mZ3qVtLG42uWosmeHSJ4MmzNwkP/Anhl7j8CRIk4sWbxBMeWm+CpKhqd4VQirRRO86My7qF4mQ2M+fMfN9+58wcxjnHf4y9dbZn+xdpGhZBScvdU8x1lzrHN0Y+EcSm++ZCRmA0l+ewrBvooQro9VVyz0rfwLLvoOtVKPMw2MmL+a6JzbFXguhU71w4EhqtCfhkgCkMVuoa+3u2JGhtC0EP+8AdLlVkLq6Ritvz3ZNbYyw207dotjUN1wT98nDy4BTJxBkaW+rQ0FgrYyfH5zimuGEGYVBcWObsEom9ox0WnerhXYMDONlNIBE/RXNrGPUtOiVM/3Kcp/wUhWQxpA8sHO6nYEaIvN1EbHUdGvgDCr4h+M0o/E2KPJ/Nv1SPvytVtdGMDkOEHcJ007xGBMLuM8jFFyh34nt/MV9cG9XBKcATiEhfk+yFK2jlXlqWSKnfmkiN30uMwEoFzLmF6qmkhfrxaXzFQKNUYlwF5JSUldOWUhQBgyMxzwoYVOQBUsB/BLt1kBhBwETOpQWoXp9b9GIagDACq1Hps9vLK17nlz2lPD3ZrJg66FP/2IwP7L/t/CjAAHrBnVB4+4UBAAAAAElFTkSuQmCC",
-    "parentId": "573435803c6d3cd598a5a2dd",
-    "properties": {
-      "assetIds": {
-        "items": {
-          "pattern": "[a-f0-9]{24}",
-          "type": "string"
-        },
-        "minItems": 0,
-        "query": {
-          "from": "57343b823c6d3cd598a5a2e3",
-          "where": {
-            "docProp": "ownerId",
-            "operator": "eq",
-            "value": "$ownerId"
-          }
-        },
-        "title": "Assests on Offer",
-        "type": "array",
-        "uniqueItems": true
-      },
-      "fromDate": {
-        "format": "date-time",
-        "title": "From Date",
-        "type": "string"
-      },
-      "initialStateId": {
-        "pattern": "[a-f0-9]{24}",
-        "query": {
-          "from": "5747254b3c6d3cd598a5a379"
-        },
-        "title": "Initial State",
-        "type": "string"
-      },
-      "toDate": {
-        "format": "date-time",
-        "title": "To Date",
-        "type": "string"
-      }
-    },
-    "title": "Processes",
-    "type": "object"
-  },
   "574237133c6d3cd598a5a30d": {
     "description": "<p>Organizational units owned by organizations</p>",
     "docType": "class",
     "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODBDQUY3RkM2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODBDQUY3RkQ2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MENBRjdGQTY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4MENBRjdGQjY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pj6+XOUAAAGRSURBVHjafFK/T8JAFH7XHtFECg0xwZ3EOLnILOpWaqJ/gLOLf4B/ibuDm4NiKN1EnHFxk4RRogugwcHSu/PelcPSUl7ycnfvu/vej/uIEAIIIaDt4ublfhryE8YFJM00COSo0bg62zudB5EgbufXXfEtg4NAiPeY4xnjiMfv02QWxjn8BABvw1QBsFOK8JUEqioDwF7H6gCwOUyJXWI8aSkC0zTBklFSjAg0AxLkSYSvJBBs+nh52zvSQ1SZxf8QEY/fJ8lfkFaRbuvD7nal+9rrV2P4WHo/k+Bgv6YSCsHBMAzpJnDOpHN5z1AdPT13SGYLG5YFntesQoa57nE31cJDszmSqyobs2ptUEo/XcfZ8nz/IwzDcjQToqqZ7ceqAsaY7dbr8MtC/WmwZlJo+b56FARBue44KdxrtWyq1chDBl/DkcZhs1SaZ8J1GY7v5jMwcxQsKw96qHhe0EcGTnVfOUqhWCgsPNK/swpXBJPJpHPXaNR4TOc4TBlvz/C2xA+X4B2tgwXxLBFNJv4nwABEa91VFnwXcgAAAABJRU5ErkJggg==",
     "parentId": "573435803c6d3cd598a5a2dd",
     "properties": {
-      "involvedInOfferingIds": {
-        "items": {
-          "pattern": "[a-f0-9]{24}",
-          "type": "string"
-        },
-        "minItems": 0,
-        "query": {
-          "from": "574234113c6d3cd598a5a30b"
-        },
-        "title": "Involved In Offerings",
-        "type": "array",
-        "uniqueItems": true
-      },
       "pageId": {
         "pattern": "[a-f0-9]{24}",
         "query": {
@@ -2743,77 +2469,6 @@
     },
     "type": "object"
   },
-  "575d4c3f2cf3d6dc3ed8314a": {
-    "classId": "573435c23c6d3cd598a5a2df",
-    "docType": "object",
-    "name": "Document Tree View",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148",
-    "properties": {
-      "childDocs": {
-        "readOnly": false
-      },
-      "insets": {
-        "readOnly": false
-      },
-      "name": {
-        "readOnly": false
-      }
-    },
-    "query": {
-      "from": "573435f03c6d3cd598a5a2e1",
-      "join": [
-        {
-          "from": "573435f03c6d3cd598a5a2e1",
-          "join": [
-            {
-              "queryByName": "paragraphs"
-            }
-          ],
-          "menu": [
-            {
-              "action": "add",
-              "iconClass": "addIcon",
-              "label": "Add Child Paragraph"
-            },
-            {
-              "action": "delete",
-              "iconClass": "removeIcon",
-              "label": "Delete"
-            }
-          ],
-          "pageId": "575d4c3f2cf3d6dc3ed83154",
-          "queryName": "paragraphs",
-          "select": "name",
-          "where": {
-            "docProp": "$key",
-            "operator": "in",
-            "value": "$parentNode.childDocs"
-          }
-        }
-      ],
-      "menu": [
-        {
-          "action": "add",
-          "iconClass": "addIcon",
-          "label": "Add Child Paragraph"
-        },
-        {
-          "action": "delete",
-          "iconClass": "removeIcon",
-          "label": "Delete"
-        }
-      ],
-      "pageId": "575d4c3f2cf3d6dc3ed83154",
-      "queryName": "rootParagraphs",
-      "select": "name",
-      "where": {
-        "docProp": "$key",
-        "operator": "eq",
-        "value": "$parentNode.initialDocId"
-      }
-    },
-    "type": "object"
-  },
   "575d4c3f2cf3d6dc3ed8314b": {
     "classId": "573435c23c6d3cd598a5a2df",
     "description": "<p>Descibes the class model hierarchy, including a children array</p>",
@@ -3037,52 +2692,6 @@
       }
     ]
   },
-  "575d4c3f2cf3d6dc3ed83151": {
-    "childDocs": [
-      "582e4dea425310133a49f109",
-      "575d4c3f2cf3d6dc3ed83152",
-      "575d4c3f2cf3d6dc3ed83153"
-    ],
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>The question Neuralquest set out to answer is:<br /><br /><b>What is the least amount of complexity it takes to do business processes?</b><br /><br />Complexity is important because this is where all the money goes. Keeping a system simple offers exponential benefits in terms of running costs, maintenance, learning curve, extensibility, support and vulnerability.<br />Our focus is on business processes because that where the money comes from. Perhaps more importantly, business processes contain all the &quot;hard bits&quot;<br /></p>",
-    "docType": "object",
-    "insets": [
-      {
-        "media": {
-          "mediaType": "image/png"
-        },
-        "url": "app/resources/img/Neuralquest/3dClassModel.png",
-        "width": "30%"
-      }
-    ],
-    "name": "Neuralquest",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "575d4c3f2cf3d6dc3ed83152": {
-    "childDocs": [
-      "582e3f25425310133a49f105",
-      "582e3f51425310133a49f107",
-      "5834a2a499286dd833c7996b",
-      "5834a357ef13367319ef0b3c"
-    ],
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>It's hard to come up with a concise definition of business processes. <br />Requirments </p>",
-    "docType": "object",
-    "name": "Business Processes",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "575d4c3f2cf3d6dc3ed83153": {
-    "childDocs": [
-      "58343c8b68e5851480cd6f54",
-      "5834a5251714ed5fa1d442ff",
-      "5834a544620ca0ff9413b126"
-    ],
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p></p>",
-    "docType": "object",
-    "name": "Road Map",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
   "575d4c3f2cf3d6dc3ed83154": {
     "accordionOrTab": "Tabs",
     "classId": "56f87ec55dde184ccfb9fc74",
@@ -3145,62 +2754,6 @@
     "docType": "object",
     "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC",
     "name": "ACME Health Care Clinic"
-  },
-  "575de7f43c6d3cd598a5a387": {
-    "classId": "573435c23c6d3cd598a5a2df",
-    "description": "<p>Paragraph View</p>",
-    "docType": "object",
-    "name": "Paragraph View",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148",
-    "properties": {
-      "description": {
-        "readOnly": false
-      },
-      "insets": {
-        "items": {
-          "properties": {
-            "height": {
-              "readOnly": false
-            },
-            "media": {
-              "properties": {
-                "mediaType": {
-                  "readOnly": false
-                }
-              }
-            },
-            "url": {
-              "readOnly": false
-            },
-            "width": {
-              "readOnly": false
-            }
-          },
-          "type": "object"
-        }
-      },
-      "name": {
-        "readOnly": false
-      },
-      "newInsetButton": {
-        "action": {
-          "actionType": "insertSubDocArray",
-          "arrayName": "insets"
-        },
-        "label": "Add Inset",
-        "readOnly": false,
-        "type": "button"
-      }
-    },
-    "query": {
-      "from": "573435f03c6d3cd598a5a2e1",
-      "where": {
-        "docProp": "$key",
-        "operator": "eq",
-        "value": "$docId"
-      }
-    },
-    "type": "object"
   },
   "576668623c6d3cd598a5a389": {
     "classId": "56f87ec55dde184ccfb9fc74",
@@ -3522,20 +3075,6 @@
       }
     },
     "type": "object"
-  },
-  "577909043c6d3cd598a5a39e": {
-    "assetIds": [
-      "578c03fa3c6d3cd598a5a3a8",
-      "578c06233c6d3cd598a5a3aa",
-      "578c06793c6d3cd598a5a3ac"
-    ],
-    "classId": "574234113c6d3cd598a5a30b",
-    "description": "<p>Products for Sale</p>",
-    "docType": "object",
-    "fromDate": "2008-10-17T00:00:00Z",
-    "initialStateId": "57790e503c6d3cd598a5a3a0",
-    "name": "Products for Sale",
-    "ownerId": "575d4c3f2cf3d6dc3ed8315b"
   },
   "57790e503c6d3cd598a5a3a0": {
     "classId": "574724823c6d3cd598a5a373",
@@ -4573,41 +4112,6 @@
       }
     ]
   },
-  "57b72d062d8cd20920e6d83b": {
-    "classId": "573435c23c6d3cd598a5a2df",
-    "docType": "object",
-    "name": "Process Form View",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148",
-    "properties": {
-      "assetIds": {
-        "readOnly": false
-      },
-      "description": {
-        "readOnly": false
-      },
-      "fromDate": {
-        "readOnly": false
-      },
-      "initialStateId": {
-        "readOnly": false
-      },
-      "name": {
-        "readOnly": false
-      },
-      "toDate": {
-        "readOnly": false
-      }
-    },
-    "query": {
-      "from": "574234113c6d3cd598a5a30b",
-      "where": {
-        "docProp": "$key",
-        "operator": "eq",
-        "value": "$docId"
-      }
-    },
-    "type": "object"
-  },
   "57b72d5e2d8cd20920e6d83d": {
     "classId": "573435c23c6d3cd598a5a2df",
     "docType": "object",
@@ -4804,67 +4308,6 @@
     },
     "type": "object"
   },
-  "57c213652d8cd20920e6d84d": {
-    "classId": "573435c23c6d3cd598a5a2df",
-    "docType": "object",
-    "name": "Processes Tree View",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148",
-    "query": {
-      "from": "56f870a55dde184ccfb9fc6c",
-      "join": [
-        {
-          "from": "574234113c6d3cd598a5a30b",
-          "join": [
-            {
-              "from": "5745eaa53c6d3cd598a5a371",
-              "join": [
-                {
-                  "from": "5745eaa53c6d3cd598a5a371",
-                  "join": [
-                    {
-                      "queryByName": "nextStates"
-                    }
-                  ],
-                  "pageId": "57b72a3c2d8cd20920e6d839",
-                  "queryName": "nextStates",
-                  "select": "name",
-                  "where": {
-                    "docProp": "$key",
-                    "operator": "in",
-                    "value": "$parentNode.nextStateIds"
-                  }
-                }
-              ],
-              "pageId": "57b72a3c2d8cd20920e6d839",
-              "queryName": "initaialState",
-              "select": "name",
-              "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "$parentNode.initialStateId"
-              }
-            }
-          ],
-          "pageId": "57b729d52d8cd20920e6d835",
-          "queryName": "offerings",
-          "select": "name",
-          "where": {
-            "docProp": "classId",
-            "operator": "eq",
-            "value": "$parentNode.$key"
-          }
-        }
-      ],
-      "queryName": "owner",
-      "select": "name",
-      "where": {
-        "docProp": "$key",
-        "operator": "eq",
-        "value": "574234113c6d3cd598a5a30b"
-      }
-    },
-    "type": "object"
-  },
   "582b9ae215456a300beb7e01": {
     "classId": "573435c23c6d3cd598a5a2df",
     "docType": "object",
@@ -4967,27 +4410,6 @@
         ]
       }
     ]
-  },
-  "582e3f25425310133a49f105": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>A Standard Model is provided which includes all the classes/objects and their associations needed to do basic business processes.</p><p>Exstensible: If you're working standalone you can extend the model to your heart's delight.</p><p>Several diagrams provide insight into the inner workings of the Standard Model.</p>",
-    "docType": "object",
-    "name": "Class Model",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "582e3f51425310133a49f107": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>Users can initiate agreements with other users/organizations to transfer ownership of resources or provide services.</p><p>Finite state machine: Each agreement progresses through a hierarchy of potential states, until it is closed.</p><p>Role-based authorization: Each state correspondes to a view which only a member of your organization, with a particular role can access.</p><p>Workbasket: Each user is provided with a list of agreements that require his/her attention, based on his/her roles in organizations.</p><p>A set of template organizations is provided that you can copy to create your own organizations.</p><p>Audit Trail, Imutable Agreements, Blockchain?</p><div><br /></div>",
-    "docType": "object",
-    "name": "Process Model",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "582e4dea425310133a49f109": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>Large organizations typicly employ hundreds of loosely coupled systems.  Each of these systems requires a small army of experts to keep it from falling over.  Valnerability increases exponetially with each system in the chain.  These systems communicate with each other though interfaces. Everytime you copy data or send a message: <br /><ul><li>Send individual messages or filebasedt Lag time: acceptable? <br /></li><li>How do systems respond if a sent message is not recieved? <br /></li><li>Does it even know? <br /></li><li>You might have multiple feeds. <br /></li><li>What if feeds conflict? <br /></li><li>Update is missed or has already taken place: acceptable? <br /></li><li>Reconcilliation: which direction? how often? how to deal with exceptions? who is right? <br /></li><li>How to deal with duplicates: funtional merge?<br /></li><li>Authorization, authentication, encryption, key stores, firewalls, network performancet <br /></li></ul>Organizations avoid syncronous transactions because they require each and every component to support syncronous behaviour.   Developing, documenting, managing the interfaces in a large organization represents a huge undertaking and is often done poorly.   Systems will have diffrent retention/auditing requirments<br />In short: Copying data is a really bad idea. tIt leads to deterioration of data quality and excessive maintance costs, and yet we do it all the time. <br /> Why not a single data store? It was once thought that Relational Database Managers would take on this role.  It was not to be. Today, each system comes with it own database. tDirect connection to foreign databases is frowned upon, with good reason. tAll the above issues can be avoided if we resort to a single data store</p>",
-    "docType": "object",
-    "name": "Complextity",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
   },
   "5831bac2425310133a49f10b": {
     "assetId": "578c06793c6d3cd598a5a3ac",
@@ -5288,24 +4710,6 @@
       }
     ]
   },
-  "58322160425310133a49f115": {
-    "classId": "574234113c6d3cd598a5a30b",
-    "description": "<p>Repsonde to question</p>",
-    "docType": "object",
-    "fromDate": "2008-10-17T00:00:00Z",
-    "initialStateId": "583225ed425310133a49f119",
-    "name": "Repsond to Questions",
-    "ownerId": "575d4c3f2cf3d6dc3ed8314f"
-  },
-  "583221c9425310133a49f117": {
-    "classId": "574234113c6d3cd598a5a30b",
-    "description": "<p>Respond to question</p>",
-    "docType": "object",
-    "fromDate": "2008-10-17T00:00:00Z",
-    "initialStateId": "583225ed425310133a49f119",
-    "name": "Repsond to Questions",
-    "ownerId": "57685146555f1b602acb32b7"
-  },
   "583225ed425310133a49f119": {
     "classId": "5747251e3c6d3cd598a5a388",
     "description": "<p>Agreement</p>",
@@ -5440,40 +4844,6 @@
     },
     "type": "object"
   },
-  "58343c8b68e5851480cd6f54": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p><ul><li>Read queriess<br /></li><li>Fix Ownership<br /></li><li>Sub document queries<br /></li><li>Update functionality, permitted values<br /></li><li>DnD, Menus<br /></li><li>Documentation<br /></li><li>Automatic testing<br /></li><li>Make it secure<br /></li></ul></p>",
-    "docType": "object",
-    "name": "Get it to works",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "5834a2a499286dd833c7996b": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "docType": "object",
-    "name": "Role-based authorization",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "5834a357ef13367319ef0b3c": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>The Page Model consists of a heirarchy of pages and subpages that can be used to navigate the data-graph, following parent-child relationships.</p><p>Pages can have Tabs or Accordions to present various aspects of a parent object.</p><p>Tabs can be populated with various types of widgets: Tree, Table, Form, Document, Charts etc.</p><p>The URL can be bookmarked. The same page set will be created with recent data.</p><p>A set of published pages are provided that you can reuse in your own Page Model.</p><div><br /></div>",
-    "docType": "object",
-    "name": "Page Model",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "5834a5251714ed5fa1d442ff": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<ul><li>Deploy to Clouds<br /></li><li>Develop content/performance monitoring<br /></li><li>Develop template organizations<br /></li><li>Demonstrate that we can do complex buimess processes<br /></li><li>Get self governing communities started <br /></li><li>Democracy 3.0, A better world through informed descisons <br /></li><li>Tree of life <br /></li><li>The history of science, the evolution of memes<br /></li></ul>",
-    "docType": "object",
-    "name": "Launch",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
-  "5834a544620ca0ff9413b126": {
-    "classId": "573435f03c6d3cd598a5a2e1",
-    "description": "<p>Decentralize data responsibility over the world though Cassandra type solution.<br />Some day, doing business processes on a common platform will become as ubiquitous as water from the tap.</p>",
-    "docType": "object",
-    "name": "Far Future",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148"
-  },
   "5834c066425310133a49f125": {
     "classId": "574237133c6d3cd598a5a30d",
     "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
@@ -5606,53 +4976,6 @@
     },
     "query": {
       "from": "classes",
-      "where": {
-        "docProp": "$key",
-        "operator": "eq",
-        "value": "$docId"
-      }
-    },
-    "type": "object"
-  },
-  "5838e9be425336e46912c78b": {
-    "classId": "573435c23c6d3cd598a5a2df",
-    "docType": "object",
-    "name": "Document Form View",
-    "ownerId": "575d4c3f2cf3d6dc3ed83148",
-    "properties": {
-      "childDocs": {
-        "readOnly": false
-      },
-      "insets": {
-        "readOnly": false
-      },
-      "name": {
-        "readOnly": false
-      }
-    },
-    "query": {
-      "from": "573435f03c6d3cd598a5a2e1",
-      "join": [
-        {
-          "from": "573435f03c6d3cd598a5a2e1",
-          "join": [
-            {
-              "queryByName": "paragraphs"
-            }
-          ],
-          "pageId": "575d4c3f2cf3d6dc3ed83154",
-          "queryName": "paragraphs",
-          "select": "name",
-          "where": {
-            "docProp": "$key",
-            "operator": "in",
-            "value": "$parentNode.childDocs"
-          }
-        }
-      ],
-      "pageId": "575d4c3f2cf3d6dc3ed83154",
-      "queryName": "rootParagraphs",
-      "select": "name",
       "where": {
         "docProp": "$key",
         "operator": "eq",

@@ -103,34 +103,59 @@ export default class ClassObject3d extends THREE.Object3D {
   drawTubeTopSideToBottom (toObj3d, name) {
     // translate toPosition to our local coordinates
     let toPosition = toObj3d.position.clone()
-    let ourWorldPosition = new THREE.Vector3()
-    this.getWorldPosition(ourWorldPosition)
-    toPosition.sub(ourWorldPosition)
+    toPosition.sub(this.position)
 
     let material = this.mapAssocNameToMaterial(name)
 
-    let fromPos = this.getSidePos('top', new THREE.Vector3())
-    let toPos = this.getSidePos('bottom', toPosition)
-    // toPos.setX(toPos.x + WIDTH / 4)
+    let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
+    let coneMesh = new THREE.Mesh(coneGeometry, material)
 
+    let fromPos, toPos
     let points = []
-    points.push(fromPos)
-    points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT / 2, fromPos.z))
-    // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
-    points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT / 2, toPos.z))
-    points.push(toPos)
+    if (toPosition.y < 0) {
+      fromPos = this.getSidePos('bottom', new THREE.Vector3())
+      toPos = this.getSidePos('top', toPosition)
 
-    this.addTextMeshBetween(name, points[1], points[2])
+      points.push(fromPos)
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
+      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y + HEIGHT * 2, toPos.z))
+      points.push(toPos)
+
+      coneMesh.rotation.z = -Math.PI
+      coneMesh.position.set(toPos.x, toPos.y + 40, toPos.z)
+    } else if (toPosition.y > 0) {
+      fromPos = this.getSidePos('top', new THREE.Vector3())
+      toPos = this.getSidePos('bottom', toPosition)
+
+      points.push(fromPos)
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT * 2, fromPos.z))
+      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(toPos)
+
+      coneMesh.position.set(toPos.x, toPos.y - 40, toPos.z)
+    } else {
+      fromPos = this.getSidePos('bottom', new THREE.Vector3())
+      toPos = this.getSidePos('bottom', toPosition)
+
+      points.push(fromPos)
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
+      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(toPos)
+
+      coneMesh.position.set(toPos.x, toPos.y - 40, toPos.z)
+    }
 
     let path = new THREE.CatmullRomCurve3(this.straightenPoints(points))
     let geometry = new THREE.TubeGeometry(path, 64, 10, 8, false)
     let mesh = new THREE.Mesh(geometry, material)
     this.add(mesh)
 
-    let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
-    let rightCone = new THREE.Mesh(coneGeometry, material)
-    rightCone.position.set(toPos.x, toPos.y - 40, toPos.z)
-    this.add(rightCone)
+    this.add(coneMesh)
+
+    this.addTextMeshBetween(name, points[1], points[2])
   }
   mapAssocNameToMaterial (name) {
     if (name === 'owner') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })

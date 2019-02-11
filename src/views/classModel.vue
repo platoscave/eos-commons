@@ -50,7 +50,7 @@ export default {
           rootClassObj3d.drawClassConnectors()
 
           this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
-            this.scene.updateMatrixWorld()
+            this.scene.updateMatrixWorld(true)
             this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
 
             this.removeLoadingText()
@@ -103,14 +103,14 @@ export default {
         resultsArr.forEach(objectObj => {
           let objectObj3d = new ClassObject3d(objectObj, this.font)
           objectObj3d.position.set(classObj3d.position.x, classObj3d.position.y, z)
-          objectObj3d.rotateY(Math.PI * 0.5)
+          // objectObj3d.rotateY(Math.PI * 0.5)
           placeholderObject3d.add(objectObj3d)
           this.selectableMeshArr.push(objectObj3d.children[0])
           classObj3d.instancesObj3d.push(objectObj3d)
-          z += WIDTH * 4
+          z += WIDTH * 2
         })
 
-        if (resultsArr.length > 0) classObj3d.drawObjectConnectors(resultsArr.length * WIDTH * 4)
+        if (resultsArr.length > 0) classObj3d.drawObjectConnectors((resultsArr.length - 1) * WIDTH * 2 + WIDTH * 4)
 
         let promises = []
         classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
