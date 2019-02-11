@@ -105,6 +105,9 @@ export default class ClassObject3d extends THREE.Object3D {
     let toPosition = toObj3d.position.clone()
     toPosition.sub(this.position)
 
+    let newTargetPos = new THREE.Vector3()
+    newTargetPos.setFromMatrixPosition(toObj3d.matrixWorld)
+
     let material = this.mapAssocNameToMaterial(name)
 
     let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)

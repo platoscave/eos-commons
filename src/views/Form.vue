@@ -277,7 +277,7 @@ export default {
   padding-left: 4px;
 }
 
-> p {
+.p {
   margin-bottom: 0;
 }
 

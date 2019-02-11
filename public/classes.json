@@ -7,7 +7,7 @@
         "description": "<p>Unique identifier. Our identifiers are issued by the client. That means that on rare occaions you can get a duplicate key error durring add operations</p>",
         "pattern": "[a-f0-9]{24}",
         "readOnly": true,
-        "title": "id",
+        "title": "cid",
         "type": "string"
       },
       "classId": {

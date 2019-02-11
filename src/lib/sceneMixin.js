@@ -177,7 +177,7 @@ export default {
     },
     moveCameraToPos (key) {
       let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
-      console.log('selectedModelObj', selectedModelObj)
+      // console.log('selectedModelObj', selectedModelObj)
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
       newTargetPos.setFromMatrixPosition(selectedModelObj.matrixWorld)
@@ -187,6 +187,7 @@ export default {
       let cameraPos = this.controls.object.position.clone()
       let newCameraPos = newTargetPos.clone()
       newCameraPos.setZ(newCameraPos.z + 2000)
+      newCameraPos.setY(newCameraPos.y + 250)
       let cameraTween = new TWEEN.Tween(cameraPos).to(newCameraPos, 1500)
       cameraTween.easing(TWEEN.Easing.Quadratic.Out)
       cameraTween.onUpdate(() => {

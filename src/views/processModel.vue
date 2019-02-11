@@ -41,57 +41,60 @@ export default {
         }
       }
       this.$store.dispatch('query', queryObj).then((resultsArr) => {
-        let zz = 0
+        let zPos = 0
+        let promises = []
         resultsArr.forEach(interfaceState => {
-          let placeholderObject3d = new THREE.Object3D()
-          placeholderObject3d.position.setZ(zz)
-          this.modelObject3D.add(placeholderObject3d)
-          let interfaceStateObj3d = new ProcessObject3d(interfaceState, this.font)
-          placeholderObject3d.add(interfaceStateObj3d)
-          this.selectableMeshArr.push(interfaceStateObj3d.children[0])
-
-          const substateId = interfaceState.substateId
-          if (substateId) {
-            /* We have a problem when collecting substates from interfaceState since the are
-                * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
-                * The workaround is to collect the substates in and object with the stateId as key */
-            this.collectSubstates(substateId).then(stateIdObj => {
-              let _interfaceStateObj3d = interfaceStateObj3d
-              let _substateId = substateId
-              for (let key in stateIdObj) {
-                let stateObj = stateIdObj[key]
-                let obj = new ProcessObject3d(stateObj, this.font)
-                placeholderObject3d.add(obj)
-                this.selectableMeshArr.push(obj.children[0])
-              }
-
-              let maxX = this.setPositionX(placeholderObject3d, _substateId, 0)
-              this.setPositionY(placeholderObject3d, _substateId, -HEIGHT * 4)
-
-              _interfaceStateObj3d.position.setX(maxX / 2)
-              _interfaceStateObj3d.updateMatrixWorld()
-
-              // Draw interface connector to first substate
-              let toState = placeholderObject3d.getObjectByProperty('key', _substateId)
-              _interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
-
-              // Tell the subSates to draw their connetors
-              let subStateState = placeholderObject3d.getObjectByProperty('key', _substateId)
-              subStateState.drawSubstateConnectors(placeholderObject3d, _interfaceStateObj3d)
-
-              placeholderObject3d.position.setX(-maxX / 2)
-            })
-
-            // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
-            // this.modelObject3D.add(box)
-          }
-          zz -= 1600
+          promises.push(this.drawInterfaceState(interfaceState, zPos))
+          zPos -= 1600
         })
-        this.removeLoadingText()
+        return Promise.all(promises).then(resultsArr => {
+          this.removeLoadingText()
+        })
       })
     }, (err) => console.log(err))
   },
   methods: {
+    drawInterfaceState (interfaceState, zPos) {
+      let placeholderObject3d = new THREE.Object3D()
+      placeholderObject3d.position.setZ(zPos)
+      this.modelObject3D.add(placeholderObject3d)
+      let interfaceStateObj3d = new ProcessObject3d(interfaceState, this.font)
+      placeholderObject3d.add(interfaceStateObj3d)
+      this.selectableMeshArr.push(interfaceStateObj3d.children[0])
+
+      const substateId = interfaceState.substateId
+      if (!substateId) return false
+      /* We have a problem when collecting substates from interfaceState since the are
+        * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
+        * The workaround is to collect the substates in and object with the stateId as key */
+      return this.collectSubstates(substateId).then(stateIdObj => {
+        for (let key in stateIdObj) {
+          let stateObj = stateIdObj[key]
+          let obj = new ProcessObject3d(stateObj, this.font)
+          placeholderObject3d.add(obj)
+          this.selectableMeshArr.push(obj.children[0])
+        }
+
+        let maxX = this.setPositionX(placeholderObject3d, substateId, 0)
+        this.setPositionY(placeholderObject3d, substateId, -HEIGHT * 4)
+
+        interfaceStateObj3d.position.setX(maxX / 2)
+        interfaceStateObj3d.updateMatrixWorld()
+
+        // Draw interface connector to first substate
+        let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)
+        // console.log('subStateState', subStateState.name)
+        interfaceStateObj3d.drawTubeBottomToLeftSide(subStateState, 'happy')
+
+        // Tell the subSates to draw their connetors
+        subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
+
+        // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
+        // this.modelObject3D.add(box)
+        placeholderObject3d.position.setX(-maxX / 2)
+        return true
+      })
+    },
     collectSubstates (stateId) {
       return this.$store.dispatch('getCommonByCid', stateId).then(substate => {
         let promises = []

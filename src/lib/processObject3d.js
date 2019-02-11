@@ -36,15 +36,14 @@ export default class ProcessObject3d extends THREE.Object3D {
   drawTubeBottomToLeftSide (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
-    let ourPosition = new THREE.Vector3()
-    this.getWorldPosition(ourPosition)
-    toPosition.subVectors(toState.position, ourPosition)
+    toPosition.subVectors(toState.position, this.position)
 
     let material = this.mapActionNameToMaterial(name)
 
     let fromPos = this.getSidePos('bottom', new THREE.Vector3())
     fromPos.setX(fromPos.x - WIDTH / 4)
     let toPos = this.getSidePos('left', toPosition)
+    console.log('toState', toState.name, toPos)
 
     let points = []
     points.push(fromPos)
@@ -69,9 +68,7 @@ export default class ProcessObject3d extends THREE.Object3D {
   drawTubeRightSideToBottom (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
-    let ourPosition = new THREE.Vector3()
-    this.getWorldPosition(ourPosition)
-    toPosition.subVectors(toState.position, ourPosition)
+    toPosition.subVectors(toState.position, this.position)
 
     let material = this.mapActionNameToMaterial(name)
 
@@ -101,9 +98,7 @@ export default class ProcessObject3d extends THREE.Object3D {
   drawTubeRightSideToLeftSide (toState, name) {
     // translate toPosition to our local coordinates
     let toPosition = new THREE.Vector3()
-    let ourPosition = new THREE.Vector3()
-    this.getWorldPosition(ourPosition)
-    toPosition.subVectors(toState.position, ourPosition)
+    toPosition.subVectors(toState.position, this.position)
 
     let material = this.mapActionNameToMaterial(name)
 
