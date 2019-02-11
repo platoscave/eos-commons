@@ -50,7 +50,7 @@ export default {
           rootClassObj3d.drawClassConnectors()
 
           this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
-            this.scene.updateMatrixWorld(true)
+            placeholderObject3d.updateMatrixWorld(true)
             this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
 
             this.removeLoadingText()

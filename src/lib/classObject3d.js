@@ -104,9 +104,12 @@ export default class ClassObject3d extends THREE.Object3D {
     // translate toPosition to our local coordinates
     let toPosition = toObj3d.position.clone()
     toPosition.sub(this.position)
+    // this.parent.updateMatrixWorld() // important!
 
-    let newTargetPos = new THREE.Vector3()
-    newTargetPos.setFromMatrixPosition(toObj3d.matrixWorld)
+    // toPosition.applyMatrix4(new THREE.Matrix4().getInverse(this.matrixWorld))
+
+    // let toPosition = new THREE.Vector3()
+    // toPosition.setFromMatrixPosition(this.matrixWorld)
 
     let material = this.mapAssocNameToMaterial(name)
 
