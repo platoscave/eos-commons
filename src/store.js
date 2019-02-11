@@ -27,8 +27,8 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
 
   state: {
-    commons: {},
-    classes: {},
+    commons: {}, // REMOVE
+    classes: {}, // REMOVE
     loading: false,
     statusCode: null,
     message: '',

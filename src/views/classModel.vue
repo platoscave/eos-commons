@@ -5,7 +5,7 @@
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/sceneMixin.js'
+import Scene from '../lib/SceneMixin.js'
 import ClassObject3d from '../lib/ClassObject3d.js'
 
 const WIDTH = 400
@@ -50,6 +50,7 @@ export default {
           rootClassObj3d.drawClassConnectors()
 
           this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
+            this.scene.updateMatrixWorld()
             this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
 
             this.removeLoadingText()
@@ -75,7 +76,9 @@ export default {
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {
         let promises = []
         resultsArr.forEach(subClassObj => {
-          promises.push(this.collectClasses(placeholderObject3d, subClassObj))
+          if (classObj.cid !== '573435433c6d3cd598a5a2db') { // Hack: ignore Blaance Sheet children
+            promises.push(this.collectClasses(placeholderObject3d, subClassObj))
+          }
         })
         return Promise.all(promises).then(childObjsArr => {
           rootClassObj3d.subclassesObj3ds = childObjsArr

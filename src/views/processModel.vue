@@ -5,7 +5,7 @@
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/sceneMixin.js'
+import Scene from '../lib/SceneMixin.js'
 import ProcessObject3d from '../lib/ProcessObject3d.js'
 
 // const WIDTH = 400
@@ -56,6 +56,8 @@ export default {
                 * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
                 * The workaround is to collect the substates in and object with the stateId as key */
             this.collectSubstates(substateId).then(stateIdObj => {
+              let _interfaceStateObj3d = interfaceStateObj3d
+              let _substateId = substateId
               for (let key in stateIdObj) {
                 let stateObj = stateIdObj[key]
                 let obj = new ProcessObject3d(stateObj, this.font)
@@ -63,19 +65,19 @@ export default {
                 this.selectableMeshArr.push(obj.children[0])
               }
 
-              let maxX = this.setPositionX(placeholderObject3d, substateId, 0)
-              this.setPositionY(placeholderObject3d, substateId, -HEIGHT * 4)
+              let maxX = this.setPositionX(placeholderObject3d, _substateId, 0)
+              this.setPositionY(placeholderObject3d, _substateId, -HEIGHT * 4)
 
-              interfaceStateObj3d.position.setX(maxX / 2)
-              interfaceStateObj3d.updateMatrixWorld()
+              _interfaceStateObj3d.position.setX(maxX / 2)
+              _interfaceStateObj3d.updateMatrixWorld()
 
               // Draw interface connector to first substate
-              let toState = placeholderObject3d.getObjectByProperty('key', substateId)
-              interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
+              let toState = placeholderObject3d.getObjectByProperty('key', _substateId)
+              _interfaceStateObj3d.drawTubeBottomToLeftSide(toState, 'happy')
 
               // Tell the subSates to draw their connetors
-              let subStateState = placeholderObject3d.getObjectByProperty('key', substateId)
-              subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
+              let subStateState = placeholderObject3d.getObjectByProperty('key', _substateId)
+              subStateState.drawSubstateConnectors(placeholderObject3d, _interfaceStateObj3d)
 
               placeholderObject3d.position.setX(-maxX / 2)
             })
@@ -134,21 +136,6 @@ export default {
         }
       })
       return minY
-    },
-    viewRootQueryObj: function () {
-      const getQueriesByName = (query) => {
-        let queryNames = {}
-        if (query.queryName) queryNames[query.queryName] = query
-        if (query.join) {
-          query.join.forEach((item) => {
-            queryNames = Object.assign(queryNames, getQueriesByName(item))
-          })
-        }
-        return queryNames
-      }
-      const queryNames = getQueriesByName(this.view.query)
-
-      return {fk: null, query: this.view.query, queryNames: queryNames, level: this.level}
     }
   }
 }

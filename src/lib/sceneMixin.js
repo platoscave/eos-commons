@@ -153,6 +153,7 @@ export default {
       let intersects = this.raycaster.intersectObjects(this.selectableMeshArr)
       if (intersects.length > 0) {
         let selectedMesh = intersects[0].object
+        console.log('selectedMesh', selectedMesh)
         this.$store.commit('SET_PAGE_STATE2', {
           level: this.level,
           selectedObjId: selectedMesh.parent.key
@@ -161,11 +162,15 @@ export default {
     },
     highlight (newVal, oldVal) {
       let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
-      currentlySelected.children[0].material = currentlySelected.getMaterial()
-      currentlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+      if (currentlySelected) {
+        currentlySelected.children[0].material = currentlySelected.getMaterial()
+        currentlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+      }
       let newlySelected = this.modelObject3D.getObjectByProperty('key', newVal)
-      newlySelected.children[0].material = new THREE.MeshLambertMaterial({color: 0xEEEE00})
-      newlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0x666666})
+      if (newlySelected) {
+        newlySelected.children[0].material = new THREE.MeshLambertMaterial({color: 0xEEEE00})
+        newlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0x666666})
+      }
     },
     moveCameraToPos (key) {
       let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)

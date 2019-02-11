@@ -19,6 +19,7 @@ export default class ProcessObject3d extends THREE.Object3D {
     this.addTextMesh(this.name, textPosition)
   }
   drawSubstateConnectors (placeholderObject3d, returnState) {
+    console.log('returnState', returnState.name)
     if (!this.userData.nextStateIds) return
     this.userData.nextStateIds.forEach(nextStateActionId => {
       if (nextStateActionId.stateId) {
