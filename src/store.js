@@ -232,6 +232,13 @@ const store = new Vuex.Store({
         else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
         return '' // set to default icon
       }
+      const getIconFromClassById2 = (classId) => {
+        store.dispatch('getCommonByCid', classId).then(classObj => {
+          if (classObj.icon) return classObj.icon
+          else if (classObj.parentId) return getIconFromClassById2(classObj.parentId)
+          return '' // set to default icon
+        })
+      }
       const getLeafPrommises = (item, queryArr) => {
         let leafPromises = []
         queryArr.forEach(query => {

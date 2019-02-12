@@ -103,7 +103,7 @@ export default {
         resultsArr.forEach(objectObj => {
           let objectObj3d = new ClassObject3d(objectObj, this.font)
           objectObj3d.position.set(classObj3d.position.x, classObj3d.position.y, z)
-          // objectObj3d.rotateY(Math.PI * 0.5)
+          objectObj3d.rotateY(Math.PI * 0.5)
           placeholderObject3d.add(objectObj3d)
           this.selectableMeshArr.push(objectObj3d.children[0])
           classObj3d.instancesObj3d.push(objectObj3d)

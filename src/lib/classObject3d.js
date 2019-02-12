@@ -73,7 +73,7 @@ export default class ClassObject3d extends THREE.Object3D {
     this.add(this.drawBeam(fomPos, toPos, connectorMaterial))
   }
   drawObjectAssocs (placeholderObject3d) {
-    if (this.userData.ownerIdX) {
+    if (this.userData.XownerId) {
       let toObj3d = placeholderObject3d.getObjectByProperty('key', this.userData.ownerId)
       this.drawTubeTopSideToBottom(toObj3d, 'owner')
     }
@@ -103,13 +103,7 @@ export default class ClassObject3d extends THREE.Object3D {
   drawTubeTopSideToBottom (toObj3d, name) {
     // translate toPosition to our local coordinates
     let toPosition = toObj3d.position.clone()
-    toPosition.sub(this.position)
-    // this.parent.updateMatrixWorld() // important!
-
-    // toPosition.applyMatrix4(new THREE.Matrix4().getInverse(this.matrixWorld))
-
-    // let toPosition = new THREE.Vector3()
-    // toPosition.setFromMatrixPosition(this.matrixWorld)
+    toPosition.applyMatrix4(new THREE.Matrix4().getInverse(this.matrix))
 
     let material = this.mapAssocNameToMaterial(name)
 
