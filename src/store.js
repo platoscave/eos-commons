@@ -168,7 +168,7 @@ const store = new Vuex.Store({
               result.cid = cid
               result.id = cid
               resolve(result)
-            })
+            }).catch(err => reject(err))
           }
         }
       })

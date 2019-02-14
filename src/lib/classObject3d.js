@@ -1,8 +1,9 @@
 import * as THREE from 'three'
+import Vue from 'vue'
 
 const WIDTH = 400
 const HEIGHT = 200
-const BREADTH = 40
+const DEPTH = 40
 const RADIUS = 50
 
 export default class ClassObject3d extends THREE.Object3D {
@@ -17,12 +18,12 @@ export default class ClassObject3d extends THREE.Object3D {
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
     let textPosition = this.position.clone()
-    textPosition.setZ(textPosition.z + BREADTH + 20)
+    textPosition.setZ(textPosition.z + DEPTH + 20)
     this.addTextMesh(this.name, textPosition)
   }
   drawClassConnectors () {
     if (this.subclassesObj3ds.length > 0) {
-      let connectorMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+      let connectorMaterial = this.mapAssocNameToMaterial()
 
       let ourWorldPosition = new THREE.Vector3()
       this.getWorldPosition(ourWorldPosition)
@@ -52,7 +53,7 @@ export default class ClassObject3d extends THREE.Object3D {
       this.add(sphereMesh)
 
       // for each of the child classes
-      this.subclassesObj3ds.forEach(function (childObj3d) {
+      this.subclassesObj3ds.forEach(childObj3d => {
         // beam from child class to horizontal beam
         let childBeamStartPos = childObj3d.position.clone()
         childBeamStartPos.sub(ourWorldPosition)
@@ -62,8 +63,76 @@ export default class ClassObject3d extends THREE.Object3D {
         childBeamEndPos.setY(HEIGHT * -4)
         this.add(this.drawBeam(childBeamStartPos, childBeamEndPos, connectorMaterial))
         childObj3d.drawClassConnectors()
-      }.bind(this))
+      })
     }
+  }
+  drawClassAssocs (placeholderObj3d) {
+    const getAssocs = (properties) => {
+      let resultsArr = []
+      Object.keys(properties).forEach(key => {
+        let obj = properties[key]
+        let toCid = Vue._.get(obj, 'query.from')
+        if (toCid && toCid !== 'classes') resultsArr.push({ name: obj.title, cid: toCid })
+        console.log('obj', obj)
+        let subProperties = Vue._.get(obj, 'items.properties')
+        console.log('subProperties', subProperties)
+        if (subProperties) resultsArr = resultsArr.concat(getAssocs(subProperties))
+      })
+      return resultsArr
+    }
+
+    let properties = Vue._.get(this, 'userData.properties')
+    if (!properties) return
+    let assocsArr = getAssocs(properties)
+    // console.log('assocsArr', assocsArr)
+
+    let ourWorldPosition = new THREE.Vector3()
+    this.getWorldPosition(ourWorldPosition)
+
+    assocsArr.forEach(assoc => {
+      let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
+      let connectorMaterial = this.mapAssocNameToMaterial(assoc.name)
+
+      // translate toPosition to our local coordinates
+      let toClassPos = assocToObj3d.position.clone()
+      toClassPos.sub(this.position)
+
+      // start beam from parent class
+      let fromClassBeamDepth = new THREE.Vector3(0, 0, -DEPTH * 8)
+      this.add(this.drawBeam(new THREE.Vector3(), fromClassBeamDepth, connectorMaterial))
+
+      // end beam beam from destination class
+      let toClassBeamDepth = toClassPos.clone()
+      toClassBeamDepth.setZ(-DEPTH * 8)
+      this.add(this.drawBeam(toClassPos, toClassBeamDepth, connectorMaterial))
+
+      // horizontal beam
+      this.add(this.drawBeam(fromClassBeamDepth, toClassBeamDepth, connectorMaterial))
+
+      // sphere at the left end
+      let sphereGeometryLeft = new THREE.SphereGeometry(10)
+      let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, connectorMaterial)
+      sphereMeshLeft.position.set(fromClassBeamDepth.x, fromClassBeamDepth.y, fromClassBeamDepth.z)
+      this.add(sphereMeshLeft)
+      // sphere at the right end
+      let sphereGeometry = new THREE.SphereGeometry(10)
+      let sphereMesh = new THREE.Mesh(sphereGeometry, connectorMaterial)
+      sphereMesh.position.set(toClassBeamDepth.x, toClassBeamDepth.y, toClassBeamDepth.z)
+      this.add(sphereMesh)
+
+      let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
+      let coneMesh = new THREE.Mesh(coneGeometry, connectorMaterial)
+      coneMesh.rotation.x = Math.PI / 2
+      coneMesh.position.set(toClassPos.x, toClassPos.y, toClassPos.z - 40)
+      this.add(coneMesh)
+
+      this.addTextMeshBetween(assoc.name, fromClassBeamDepth, toClassBeamDepth)
+    })
+
+    // for each of the child classes
+    this.subclassesObj3ds.forEach(childObj3d => {
+      childObj3d.drawClassAssocs(placeholderObj3d)
+    })
   }
   drawObjectConnectors (length) {
     let fomPos = new THREE.Vector3(0, -HEIGHT / 4, 0)
@@ -118,7 +187,7 @@ export default class ClassObject3d extends THREE.Object3D {
 
       points.push(fromPos)
       points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
       points.push(new THREE.Vector3(toPos.x, toPos.y + HEIGHT * 2, toPos.z))
       points.push(toPos)
 
@@ -130,7 +199,7 @@ export default class ClassObject3d extends THREE.Object3D {
 
       points.push(fromPos)
       points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT * 2, fromPos.z))
-      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, fromPos.y + HEIGHT * 2, fromPos.z))
       points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
       points.push(toPos)
 
@@ -141,7 +210,7 @@ export default class ClassObject3d extends THREE.Object3D {
 
       points.push(fromPos)
       points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      // points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
       points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
       points.push(toPos)
 
@@ -149,7 +218,7 @@ export default class ClassObject3d extends THREE.Object3D {
     }
 
     let path = new THREE.CatmullRomCurve3(this.straightenPoints(points))
-    let geometry = new THREE.TubeGeometry(path, 64, 10, 8, false)
+    let geometry = new THREE.TubeGeometry(path, 128, 10, 8, false)
     let mesh = new THREE.Mesh(geometry, material)
     this.add(mesh)
 
@@ -158,11 +227,12 @@ export default class ClassObject3d extends THREE.Object3D {
     this.addTextMeshBetween(name, points[1], points[2])
   }
   mapAssocNameToMaterial (name) {
-    if (name === 'owner') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })
-    if (name === 'page') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
-    if (name === 'invalid') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
-    if (name === 'timeout') return new THREE.MeshLambertMaterial({ color: 0xFFFFAA })
-    return new THREE.MeshLambertMaterial({ color: 0xAAAAFF })
+    if (!name) return new THREE.MeshLambertMaterial({ color: 0xEFEFEF }) // grey, class connectors
+    if (name.toLowerCase() === 'owner') return new THREE.MeshLambertMaterial({ color: 0xAAEFAA })
+    if (name.toLowerCase() === 'page') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+    if (name.toLowerCase() === 'invalid') return new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+    if (name.toLowerCase() === 'timeout') return new THREE.MeshLambertMaterial({ color: 0xFFFFAA })
+    return new THREE.MeshLambertMaterial({ color: 0xEFEFEF }) // grey, class connectors
   }
   getMaterial () {
     if (this.userData.docType === 'class') return new THREE.MeshLambertMaterial({ color: 0x8904B1 })
@@ -173,8 +243,8 @@ export default class ClassObject3d extends THREE.Object3D {
     if (side === 'right') return new THREE.Vector3(pos.x + WIDTH / 2, pos.y, pos.z)
     if (side === 'bottom') return new THREE.Vector3(pos.x, pos.y - HEIGHT / 2, pos.z)
     if (side === 'left') return new THREE.Vector3(pos.x - WIDTH / 2, pos.y, pos.z)
-    if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + BREADTH / 2)
-    if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - BREADTH / 2)
+    if (side === 'front') return new THREE.Vector3(pos.x, pos.y, pos.z + DEPTH / 2)
+    if (side === 'back') return new THREE.Vector3(pos.x, pos.y, pos.z - DEPTH / 2)
     return pos
   }
   getGeometry () {

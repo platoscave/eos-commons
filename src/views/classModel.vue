@@ -49,12 +49,15 @@ export default {
 
           rootClassObj3d.drawClassConnectors()
 
-          this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
+          rootClassObj3d.drawClassAssocs(placeholderObject3d)
+
+          this.removeLoadingText()
+          /* this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
             placeholderObject3d.updateMatrixWorld(true)
             this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
 
             this.removeLoadingText()
-          })
+          }) */
         })
       })
     }, (err) => console.log(err))
