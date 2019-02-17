@@ -25,48 +25,44 @@ export default {
   mixins: [Scene],
   data () {
     return {
-      /* skyboxArray: ['grass/sbox_px.jpg','grass/sbox_nx.jpg','grass/sbox_py.jpg','grass/sbox_ny.jpg','grass/sbox_pz.jpg','grass/sbox_nz.jpg'] */
+      // skyboxArray: ['grass/sbox_px.jpg','grass/sbox_nx.jpg','grass/sbox_py.jpg','grass/sbox_ny.jpg','grass/sbox_pz.jpg','grass/sbox_nz.jpg']
       skyboxArray: ['milkyway/posx.jpg', 'milkyway/negx.jpg', 'milkyway/posy.jpg', 'milkyway/negy.jpg', 'milkyway/posz.jpg', 'milkyway/negz.jpg']
-      /* skyboxArray: ['jupiter/space_3_right.jpg','jupiter/space_3_left.jpg','jupiter/space_3_top.jpg','jupiter/space_3_bottom.jpg','jupiter/space_3_front.jpg','jupiter/space_3_back.jpg'] */
+      // skyboxArray: ['jupiter/space_3_right.jpg','jupiter/space_3_left.jpg','jupiter/space_3_top.jpg','jupiter/space_3_bottom.jpg','jupiter/space_3_front.jpg','jupiter/space_3_back.jpg']
     }
   },
   mounted () {
-    let fontLoader = new THREE.FontLoader()
-    fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-      this.font = font
-      this.addLoadingText()
-      let queryObj = {
-        query: {
-          where: {
-            docProp: '$key',
-            operator: 'eq',
-            value: '56f86c6a5dde184ccfb9fc6a'
-          }
+    this.addLoadingText()
+    let queryObj = {
+      query: {
+        where: {
+          docProp: '$key',
+          operator: 'eq',
+          value: '56f86c6a5dde184ccfb9fc6a'
         }
       }
-      this.$store.dispatch('query', queryObj).then((resultsArr) => {
-        let rootClass = resultsArr[0]
-        let placeholderObj3d = new THREE.Object3D()
-        this.modelObject3D.add(placeholderObj3d)
+    }
+    this.$store.dispatch('query', queryObj).then((resultsArr) => {
+      let rootClass = resultsArr[0]
+      let placeholderObj3d = new THREE.Object3D()
+      this.modelObject3D.add(placeholderObj3d)
 
-        this.collectClasses(placeholderObj3d, rootClass).then(res => {
-          let rootClassObj3d = placeholderObj3d.getObjectByProperty('key', rootClass.id)
-          let maxX = this.setPositionX(placeholderObj3d, rootClassObj3d, 0)
-          this.setPositionY(placeholderObj3d, rootClassObj3d, 0)
+      this.collectClasses(placeholderObj3d, rootClass).then(res => {
+        let rootClassObj3d = placeholderObj3d.getObjectByProperty('key', rootClass.id)
+        let maxX = this.setPositionX(placeholderObj3d, rootClassObj3d, 0)
+        this.setPositionY(placeholderObj3d, rootClassObj3d, 0)
 
-          placeholderObj3d.position.setX(-maxX / 2)
+        placeholderObj3d.position.setX(-maxX / 2)
 
-          rootClassObj3d.drawClassConnectors(placeholderObj3d)
+        rootClassObj3d.drawClassConnectors(placeholderObj3d)
 
-          rootClassObj3d.drawClassAssocs(placeholderObj3d)
+        rootClassObj3d.drawClassAssocs(placeholderObj3d)
 
-          // this.removeLoadingText()
-          this.collectObjects(placeholderObj3d, rootClassObj3d).then(res => {
-            placeholderObj3d.updateMatrixWorld(true)
-            this.drawObjectAssocs(placeholderObj3d, rootClassObj3d)
+        // this.removeLoadingText()
+        this.collectObjects(placeholderObj3d, rootClassObj3d).then(res => {
+          placeholderObj3d.updateMatrixWorld(true)
+          this.drawObjectAssocs(placeholderObj3d, rootClassObj3d)
 
-            this.removeLoadingText()
-          })
+          this.removeLoadingText()
         })
       })
     })
@@ -149,6 +145,14 @@ export default {
       })
       return minY
     },
+    /**
+     * Recusrive function to traverse the class hierarchy using the subclassesObj3ds array.
+     * On each of these classes, iterate over its instances using the instancesObj3d array.
+     * Call drawObjectAssocs on each of these instances.
+     *
+     * @param {object} placeholderObj3d - An object3d instance. Used to associated objects by key.
+     * @param {object} classObj3d object3d instance. The current class
+     */
     drawObjectAssocs (placeholderObj3d, classObj3d) {
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
         subClassObj3d.instancesObj3d.forEach(instanceObj3d => {

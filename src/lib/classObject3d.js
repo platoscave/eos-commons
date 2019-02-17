@@ -1,6 +1,8 @@
 import * as THREE from 'three'
-import Vue from 'vue'
+import Vue from 'vue' // need this for underscore
 import classModelColors from '../config/classModelColors'
+import fontJson from '../assets/helvetiker_regular.typeface.json'
+const font = new THREE.Font(fontJson)
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -8,14 +10,13 @@ const DEPTH = 100
 const RADIUS = 50
 
 export default class ClassObject3d extends THREE.Object3D {
-  constructor (queryResult, font) {
+  constructor (queryResult) {
     super()
 
     this.key = queryResult.id
     this.cid = queryResult.cid
     this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
-    this.font = font
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
     let textPosition = this.position.clone()
@@ -315,7 +316,7 @@ export default class ClassObject3d extends THREE.Object3D {
   }
   addTextMesh (name, textPosition) {
     let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
-    let text3d = new THREE.TextGeometry(name, { size: 30, height: 1, font: this.font })
+    let text3d = new THREE.TextGeometry(name, { size: 30, height: 1, font: font })
     text3d.center()
     let textMesh = new THREE.Mesh(text3d, textMaterial)
     textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)

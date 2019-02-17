@@ -26,33 +26,28 @@ export default {
   data () {
     return {
       skyboxArray: ['grass/sbox_px.jpg', 'grass/sbox_nx.jpg', 'grass/sbox_py.jpg', 'grass/sbox_ny.jpg', 'grass/sbox_pz.jpg', 'grass/sbox_nz.jpg']
-
     }
   },
   mounted () {
-    let fontLoader = new THREE.FontLoader()
-    fontLoader.load('helvetiker_regular.typeface.json', (font) => {
-      this.font = font
-      this.addLoadingText()
-      let queryObj = {
-        query: {
-          where: {
-            docProp: 'classId',
-            operator: 'eq',
-            value: '574724823c6d3cd598a5a373'
-          }
+    this.addLoadingText()
+    let queryObj = {
+      query: {
+        where: {
+          docProp: 'classId',
+          operator: 'eq',
+          value: '574724823c6d3cd598a5a373'
         }
       }
-      this.$store.dispatch('query', queryObj).then((resultsArr) => {
-        let zPos = 0
-        let promises = []
-        resultsArr.forEach(interfaceState => {
-          promises.push(this.drawInterfaceState(interfaceState, zPos))
-          zPos -= 1600
-        })
-        return Promise.all(promises).then(resultsArr => {
-          this.removeLoadingText()
-        })
+    }
+    this.$store.dispatch('query', queryObj).then((resultsArr) => {
+      let zPos = 0
+      let promises = []
+      resultsArr.forEach(interfaceState => {
+        promises.push(this.drawInterfaceState(interfaceState, zPos))
+        zPos -= 1600
+      })
+      return Promise.all(promises).then(resultsArr => {
+        this.removeLoadingText()
       })
     })
   },
@@ -61,7 +56,7 @@ export default {
       let placeholderObject3d = new THREE.Object3D()
       placeholderObject3d.position.setZ(zPos)
       this.modelObject3D.add(placeholderObject3d)
-      let interfaceStateObj3d = new ProcessObject3d(interfaceState, this.font)
+      let interfaceStateObj3d = new ProcessObject3d(interfaceState)
       placeholderObject3d.add(interfaceStateObj3d)
       this.selectableMeshArr.push(interfaceStateObj3d.children[0])
 
@@ -71,7 +66,7 @@ export default {
       return this.collectSubstates(substateId).then(stateIdObj => {
         for (let key in stateIdObj) {
           let stateObj = stateIdObj[key]
-          let obj = new ProcessObject3d(stateObj, this.font)
+          let obj = new ProcessObject3d(stateObj)
           placeholderObject3d.add(obj)
           this.selectableMeshArr.push(obj.children[0])
         }

@@ -1,7 +1,8 @@
 import TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
-// import * as TWEEN from '../../node_modules/three/examples/js/libs/tween.min.js';
-// const TWEEN = require('../../node_modules/three/examples/js/libs/tween.min.js')
+import fontJson from '../assets/helvetiker_regular.typeface.json'
+const font = new THREE.Font(fontJson)
+
 export default {
   name: 'Scene',
   props: {
@@ -206,7 +207,7 @@ export default {
     },
     addLoadingText () {
       let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-      let text3d = new THREE.TextGeometry('Loading...', {size: 200, font: this.font})
+      let text3d = new THREE.TextGeometry('Loading...', {size: 200, font: font})
       text3d.center()
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       textMesh.name = 'Loading Message'
