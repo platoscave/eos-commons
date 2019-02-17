@@ -114,7 +114,7 @@ export default class ClassObject3d extends THREE.Object3D {
         let obj = properties[key]
         if (key !== 'ownerId') {
           let nameColor = classModelColors.nameColor[key]
-          if (nameColor) console.log('obj.constructor', obj.constructor, obj)
+          // if (nameColor) console.log('obj.constructor', obj.constructor, obj)
           if (nameColor && nameColor !== 'ownerId' && obj.constructor === String) resultsArr.push({ name: key, cid: obj })
         }
         if (Array.isArray(obj)) {
@@ -129,7 +129,7 @@ export default class ClassObject3d extends THREE.Object3D {
     let assocsArr = getAssocs(this.userData)
     assocsArr.forEach(assoc => {
       let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
-      if (!assocToObj3d) console.error('Cant find ' + assoc.cid + ' from ' + this.name)
+      if (!assocToObj3d) console.warn('Cant find ' + assoc.cid + ' from ' + this.name + ': ' + this.cid)
       else this.drawTubeTopSideToBottom(assocToObj3d, assoc.name)
     })
   }
@@ -186,9 +186,9 @@ export default class ClassObject3d extends THREE.Object3D {
       endPos.setY(endPos.y + 60)
 
       points.push(fromPos)
-      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      points.push(new THREE.Vector3(toPos.x, toPos.y + HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 1.5, fromPos.z))
+      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 1.5, fromPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y + HEIGHT * 1.5, toPos.z))
       points.push(endPos)
 
       coneMesh.rotation.z = -Math.PI
@@ -200,9 +200,9 @@ export default class ClassObject3d extends THREE.Object3D {
       endPos.setY(endPos.y - 60)
 
       points.push(fromPos)
-      points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT * 2, fromPos.z))
-      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y + HEIGHT * 2, fromPos.z))
-      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y + HEIGHT * 1.5, fromPos.z))
+      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y + HEIGHT * 1.5, fromPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 1.5, toPos.z))
       points.push(endPos)
 
       coneMesh.position.set(toPos.x, toPos.y - 40, toPos.z)
@@ -213,9 +213,9 @@ export default class ClassObject3d extends THREE.Object3D {
       endPos.setY(endPos.y - 60)
 
       points.push(fromPos)
-      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 2, fromPos.z))
-      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 2, toPos.z))
+      points.push(new THREE.Vector3(fromPos.x, fromPos.y - HEIGHT * 1.5, fromPos.z))
+      if (toPos.x !== fromPos.x) points.push(new THREE.Vector3(toPos.x, fromPos.y - HEIGHT * 1.5, fromPos.z))
+      points.push(new THREE.Vector3(toPos.x, toPos.y - HEIGHT * 1.5, toPos.z))
       points.push(endPos)
 
       coneMesh.position.set(toPos.x, toPos.y - 40, toPos.z)

@@ -242,7 +242,7 @@ export default {
       this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
         newVal => {
-          console.log('selectedObjId Changed!', newVal)
+          // console.log('selectedObjId Changed!', newVal)
           if (!newVal) return
           this.$store.dispatch('getCommonByCid', newVal).then(data => {
             // console.log('data', data)

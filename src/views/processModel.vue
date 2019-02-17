@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="webglContainer">
     <v-btn absolute dark fab small right color="pink" @click="onOrbit">
       <template v-if="orbit">
           <v-icon>flare</v-icon>
@@ -8,7 +8,7 @@
           <v-icon>360</v-icon>
       </template>
     </v-btn>
-    <div class="webglContainer" v-resize="onResize" v-on:click="onClick"></div>
+    <div v-resize="onResize" v-on:click="onClick"></div>
   </div>
 </template>
 
@@ -155,5 +155,6 @@ export default {
         margin: 0;
         border: 0;
         padding: 0;
+        overflow: hidden;
     }
 </style>

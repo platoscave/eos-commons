@@ -4,14 +4,14 @@
     "docType": "class",
     "properties": {
       "_id": {
-        "description": "<p>Unique identifier. Our identifiers are issued by the client. That means that on rare occaions you can get a duplicate key error durring add operations</p>",
-        "pattern": "[a-f0-9]{24}",
+        "description": "<p>Unique identifier given to us by IPFS. It is derived from the hash of the contents. This property is not stored in the object itsself.</p>",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "readOnly": true,
         "title": "cid",
         "type": "string"
       },
       "classId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "classes"
         },
@@ -67,7 +67,7 @@
     "parentId": "56f86c6a5dde184ccfb9fc6a",
     "properties": {
       "pageId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "56f87ec55dde184ccfb9fc74"
         },
@@ -84,7 +84,7 @@
     "parentId": "56f86c6a5dde184ccfb9fc6a",
     "properties": {
       "ownerId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "56f870a55dde184ccfb9fc6c"
         },
@@ -150,7 +150,7 @@
               "type": "string"
             },
             "pageId": {
-              "pattern": "[a-f0-9]{24}",
+              "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
               "query": {
                 "from": "56f87ec55dde184ccfb9fc74"
               },
@@ -191,7 +191,7 @@
                     "type": "string"
                   },
                   "pageId": {
-                    "pattern": "[a-f0-9]{24}",
+                    "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
                     "query": {
                       "from": "56f87ec55dde184ccfb9fc74"
                     },
@@ -199,7 +199,7 @@
                     "type": "string"
                   },
                   "viewId": {
-                    "pattern": "[a-f0-9]{24}",
+                    "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
                     "query": {
                       "from": "573435c23c6d3cd598a5a2df"
                     },
@@ -273,7 +273,7 @@
         "additionalProperties": false,
         "properties": {
           "from": {
-            "pattern": "[a-f0-9]{24}",
+            "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
             "query": {
               "from": "classes"
             },
@@ -291,7 +291,7 @@
             "type": "string"
           },
           "pageId": {
-            "pattern": "[a-f0-9]{24}",
+            "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
             "query": {
               "from": "56f87ec55dde184ccfb9fc74"
             },
@@ -356,7 +356,7 @@
         "additionalProperties": false,
         "properties": {
           "from": {
-            "pattern": "[a-f0-9]{24}",
+            "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
             "query": {
               "from": "classes"
             },
@@ -412,7 +412,7 @@
             "type": "array"
           },
           "pageId": {
-            "pattern": "[a-f0-9]{24}",
+            "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
             "query": {
               "from": "56f87ec55dde184ccfb9fc74"
             },
@@ -532,7 +532,7 @@
     "parentId": "574225cb3c6d3cd598a5a305",
     "properties": {
       "organizationalUnitId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "574237133c6d3cd598a5a30d"
         },
@@ -557,7 +557,7 @@
     "parentId": "573435803c6d3cd598a5a2dd",
     "properties": {
       "pageId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "56f87ec55dde184ccfb9fc74"
         },
@@ -565,7 +565,7 @@
         "type": "string"
       },
       "parentOrgId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "57343c283c6d3cd598a5a2e9"
         },
@@ -574,7 +574,7 @@
       },
       "responsibleForStateIds": {
         "items": {
-          "pattern": "[a-f0-9]{24}",
+          "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
           "type": "string"
         },
         "minItems": 0,
@@ -877,7 +877,7 @@
               "type": "string"
             },
             "stateId": {
-              "pattern": "[a-f0-9]{24}",
+              "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
               "query": {
                 "from": "5745eaa53c6d3cd598a5a371"
               },
@@ -895,7 +895,7 @@
         "type": "array"
       },
       "substateId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "574724823c6d3cd598a5a372"
         },
@@ -928,7 +928,7 @@
               "type": "string"
             },
             "stateId": {
-              "pattern": "[a-f0-9]{24}",
+              "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
               "query": {
                 "from": "5745eaa53c6d3cd598a5a371"
               },
@@ -956,7 +956,7 @@
     "parentId": "574724823c6d3cd598a5a372",
     "properties": {
       "substateId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "574724823c6d3cd598a5a372"
         },
@@ -4470,7 +4470,7 @@
         "type": "string"
       },
       "parentId": {
-        "pattern": "[a-f0-9]{24}",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
           "from": "classes"
         },
