@@ -2606,15 +2606,15 @@
     "nextStateIds": [
       {
         "action": "unhappy",
-        "stateId": "57b719fe2d8cd20920e6d82b"
+        "stateId": "583226da425310133a49f11d"
       },
       {
         "action": "happy",
-        "stateId": "574725843c6d3cd598a5a37d"
+        "stateId": "57b71a302d8cd20920e6d82d"
       },
       {
         "action": "reject",
-        "stateId": "574726f43c6d3cd598a5a37f"
+        "stateId": "583226da425310133a49f11d"
       }
     ],
     "substateId": "57b715662d8cd20920e6d829",

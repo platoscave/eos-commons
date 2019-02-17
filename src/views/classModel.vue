@@ -1,12 +1,21 @@
 <template>
-    <div class="webglContainer" v-resize="onResize" v-on:click="onClick">
-    </div>
+  <div>
+    <v-btn absolute dark fab small right color="pink" @click="onOrbit">
+      <template v-if="orbit">
+          <v-icon>flare</v-icon>
+      </template>
+      <template v-else>
+          <v-icon>360</v-icon>
+      </template>
+  </v-btn>
+    <div class="webglContainer" v-resize="onResize" v-on:click="onClick"></div>
+  </div>
 </template>
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/SceneMixin.js'
-import ClassObject3d from '../lib/ClassObject3d.js'
+import Scene from '../lib/sceneMixin.js'
+import ClassObject3d from '../lib/classObject3d.js'
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -37,35 +46,35 @@ export default {
       }
       this.$store.dispatch('query', queryObj).then((resultsArr) => {
         let rootClass = resultsArr[0]
-        let placeholderObject3d = new THREE.Object3D()
-        this.modelObject3D.add(placeholderObject3d)
+        let placeholderObj3d = new THREE.Object3D()
+        this.modelObject3D.add(placeholderObj3d)
 
-        this.collectClasses(placeholderObject3d, rootClass).then(res => {
-          let rootClassObj3d = placeholderObject3d.getObjectByProperty('key', rootClass.id)
-          let maxX = this.setPositionX(placeholderObject3d, rootClassObj3d, 0)
-          this.setPositionY(placeholderObject3d, rootClassObj3d, 0)
+        this.collectClasses(placeholderObj3d, rootClass).then(res => {
+          let rootClassObj3d = placeholderObj3d.getObjectByProperty('key', rootClass.id)
+          let maxX = this.setPositionX(placeholderObj3d, rootClassObj3d, 0)
+          this.setPositionY(placeholderObj3d, rootClassObj3d, 0)
 
-          placeholderObject3d.position.setX(-maxX / 2)
+          placeholderObj3d.position.setX(-maxX / 2)
 
-          rootClassObj3d.drawClassConnectors()
+          rootClassObj3d.drawClassConnectors(placeholderObj3d)
 
-          rootClassObj3d.drawClassAssocs(placeholderObject3d)
+          rootClassObj3d.drawClassAssocs(placeholderObj3d)
 
-          this.removeLoadingText()
-          /* this.collectObjects(placeholderObject3d, rootClassObj3d).then(res => {
-            placeholderObject3d.updateMatrixWorld(true)
-            this.drawObjectAssocs(placeholderObject3d, rootClassObj3d)
+          // this.removeLoadingText()
+          this.collectObjects(placeholderObj3d, rootClassObj3d).then(res => {
+            placeholderObj3d.updateMatrixWorld(true)
+            this.drawObjectAssocs(placeholderObj3d, rootClassObj3d)
 
             this.removeLoadingText()
-          }) */
+          })
         })
       })
-    }, (err) => console.log(err))
+    })
   },
   methods: {
-    collectClasses (placeholderObject3d, classObj) {
+    collectClasses (placeholderObj3d, classObj) {
       let rootClassObj3d = new ClassObject3d(classObj, this.font)
-      placeholderObject3d.add(rootClassObj3d)
+      placeholderObj3d.add(rootClassObj3d)
       this.selectableMeshArr.push(rootClassObj3d.children[0])
       let queryObj = {
         query: {
@@ -80,7 +89,7 @@ export default {
         let promises = []
         resultsArr.forEach(subClassObj => {
           if (classObj.cid !== '573435433c6d3cd598a5a2db') { // Hack: ignore Blaance Sheet children
-            promises.push(this.collectClasses(placeholderObject3d, subClassObj))
+            promises.push(this.collectClasses(placeholderObj3d, subClassObj))
           }
         })
         return Promise.all(promises).then(childObjsArr => {
@@ -89,7 +98,7 @@ export default {
         })
       })
     },
-    collectObjects (placeholderObject3d, classObj3d) {
+    collectObjects (placeholderObj3d, classObj3d) {
       let queryObj = {
         query: {
           where: {
@@ -107,7 +116,7 @@ export default {
           let objectObj3d = new ClassObject3d(objectObj, this.font)
           objectObj3d.position.set(classObj3d.position.x, classObj3d.position.y, z)
           objectObj3d.rotateY(Math.PI * 0.5)
-          placeholderObject3d.add(objectObj3d)
+          placeholderObj3d.add(objectObj3d)
           this.selectableMeshArr.push(objectObj3d.children[0])
           classObj3d.instancesObj3d.push(objectObj3d)
           z += WIDTH * 2
@@ -117,35 +126,35 @@ export default {
 
         let promises = []
         classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
-          promises.push(this.collectObjects(placeholderObject3d, subClassObj3d))
+          promises.push(this.collectObjects(placeholderObj3d, subClassObj3d))
         })
         return Promise.all(promises)
       })
     },
-    setPositionX (placeholderObject3d, classObj3d, x) {
+    setPositionX (placeholderObj3d, classObj3d, x) {
       let minX = x
       let maxX = x
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
-        maxX = Math.max(x, this.setPositionX(placeholderObject3d, subClassObj3d, x))
+        maxX = Math.max(x, this.setPositionX(placeholderObj3d, subClassObj3d, x))
         x = maxX + WIDTH * 2
       })
       classObj3d.position.setX(minX + (maxX - minX) / 2)
       return maxX
     },
-    setPositionY (placeholderObject3d, classObj3d, y) {
+    setPositionY (placeholderObj3d, classObj3d, y) {
       classObj3d.position.setY(y)
       let minY = y
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
-        minY = Math.min(y, this.setPositionY(placeholderObject3d, subClassObj3d, y - HEIGHT * 4))
+        minY = Math.min(y, this.setPositionY(placeholderObj3d, subClassObj3d, y - HEIGHT * 4))
       })
       return minY
     },
-    drawObjectAssocs (placeholderObject3d, classObj3d) {
+    drawObjectAssocs (placeholderObj3d, classObj3d) {
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
         subClassObj3d.instancesObj3d.forEach(instanceObj3d => {
-          instanceObj3d.drawObjectAssocs(placeholderObject3d)
+          instanceObj3d.drawObjectAssocs(placeholderObj3d)
         })
-        this.drawObjectAssocs(placeholderObject3d, subClassObj3d)
+        this.drawObjectAssocs(placeholderObj3d, subClassObj3d)
       })
     }
   }

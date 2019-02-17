@@ -18,7 +18,8 @@ export default {
   },
   data () {
     return {
-      skyboxArray: []
+      skyboxArray: [],
+      orbit: false
     }
   },
   mounted () {
@@ -32,6 +33,10 @@ export default {
     }, {immediate: false})
   },
   methods: {
+    onOrbit (e) {
+      this.orbit = !this.orbit
+      this.controls.autoRotate = this.orbit
+    },
     onResize () {
       if (!this.renderer) return
       if (this.width === undefined || this.height === undefined) {
@@ -84,7 +89,6 @@ export default {
 
       // controls
       this.controls = new THREE.OrbitControls(this.camera)
-      this.controls.autoRotate = true
       this.controls.autoRotateSpeed = 0.125
       this.controls.minPolarAngle = Math.PI / 4
       this.controls.maxPolarAngle = Math.PI / 1.5

@@ -245,7 +245,7 @@ export default {
           console.log('selectedObjId Changed!', newVal)
           if (!newVal) return
           this.$store.dispatch('getCommonByCid', newVal).then(data => {
-            console.log('data', data)
+            // console.log('data', data)
             this.data = data
           })
         },
@@ -255,7 +255,7 @@ export default {
 
     if (!this.parentSchema && this.viewId) {
       this.$store.dispatch('materializedView', this.viewId).then(view => {
-        console.log('view', view)
+        // console.log('view', view)
         this.schema = view
       })
     }

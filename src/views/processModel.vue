@@ -1,12 +1,21 @@
 <template>
-    <div class="webglContainer" v-resize="onResize" v-on:click="onClick">
-    </div>
+  <div>
+    <v-btn absolute dark fab small right color="pink" @click="onOrbit">
+      <template v-if="orbit">
+          <v-icon>flare</v-icon>
+      </template>
+      <template v-else>
+          <v-icon>360</v-icon>
+      </template>
+    </v-btn>
+    <div class="webglContainer" v-resize="onResize" v-on:click="onClick"></div>
+  </div>
 </template>
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/SceneMixin.js'
-import ProcessObject3d from '../lib/ProcessObject3d.js'
+import Scene from '../lib/sceneMixin.js'
+import ProcessObject3d from '../lib/processObject3d.js'
 
 // const WIDTH = 400
 const HEIGHT = 200
@@ -16,14 +25,8 @@ export default {
   mixins: [Scene],
   data () {
     return {
-      skyboxArray: [
-        'grass/sbox_px.jpg',
-        'grass/sbox_nx.jpg',
-        'grass/sbox_py.jpg',
-        'grass/sbox_ny.jpg',
-        'grass/sbox_pz.jpg',
-        'grass/sbox_nz.jpg'
-      ]
+      skyboxArray: ['grass/sbox_px.jpg', 'grass/sbox_nx.jpg', 'grass/sbox_py.jpg', 'grass/sbox_ny.jpg', 'grass/sbox_pz.jpg', 'grass/sbox_nz.jpg']
+
     }
   },
   mounted () {
@@ -51,7 +54,7 @@ export default {
           this.removeLoadingText()
         })
       })
-    }, (err) => console.log(err))
+    })
   },
   methods: {
     drawInterfaceState (interfaceState, zPos) {
@@ -64,9 +67,7 @@ export default {
 
       const substateId = interfaceState.substateId
       if (!substateId) return false
-      /* We have a problem when collecting substates from interfaceState since the are
-        * found using promises. The promises are executed in parallel so we cannot guarantee their uniqueness.
-        * The workaround is to collect the substates in and object with the stateId as key */
+      /* collect the substates in and object with the stateId as key */
       return this.collectSubstates(substateId).then(stateIdObj => {
         for (let key in stateIdObj) {
           let stateObj = stateIdObj[key]
