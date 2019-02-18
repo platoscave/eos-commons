@@ -20,10 +20,10 @@ export default class ClassObject3d extends THREE.Object3D {
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
     this.add(mesh)
     let textPosition = this.position.clone()
-    textPosition.setZ(textPosition.z + DEPTH / 2 + 20)
+    textPosition.setZ(textPosition.z + DEPTH / 2 + 10)
     this.addTextMesh(this.name, textPosition)
   }
-  drawClassConnectors (placeholderObj3d) {
+  drawClassBeams () {
     if (this.subclassesObj3ds.length > 0) {
       let connectorMaterial = this.mapAssocNameToMaterial()
 
@@ -64,8 +64,7 @@ export default class ClassObject3d extends THREE.Object3D {
         childBeamEndPos.sub(ourWorldPosition)
         childBeamEndPos.setY(HEIGHT * -4)
         this.add(this.drawBeam(childBeamStartPos, childBeamEndPos, connectorMaterial))
-        childObj3d.drawClassConnectors(placeholderObj3d)
-        childObj3d.drawClassAssocs(placeholderObj3d)
+        childObj3d.drawClassBeams()
       })
     }
   }
@@ -85,23 +84,14 @@ export default class ClassObject3d extends THREE.Object3D {
     let properties = Vue._.get(this, 'userData.properties')
     if (!properties) return
     let assocsArr = getAssocs(properties)
-    // console.log('assocsArr', assocsArr)
-
-    let ourWorldPosition = new THREE.Vector3()
-    this.getWorldPosition(ourWorldPosition)
 
     assocsArr.forEach(assoc => {
       let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
 
       this.drawTubeTopSideToBottom(assocToObj3d, assoc.key)
     })
-
-    // for each of the child classes
-    /* this.subclassesObj3ds.forEach(childObj3d => {
-      childObj3d.drawClassAssocs(placeholderObj3d)
-    }) */
   }
-  drawObjectConnectors (length) {
+  drawObjectToClassBeam (length) {
     let fomPos = new THREE.Vector3(0, -HEIGHT / 4, 0)
     let toPos = fomPos.clone()
     toPos.setZ(length)

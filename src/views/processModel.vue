@@ -17,7 +17,7 @@ import * as THREE from 'three'
 import Scene from '../lib/sceneMixin.js'
 import ProcessObject3d from '../lib/processObject3d.js'
 
-// const WIDTH = 400
+const WIDTH = 400
 const HEIGHT = 200
 
 export default {
@@ -28,7 +28,7 @@ export default {
       skyboxArray: ['grass/sbox_px.jpg', 'grass/sbox_nx.jpg', 'grass/sbox_py.jpg', 'grass/sbox_ny.jpg', 'grass/sbox_pz.jpg', 'grass/sbox_nz.jpg']
     }
   },
-  mounted () {
+  mounted: async function () {
     this.addLoadingText()
     let queryObj = {
       query: {
@@ -39,17 +39,31 @@ export default {
         }
       }
     }
-    this.$store.dispatch('query', queryObj).then((resultsArr) => {
-      let zPos = 0
-      let promises = []
-      resultsArr.forEach(interfaceState => {
-        promises.push(this.drawInterfaceState(interfaceState, zPos))
-        zPos -= 1600
-      })
-      return Promise.all(promises).then(resultsArr => {
-        this.removeLoadingText()
+    // Get an array of interface states from the store
+    let resultsArr = await this.$store.dispatch('query', queryObj)
+
+    let zPos = 0
+    let promises = []
+    resultsArr.forEach(interfaceState => {
+      // Tell each of the interface states to draw themselves, and each of their substates
+      promises.push(this.drawInterfaceState(interfaceState, zPos))
+      zPos -= 1600
+    })
+    let interfaceStateObj3dArr = await Promise.all(promises)
+
+    interfaceStateObj3dArr.forEach(interfaceStateObj3d => {
+      let y = 0
+      interfaceStateObj3d.userData.nextStateIds.forEach(nextState => {
+        console.log('nextState', nextState)
+        let position = interfaceStateObj3d.position.clone()
+        position.setY(y)
+        position.setX(position.x + WIDTH * 4)
+        let toState = {position: position}
+        interfaceStateObj3d.drawTubeRightSideToLeftSide(toState, nextState.action)
+        y += HEIGHT
       })
     })
+    this.removeLoadingText()
   },
   methods: {
     drawInterfaceState (interfaceState, zPos) {
@@ -88,7 +102,7 @@ export default {
         // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
         // this.modelObject3D.add(box)
         placeholderObject3d.position.setX(-maxX / 2)
-        return true
+        return interfaceStateObj3d
       })
     },
     collectSubstates (stateId) {

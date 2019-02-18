@@ -147,7 +147,7 @@ const store = new Vuex.Store({
         let hash = response[0].hash
         console.log('Hash from IPFS: ' + hash)
         state.commons[hash] = rooObj
-        updateHash(hash, '56f86c6a5dde184ccfb9fc6a')
+        // updateHash(hash, '56f86c6a5dde184ccfb9fc6a')
       })
     }
   },
