@@ -206,6 +206,11 @@ const store = new Vuex.Store({
               }
             }
             transaction.oncomplete = () => {
+              if (queryObj.sortBy) {
+                resultsArr.sort((a, b) => {
+                  return a[queryObj.sortBy] - b[queryObj.sortBy]
+                })
+              }
               resolve(resultsArr)
             }
             request.onerror = event => {
@@ -253,6 +258,8 @@ const store = new Vuex.Store({
         let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
         if (!icon) icon = await getIconFromClassById(item.classId)
         let childQueryArrObj = getChildQueryObj(item.cid)
+
+        // Prepoulate the children. We only need to do this once so that we know if this is a leaf node.
         let children = await store.dispatch('treeQueryArr', childQueryArrObj)
 
         const ids = store.state.levelIdsArr[queryObj.level + 1]
@@ -275,7 +282,7 @@ const store = new Vuex.Store({
       })
 
       let treeNodeArr = await Promise.all(treeNodePromissesArr)
-      console.log('done', queryObj.query, treeNodeArr)
+      // console.log('done', queryObj.query, treeNodeArr)
       return treeNodeArr
     },
     mergeAncestorClasses (store, classId) {

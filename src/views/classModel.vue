@@ -129,7 +129,7 @@ export default {
      * The x and max x returned from the subcalsses, is used to center our class
      * The max x returned from the subcalsses, is also used to make sure the next class is positioned beyond it
      *
-     * @param {object} classObj3d - An object3d instance. The current class.
+     * @param {ClassObject3d} classObj3d - An object3d instance. The current class.
      * @param {number} x - the x value that represents the minimum x for this class.
      * @return {number} - the hightest x value used sofar.
      */
@@ -140,6 +140,11 @@ export default {
         maxX = Math.max(x, this.setPositionX(subClassObj3d, x))
         x = maxX + WIDTH * 2
       })
+      let subclassesLength = classObj3d.subclassesObj3ds.length
+      /* if (subclassesLength > 0) {
+        let lastSubclassPosX = classObj3d.subclassesObj3ds[subclassesLength - 1].position.x
+        classObj3d.position.setX(minX + (lastSubclassPosX - minX) / 2)
+      } */
       classObj3d.position.setX(minX + (maxX - minX) / 2)
       return maxX
     },
@@ -149,7 +154,7 @@ export default {
      * On each of these classes, set the y value, then iterate the subclasses
      * Call ourselves on each of these subclasses.
      *
-     * @param {object} classObj3d - An object3d instance. The current class.
+     * @param {ClassObject3d} classObj3d - An object3d instance. The current class.
      * @param {number} y - the y value that this class will be positioned at.
      * @return {number} - the lowest y value used sofar (not actually used yet).
      */
@@ -167,8 +172,8 @@ export default {
      * On each of these classes, iterate over its instances using the instancesObj3d array.
      * Call drawObjectAssocs on each of these instances.
      *
-     * @param {object} placeholderObj3d - An object3d instance. Used to find associated objects by key.
-     * @param {object} classObj3d - An object3d instance. The current class
+     * @param {ClassObject3d} placeholderObj3d - An object3d instance. Used to find associated objects by key.
+     * @param {ClassObject3d} classObj3d - An object3d instance. The current class
      */
     drawObjectAssocs (placeholderObj3d, classObj3d) {
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {

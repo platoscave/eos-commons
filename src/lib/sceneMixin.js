@@ -39,7 +39,7 @@ export default {
       this.controls.autoRotate = this.orbit
     },
     onResize () {
-      console.log('resize', { x: window.innerWidth, y: window.innerHeight })
+      // console.log('resize', { x: window.innerWidth, y: window.innerHeight })
       if (!this.renderer) return
       if (this.width === undefined || this.height === undefined) {
         this.$nextTick(() => {
@@ -49,9 +49,7 @@ export default {
           let heightStr = heightPx.substring(0, heightPx.length - 2)
           let width = Number(widthStr)
           let height = Number(heightStr)
-          console.log('nextTick', { x: width, y: height })
-          // let width = window.innerWidth
-          // let height = window.innerHeight
+          // console.log('nextTick', { x: width, y: height })
           this.camera.aspect = width / height
           this.camera.updateProjectionMatrix()
           this.renderer.setSize(width, height)
@@ -195,8 +193,11 @@ export default {
 
       let cameraPos = this.controls.object.position.clone()
       let newCameraPos = newTargetPos.clone()
-      newCameraPos.setZ(newCameraPos.z + 2000)
-      newCameraPos.setY(newCameraPos.y + 250)
+
+      newCameraPos.setY(newCameraPos.y + 300)
+      if (selectedModelObj.rotation.y > 0) newCameraPos.setX(newCameraPos.x + 2000)
+      else newCameraPos.setZ(newCameraPos.z + 2000)
+
       let cameraTween = new TWEEN.Tween(cameraPos).to(newCameraPos, 1500)
       cameraTween.easing(TWEEN.Easing.Quadratic.Out)
       cameraTween.onUpdate(() => {
