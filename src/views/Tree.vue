@@ -54,13 +54,7 @@ export default {
             resolve(result)
           })
         } else {
-          const queryArrObj = {
-            fk: oriNode.data.id,
-            level: this.$parent.level,
-            queryArr: oriNode.data.data.queryArr,
-            queryNames: oriNode.data.data.queryNames
-          }
-          this.$store.dispatch('treeQueryArr', queryArrObj).then((result) => {
+          this.$store.dispatch('treeQueryArr', oriNode.data.queryArrObj).then((result) => {
             resolve(result)
           })
         }
@@ -82,14 +76,6 @@ export default {
         id: oriItem.id,
         opened: oriItem.opened
       })
-      /*  Send all expanded nodes to page state
-      this.selectedItems = []
-        this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, node => {
-          if (node.model.selected) {
-            this.selectedItems.push(node.model.id)
-          }
-        })
-       */
     },
     itemDragStart (node) {
       console.log(node.model.text + ' drag start !')

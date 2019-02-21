@@ -189,27 +189,28 @@ const store = new Vuex.Store({
             const transaction = this.db.transaction(['commons'], 'readonly')
             const commonsStore = transaction.objectStore('commons')
             let resultsArr = []
+            /* if (commonsStore.indexNames.indexOf(docProp) < 0) {
+              console.error('Created an index for ' + docProp)
+              // commonsStore.createIndex(docProp, docProp)
+            } */
             let index = commonsStore.index(docProp)
-            if (index) {
-              const request = index.openCursor(IDBKeyRange.bound(value, value))
-              request.onerror = event => {
-                console.err('error fetching data')
+            const request = index.openCursor(IDBKeyRange.bound(value, value))
+            request.onsuccess = event => {
+              let cursor = event.target.result
+              if (cursor) {
+                let result = cursor.value
+                result.cid = cursor.primaryKey
+                result.id = cursor.primaryKey
+                resultsArr.push(result)
+                cursor.continue()
               }
-              request.onsuccess = event => {
-                let cursor = event.target.result
-                if (cursor) {
-                  let result = cursor.value
-                  result.cid = cursor.primaryKey
-                  result.id = cursor.primaryKey
-                  resultsArr.push(result)
-                  cursor.continue()
-                } else {
-                  // no more results
-                }
-              }
-            } else console.error('Must create an index for ' + docProp)
+            }
             transaction.oncomplete = () => {
               resolve(resultsArr)
+            }
+            request.onerror = event => {
+              console.err('error fetching data')
+              reject(event.err)
             }
           }
         } else console.error('Cannot query with ' + operator + ' operator yet')
@@ -224,31 +225,15 @@ const store = new Vuex.Store({
         return Vue._.union.apply(null, values)
       })
     },
-    treeQuery: function (store, queryObj) {
-      // Traverse class hierarchy, find nearest icon
+    treeQuery: async function (store, queryObj) {
       const getIconFromClassById = (classId) => {
-        const classObj = store.state.classes[classId]
-        if (classObj.icon) return classObj.icon
-        else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
-        return '' // set to default icon
-      }
-      const getIconFromClassById2 = (classId) => {
-        store.dispatch('getCommonByCid', classId).then(classObj => {
+        return store.dispatch('getCommonByCid', classId).then(classObj => {
           if (classObj.icon) return classObj.icon
-          else if (classObj.parentId) return getIconFromClassById2(classObj.parentId)
+          else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
           return '' // set to default icon
         })
       }
-      const getLeafPrommises = (item, queryArr) => {
-        let leafPromises = []
-        queryArr.forEach(query => {
-          leafPromises.push(store.dispatch('query', { fk: item.cid, query: query }))
-        })
-        return Promise.all(leafPromises)
-      }
-
-      return store.dispatch('query', queryObj).then(resultsArr => {
-        // Create a query array for the children, based on join predicates
+      const getChildQueryObj = (fk) => {
         let queryArr = []
         if (queryObj.query.join) {
           queryObj.query.join.forEach((query) => {
@@ -258,46 +243,40 @@ const store = new Vuex.Store({
             else queryArr.push(query)
           })
         }
+        return { fk: fk, queryArr: queryArr, queryNames: queryObj.queryNames, level: queryObj.level }
+      }
 
-        // Find out if the node is a leaf by running the child queries in each of the items
-        let leafPromises = []
-        resultsArr.forEach(item => {
-          leafPromises.push(getLeafPrommises(item, queryArr))
-        })
-        return Promise.all(leafPromises).then((leafResultsArrArr) => {
-          let treeNodeResultsArr = []
-          leafResultsArrArr.forEach((leafResultsArr, i) => {
-            // console.log('RESULTS', leafResultsArr)
-            let item = resultsArr[i]
-            // Normalize the results so that they are suited for the tree
-            const ids = store.state.levelIdsArr[queryObj.level + 1]
-            const selected = ids ? ids.selectedObjId === item.cid : false
-            let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
-            if (!icon) icon = getIconFromClassById(item.classId)
-            let result = {
-              id: item.cid,
-              cid: item.cid,
-              text: item.title ? item.title : item.name,
-              data: {
-                queryArr: queryArr,
-                queryNames: queryObj.queryNames,
-                level: queryObj.level,
-                item: item,
-                pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
-                icon: icon
-              },
-              isLeaf: true,
-              opened: !!store.state.isOpened[item.cid],
-              selected: selected
-            }
-            if (leafResultsArr.length > 0) result.isLeaf = false
-            treeNodeResultsArr.push(result)
-          })
-          // console.log('QUERY', queryObj)
-          // console.log('RESULTS', resultsArr)
-          return treeNodeResultsArr
-        })
+      let resultsArr = await store.dispatch('query', queryObj)
+
+      // Normalize the results so that they are suited for the tree
+      let treeNodePromissesArr = resultsArr.map(async item => {
+        let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
+        if (!icon) icon = await getIconFromClassById(item.classId)
+        let childQueryArrObj = getChildQueryObj(item.cid)
+        let children = await store.dispatch('treeQueryArr', childQueryArrObj)
+
+        const ids = store.state.levelIdsArr[queryObj.level + 1]
+        const selected = ids ? ids.selectedObjId === item.cid : false
+
+        return {
+          id: item.cid,
+          cid: item.cid,
+          text: item.title ? item.title : item.name,
+          data: {
+            queryArrObj: childQueryArrObj,
+            pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
+            icon: icon
+          },
+          children: children,
+          isLeaf: children.length === 0,
+          opened: !!store.state.isOpened[item.cid],
+          selected: selected
+        }
       })
+
+      let treeNodeArr = await Promise.all(treeNodePromissesArr)
+      console.log('done', queryObj.query, treeNodeArr)
+      return treeNodeArr
     },
     mergeAncestorClasses (store, classId) {
       return store.dispatch('getCommonByCid', classId).then((classObj) => {
