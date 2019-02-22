@@ -69,6 +69,7 @@ export default {
       this.selectableMeshArr.push(rootClassObj3d.children[0])
       let queryObj = {
         query: {
+          sortBy: 'title',
           where: {
             docProp: 'parentId',
             operator: 'eq',
@@ -92,6 +93,7 @@ export default {
     collectAndDrawObjects (placeholderObj3d, classObj3d) {
       let queryObj = {
         query: {
+          sortBy: 'name',
           where: {
             docProp: 'classId',
             operator: 'eq',

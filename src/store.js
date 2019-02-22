@@ -206,9 +206,13 @@ const store = new Vuex.Store({
               }
             }
             transaction.oncomplete = () => {
-              if (queryObj.sortBy) {
+              if (queryObj.query.sortBy) {
                 resultsArr.sort((a, b) => {
-                  return a[queryObj.sortBy] - b[queryObj.sortBy]
+                  let aa = a[queryObj.query.sortBy].toUpperCase()
+                  let bb = b[queryObj.query.sortBy].toUpperCase()
+                  if (aa > bb) return 1
+                  if (aa < bb) return -1
+                  return 0
                 })
               }
               resolve(resultsArr)
@@ -224,7 +228,12 @@ const store = new Vuex.Store({
     treeQueryArr (store, queryObj) {
       let promises = []
       queryObj.queryArr.forEach((query) => {
-        promises.push(store.dispatch('treeQuery', { fk: queryObj.fk, query: query, queryNames: queryObj.queryNames, level: queryObj.level }))
+        promises.push(store.dispatch('treeQuery', {
+          fk: queryObj.fk,
+          query: query,
+          queryNames: queryObj.queryNames,
+          level: queryObj.level
+        }))
       })
       return Promise.all(promises).then((values) => {
         return Vue._.union.apply(null, values)
