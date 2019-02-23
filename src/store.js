@@ -218,11 +218,14 @@ const store = new Vuex.Store({
               resolve(resultsArr)
             }
             request.onerror = event => {
-              console.err('error fetching data')
+              console.error('error fetching data')
               reject(event.err)
             }
           }
-        } else console.error('Cannot query with ' + operator + ' operator yet')
+        } else {
+          console.error('Cannot query with ' + operator + ' operator yet')
+          reject(event.err)
+        }
       })
     },
     treeQueryArr (store, queryObj) {
@@ -269,6 +272,7 @@ const store = new Vuex.Store({
         let childQueryArrObj = getChildQueryObj(item.cid)
 
         // Prepoulate the children. We only need to do this once so that we know if this is a leaf node.
+        // TODO find a way to do this async from the tree
         let children = await store.dispatch('treeQueryArr', childQueryArrObj)
 
         const ids = store.state.levelIdsArr[queryObj.level + 1]

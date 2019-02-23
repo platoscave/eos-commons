@@ -49,9 +49,11 @@ export default {
 
     // Shift placeholder to the left so that the root is at the center of the universe
     placeholderObj3d.position.setX(-maxX / 2)
+    placeholderObj3d.updateMatrixWorld(true)
 
     rootClassObj3d.drawClassBeams()
-    rootClassObj3d.drawClassAssocs(placeholderObj3d)
+
+    this.drawClassAssocs(placeholderObj3d, rootClassObj3d)
 
     // Tell the root class and each of it's subclasses to draw its objects, recursivily
     await this.collectAndDrawObjects(placeholderObj3d, rootClassObj3d)
@@ -126,10 +128,11 @@ export default {
     },
     /**
      * Recusrive function to traverse the class hierarchy using the subclassesObj3ds array.
-     * On each of these classes, set the x value, then iterate the subclasses
+     * On the current class, set the x value, then iterate the subclasses
      * Call ourselves on each of these subclasses.
      * The x and max x returned from the subcalsses, is used to center our class
-     * The max x returned from the subcalsses, is also used to make sure the next class is positioned beyond it
+     * The max x returned from the subcalsses, is also used to ensure the next class is positioned beyond it,
+     * so that it has enough room for it's subclasses
      *
      * @param {ClassObject3d} classObj3d - An object3d instance. The current class.
      * @param {number} x - the x value that represents the minimum x for this class.
@@ -183,6 +186,19 @@ export default {
           instanceObj3d.drawObjectAssocs(placeholderObj3d)
         })
         this.drawObjectAssocs(placeholderObj3d, subClassObj3d)
+      })
+    },
+
+    /**
+     * Recusrive function to traverse the class hierarchy using the subclassesObj3ds array.
+     *
+     * @param {ClassObject3d} placeholderObj3d - An object3d instance. Used to find associated objects by key.
+     * @param {ClassObject3d} classObj3d - An object3d instance. The current class
+     */
+    drawClassAssocs (placeholderObj3d, classObj3d) {
+      classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
+        subClassObj3d.drawClassAssocs (placeholderObj3d)
+        this.drawClassAssocs(placeholderObj3d, subClassObj3d)
       })
     }
   }

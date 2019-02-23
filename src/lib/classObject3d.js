@@ -27,19 +27,19 @@ export default class ClassObject3d extends THREE.Object3D {
     if (this.subclassesObj3ds.length > 0) {
       let connectorMaterial = this.mapAssocNameToMaterial()
 
-      let ourWorldPosition = new THREE.Vector3()
-      this.getWorldPosition(ourWorldPosition)
+      // matrix to translate positions to our local coordinates
+      let ourInverseMatrix = new THREE.Matrix4().getInverse(this.matrix)
 
-      // vertical beam from parent class
+      // vertical beam from parent class to horizontal beam
       let parentEndPosition = new THREE.Vector3(0, HEIGHT * -2, 0)
       this.add(this.drawBeam(new THREE.Vector3(), parentEndPosition, connectorMaterial))
 
       // horizontal beam
       let beamStartPos = this.subclassesObj3ds[0].position.clone()
-      beamStartPos.sub(ourWorldPosition)
+      beamStartPos.applyMatrix4(ourInverseMatrix)
       beamStartPos.setY(HEIGHT * -2)
       let beamEndPos = this.subclassesObj3ds[this.subclassesObj3ds.length - 1].position.clone()
-      beamEndPos.sub(ourWorldPosition)
+      beamEndPos.applyMatrix4(ourInverseMatrix)
       beamEndPos.setY(HEIGHT * -2)
       this.add(this.drawBeam(beamStartPos, beamEndPos, connectorMaterial))
 
@@ -58,12 +58,14 @@ export default class ClassObject3d extends THREE.Object3D {
       this.subclassesObj3ds.forEach(childObj3d => {
         // beam from child class to horizontal beam
         let childBeamStartPos = childObj3d.position.clone()
-        childBeamStartPos.sub(ourWorldPosition)
+        childBeamStartPos.applyMatrix4(ourInverseMatrix)
         childBeamStartPos.setY(HEIGHT * -2)
         let childBeamEndPos = childObj3d.position.clone()
-        childBeamEndPos.sub(ourWorldPosition)
+        childBeamEndPos.applyMatrix4(ourInverseMatrix)
         childBeamEndPos.setY(HEIGHT * -4)
         this.add(this.drawBeam(childBeamStartPos, childBeamEndPos, connectorMaterial))
+
+        // tell the child to draw it's class beams
         childObj3d.drawClassBeams()
       })
     }
@@ -81,9 +83,10 @@ export default class ClassObject3d extends THREE.Object3D {
       return resultsArr
     }
 
-    let properties = Vue._.get(this, 'userData.properties')
+    let properties = this.userData.properties
     if (!properties) return
     let assocsArr = getAssocs(properties)
+    console.log('assocsArr', assocsArr)
 
     assocsArr.forEach(assoc => {
       let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
