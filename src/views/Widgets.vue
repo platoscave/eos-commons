@@ -1,39 +1,39 @@
 <template>
-    <div class="widget-container">
+    <div class="full-height">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
-        <template  class="widget-container" v-for="(widget, key) in widgets">
+        <template  class="full-height" v-for="(widget, key) in widgets">
             <!-- Get rid of linting error
             <div v-bind:key="widget">-->
                 <!-- Document-->
-                <div v-bind:key="key" v-if="widget.displayType === 'Document'">
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Document'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
 
                 <!-- Tree-->
-                <div v-bind:key="key" v-if="widget.displayType === 'Tree'">
-                    <ec-tree v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Tree'">
+                    <ec-tree class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
                 </div>
 
                 <!-- Table -->
-                <div v-bind:key="key" v-if="widget.displayType === 'Table'">
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Table'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
 
                 <!-- 3dClassModel-->
-                <div  v-bind:key="key" class="widget-container" v-if="widget.displayType === '3D Class Model'">
-                    <ec-class-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-class-model>
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === '3D Class Model'">
+                    <ec-class-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-class-model>
                 </div>
 
                 <!-- ProcessModel-->
-                <div v-bind:key="key" v-if="widget.displayType === 'Process Model'">
-                    <ec-process-model class="widget-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Process Model'">
+                    <ec-process-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
                 </div>
 
                 <!-- Form-->
-                <div v-bind:key="key" v-if="widget.displayType === 'Form'">
-                    <ec-form v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
-                    <v-btn absolute dark fab bottom right color="pink" @click="editMode = !editMode">
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Form'">
+                    <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
+                    <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                         <template v-if="editMode">
                             <v-icon>done</v-icon>
                         </template>
@@ -79,15 +79,24 @@ export default {
 }
 </script>
 <style scoped>
-    .widget-container {
-        /*position: absolute;*/
-        height: 100%;
+    .full-height {
         width: 100%;
     }
-    .xcontainer {
-        padding: 0;
+    .button-bottom {
+        bottom: 10px;
+        right: 30px;
+    }
+    .ec-container {
+        position: absolute;
+        height: 100%;
+        width: 100%;  
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         margin: 0;
-        max-width: none;
-        overflow-y: auto
+        border: 0;
+        padding: 0;
+        overflow: auto;
     }
 </style>

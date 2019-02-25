@@ -285,7 +285,6 @@ export default {
   font-family: monospace, monospace;
   white-space: pre;
 }
-
 .xcontainer {
   padding: 0;
   display: flex;

@@ -2,10 +2,18 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
+// import IpfsClient from 'ipfs-http-client'
+// import CID from 'cids'
+const ipfsClient = require('ipfs-http-client')
+const CID = require('cids')
 
 Vue.use(Vuex)
-const IPFS = require('ipfs-api')
-const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
+// const IPFS = require('ipfs-api')
+// var ipfsClient = require('ipfs-http-client')
+// const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
+// connect to ipfs daemon API server
+const ipfs = new ipfsClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' })
+// const ipfs = new IpfsClient('192.168.178.73', '5001', { protocol: 'http' })
 
 const updateRoute = (state) => {
   let newHash = ''
@@ -124,7 +132,7 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
-      const updateHash = (newVal, oldVal) => {
+      /* const updateHash = (newVal, oldVal) => {
         for (let key in state.classes) {
           let obj = state.classes[key]
           if (obj.parentId === oldVal) {
@@ -139,8 +147,37 @@ const store = new Vuex.Store({
             })
           }
         }
-      }
-      let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
+      } */
+      this.dispatch('getCommonByCid', '56f86c6a5dde184ccfb9fc6a').then(result => {
+        console.log('rooObj', result)
+        const myData = {
+          name: 'David',
+          likes: ['js-ipfs', 'icecream', 'steak']
+        }
+        ipfs.dag.put(myData, { format: 'dag-cbor', hashAlg: 'sha2-256' }, (err, cid) => {
+          if (err) {
+            console.log('ERR\n', err)
+          }
+          console.log('cid', cid.toBaseEncodedString())
+          // featching multihash buffer from cid object.
+          const multihash = cid.multihash
+
+          // passing multihash buffer to CID object to convert multihash to a readable format
+          const cids = new CID(1, 'dag-cbor', multihash)
+
+          // Printing out the cid in a readable format
+          console.log('multihash', cids.toBaseEncodedString())
+          // zdpuAujL3noEMamveLPQWJPY6CYZHhHoskYQaZBvRbAfVwR8S
+
+          ipfs.dag.get(cid, (err, result) => {
+            if (err) {
+              throw err
+            }
+            console.log(JSON.stringify(result.value))
+          })
+        })
+      })
+      /*       let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
       console.log('rooObj', rooObj)
       let buf = Buffer.from(rooObj, 'utf8')
       ipfs.files.add(buf, { 'onlyHash': true }).then((response) => {
@@ -148,7 +185,7 @@ const store = new Vuex.Store({
         console.log('Hash from IPFS: ' + hash)
         state.commons[hash] = rooObj
         // updateHash(hash, '56f86c6a5dde184ccfb9fc6a')
-      })
+      }) */
     }
   },
   actions: {
@@ -269,11 +306,11 @@ const store = new Vuex.Store({
       let treeNodePromissesArr = resultsArr.map(async item => {
         let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
         if (!icon) icon = await getIconFromClassById(item.classId)
-        let childQueryArrObj = getChildQueryObj(item.cid)
 
-        // Prepoulate the children. We only need to do this once so that we know if this is a leaf node.
+        // Prepoulate the grandchildren, so that we know if this is a leaf node.
         // TODO find a way to do this async from the tree
-        let children = await store.dispatch('treeQueryArr', childQueryArrObj)
+        let childQueryArrObj = getChildQueryObj(item.cid)
+        let grandchildren = await store.dispatch('treeQueryArr', childQueryArrObj)
 
         const ids = store.state.levelIdsArr[queryObj.level + 1]
         const selected = ids ? ids.selectedObjId === item.cid : false
@@ -287,8 +324,8 @@ const store = new Vuex.Store({
             pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
             icon: icon
           },
-          children: children,
-          isLeaf: children.length === 0,
+          children: grandchildren,
+          isLeaf: grandchildren.length === 0,
           opened: !!store.state.isOpened[item.cid],
           selected: selected
         }

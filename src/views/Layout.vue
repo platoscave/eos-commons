@@ -1,21 +1,21 @@
 <template>
-    <div  v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
-        <multipane class="container" layout="vertical" v-on:paneResizeStop="paneResizeStop">
+    <div class="full-height" v-if="pageObj.divider === 'Vertical' || pageObj.divider === 'Horizontal'">
+        <multipane class="full-height" layout="vertical" v-on:paneResizeStop="paneResizeStop">
             <!-- Navigation content -->
             <div class="left" v-bind:style="{ width: paneWidth }">
-                <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
+                <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
             <!-- Main content -->
             <div class="right">
-                <ec-layout class="pane" v-bind:level="level + 1"></ec-layout>
+                <ec-layout class="full-height" v-bind:level="level + 1"></ec-layout>
             </div>
         </multipane>
     </div>
-    <div v-else>
+    <div class="full-height" v-else>
         <!-- Only header layout content -->
-        <ec-tabs class="xpane" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
+        <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
     </div>
 </template>
 
@@ -61,13 +61,8 @@ export default {
 }
 </script>
 <style scoped>
-    .container {
-        /*position: relative;*/
+    .full-height {
         height: 100%;
-        width: 100%;
-        padding: 0px;
-        margin: 0px;
-        max-width: none;
     }
     .left {
         height: 100%;
@@ -76,33 +71,5 @@ export default {
         flex-grow: 1;
         height: 100%;
         border-left: 8px solid blue;
-    }
-    .pane {
-        /*position: absolute;*/
-        /*position: relative;*/
-        /*top: 0;*/
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-    }
-    .pane > div {
-        height: 100%;
-    }
-    .pane > div > div {
-        height: 100%;
-    }
-    .pane > div > div > div {
-        height: 100%;
-    }
-    .xtabs-container-div {
-        position: relative;
-        height: 100%;
-    }
-    .xtab-item-element {
-        position: absolute;
-        top: 0;
-        /*height: calc(100% - 48px) !important;*/
-        height: 100%;
-        overflow: auto;
     }
 </style>

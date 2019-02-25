@@ -1,6 +1,6 @@
 <template>
-  <div class="webglContainer">
-    <v-btn absolute dark fab small right color="pink" @click="onOrbit">
+  <div class="no-overflow">
+    <v-btn class="button-top" absolute dark fab small right color="pink" @click="onOrbit">
       <template v-if="orbit">
           <v-icon>flare</v-icon>
       </template>
@@ -155,15 +155,10 @@ export default {
 </script>
 
 <style scoped>
-    .webglContainer {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: 0;
-        border: 0;
-        padding: 0;
+    .button-top {
+      top: 10px
+    }
+    .no-overflow {
         overflow: hidden;
     }
 </style>

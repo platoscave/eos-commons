@@ -54,7 +54,7 @@ export default class ClassObject3d extends THREE.Object3D {
       sphereMesh.position.set(beamEndPos.x, beamEndPos.y, beamEndPos.z)
       this.add(sphereMesh)
 
-      // for each of the child classes
+      // for each of the subclasses
       this.subclassesObj3ds.forEach(childObj3d => {
         // beam from child class to horizontal beam
         let childBeamStartPos = childObj3d.position.clone()
@@ -65,7 +65,7 @@ export default class ClassObject3d extends THREE.Object3D {
         childBeamEndPos.setY(HEIGHT * -4)
         this.add(this.drawBeam(childBeamStartPos, childBeamEndPos, connectorMaterial))
 
-        // tell the child to draw it's class beams
+        // tell the subclass to draw it's class beams
         childObj3d.drawClassBeams()
       })
     }
