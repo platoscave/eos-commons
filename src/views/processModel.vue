@@ -58,7 +58,7 @@ export default {
         let position = interfaceStateObj3d.position.clone()
         position.setY(y)
         position.setX(position.x + WIDTH * 4)
-        let toState = {position: position}
+        let toState = { position: position }
         interfaceStateObj3d.drawTubeRightSideToLeftSide(toState, nextState.action)
         y += HEIGHT
       })

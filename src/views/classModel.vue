@@ -197,7 +197,7 @@ export default {
      */
     drawClassAssocs (placeholderObj3d, classObj3d) {
       classObj3d.subclassesObj3ds.forEach(subClassObj3d => {
-        subClassObj3d.drawClassAssocs (placeholderObj3d)
+        subClassObj3d.drawClassAssocs(placeholderObj3d)
         this.drawClassAssocs(placeholderObj3d, subClassObj3d)
       })
     }
