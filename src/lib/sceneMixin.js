@@ -31,7 +31,7 @@ export default {
       console.log('selectedObjId Changed!', newVal, oldVal)
       this.highlight(newVal, oldVal)
       this.moveCameraToPos(newVal)
-    }, {immediate: false})
+    }, { immediate: false })
   },
   methods: {
     onOrbit (e) {
@@ -87,7 +87,7 @@ export default {
       this.camera.position.z = 4000
 
       // renderer
-      this.renderer = new THREE.WebGLRenderer({antialias: true})
+      this.renderer = new THREE.WebGLRenderer({ antialias: true })
       this.$el.appendChild(this.renderer.domElement)
 
       // controls
@@ -174,12 +174,12 @@ export default {
       let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
       if (currentlySelected) {
         currentlySelected.children[0].material = currentlySelected.getMaterial()
-        currentlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
+        currentlySelected.children[1].material = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
       }
       let newlySelected = this.modelObject3D.getObjectByProperty('key', newVal)
       if (newlySelected) {
-        newlySelected.children[0].material = new THREE.MeshLambertMaterial({color: 0xEEEE00})
-        newlySelected.children[1].material = new THREE.MeshLambertMaterial({color: 0x666666})
+        newlySelected.children[0].material = new THREE.MeshLambertMaterial({ color: 0xEEEE00 })
+        newlySelected.children[1].material = new THREE.MeshLambertMaterial({ color: 0x666666 })
       }
     },
     moveCameraToPos (key) {
@@ -207,8 +207,8 @@ export default {
       cameraTween.start()
     },
     addLoadingText () {
-      let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-      let text3d = new THREE.TextGeometry('Loading...', {size: 200, font: font})
+      let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+      let text3d = new THREE.TextGeometry('Loading...', { size: 200, font: font })
       text3d.center()
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       textMesh.name = 'Loading Message'
