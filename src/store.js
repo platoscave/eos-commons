@@ -6,14 +6,15 @@ import createPersistedState from 'vuex-persistedstate'
 // import CID from 'cids'
 const ipfsClient = require('ipfs-http-client')
 const CID = require('cids')
+// const IPFS = require('ipfs-api')
 
 Vue.use(Vuex)
-// const IPFS = require('ipfs-api')
 // var ipfsClient = require('ipfs-http-client')
 // const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 // connect to ipfs daemon API server
-const ipfs = new ipfsClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' })
-// const ipfs = new IpfsClient('192.168.178.73', '5001', { protocol: 'http' })
+// const ipfs = ipfsClient({ host: 'ipfs.io', port: '5001', protocol: 'https' })
+// const ipfs = new ipfsClient('192.168.178.73', '5001', { protocol: 'http' })
+const ipfs = ipfsClient('127.0.0.1', '5001', { protocol: 'http' })
 
 const updateRoute = (state) => {
   let newHash = ''

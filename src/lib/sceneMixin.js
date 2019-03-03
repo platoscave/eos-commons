@@ -1,5 +1,6 @@
 import TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
+// import OrbitControls from '../node_modules/three/examples/js/controls/OrbitControls.js'
 import fontJson from '../assets/helvetiker_regular.typeface.json'
 const font = new THREE.Font(fontJson)
 
@@ -38,28 +39,17 @@ export default {
       this.orbit = !this.orbit
       this.controls.autoRotate = this.orbit
     },
-    onResize () {
-      // console.log('resize', { x: window.innerWidth, y: window.innerHeight })
+    onResize (x, y) {
       if (!this.renderer) return
       if (this.width === undefined || this.height === undefined) {
-        this.$nextTick(() => {
-          let widthPx = window.getComputedStyle(this.$el).getPropertyValue('width')
-          let heightPx = window.getComputedStyle(this.$el).getPropertyValue('height')
-          let widthStr = widthPx.substring(0, widthPx.length - 2)
-          let heightStr = heightPx.substring(0, heightPx.length - 2)
-          let width = Number(widthStr)
-          let height = Number(heightStr)
-          // console.log('nextTick', { x: width, y: height })
-          this.camera.aspect = width / height
-          this.camera.updateProjectionMatrix()
-          this.renderer.setSize(width, height)
-          // this.controls.handleResize()
-          this.render()
-        })
+        console.log('this.$el', this.$el)
+        let rect = this.$el.getBoundingClientRect()
+        this.camera.aspect = rect.width / rect.height
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(rect.width, rect.height)
+        this.render()
       } else {
-        this.$nextTick(() => {
-          this.renderer.setSize(this.width, this.height)
-        })
+        this.renderer.setSize(this.width, this.height)
       }
     },
     getSceneIndexByKey (key) {
@@ -130,7 +120,7 @@ export default {
       sceneObject3D.name = 'Boilerplate'
       this.$el.addEventListener('click', this.onClick, false)
 
-      this.onResize()
+      this.$nextTick(() => this.$nextTick(() => this.onResize()))
       this.render()
       this.animate()
     },

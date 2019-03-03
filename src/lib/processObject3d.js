@@ -136,6 +136,39 @@ export default class ProcessObject3d extends THREE.Object3D {
     rightCone.rotation.z = -Math.PI / 2
     this.add(rightCone)
   }
+  drawInitialTubetoLeftSide (fromPosition, name) {
+    let material = this.mapActionNameToMaterial(name)
+
+    let fromPos = this.getSidePos('right', fromPosition)
+    let toPos = this.getSidePos('left', new THREE.Vector3())
+    let endPos = toPos.clone()
+    endPos.setX(endPos.x - 60)
+
+    let points = []
+    points.push(fromPos)
+    points.push(new THREE.Vector3(fromPos.x + WIDTH / 2, fromPos.y, fromPos.z))
+    points.push(new THREE.Vector3(toPos.x - WIDTH / 2, toPos.y, toPos.z))
+    points.push(endPos)
+
+    this.addTextMeshBetween(name, points[1], points[2])
+
+    let path = new THREE.CatmullRomCurve3(this.straightenPoints(points))
+    let geometry = new THREE.TubeGeometry(path, 64, 10, 8, false)
+    let mesh = new THREE.Mesh(geometry, material)
+    this.add(mesh)
+
+    let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false)
+    let rightCone = new THREE.Mesh(coneGeometry, material)
+    rightCone.position.set(toPos.x - 40, toPos.y, toPos.z)
+    rightCone.rotation.z = -Math.PI / 2
+    this.add(rightCone)
+
+    // sphere at the left end
+    let sphereGeometryLeft = new THREE.SphereGeometry(10)
+    let sphereMeshLeft = new THREE.Mesh(sphereGeometryLeft, material)
+    sphereMeshLeft.position.set(fromPos.x, fromPos.y, fromPos.z)
+    this.add(sphereMeshLeft)
+  }
   mapActionNameToMaterial (name) {
     let color = processModelColors.nameColor[name]
     if (!color) {
@@ -215,8 +248,8 @@ export default class ProcessObject3d extends THREE.Object3D {
     this.addTextMesh(name, textPosition)
   }
   addTextMesh (name, textPosition) {
-    let textMaterial = new THREE.MeshLambertMaterial({color: 0xEFEFEF})
-    let text3d = new THREE.TextGeometry(name, {size: 30, height: 1, font: font})
+    let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
+    let text3d = new THREE.TextGeometry(name, { size: 30, height: 1, font: font })
     text3d.center()
     let textMesh = new THREE.Mesh(text3d, textMaterial)
     textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)

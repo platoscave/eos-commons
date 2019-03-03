@@ -25,7 +25,8 @@ export default {
   mixins: [Scene],
   data () {
     return {
-      skyboxArray: ['grass/sbox_px.jpg', 'grass/sbox_nx.jpg', 'grass/sbox_py.jpg', 'grass/sbox_ny.jpg', 'grass/sbox_pz.jpg', 'grass/sbox_nz.jpg']
+      // skyboxArray: ['grass/sbox_px.jpg', 'grass/sbox_nx.jpg', 'grass/sbox_py.jpg', 'grass/sbox_ny.jpg', 'grass/sbox_pz.jpg', 'grass/sbox_nz.jpg']
+      skyboxArray: ['islands/skybox_e.jpg', 'islands/skybox_w.jpg', 'islands/skybox_t.jpg', 'islands/skybox_b.jpg', 'islands/skybox_n.jpg', 'islands/skybox_s.jpg']
     }
   },
   mounted: async function () {
@@ -52,6 +53,7 @@ export default {
     let interfaceStateObj3dArr = await Promise.all(promises)
 
     interfaceStateObj3dArr.forEach(interfaceStateObj3d => {
+      // Draw the final action tubes form this interface state
       let y = 0
       interfaceStateObj3d.userData.nextStateIds.forEach(nextState => {
         console.log('nextState', nextState)
@@ -62,7 +64,14 @@ export default {
         interfaceStateObj3d.drawTubeRightSideToLeftSide(toState, nextState.action)
         y += HEIGHT
       })
+
+      // Draw the initial action tube to this interface state
+      let fromPosition = interfaceStateObj3d.position.clone()
+      fromPosition.setX(-WIDTH * 4)
+      fromPosition.setY(HEIGHT)
+      interfaceStateObj3d.drawInitialTubetoLeftSide(fromPosition, 'happy')
     })
+
     this.removeLoadingText()
   },
   methods: {

@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 import VueLodash from 'vue-lodash'
 import Layout from './views/Layout.vue'
-import {Multipane, MultipaneResizer} from 'vue-multipane'
+import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
@@ -25,8 +25,6 @@ Vue.component('ec-process-model', ProcessModel)
 
 global.THREE = require('../node_modules/three/three.js')
 global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')
-global.Detector = require('../node_modules/three/examples/js/Detector.js')
-// global.TWEEN = require('../node_modules/three/examples/lib/libs/tween.lib')
 
 Vue.use(VueLodash)
 Vue.config.productionTip = false
