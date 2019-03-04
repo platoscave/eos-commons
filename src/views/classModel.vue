@@ -1,6 +1,6 @@
 <template>
   <div class="no-overflow">
-    <v-btn absolute dark fab small right color="pink" @click="onOrbit">
+    <v-btn class="button-top" absolute dark fab small right color="pink" @click="onOrbit">
       <template v-if="orbit">
           <v-icon>flare</v-icon>
       </template>
@@ -206,6 +206,9 @@ export default {
 </script>
 
 <style scoped>
+    .button-top {
+      top: 10px
+    }
     .no-overflow {
         overflow: hidden;
     }

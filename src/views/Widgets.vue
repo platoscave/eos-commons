@@ -30,6 +30,11 @@
                     <ec-process-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
                 </div>
 
+                <!-- WorkflowModel-->
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Workflow Model'">
+                    <ec-workflow-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-workflow-model>
+                </div>
+
                 <!-- Form-->
                 <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Form'">
                     <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
