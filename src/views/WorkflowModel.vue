@@ -15,7 +15,7 @@
 <script>
 import * as THREE from 'three'
 import Scene from '../lib/sceneMixin.js'
-import ProcessObject3d from '../lib/processObject3d.js'
+import ProcessObject3d from '../lib/workflowObject3d.js'
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -84,6 +84,15 @@ export default {
       let placeholderObject3d = new THREE.Object3D()
       placeholderObject3d.position.setZ(zPos)
       this.modelObject3D.add(placeholderObject3d)
+
+      let rountedRectShape = this.getRoundedRectShape(0, 0, WIDTH * 10, HEIGHT * 5, 50)
+      let geometry = new THREE.ShapeGeometry( rountedRectShape )
+      geometry.center()
+      var material = new THREE.MeshBasicMaterial( { color: 0x0000ff, side: THREE.DoubleSide, transparent: true, opacity: 0.25 } )
+      var swimlane = new THREE.Mesh( geometry, material )
+      placeholderObject3d.add( swimlane )
+      
+      return true;
       let workflowObj3d = new ProcessObject3d(workflow)
       placeholderObject3d.add(workflowObj3d)
       this.selectableMeshArr.push(workflowObj3d.children[0])

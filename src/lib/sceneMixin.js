@@ -196,9 +196,9 @@ export default {
       })
       cameraTween.start()
     },
-    addLoadingText () {
+    addLoadingText (text) {
       let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
-      let text3d = new THREE.TextGeometry('Loading...', { size: 200, font: font })
+      let text3d = new THREE.TextGeometry(text || 'Loading...', { size: 200, font: font })
       text3d.center()
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       textMesh.name = 'Loading Message'
@@ -209,6 +209,23 @@ export default {
       let mesh = this.scene.getObjectByName('Loading Message')
 
       this.scene.remove(mesh)
+    },
+    getRoundedRectShape (x, y, width, height, radius) {
+      const roundedRect = (ctx, x, y, width, height, radius) => {
+        ctx.moveTo(x, y + radius)
+        ctx.lineTo(x, y + height - radius)
+        ctx.quadraticCurveTo(x, y + height, x + radius, y + height)
+        ctx.lineTo(x + width - radius, y + height)
+        ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius)
+        ctx.lineTo(x + width, y + radius)
+        ctx.quadraticCurveTo(x + width, y, x + width - radius, y)
+        ctx.lineTo(x + radius, y)
+        ctx.quadraticCurveTo(x, y, x, y + radius)
+      }
+      // Rounded rectangle
+      let roundedRectShape = new THREE.Shape()
+      roundedRect(roundedRectShape, x, y, width, height, radius) // negative numbers not allowed
+      return roundedRectShape
     }
   }
 }
