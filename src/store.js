@@ -211,60 +211,88 @@ const store = new Vuex.Store({
         }
       })
     },
-    query: function (store, queryObj) {
-      return new Promise((resolve, reject) => {
-        const docProp = Vue._.get(queryObj, 'query.where.docProp')
-        const operator = Vue._.get(queryObj, 'query.where.operator')
-        let value = Vue._.get(queryObj, 'query.where.value')
-        if (value === '$parentNode.$key') value = queryObj.fk
-
-        if (operator === 'eq') {
-          if (docProp === '$key') {
-            store.dispatch('getCommonByCid', value).then(result => {
-              resolve([result])
-            })
-          } else {
-            const transaction = this.db.transaction(['commons'], 'readonly')
-            const commonsStore = transaction.objectStore('commons')
-            let resultsArr = []
-            /* if (commonsStore.indexNames.indexOf(docProp) < 0) {
-              console.error('Created an index for ' + docProp)
-              // commonsStore.createIndex(docProp, docProp)
-            } */
-            let index = commonsStore.index(docProp)
-            const request = index.openCursor(IDBKeyRange.bound(value, value))
-            request.onsuccess = event => {
-              let cursor = event.target.result
-              if (cursor) {
-                let result = cursor.value
-                result.cid = cursor.primaryKey
-                result.id = cursor.primaryKey
-                resultsArr.push(result)
-                cursor.continue()
-              }
-            }
-            transaction.oncomplete = () => {
-              if (queryObj.query.sortBy) {
-                resultsArr.sort((a, b) => {
-                  let aa = a[queryObj.query.sortBy].toUpperCase()
-                  let bb = b[queryObj.query.sortBy].toUpperCase()
-                  if (aa > bb) return 1
-                  if (aa < bb) return -1
-                  return 0
-                })
-              }
-              resolve(resultsArr)
-            }
-            request.onerror = event => {
-              console.error('error fetching data')
-              reject(event.err)
+    query: async function (store, queryObj) {
+      // Wrap indexedDB transaction in a promise
+      const transactionWrapper = (docProp, value) => {
+        return new Promise((resolve, reject) => {
+          const transaction = this.db.transaction(['commons'], 'readonly')
+          const commonsStore = transaction.objectStore('commons')
+          let resultsArr = []
+          let index = commonsStore.index(docProp)
+          // We user a cursor instead of getAll, because we have to add cid to our objects
+          const request = index.openCursor(IDBKeyRange.only(value))
+          request.onsuccess = event => {
+            let cursor = event.target.result
+            if (cursor) {
+              let result = cursor.value
+              result.cid = cursor.primaryKey
+              result.id = cursor.primaryKey
+              resultsArr.push(result)
+              cursor.continue()
             }
           }
-        } else {
-          console.error('Cannot query with ' + operator + ' operator yet')
-          reject(event.err)
-        }
-      })
+          request.onerror = event => reject(event)
+          transaction.oncomplete = () => resolve(resultsArr)
+        })
+      }
+
+      // Recursivly get an array of subclass cids
+      const getSubclassCids = async (classCid) => {
+        let subClassArr = await transactionWrapper('parentId', classCid)
+        let promisses = subClassArr.map(classObj => {
+          return getSubclassCids(classObj.cid)
+        })
+        let subClassCidsArr = await Promise.all(promisses)
+        let flattend = Vue._.flatten(subClassCidsArr)
+        flattend.push(classCid)
+        return flattend
+      }
+
+      const where = Vue._.get(queryObj, 'query.where')
+      const from = Vue._.get(queryObj, 'query.from')
+      let docProp, operator, value
+      let resultsArr = []
+      // TODO right now the where and from clauses are treated sepparatly. The where clause takes precidence
+      // The should be combined
+      if (where) {
+        docProp = where.docProp
+        operator = where.operator
+        value = where.value
+        // Replace vlaue with forigne key
+        if (value === '$parentNode.$key') value = queryObj.fk
+        if (operator === 'eq') {
+          if (docProp === '$key') {
+            // Get single value based on key
+            let result = await store.dispatch('getCommonByCid', value)
+            return [result]
+          } else {
+            resultsArr = await transactionWrapper(docProp, value)
+          }
+        } else throw new Error('Cannot query with ' + operator + 'operator yet')
+      } else if (from) {
+        // The from claus always refers to a class.
+        // We need to get objects from classId class, and all of its subclasses
+        // First, get an array of all subclasses
+        let subClassCidsArr = await getSubclassCids(from)
+        // Collect all of the objects for these subclasses
+        let promisses = subClassCidsArr.map(classCid => {
+          return transactionWrapper('classId', classCid)
+        })
+        let subClassObjectsArr = await Promise.all(promisses)
+        // Flatten array of arrays.
+        resultsArr = Vue._.flatten(subClassObjectsArr)
+      }
+      // Sort the result, if needed
+      if (queryObj.query.sortBy) {
+        resultsArr.sort((a, b) => {
+          let aa = a[queryObj.query.sortBy].toUpperCase()
+          let bb = b[queryObj.query.sortBy].toUpperCase()
+          if (aa > bb) return 1
+          if (aa < bb) return -1
+          return 0
+        })
+      }
+      return resultsArr
     },
     treeQueryArr (store, queryObj) {
       let promises = []

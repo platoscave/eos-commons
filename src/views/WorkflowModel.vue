@@ -1,12 +1,7 @@
 <template>
   <div class="no-overflow">
     <v-btn class="button-top" absolute dark fab small right color="pink" @click="onOrbit">
-      <template v-if="orbit">
-          <v-icon>flare</v-icon>
-      </template>
-      <template v-else>
-          <v-icon>360</v-icon>
-      </template>
+      <v-icon>{{orbit ? "flare" : "360"}}</v-icon>
     </v-btn>
     <div v-resize="onResize" v-on:click="onClick"></div>
   </div>
@@ -86,13 +81,13 @@ export default {
       this.modelObject3D.add(placeholderObject3d)
 
       let rountedRectShape = this.getRoundedRectShape(0, 0, WIDTH * 10, HEIGHT * 5, 50)
-      let geometry = new THREE.ShapeGeometry( rountedRectShape )
+      let geometry = new THREE.ShapeGeometry(rountedRectShape)
       geometry.center()
-      var material = new THREE.MeshBasicMaterial( { color: 0x0000ff, side: THREE.DoubleSide, transparent: true, opacity: 0.25 } )
-      var swimlane = new THREE.Mesh( geometry, material )
-      placeholderObject3d.add( swimlane )
-      
-      return true;
+      var material = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide, transparent: true, opacity: 0.25 })
+      var swimlane = new THREE.Mesh(geometry, material)
+      placeholderObject3d.add(swimlane)
+
+      return true
       let workflowObj3d = new ProcessObject3d(workflow)
       placeholderObject3d.add(workflowObj3d)
       this.selectableMeshArr.push(workflowObj3d.children[0])

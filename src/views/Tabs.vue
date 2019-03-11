@@ -6,7 +6,9 @@
                 <div class="full-height" v-if="selectedTab === n">
                     <div class="full-height" v-if="tab.widgets">
                         <!-- This tab has widgets -->
-                        <ec-widgets class="contents-full-height" v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
+                        <keep-alive>  <!-- https://vuejs.org/v2/guide/components-dynamic-async.html#keep-alive-with-Dynamic-Components -->
+                          <ec-widgets class="contents-full-height" v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
+                        </keep-alive>                          
                     </div>
                     <div class="full-height" v-if="tab.pageId">
                         <!-- This tab has a sub-page -->

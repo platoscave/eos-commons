@@ -23,7 +23,7 @@
     "vue-multipane": "^0.9.5",
     "vue-router": "^3.0.1",
     "vueckeditor": "^0.1.4",
-    "vuetify": "^1.1.4",
+    "vuetify": "^1.5.5",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4",
     "vuex-router-sync": "^5.0.0"

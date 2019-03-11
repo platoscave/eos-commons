@@ -4,6 +4,13 @@
     "docType": "class",
     "properties": {
       "_id": {
+        "description": "REMOVE",
+        "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
+        "readOnly": true,
+        "title": "cid",
+        "type": "string"
+      },
+      "cid": {
         "description": "<p>Unique identifier given to us by IPFS. It is derived from the hash of the contents. This property is not stored in the object itsself.</p>",
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "readOnly": true,
@@ -537,7 +544,8 @@
       "buyerId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574237133c6d3cd598a5a30d"
+          "from": "574237133c6d3cd598a5a30d",
+          "sortBy": "name"
         },
         "title": "Buyer",
         "type": "string"
@@ -549,7 +557,8 @@
       "sellerId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574237133c6d3cd598a5a30d"
+          "from": "574237133c6d3cd598a5a30d",
+          "sortBy": "name"
         },
         "title": "Seller",
         "type": "string"
@@ -557,7 +566,8 @@
       "assetId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574237133c6d3cd598a5a30d"
+          "from": "574237133c6d3cd598a5a30d",
+          "sortBy": "name"
         },
         "title": "Assest",
         "type": "string"
@@ -565,7 +575,8 @@
       "processId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574237133c6d3cd598a5a30d"
+          "from": "574237133c6d3cd598a5a30d",
+          "sortBy": "name"
         },
         "title": "Process",
         "type": "string"
@@ -573,7 +584,8 @@
       "sellerProcessId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574237133c6d3cd598a5a30d"
+          "from": "574237133c6d3cd598a5a30d",
+          "sortBy": "name"
         },
         "title": "Seller Process",
         "type": "string"
@@ -925,7 +937,8 @@
             "stateId": {
               "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
               "query": {
-                "from": "5745eaa53c6d3cd598a5a371"
+                "from": "5745eaa53c6d3cd598a5a371",
+                "sortBy": "name"
               },
               "title": "State",
               "type": "string"
@@ -943,7 +956,8 @@
       "substateId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574724823c6d3cd598a5a372"
+          "from": "574724823c6d3cd598a5a372",
+          "sortBy": "name"
         },
         "title": "Substate",
         "type": "string"
@@ -976,7 +990,8 @@
             "stateId": {
               "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
               "query": {
-                "from": "5745eaa53c6d3cd598a5a371"
+                "from": "5745eaa53c6d3cd598a5a371",
+                "sortBy": "name"
               },
               "title": "State",
               "type": "string"
@@ -1004,7 +1019,8 @@
       "substateId": {
         "pattern": "Qm[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}",
         "query": {
-          "from": "574724823c6d3cd598a5a372"
+          "from": "574724823c6d3cd598a5a372",
+          "sortBy": "name"
         },
         "title": "Substate",
         "type": "string"
@@ -2044,9 +2060,9 @@
     "name": "Class Model Tree View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "id": {
+      "cid": {
         "readOnly": true,
-        "title": "Key",
+        "title": "cid",
         "type": "string"
       },
       "description": {
@@ -3098,9 +3114,9 @@
     "name": "Page Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "id": {
+      "cid": {
         "readOnly": true,
-        "title": "Key",
+        "title": "cid",
         "type": "string"
       },
       "accordionOrTab": {
@@ -3164,9 +3180,9 @@
     "name": "View Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "id": {
+      "cid": {
         "readOnly": true,
-        "title": "Key",
+        "title": "cid",
         "type": "string"
       },
       "description": {
@@ -3812,7 +3828,7 @@
     "name": "State Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "_id": {
+      "cid": {
         "readOnly": true
       },
       "name": {
@@ -3847,7 +3863,7 @@
     "name": "Agreement Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "_id": {
+      "cid": {
         "readOnly": true
       },
       "name": {
@@ -4640,9 +4656,9 @@
     "name": "Standard Model Form View",
     "ownerId": "575d4c3f2cf3d6dc3ed83148",
     "properties": {
-      "id": {
+      "cid": {
         "readOnly": true,
-        "title": "Key",
+        "title": "cid",
         "type": "string"
       },
       "description": {

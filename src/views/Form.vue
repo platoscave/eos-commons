@@ -5,18 +5,14 @@
                 <template v-for="(property, key) in schema.properties">
                     <template v-if="data[key]" >
                         <v-layout justify-start v-bind:key="key">
-                            <!--
-                            <vaadin-text-field class="full-width"
-                                                   value="{{propValue.value}}"
-                                                   minlength="[[propValue.minLength]]"
-                                                   maxlength="[[propValue.maxLength]]"
-                                                   prevent-invalid-input></vaadin-text-field >
-                            -->
-                            <v-flex xs2 class="text-xs-right pa--5">{{ property.title }}</v-flex>
-
                             <v-flex >
+                                <!--cid-->
+                                <template v-if="key === 'cid'">
+                                    <a href="https://ipfs.io/ipfs/ + data[key]" target="_blank">{{ data[key] }}</a>
+                                </template>
+
                                 <!-- Richtext -->
-                                <template v-if="propertyHas( property, 'media.mediaType', 'text/html') ">
+                                <template v-else-if="propertyHas( property, 'media.mediaType', 'text/html') ">
                                     <template v-if="!editMode || property.readOnly">
                                         <div class="readOnlyInput" v-html="data[key] ? data[key] : property.default"></div>
                                     </template>
@@ -68,49 +64,42 @@
 
                                 <!-- Enum -->
                                 <template v-else-if="propertyHas( property, 'enum' )">
-                                    <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput">{{ data[key] }}</div>
-                                    </template>
-                                    <template v-else>
-                                        <div>{{ data[key] }}</div>
-                                    </template>
+                                    <v-select 
+                                        v-bind:label="property.title"
+                                        v-model="data[key]"
+                                        :diaable="!editMode || property.readOnly || property.enum.length < 2" 
+                                        :items="property.enum"
+                                    ></v-select>
                                 </template>
 
                                 <!-- Query -->
                                 <template v-else-if="propertyHas( property, 'query' )">
-                                    <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput">{{ getCommonByCid(data[key]) }}</div>
-                                    </template>
-                                    <template v-else>
-                                        <v-select outline></v-select>
-                                    </template>
-                                    <!-- <nq-combobox
-                                                    query="[[property.query]]"
-                                                    doc-id="[[docId]]"
-                                                    read-only="[[computeReadOnly(property.readOnly,editMode)]]"
-                                                    value="{{propValue.value}}"
-                                                    noLabelFloat>
-                                            </nq-combobox>-->
+                                    <ec-select
+                                        v-bind:cid="data[key]" 
+                                        v-bind:property="property" 
+                                        v-bind:readonly="property.readOnly || !editMode"
+                                    ></ec-select>
                                 </template>
 
                                 <!--String-->
                                 <template v-else-if="propertyHas( property, 'type', 'string') ">
-                                    <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput">{{ data[key] }}</div>
-                                    </template>
-                                    <template v-else>
-                                        <v-text-field outline></v-text-field>
-                                    </template>
+                                    <v-text-field
+                                        v-bind:label="property.title"
+                                        v-bind:disabled="property.readOnly || !editMode" 
+                                        v-bind:value="data[key]"
+                                        append-outer-icon="property.description ? 'help_outline'"
+                                        v-bind:hint="property.description">
+                                    </v-text-field>
                                 </template>
 
                                 <!--Number-->
                                 <template v-else-if="propertyHas( property, 'type', 'number') ">
-                                    <template v-if="!editMode || property.readOnly">
-                                        <div class="readOnlyInput">{{ data[key] }}</div>
-                                    </template>
-                                    <template v-else>
-                                        <div>{{ data[key] }}</div>
-                                    </template>
+                                   <v-text-field 
+                                        v-bind:label="property.title"
+                                        v-bind:disabled="property.readOnly || !editMode" 
+                                        v-bind:value="data[key]"
+                                        type="number">
+                                    </v-text-field>
                                 </template>
 
                                 <!-- Boolean -->
@@ -137,7 +126,8 @@
                                                          v-bind:key="key"></ec-form>
                                                 <!--</flex>-->
                                                 <br v-bind:key="key">
-                                            </template>                                       </template>
+                                            </template>
+                                        </template>
                                         <template v-else>
                                             <template v-for="(childData, key) in data[key]">
                                                 <div class="readOnlyInput" v-bind:key="key">{{ childData }}</div>
@@ -230,11 +220,16 @@ export default {
         return val
       }
     },
-    getCommonByCid (id) {
+    getCommonByCid: async (id) => {
       if (!id) return '[null]'
-      const obj = this.$store.state.classes[id]
+      const obj = await this.$store.dispatch('getCommonByCid', id)
       if (!obj) return '[not found: ' + id + ']'
       return obj.name ? obj.name : obj.title
+    },
+    queryItems: async (query) => {
+        debugger
+        const results = await this.$store.dispatch('query', query)
+        return results
     }
   },
   created () {
@@ -271,27 +266,67 @@ export default {
 }
 </script>
 <style scoped>
-.readOnlyInput {
-  background-color: #ffffff0d;
-  min-height: 24px;
-  padding-left: 4px;
-}
+    .readOnlyInput {
+    background-color: #ffffff0d;
+    min-height: 24px;
+    padding-left: 4px;
+    }
 
-.p {
-  margin-bottom: 0;
-}
+    .p {
+        margin-bottom: 0;
+    }
 
-.monoSpaced {
-  font-family: monospace, monospace;
-  white-space: pre;
-}
-.xcontainer {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  max-width: none;
-  scroll: auto;
-}
+    .description {
+        color: lightseagreen
+    }
+
+    .monoSpaced {
+    font-family: monospace, monospace;
+    white-space: pre;
+    }
+
+    .input-alpha input {
+        border: solid 1px #e6e6ea;
+        /* height: 48px; */
+        width: 100%;
+        padding: 16px;
+        border-radius: 2px;
+        box-shadow: inset 0px 0px 0px 0px #f00;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        font-size: 14px;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .input-alpha input:focus {
+        outline: 0;
+        border: 1px solid #00f;
+    }
+
+    .input-alpha input:focus + label {
+        color: blue;
+    }
+
+    .input-alpha input:valid,
+    .input-alpha input:-webkit-autofill {
+        padding: 26px 32px 10px 16px;
+    }
+
+    .input-alpha input:valid + label,
+    .input-alpha input:-webkit-autofill + label {
+        top: 7px;
+        transform: scale(0.8);
+    }
+    .input-alpha > .v-input__control {
+        min-height: 24px;
+    }
+    .v-input__slot {
+        border-width: 1px;
+        border-color: darkblue;
+    }
+    .theme--dark .v-text-field--outline > .v-input__control > .v-input__slot {
+        border-width: 1px;
+        border-color: red;
+    }
+
 </style>

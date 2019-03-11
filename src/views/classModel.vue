@@ -1,13 +1,8 @@
 <template>
   <div class="no-overflow">
     <v-btn class="button-top" absolute dark fab small right color="pink" @click="onOrbit">
-      <template v-if="orbit">
-          <v-icon>flare</v-icon>
-      </template>
-      <template v-else>
-          <v-icon>360</v-icon>
-      </template>
-  </v-btn>
+      <v-icon>{{orbit ? "flare" : "360"}}</v-icon>
+    </v-btn>
     <div v-resize="onResize" v-on:click="onClick"></div>
   </div>
 </template>
