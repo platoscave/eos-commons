@@ -29,8 +29,11 @@ export default {
   },
   created () {
     this.$store.dispatch('loadCommons').then(res => {
-      if (!window.location.hash) window.location.hash = '#/.578bff823c6d3cd598a5a3a7' // Demo Page
+      if (!window.location.hash) window.location.hash = '#/.j4ichkhammzm' // Demo Page
       this.loading = false
+      return this.$store.dispatch('loadEOS').then(res => {
+        return res
+      })
     })
   }
 }

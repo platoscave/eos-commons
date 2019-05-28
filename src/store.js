@@ -2,10 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
+import EosApiService from './services/EosApiService'
+import IndexedDBApiService from './services/IndexedDBApiService'
+
 // import IpfsClient from 'ipfs-http-client'
 // import CID from 'cids'
-const ipfsClient = require('ipfs-http-client')
-const CID = require('cids')
+// const ipfsClient = require('ipfs-http-client')
+// const CID = require('cids')
 // const IPFS = require('ipfs-api')
 
 Vue.use(Vuex)
@@ -14,7 +17,7 @@ Vue.use(Vuex)
 // connect to ipfs daemon API server
 // const ipfs = ipfsClient({ host: 'ipfs.io', port: '5001', protocol: 'https' })
 // const ipfs = new ipfsClient('192.168.178.73', '5001', { protocol: 'http' })
-const ipfs = ipfsClient('127.0.0.1', '5001', { protocol: 'http' })
+// const ipfs = ipfsClient('127.0.0.1', '5001', { protocol: 'http' })
 
 const updateRoute = (state) => {
   let newHash = ''
@@ -133,6 +136,7 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
+      EosApiService.loadEos()
       /* const updateHash = (newVal, oldVal) => {
         for (let key in state.classes) {
           let obj = state.classes[key]
@@ -149,7 +153,7 @@ const store = new Vuex.Store({
           }
         }
       } */
-      this.dispatch('getCommonByCid', '56f86c6a5dde184ccfb9fc6a').then(result => {
+      /*       this.dispatch('getCommonByCid', '56f86c6a5dde184ccfb9fc6a').then(result => {
         console.log('rooObj', result)
         const myData = {
           name: 'David',
@@ -164,10 +168,10 @@ const store = new Vuex.Store({
           const multihash = cid.multihash
 
           // passing multihash buffer to CID object to convert multihash to a readable format
-          const cids = new CID(1, 'dag-cbor', multihash)
+          // const cids = new CID(1, 'dag-cbor', multihash)
 
           // Printing out the cid in a readable format
-          console.log('multihash', cids.toBaseEncodedString())
+          // console.log('multihash', cids.toBaseEncodedString())
           // zdpuAujL3noEMamveLPQWJPY6CYZHhHoskYQaZBvRbAfVwR8S
 
           ipfs.dag.get(cid, (err, result) => {
@@ -178,7 +182,7 @@ const store = new Vuex.Store({
           })
         })
       })
-      /*       let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
+      let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
       console.log('rooObj', rooObj)
       let buf = Buffer.from(rooObj, 'utf8')
       ipfs.files.add(buf, { 'onlyHash': true }).then((response) => {
@@ -426,7 +430,7 @@ const store = new Vuex.Store({
         openRequest.onsuccess = e => {
           this.db = e.target.result
 
-          return axios('classes.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
+          return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
             const transaction = this.db.transaction('commons', 'readwrite')
             const commonsStore = transaction.objectStore('commons')
             Object.keys(response.data).forEach(key => {
@@ -442,10 +446,45 @@ const store = new Vuex.Store({
           reject(e.error)
         }
       })
+    },
+    loadEOS () {
+      return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
+        EosApiService.getCommonByKey('5jdnjqxsqmgn').then(common => {
+          console.log('çommon', common)
+        })
+
+        /* let loadEOSPromissesArr = []
+        Object.keys(response.data).forEach(key => {
+          let common = response.data[key]
+          console.log(key , common)
+          loadEOSPromissesArr.push(EosApiService.upsertCommon( key , common))
+        })
+        let treeNodeArr = Promise.all(loadEOSPromissesArr)
+        return(treeNodeArr) */
+      })
     }
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
   store.commit('SET_PAGE_STATE_FROM_ROUTE', newPath.hash)
 })
+/*
+        let keyMap = {}
+        Object.keys(response.data).forEach(key => {
+          let result = response.data[key]
+          var characters = 'abcdefghijklmnopqrstuvwxyz12345'
+          var randomKey = ''
+          for ( var i = 0; i < 12; i++ ) {
+            randomKey += characters.charAt(Math.floor(Math.random() * characters.length));
+          }
+          keyMap[key] = randomKey
+        })
+        let stringData = JSON.stringify(response.data, null, 4)
+
+        Object.keys(keyMap).forEach(key => {
+          stringData = stringData.replace(new RegExp(key, 'g'), keyMap[key]);
+        })
+        console.log('keyMap', JSON.stringify(keyMap, null, 4))
+        console.log('stringData', stringData)
+ */
 export default store

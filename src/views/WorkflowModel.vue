@@ -31,7 +31,7 @@ export default {
         where: {
           docProp: 'classId',
           operator: 'eq',
-          value: '574232b83c6d3cd598a5a309'
+          value: 'hhg2u2zptnfo'
         }
       }
     }

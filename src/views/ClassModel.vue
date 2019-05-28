@@ -33,7 +33,7 @@ export default {
     this.modelObject3D.add(placeholderObj3d)
 
     // Get the root class from the store
-    let rootClass = await this.$store.dispatch('getCommonByCid', '56f86c6a5dde184ccfb9fc6a')
+    let rootClass = await this.$store.dispatch('getCommonByCid', 'gzthjuyjca4s')
 
     // Tell the root class to draw itself, and each of it's subclasses, recursivily
     let rootClassObj3d = await this.collectAndDrawClasses(placeholderObj3d, rootClass)
@@ -77,7 +77,7 @@ export default {
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {
         let promises = []
         resultsArr.forEach(subClassObj => {
-          if (classObj.cid !== '573435433c6d3cd598a5a2db') { // Hack: ignore Blaance Sheet children
+          if (classObj.cid !== '5jdnjqxsqmgn') { // Hack: ignore Blaance Sheet children
             promises.push(this.collectAndDrawClasses(placeholderObj3d, subClassObj))
           }
         })

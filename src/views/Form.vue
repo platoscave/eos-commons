@@ -64,10 +64,10 @@
 
                                 <!-- Enum -->
                                 <template v-else-if="propertyHas( property, 'enum' )">
-                                    <v-select 
+                                    <v-select
                                         v-bind:label="property.title"
                                         v-model="data[key]"
-                                        :diaable="!editMode || property.readOnly || property.enum.length < 2" 
+                                        :diaable="!editMode || property.readOnly || property.enum.length < 2"
                                         :items="property.enum"
                                     ></v-select>
                                 </template>
@@ -75,8 +75,8 @@
                                 <!-- Query -->
                                 <template v-else-if="propertyHas( property, 'query' )">
                                     <ec-select
-                                        v-bind:cid="data[key]" 
-                                        v-bind:property="property" 
+                                        v-bind:cid="data[key]"
+                                        v-bind:property="property"
                                         v-bind:readonly="property.readOnly || !editMode"
                                     ></ec-select>
                                 </template>
@@ -85,7 +85,7 @@
                                 <template v-else-if="propertyHas( property, 'type', 'string') ">
                                     <v-text-field
                                         v-bind:label="property.title"
-                                        v-bind:disabled="property.readOnly || !editMode" 
+                                        v-bind:disabled="property.readOnly || !editMode"
                                         v-bind:value="data[key]"
                                         append-outer-icon="property.description ? 'help_outline'"
                                         v-bind:hint="property.description">
@@ -94,9 +94,9 @@
 
                                 <!--Number-->
                                 <template v-else-if="propertyHas( property, 'type', 'number') ">
-                                   <v-text-field 
+                                   <v-text-field
                                         v-bind:label="property.title"
-                                        v-bind:disabled="property.readOnly || !editMode" 
+                                        v-bind:disabled="property.readOnly || !editMode"
                                         v-bind:value="data[key]"
                                         type="number">
                                     </v-text-field>
@@ -227,9 +227,8 @@ export default {
       return obj.name ? obj.name : obj.title
     },
     queryItems: async (query) => {
-        debugger
-        const results = await this.$store.dispatch('query', query)
-        return results
+      const results = await this.$store.dispatch('query', query)
+      return results
     }
   },
   created () {

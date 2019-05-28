@@ -199,7 +199,7 @@ export default {
       }
       const queryNames = getQueriesByName(this.view.query)
 
-      return {fk: null, query: this.view.query, queryNames: queryNames, level: this.level}
+      return { fk: null, query: this.view.query, queryNames: queryNames, level: this.level }
     }
   },
   created () {
