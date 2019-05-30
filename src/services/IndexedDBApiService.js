@@ -25,6 +25,11 @@ class IndexedDBApiService {
         // Wrap indexedDB transaction in a promise
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
+            if(!commonsStore.indexNames.contains(indexName)) {
+                console.log('Add index: ', indexName)
+                resolve([])
+                return
+            } 
             let index = commonsStore.index(indexName)
             let getAllRequest = index.getAll(key)
 
