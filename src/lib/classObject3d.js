@@ -14,7 +14,7 @@ export default class ClassObject3d extends THREE.Object3D {
     super()
 
     this.key = queryResult.id
-    this.cid = queryResult.cid
+    this.key = queryResult.key
     this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())
@@ -75,8 +75,8 @@ export default class ClassObject3d extends THREE.Object3D {
       let resultsArr = []
       Object.keys(properties).forEach(key => {
         let obj = properties[key]
-        let toCid = Vue._.get(obj, 'query.from')
-        if (toCid && toCid !== 'classes') resultsArr.push({ key: key, name: obj.title, cid: toCid })
+        let toKey = Vue._.get(obj, 'query.from')
+        if (toKey && toKey !== 'classes') resultsArr.push({ key: key, name: obj.title, key: toKey })
         let subProperties = Vue._.get(obj, 'items.properties')
         if (subProperties) resultsArr = resultsArr.concat(getAssocs(subProperties))
       })
@@ -89,7 +89,7 @@ export default class ClassObject3d extends THREE.Object3D {
     console.log('assocsArr', assocsArr)
 
     assocsArr.forEach(assoc => {
-      let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
+      let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.key)
 
       this.drawTubeTopSideToBottom(assocToObj3d, assoc.key)
     })
@@ -109,7 +109,7 @@ export default class ClassObject3d extends THREE.Object3D {
         if (key !== 'ownerId') {
           let nameColor = classModelColors.nameColor[key]
           // if (nameColor) console.log('obj.constructor', obj.constructor, obj)
-          if (nameColor && nameColor !== 'ownerId' && obj.constructor === String) resultsArr.push({ name: key, cid: obj })
+          if (nameColor && nameColor !== 'ownerId' && obj.constructor === String) resultsArr.push({ name: key, key: obj })
         }
         if (Array.isArray(obj)) {
           obj.forEach(subObj => {
@@ -122,8 +122,8 @@ export default class ClassObject3d extends THREE.Object3D {
     if (!this.userData) return
     let assocsArr = getAssocs(this.userData)
     assocsArr.forEach(assoc => {
-      let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.cid)
-      if (!assocToObj3d) console.warn('Cant find ' + assoc.cid + ' from ' + this.name + ': ' + this.cid)
+      let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.key)
+      if (!assocToObj3d) console.warn('Cant find ' + assoc.key + ' from ' + this.name + ': ' + this.key)
       else this.drawTubeTopSideToBottom(assocToObj3d, assoc.name)
     })
   }

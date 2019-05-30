@@ -15,7 +15,7 @@
 export default {
   props: {
     readonly: Boolean,
-    cid: String,
+    key: String,
     property: {
       type: Object,
       default: () => {}
@@ -39,10 +39,10 @@ export default {
     queryItems: async function () {
       const results = await this.$store.dispatch('query', this.property)
       this.items = results.map((item) => {
-        let obj = { value: item.cid, text: item.title ? item.title : item.name }
+        let obj = { value: item.key, text: item.title ? item.title : item.name }
         return obj
       })
-      // this.selected = this.cid
+      // this.selected = this.key
     }
   }
 }

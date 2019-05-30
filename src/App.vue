@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import IndexedDBApiService from './services/IndexedDBApiService'
+import EosApiService from './services/EosApiService'
+
 export default {
   name: 'App',
   data () {
@@ -28,12 +31,10 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loadCommons').then(res => {
+    return IndexedDBApiService.loadIndexedDB().then(res => {
       if (!window.location.hash) window.location.hash = '#/.j4ichkhammzm' // Demo Page
       this.loading = false
-      return this.$store.dispatch('loadEOS').then(res => {
-        return res
-      })
+      // return EosApiService.loadEos()
     })
   }
 }

@@ -6,8 +6,8 @@
                     <template v-if="data[key]" >
                         <v-layout justify-start v-bind:key="key">
                             <v-flex >
-                                <!--cid-->
-                                <template v-if="key === 'cid'">
+                                <!--key-->
+                                <template v-if="key === 'key'">
                                     <a href="https://ipfs.io/ipfs/ + data[key]" target="_blank">{{ data[key] }}</a>
                                 </template>
 
@@ -75,7 +75,7 @@
                                 <!-- Query -->
                                 <template v-else-if="propertyHas( property, 'query' )">
                                     <ec-select
-                                        v-bind:cid="data[key]"
+                                        v-bind:key="data[key]"
                                         v-bind:property="property"
                                         v-bind:readonly="property.readOnly || !editMode"
                                     ></ec-select>
@@ -220,9 +220,9 @@ export default {
         return val
       }
     },
-    getCommonByCid: async (id) => {
+    getCommonByKey: async (id) => {
       if (!id) return '[null]'
-      const obj = await this.$store.dispatch('getCommonByCid', id)
+      const obj = await this.$store.dispatch('getCommonByKey', id)
       if (!obj) return '[not found: ' + id + ']'
       return obj.name ? obj.name : obj.title
     },
@@ -238,7 +238,7 @@ export default {
         newVal => {
           // console.log('selectedObjId Changed!', newVal)
           if (!newVal) return
-          this.$store.dispatch('getCommonByCid', newVal).then(data => {
+          this.$store.dispatch('getCommonByKey', newVal).then(data => {
             // console.log('data', data)
             this.data = data
           })
@@ -256,7 +256,7 @@ export default {
     /* if (this.parentData) this.data = this.parentData
       else {
         const pageDesc = this.$store.state.levelIdsArr[this.level]
-        this.$store.dispatch('getCommonByCid', pageDesc.selectedObjId).then((data) => {
+        this.$store.dispatch('getCommonByKey', pageDesc.selectedObjId).then((data) => {
           console.log('data', data)
           this.data = data
         })

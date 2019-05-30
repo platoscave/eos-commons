@@ -110,7 +110,7 @@ export default {
       })
     },
     collectSubstates (stateId) {
-      return this.$store.dispatch('getCommonByCid', stateId).then(substate => {
+      return this.$store.dispatch('getCommonByKey', stateId).then(substate => {
         let promises = []
         if (substate.nextStateIds) {
           substate.nextStateIds.forEach(nextStateActionId => {

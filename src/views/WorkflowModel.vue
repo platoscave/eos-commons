@@ -72,9 +72,9 @@ export default {
   methods: {
     drawWorkflow: async function (agreement, zPos) {
       // Get the buyer from the store
-      let buyer = await this.$store.dispatch('getCommonByCid', agreement.buyerId)
+      let buyer = await this.$store.dispatch('getCommonByKey', agreement.buyerId)
       // Get the seller from the store
-      let seller = await this.$store.dispatch('getCommonByCid', agreement.sellerId)
+      let seller = await this.$store.dispatch('getCommonByKey', agreement.sellerId)
 
       let placeholderObject3d = new THREE.Object3D()
       placeholderObject3d.position.setZ(zPos)
@@ -124,7 +124,7 @@ export default {
       })
     },
     collectSubstates (stateId) {
-      return this.$store.dispatch('getCommonByCid', stateId).then(substate => {
+      return this.$store.dispatch('getCommonByKey', stateId).then(substate => {
         let promises = []
         if (substate.nextStateIds) {
           substate.nextStateIds.forEach(nextStateActionId => {

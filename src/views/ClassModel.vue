@@ -28,12 +28,12 @@ export default {
   mounted: async function () {
     this.addLoadingText()
 
-    // placeholderObj3d holds all of our 3d objects. Mostly used for lookup by cid.
+    // placeholderObj3d holds all of our 3d objects. Mostly used for lookup by key.
     let placeholderObj3d = new THREE.Object3D()
     this.modelObject3D.add(placeholderObj3d)
 
     // Get the root class from the store
-    let rootClass = await this.$store.dispatch('getCommonByCid', 'gzthjuyjca4s')
+    let rootClass = await this.$store.dispatch('getCommonByKey', 'gzthjuyjca4s')
 
     // Tell the root class to draw itself, and each of it's subclasses, recursivily
     let rootClassObj3d = await this.collectAndDrawClasses(placeholderObj3d, rootClass)
@@ -70,14 +70,14 @@ export default {
           where: {
             docProp: 'parentId',
             operator: 'eq',
-            value: classObj.cid
+            value: classObj.key
           }
         }
       }
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {
         let promises = []
         resultsArr.forEach(subClassObj => {
-          if (classObj.cid !== '5jdnjqxsqmgn') { // Hack: ignore Blaance Sheet children
+          if (classObj.key !== '5jdnjqxsqmgn') { // Hack: ignore Blaance Sheet children
             promises.push(this.collectAndDrawClasses(placeholderObj3d, subClassObj))
           }
         })
@@ -94,7 +94,7 @@ export default {
           where: {
             docProp: 'classId',
             operator: 'eq',
-            value: classObj3d.cid
+            value: classObj3d.key
           }
         }
       }

@@ -5,19 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 import EosApiService from './services/EosApiService'
 import IndexedDBApiService from './services/IndexedDBApiService'
 
-// import IpfsClient from 'ipfs-http-client'
-// import CID from 'cids'
-// const ipfsClient = require('ipfs-http-client')
-// const CID = require('cids')
-// const IPFS = require('ipfs-api')
-
 Vue.use(Vuex)
-// var ipfsClient = require('ipfs-http-client')
-// const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
-// connect to ipfs daemon API server
-// const ipfs = ipfsClient({ host: 'ipfs.io', port: '5001', protocol: 'https' })
-// const ipfs = new ipfsClient('192.168.178.73', '5001', { protocol: 'http' })
-// const ipfs = ipfsClient('127.0.0.1', '5001', { protocol: 'http' })
 
 const updateRoute = (state) => {
   let newHash = ''
@@ -136,119 +124,54 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
-      EosApiService.loadEos()
-      /* const updateHash = (newVal, oldVal) => {
-        for (let key in state.classes) {
-          let obj = state.classes[key]
-          if (obj.parentId === oldVal) {
-            let newObj = Vue._.cloneDeep(obj)
-            newObj.parentId = newVal
-            let objStr = JSON.stringify(state.classes[key])
-            ipfs.files.add(objStr, { 'onlyHash': true }).then((response) => {
-              let hash = response[0].hash
-              console.log('Hash from IPFS: ' + hash)
-              state.commons[hash] = rooObj
-              this.updateHash(hash, key)
-            })
+      let resArr = []
+      return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
+        Object.keys(response.data).forEach(key => {
+          let result = response.data[key]
+          let newObj = result
+          if(result.description) {
+            let description = result.description
+            delete result.description
+            newObj = Object.assign({description: description}, newObj)
           }
-        }
-      } */
-      /*       this.dispatch('getCommonByCid', '56f86c6a5dde184ccfb9fc6a').then(result => {
-        console.log('rooObj', result)
-        const myData = {
-          name: 'David',
-          likes: ['js-ipfs', 'icecream', 'steak']
-        }
-        ipfs.dag.put(myData, { format: 'dag-cbor', hashAlg: 'sha2-256' }, (err, cid) => {
-          if (err) {
-            console.log('ERR\n', err)
+          if(result.title) {
+            let title = result.title
+            delete newObj.title
+            newObj = Object.assign({title: title}, newObj)
           }
-          console.log('cid', cid.toBaseEncodedString())
-          // featching multihash buffer from cid object.
-          const multihash = cid.multihash
-
-          // passing multihash buffer to CID object to convert multihash to a readable format
-          // const cids = new CID(1, 'dag-cbor', multihash)
-
-          // Printing out the cid in a readable format
-          // console.log('multihash', cids.toBaseEncodedString())
-          // zdpuAujL3noEMamveLPQWJPY6CYZHhHoskYQaZBvRbAfVwR8S
-
-          ipfs.dag.get(cid, (err, result) => {
-            if (err) {
-              throw err
-            }
-            console.log(JSON.stringify(result.value))
-          })
+          if(result.name) {
+            let name = result.name
+            delete newObj.name
+            newObj = Object.assign({name: name}, newObj)
+          }
+          if(result.docType) {
+            let docType = result.docType
+            delete newObj.docType 
+            newObj = Object.assign({docType: docType}, newObj)
+          }
+          newObj = Object.assign({key: key}, newObj)
+          resArr.push(newObj)
         })
+        let stringData = JSON.stringify(resArr, null, 4)
+        console.log(stringData)
       })
-      let rooObj = JSON.stringify(state.classes['56f86c6a5dde184ccfb9fc6a'])
-      console.log('rooObj', rooObj)
-      let buf = Buffer.from(rooObj, 'utf8')
-      ipfs.files.add(buf, { 'onlyHash': true }).then((response) => {
-        let hash = response[0].hash
-        console.log('Hash from IPFS: ' + hash)
-        state.commons[hash] = rooObj
-        // updateHash(hash, '56f86c6a5dde184ccfb9fc6a')
-      }) */
     }
   },
   actions: {
-    getCommonByCid (store, cid) {
-      return new Promise((resolve, reject) => {
-        const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
-        commonsStore.get(cid).onsuccess = event => {
-          let result = event.target.result
-          if (result) {
-            result.cid = cid
-            result.id = cid
-            resolve(result)
-          } else {
-            axios('ipfs.io/ipfs/' + cid, { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-              let result = response.data
-              commonsStore.put(result, cid)
-              result.cid = cid
-              result.id = cid
-              resolve(result)
-            }).catch(err => reject(err))
-          }
-        }
-      })
+    getCommonByKey (store, key) {
+      return IndexedDBApiService.getCommonByKey( key )
     },
-    query: async function (store, queryObj) {
-      // Wrap indexedDB transaction in a promise
-      const transactionWrapper = (docProp, value) => {
-        return new Promise((resolve, reject) => {
-          const transaction = this.db.transaction(['commons'], 'readonly')
-          const commonsStore = transaction.objectStore('commons')
-          let resultsArr = []
-          let index = commonsStore.index(docProp)
-          // We user a cursor instead of getAll, because we have to add cid to our objects
-          const request = index.openCursor(IDBKeyRange.only(value))
-          request.onsuccess = event => {
-            let cursor = event.target.result
-            if (cursor) {
-              let result = cursor.value
-              result.cid = cursor.primaryKey
-              result.id = cursor.primaryKey
-              resultsArr.push(result)
-              cursor.continue()
-            }
-          }
-          request.onerror = event => reject(event)
-          transaction.oncomplete = () => resolve(resultsArr)
-        })
-      }
 
-      // Recursivly get an array of subclass cids
-      const getSubclassCids = async (classCid) => {
-        let subClassArr = await transactionWrapper('parentId', classCid)
+    query: async function (store, queryObj) {
+      // Recursivly get an array of subclass keys
+      const getSubclassKeys = async (classKey) => {
+        let subClassArr = await IndexedDBApiService.queryByIndex('parentId', classKey)
         let promisses = subClassArr.map(classObj => {
-          return getSubclassCids(classObj.cid)
+          return getSubclassKeys(classObj.key)
         })
-        let subClassCidsArr = await Promise.all(promisses)
-        let flattend = Vue._.flatten(subClassCidsArr)
-        flattend.push(classCid)
+        let subClassKeysArr = await Promise.all(promisses)
+        let flattend = Vue._.flatten(subClassKeysArr)
+        flattend.push(classKey)
         return flattend
       }
 
@@ -256,7 +179,7 @@ const store = new Vuex.Store({
       const from = Vue._.get(queryObj, 'query.from')
       let docProp, operator, value
       let resultsArr = []
-      // TODO right now the where and from clauses are treated sepparatly. The where clause takes precidence
+      // TODO right now the where and from clauses are treated sepparatly. The where clause takes prekeyence
       // The should be combined
       if (where) {
         docProp = where.docProp
@@ -267,20 +190,20 @@ const store = new Vuex.Store({
         if (operator === 'eq') {
           if (docProp === '$key') {
             // Get single value based on key
-            let result = await store.dispatch('getCommonByCid', value)
+            let result = await store.dispatch('getCommonByKey', value)
             return [result]
           } else {
-            resultsArr = await transactionWrapper(docProp, value)
+            resultsArr = await IndexedDBApiService.queryByIndex(docProp, value)
           }
         } else throw new Error('Cannot query with ' + operator + 'operator yet')
       } else if (from) {
         // The from claus always refers to a class.
         // We need to get objects from classId class, and all of its subclasses
         // First, get an array of all subclasses
-        let subClassCidsArr = await getSubclassCids(from)
+        let subClassKeysArr = await getSubclassKeys(from)
         // Collect all of the objects for these subclasses
-        let promisses = subClassCidsArr.map(classCid => {
-          return transactionWrapper('classId', classCid)
+        let promisses = subClassKeysArr.map(classKey => {
+          return IndexedDBApiService.queryByIndex('classId', classKey)
         })
         let subClassObjectsArr = await Promise.all(promisses)
         // Flatten array of arrays.
@@ -314,7 +237,7 @@ const store = new Vuex.Store({
     },
     treeQuery: async function (store, queryObj) {
       const getIconFromClassById = (classId) => {
-        return store.dispatch('getCommonByCid', classId).then(classObj => {
+        return store.dispatch('getCommonByKey', classId).then(classObj => {
           if (classObj.icon) return classObj.icon
           else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
           return '' // set to default icon
@@ -342,15 +265,15 @@ const store = new Vuex.Store({
 
         // Prepoulate the grandchildren, so that we know if this is a leaf node.
         // TODO find a way to do this async from the tree
-        let childQueryArrObj = getChildQueryObj(item.cid)
+        let childQueryArrObj = getChildQueryObj(item.key)
         let grandchildren = await store.dispatch('treeQueryArr', childQueryArrObj)
 
         const ids = store.state.levelIdsArr[queryObj.level + 1]
-        const selected = ids ? ids.selectedObjId === item.cid : false
+        const selected = ids ? ids.selectedObjId === item.key : false
 
         return {
-          id: item.cid,
-          cid: item.cid,
+          id: item.key,
+          key: item.key,
           text: item.title ? item.title : item.name,
           data: {
             queryArrObj: childQueryArrObj,
@@ -359,7 +282,7 @@ const store = new Vuex.Store({
           },
           children: grandchildren,
           isLeaf: grandchildren.length === 0,
-          opened: !!store.state.isOpened[item.cid],
+          opened: !!store.state.isOpened[item.key],
           selected: selected
         }
       })
@@ -369,7 +292,7 @@ const store = new Vuex.Store({
       return treeNodeArr
     },
     mergeAncestorClasses (store, classId) {
-      return store.dispatch('getCommonByCid', classId).then((classObj) => {
+      return store.dispatch('getCommonByKey', classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
             return Vue._.merge(parentClassObj, classObj)
@@ -406,7 +329,7 @@ const store = new Vuex.Store({
         viewObj.required = Vue._.union(viewObj.required, classObj.required)
         viewObj.classIcon = classObj.icon
       }
-      return store.dispatch('getCommonByCid', viewId).then((viewObj) => {
+      return store.dispatch('getCommonByKey', viewId).then((viewObj) => {
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
@@ -416,53 +339,6 @@ const store = new Vuex.Store({
         } else return viewObj
       })
     },
-    loadCommons () {
-      return new Promise((resolve, reject) => {
-        const openRequest = indexedDB.open('commonsDB', 1)
-
-        openRequest.onupgradeneeded = e => {
-          let db = e.target.result
-          const store = db.createObjectStore('commons')
-          store.createIndex('parentId', 'parentId')
-          store.createIndex('classId', 'classId')
-        }
-
-        openRequest.onsuccess = e => {
-          this.db = e.target.result
-
-          return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-            const transaction = this.db.transaction('commons', 'readwrite')
-            const commonsStore = transaction.objectStore('commons')
-            Object.keys(response.data).forEach(key => {
-              let result = response.data[key]
-              commonsStore.put(result, key)
-            })
-            resolve(true)
-          })
-        }
-
-        openRequest.onerror = e => {
-          console.error(e.error)
-          reject(e.error)
-        }
-      })
-    },
-    loadEOS () {
-      return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-        EosApiService.getCommonByKey('5jdnjqxsqmgn').then(common => {
-          console.log('çommon', common)
-        })
-
-        /* let loadEOSPromissesArr = []
-        Object.keys(response.data).forEach(key => {
-          let common = response.data[key]
-          console.log(key , common)
-          loadEOSPromissesArr.push(EosApiService.upsertCommon( key , common))
-        })
-        let treeNodeArr = Promise.all(loadEOSPromissesArr)
-        return(treeNodeArr) */
-      })
-    }
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {
