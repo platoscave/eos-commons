@@ -12,7 +12,7 @@ export default class WorkflowObject3d extends THREE.Object3D {
   constructor (queryResult) {
     super()
 
-    this.key = queryResult.id
+    this.key = queryResult.key
     this.name = queryResult.name ? queryResult.name : queryResult.title
     this.userData = queryResult
     let mesh = new THREE.Mesh(this.getGeometry(), this.getMaterial())

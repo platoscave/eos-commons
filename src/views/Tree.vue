@@ -48,7 +48,7 @@ export default {
       },
       asyncData: [],
       loadData: function (oriNode, resolve) {
-        if (!oriNode || !oriNode.data.id) {
+        if (!oriNode || !oriNode.data.key) {
           let viewQueryObj = this.$parent.viewRootQueryObj()
           this.$store.dispatch('treeQuery', viewQueryObj).then((result) => {
             resolve(result)
@@ -67,13 +67,13 @@ export default {
         this.$store.commit('SET_PAGE_STATE2', {
           level: this.level + 1,
           pageId: node.model.data.pageId,
-          selectedObjId: node.model.id
+          selectedObjId: node.model.key
         })
       }
     },
     itemToggle (oriNode, oriItem, e) {
       this.$store.commit('SET_NODE_TOGGLE', {
-        id: oriItem.id,
+        key: oriItem.key,
         opened: oriItem.opened
       })
     },
@@ -133,7 +133,7 @@ export default {
       })
     },
     addChildNode: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         this.editingItem.addChild({
           text: 'newNode',
           value: 'newNode'
@@ -141,13 +141,13 @@ export default {
       }
     },
     removeNode: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         let index = this.editingNode.parentItem.indexOf(this.editingItem)
         this.editingNode.parentItem.splice(index, 1)
       }
     },
     addBeforeNode: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         this.editingItem.addBefore({
           text: 'newNode',
           value: 'newNode'
@@ -155,7 +155,7 @@ export default {
       }
     },
     addAfterNode: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         this.editingItem.addAfter({
           text: 'newNode',
           value: 'newNode'
@@ -163,12 +163,12 @@ export default {
       }
     },
     openChildren: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         this.editingItem.openChildren()
       }
     },
     closeChildren: function () {
-      if (this.editingItem.id !== undefined) {
+      if (this.editingItem.key !== undefined) {
         this.editingItem.closeChildren()
       }
     },

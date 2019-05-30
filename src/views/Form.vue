@@ -220,10 +220,10 @@ export default {
         return val
       }
     },
-    getCommonByKey: async (id) => {
-      if (!id) return '[null]'
-      const obj = await this.$store.dispatch('getCommonByKey', id)
-      if (!obj) return '[not found: ' + id + ']'
+    getCommonByKey: async (key) => {
+      if (!key) return '[null]'
+      const obj = await this.$store.dispatch('getCommonByKey', key)
+      if (!obj) return '[not found: ' + key + ']'
       return obj.name ? obj.name : obj.title
     },
     queryItems: async (query) => {

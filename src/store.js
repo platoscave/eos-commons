@@ -119,8 +119,8 @@ const store = new Vuex.Store({
     },
 
     SET_NODE_TOGGLE (state, payload) {
-      if (payload.opened) state.isOpened[payload.id] = true
-      else delete state.isOpened[payload.id]
+      if (payload.opened) state.isOpened[payload.key] = true
+      else delete state.isOpened[payload.key]
     },
 
     SAVE (state, payload) {
@@ -129,27 +129,27 @@ const store = new Vuex.Store({
         Object.keys(response.data).forEach(key => {
           let result = response.data[key]
           let newObj = result
-          if(result.description) {
+          if (result.description) {
             let description = result.description
             delete result.description
-            newObj = Object.assign({description: description}, newObj)
+            newObj = Object.assign({ description: description }, newObj)
           }
-          if(result.title) {
+          if (result.title) {
             let title = result.title
             delete newObj.title
-            newObj = Object.assign({title: title}, newObj)
+            newObj = Object.assign({ title: title }, newObj)
           }
-          if(result.name) {
+          if (result.name) {
             let name = result.name
             delete newObj.name
-            newObj = Object.assign({name: name}, newObj)
+            newObj = Object.assign({ name: name }, newObj)
           }
-          if(result.docType) {
+          if (result.docType) {
             let docType = result.docType
-            delete newObj.docType 
-            newObj = Object.assign({docType: docType}, newObj)
+            delete newObj.docType
+            newObj = Object.assign({ docType: docType }, newObj)
           }
-          newObj = Object.assign({key: key}, newObj)
+          newObj = Object.assign({ key: key }, newObj)
           resArr.push(newObj)
         })
         let stringData = JSON.stringify(resArr, null, 4)
@@ -159,7 +159,7 @@ const store = new Vuex.Store({
   },
   actions: {
     getCommonByKey (store, key) {
-      return IndexedDBApiService.getCommonByKey( key )
+      return IndexedDBApiService.getCommonByKey(key)
     },
 
     query: async function (store, queryObj) {
@@ -272,7 +272,7 @@ const store = new Vuex.Store({
         const selected = ids ? ids.selectedObjId === item.key : false
 
         return {
-          id: item.key,
+          key: item.key,
           key: item.key,
           text: item.title ? item.title : item.name,
           data: {
@@ -338,7 +338,7 @@ const store = new Vuex.Store({
           })
         } else return viewObj
       })
-    },
+    }
   }
 })
 store.watch(state => state.route, (newPath, oldPath) => {

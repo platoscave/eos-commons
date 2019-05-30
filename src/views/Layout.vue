@@ -3,7 +3,7 @@
         <multipane class="full-height" layout="vertical" v-on:paneResizeStop="paneResizeStop">
             <!-- Navigation content -->
             <div class="left" v-bind:style="{ width: paneWidth }">
-                <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
+                <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.key"></ec-tabs>
             </div>
             <!-- Splitter -->
             <multipane-resizer></multipane-resizer>
@@ -15,7 +15,7 @@
     </div>
     <div class="full-height" v-else>
         <!-- Only header layout content -->
-        <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.id"></ec-tabs>
+        <ec-tabs class="full-height" v-bind:level="level" v-bind:tabs="pageObj.tabs" v-bind:pageId="pageObj.key"></ec-tabs>
     </div>
 </template>
 

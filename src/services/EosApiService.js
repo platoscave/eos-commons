@@ -4,9 +4,9 @@ import testAccounts from '../config/testaccounts.js'
 import axios from 'axios'
 
 const HTTPENDPOINT = 'http://localhost:8888'
-const CODE = 'eoscommonsio'   // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
-const SCOPE = 'eoscommonsio'  // scope of the table. Can be used to give each participating acount its own table. Usually the same as code
-const TABLE = 'commons'       // name of the table as specified by the contract abi
+const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
+const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Usually the same as code
+const TABLE = 'commons' // name of the table as specified by the contract abi
 
 // Main action call to blockchain
 async function takeAction (action, dataValue) {
@@ -46,12 +46,12 @@ class EosApiService {
     const getRandomKey = () => {
       var characters = 'abcdefghijklmnopqrstuvwxyz12345'
       var randomKey = ''
-      for ( var i = 0; i < 12; i++ ) {
-        randomKey += characters.charAt(Math.floor(Math.random() * characters.length));
+      for (var i = 0; i < 12; i++) {
+        randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
       }
       return randomKey
     }
-    if(!key) key = getRandomKey()
+    if (!key) key = getRandomKey()
 
     return new Promise((resolve, reject) => {
       takeAction('upsert', { username: 'eoscommonsio', key: key, common: JSON.stringify(commonObj) })
@@ -107,7 +107,7 @@ class EosApiService {
     }
   }
 
-  static async queryByIndex(indexName, key) {
+  static async queryByIndex (indexName, key) {
     try {
       const rpc = new JsonRpc(HTTPENDPOINT)
       const result = await rpc.get_table_rows({
@@ -123,7 +123,6 @@ class EosApiService {
     } catch (err) {
       console.error(err)
     }
-
   }
 
   static async loadEos () {

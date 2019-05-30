@@ -9,15 +9,11 @@ class IndexedDBApiService {
             commonsStore.get(key).onsuccess = event => {
                 let result = event.target.result
                 if (result) {
-                    // result.key = key
-                    result.id = key
                     resolve(result)
                 } else {
                     axios('ipfs.io/ipfs/' + key, { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
                         let result = response.data
                         commonsStore.put(result, key)
-                        // result.key = key
-                        result.id = key
                         resolve(result)
                     }).catch(err => reject(err))
                 }
@@ -26,29 +22,16 @@ class IndexedDBApiService {
     }
 
     static async queryByIndex(indexName, key) {
-      // Wrap indexedDB transaction in a promise
+        // Wrap indexedDB transaction in a promise
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['commons'], 'readonly')
-            const commonsStore = transaction.objectStore('commons')
-            let resultsArr = []
+            const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
             let index = commonsStore.index(indexName)
-            // We user a cursor instead of getAll, because we have to add key to our objects
-            const request = index.openCursor(IDBKeyRange.only(key))
+            let getAllRequest = index.getAll(key)
 
-            request.onsuccess = event => {
-              let cursor = event.target.result
-              if (cursor) {
-                let result = cursor.value
-                // result.key = cursor.primaryKey
-                result.id = cursor.primaryKey
-                resultsArr.push(result)
-                cursor.continue()
-              }
+            getAllRequest.onsuccess = function () {
+                resolve(getAllRequest.result)
             }
-
-            request.onerror = event => reject(event)
-
-            transaction.oncomplete = () => resolve(resultsArr)
+            getAllRequest.onerror = event => reject(event)
         })
     }
 
