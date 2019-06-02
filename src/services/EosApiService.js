@@ -56,7 +56,7 @@ class EosApiService {
       }
       return randomKey
     }
-    // if (!key) key = getRandomKey()
+    if (!common.key) common.key = getRandomKey()
 
     const key = common.key
     const parentId = common.parentId ? common.parentId : 'aaaaaaaaaaaaa'
@@ -87,7 +87,10 @@ class EosApiService {
 
   static async getCommonByKey(keyValue) {
     return this.queryByIndex('key', keyValue).then(result => {
-      if (result.length == 0) throw 'Key Not found: ' + keyValue
+      if (result.length == 0) {
+        console.error('Key Not found: ' + keyValue)
+        return []
+      }
       return result[0]
     })
   }
@@ -103,7 +106,7 @@ class EosApiService {
       if (indexName === 'key') index = 'first'
       else if (indexName === 'parentId') index = 'second'
       else if (indexName === 'classId') index = 'third'
-      else throw 'Add index: ', indexName
+      else throw 'Add index: ' + indexName
 
       const rpc = new JsonRpc(HTTPENDPOINT)
       const result = await rpc.get_table_rows({
@@ -122,6 +125,7 @@ class EosApiService {
       })
     } catch (err) {
       console.error(err)
+      return []
     }
   }
 

@@ -504,28 +504,6 @@
         "description": "<p>Users own resourses</p>",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTI0OTU2Mjc1NDE0MTFFMUIxRUJDMTA5NzgzMTIzMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTI0OTU2Mjg1NDE0MTFFMUIxRUJDMTA5NzgzMTIzMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5MjQ5NTYyNTU0MTQxMUUxQjFFQkMxMDk3ODMxMjMyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5MjQ5NTYyNjU0MTQxMUUxQjFFQkMxMDk3ODMxMjMyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuG7TDUAAAHRSURBVHjafFJNaBNREP7e/iUSNiQSLHrReC54yK0ieMq1B68etMSDCEJAFPSQmIM9KC1GjUiDiFfvgrZYC60imEvwJP60FyMSQ1LT/G2y09nNJm6STT4Yvpl5M+/NzxNEhAG27wXJ7CHBrrwQeMF8iXmJ+TlzQpKRP3fnn3DnwDIGspXRqbKuE5V0enOLucl8s29XNnSyzsdzJLhgmkD4FCtNQvw6Gw0T8SRzy0Q42gN6BsahuA27MuIEsgI7jhNDlk3MvkBYUcLA3u95vPp8BR3DhyO+OiLBMkq1KPxzNazlatc49InnDDbTAaLvoAePn5IbK9mHQz2be0RTZ+CUYb9sqzx6C7KqDnUM2MHkBdyFpnSG1cEZy6e7wE5GwJT8f0fec+/0fVqn8xcN/KmexMuPSRhcid/fxuWFVYSO/8CHZ12cTeEM5xS9t2DVTwqOHd3FjQtX0e5GoO6X8WVLw0/SYMqqtePi7BZsl8a1BeALNSAFAwid0NBqyHwkz17j/8YEXt8XUPhB1WcNEag26e3icv325MxcK3mX4m/7leUbyy+WA502U/b3jbGc9spRvLZgS7cvzowLmALJ00tjMgMja+TPEpsSVxhve4BDAQYA4h0NK1GHkjIAAAAASUVORK5CYII=",
         "parentId": "ikjyhlqewxs3",
-        "properties": {
-            "email": {
-                "patern": "/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/",
-                "title": "email",
-                "type": "string"
-            },
-            "isActive": {
-                "default": false,
-                "title": "Is Active",
-                "type": "boolean"
-            },
-            "password": {
-                "maxLength": 100,
-                "title": "Password",
-                "type": "string"
-            }
-        },
-        "required": [
-            "email",
-            "password",
-            "isActive"
-        ],
         "type": "object"
     },
     {
@@ -534,7 +512,34 @@
         "title": "Organizations",
         "description": "<p>Organizations owned by users/organizations</p>",
         "parentId": "ikjyhlqewxs3",
-        "type": "object"
+        "properties": {
+            "description": {
+                "title": "What",
+                "default": "<p>[What do you do that is different?]</p>"
+            },
+            "how": {
+                "default": "<p>[How do you achive your goal?]</p>",
+                "maxLength": 10000,
+                "media": {
+                    "mediaType": "text/html"
+                },
+                "minLength": 0,
+                "title": "How",
+                "type": "string"
+            },
+            "why": {
+                "default": "<p>[Vision]</p>",
+                "maxLength": 10000,
+                "media": {
+                    "mediaType": "text/html"
+                },
+                "minLength": 0,
+                "title": "Why",
+                "type": "string"
+            }
+        },
+        "type": "object",
+        "pageId": "44yiclbxugop"
     },
     {
         "key": "i1gjptcb2skq",
@@ -1196,8 +1201,7 @@
         "description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
         "classId": "be1ub1vtofjo",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTCtCgrAAAAB/UlEQVQ4T31TW08aQRTev6cCJtWk6ZOJNupzq1WDeGmb4vVFo/DSpG1sWqNyEZVlRQRLXLHYJihQqLRemoIWb3iLRvh6ZiwC2bUP32bO+eZ8850zswKA/0KSI/B/TdBSnVdNFmN0UkZj/wwt1XnVZDGejUjQtM/Bt7ZJoZJXJIqRywEPO62o7F5AQ5+6C0WC4fLqGocn50gfn6GsxcIFmAtv8DvRpXtLgjwG37mR2P2D1Y0tXsgEGOp7lS5KAoaV9S3omsdwc5PFB3ENlV3uOwFNuxOez3Hado/A8ekFHnXb8WTIRSFgfOu7K87jcY+DUUoBmheev/bwE01TMkVAfd+sQkBjcMIdiDG6VECSv/F+tR0iFv/Z1LROKgQY6owFF/yTSmdQZbBxsqzFir2DDDZ39lHeZlcUMzAXkhzlIkI2m0PTsItbZw5qXliRowewsBrjArqueVWR2le3LoTozxRMlgAVxPFr74gn8zjKXCBAt/JxPgTj2DIaBiRo9dO8Ta1BhLgcgcDsOnwhmCc+wUzDe+8KweINQ5RjWPqSQDC8jciPJLZ/H/CHxW4qkkhi1h+F3bteOI09293UIU04DrMtiObRRVR1OHhbuk76H6jvCv0MtTWN8lYbqvXjcPrDBQE1sFmwk6WVGEzWIJ6OePDAYMfLN0tIpk9oC4S/0Zv8n5hu2/EAAAAASUVORK5CYII=",
-        "initialDocId": "575d4c3f2cf3d6dc3ed83151",
-        "pageId": "44yiclbxugop"
+        "initialDocId": "575d4c3f2cf3d6dc3ed83151"
     },
     {
         "key": "his5huquoiej",
@@ -3669,7 +3673,7 @@
         "ownerId": "kdiqu24wclde",
         "tabs": [
             {
-                "name": "Home",
+                "name": "Accounts",
                 "pageId": "kmghbh3qovtq"
             },
             {
@@ -3693,5 +3697,301 @@
                 "pageId": "e2vsbujn4blr"
             }
         ]
+    },
+    {
+        "key": "44yiclbxugop",
+        "docType": "object",
+        "name": "Organization Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "None",
+        "ownerId": "kdiqu24wclde",
+        "tabs": [
+            {
+                "name": "What",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "What Form",
+                        "viewId": "qzc3hwzroplf"
+                    }
+                ]
+            },
+            {
+                "name": "How",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "How Form",
+                        "viewId": ""
+                    }
+                ]
+            },
+            {
+                "name": "Why",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Why Form",
+                        "viewId": ""
+                    }
+                ]
+            },
+            {
+                "name": "Resources",
+                "pageId": "mbatzlqr1qsx"
+            }
+        ]
+    },
+    {
+        "key": "mbatzlqr1qsx",
+        "docType": "object",
+        "name": "Resources Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "None",
+        "ownerId": "kdiqu24wclde",
+        "tabs": [
+            {
+                "name": "Account Details",
+                "pageId": "41rnxkv1bsve"
+            },
+            {
+                "name": "Organization Units",
+                "pageId": "kmghbh3qovtq"
+            },
+            {
+                "name": "Processes",
+                "pageId": "mc144yoeeu33"
+            },
+            {
+                "name": "Contracts",
+                "pageId": "naavmwatxvsh"
+            },
+            {
+                "name": "Pages",
+                "pageId": "gosud45ttatt"
+            },
+            {
+                "name": "Views",
+                "pageId": "e2vsbujn4blr"
+            },
+            {
+                "name": "Balance Sheet",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Balance Sheet",
+                        "viewId": "his5huquoiej"
+                    }
+                ]
+            }
+        ]
+    },    
+    {
+        "key": "41rnxkv1bsve",
+        "docType": "object",
+        "name": "Account Details Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "None",
+        "ownerId": "kdiqu24wclde",
+        "tabs": [
+            {
+                "name": "Details",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Details",
+                        "viewId": "mairnfr3iilv"
+                    }
+                ]
+            },
+            {
+                "name": "Account Info",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Account Info",
+                        "viewId": "houaanpf35nu"
+                    }
+                ]
+            },
+            {
+                "name": "Manifest",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Manifest",
+                        "viewId": ""
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "qzc3hwzroplf",
+        "docType": "object",
+        "name": "What Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "jwzwfaehsqks",
+        "properties": {
+            "description": {
+                "readOnly": false
+            }
+        },
+        "query": {
+            "from": "pejdgrwd5qso",
+            "where": {
+                "docProp": "$key",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        },
+        "type": "object"
+    },
+    {
+        "key": "mairnfr3iilv",
+        "docType": "object",
+        "name": "What Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "jwzwfaehsqks",
+        "properties": {
+            "name": {
+                "readOnly": false
+            },
+            "description": {
+                "readOnly": false
+            },
+            "how": {
+                "readOnly": false
+            },
+            "why": {
+                "readOnly": false
+            },
+            "pageId": {
+                "readOnly": false
+            }
+        },
+        "query": {
+            "from": "pae2bfbrab5n",
+            "where": {
+                "docProp": "$key",
+                "operator": "eq",
+                "value": "eoscommonsio"
+            }
+        },
+        "type": "object"
+    },
+    {
+        "key": "houaanpf35nu",
+        "docType": "object",
+        "name": "Account Info Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "jwzwfaehsqks",
+        "properties": {
+            "creator": {
+                "maxLength": 12,
+                "minLength": 1,
+                "title": "Creator Account",
+                "type": "string"
+            },
+            "create_timestamp": {
+                "format": "date-time",
+                "title": "Create Date",
+                "type": "string"
+            },
+            "permissions": {
+                "items": {
+                    "properties": {
+                        "perm_name": {
+                            "maxLength": 12,
+                            "minLength": 1,
+                            "title": "Permission Name",
+                            "type": "string"
+                        },
+                        "parent": {
+                            "maxLength": 12,
+                            "minLength": 1,
+                            "title": "Parent Permission",
+                            "type": "string"
+                        },
+                        "required_auth": {
+                            "properties": {
+                                "threshold": {
+                                    "title": "Threshold",
+                                    "type": "number"
+                                },
+                                "keys": {
+                                    "items": {
+                                        "properties": {
+                                            "key": {
+                                                "maxLength": 44,
+                                                "minLength": 0,
+                                                "title": "Key",
+                                                "type": "string"
+                                            },
+                                            "weight": {
+                                                "title": "Weight",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "title": "Keys",
+                                    "type": "array"
+                                },
+                                "accounts": {
+                                    "items": {
+                                        "properties": {
+                                            "properties": {
+                                                "actor": {
+                                                    "maxLength": 12,
+                                                    "minLength": 0,
+                                                    "title": "Actor",
+                                                    "type": "string"
+                                                },
+                                                "permission": {
+                                                    "maxLength": 12,
+                                                    "minLength": 0,
+                                                    "title": "Permission",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "weight": {
+                                                "title": "Weight",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "title": "Accounts",
+                                    "type": "array"
+                                },
+                                "waits": {
+                                    "items": {
+                                        "properties": {
+    
+                                        },
+                                        "type": "object"
+                                    },
+                                    "title": "Waits",
+                                    "type": "array"
+                                }
+                            },
+                            "title": "Required Authorization",
+                            "additionalProperties": false,
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Permissions",
+                "type": "array"
+            }
+        },
+        "rpc": "get_account_info",
+        "type": "object"
     }
 ]

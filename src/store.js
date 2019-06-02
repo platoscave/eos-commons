@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
-import EosApiService from './services/EosApiService'
-import IndexedDBApiService from './services/IndexedDBApiService'
+// import ApiService from './services/EosApiService'
+import ApiService from './services/IndexedDBApiService'
 
 Vue.use(Vuex)
 
@@ -124,22 +124,33 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
-      EosApiService.getCommonByKey('gzthjuyjca4z').then(obj => {
+      const getRandomKey = () => {
+        // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters. 
+        // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
+        var characters = 'abcdefghijklmnopqrstuvwxyz12345'
+        var randomKey = ''
+        for (var i = 0; i < 12; i++) {
+          randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
+        }
+        return randomKey
+      }
+      console.log('random',  getRandomKey() )
+      /* EosApiService.getCommonByKey('gzthjuyjca4z').then(obj => {
         console.log('obj', obj ) 
-      })
+      }) */
       // return EosApiService.loadEos()
       // return EosApiService.eraseallCommon()
     }
   },
   actions: {
     getCommonByKey (store, key) {
-      return EosApiService.getCommonByKey(key)
-    },
+      return ApiService.getCommonByKey(key)
+    }, 
 
     query: async function (store, queryObj) {
       // Recursivly get an array of subclass keys
       const getSubclassKeys = async (classKey) => {
-        let subClassArr = await EosApiService.queryByIndex('parentId', classKey)
+        let subClassArr = await ApiService.queryByIndex('parentId', classKey)
         let promisses = subClassArr.map(classObj => {
           return getSubclassKeys(classObj.key)
         })
@@ -167,7 +178,7 @@ const store = new Vuex.Store({
             let result = await store.dispatch('getCommonByKey', value)
             return [result]
           } else {
-            resultsArr = await EosApiService.queryByIndex(docProp, value)
+            resultsArr = await ApiService.queryByIndex(docProp, value)
           }
         } else throw new Error('Cannot query with ' + operator + 'operator yet')
       } else if (from) {
@@ -177,7 +188,7 @@ const store = new Vuex.Store({
         let subClassKeysArr = await getSubclassKeys(from)
         // Collect all of the objects for these subclasses
         let promisses = subClassKeysArr.map(classKey => {
-          return EosApiService.queryByIndex('classId', classKey)
+          return ApiService.queryByIndex('classId', classKey)
         })
         let subClassObjectsArr = await Promise.all(promisses)
         // Flatten array of arrays.
@@ -219,6 +230,13 @@ const store = new Vuex.Store({
           return '' // set to default icon
         })
       }
+      const getPageIdFromClassById = (classId) => {
+        return store.dispatch('getCommonByKey', classId).then(classObj => {
+          if (classObj.pageId) return classObj.pageId
+          else if (classObj.parentId) return getPageIdFromClassById(classObj.parentId)
+          return '' // set to default pageId
+        })
+      }
       const getChildQueryObj = (fk) => {
         let queryArr = []
         if (queryObj.query.join) {
@@ -239,6 +257,9 @@ const store = new Vuex.Store({
         let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
         if (!icon) icon = await getIconFromClassById(item.classId)
 
+        let pageId = queryObj.query.pageId ? queryObj.query.pageId : item.pageId
+        if (!pageId && item.classId) pageId = await getPageIdFromClassById(item.classId)
+
         // Prepoulate the grandchildren, so that we know if this is a leaf node.
         // TODO find a way to do this async from the tree
         let childQueryArrObj = getChildQueryObj(item.key)
@@ -253,7 +274,7 @@ const store = new Vuex.Store({
           text: item.title ? item.title : item.name,
           data: {
             queryArrObj: childQueryArrObj,
-            pageId: queryObj.query.pageId ? queryObj.query.pageId : item.pageId,
+            pageId: pageId,
             icon: icon
           },
           children: grandchildren,
