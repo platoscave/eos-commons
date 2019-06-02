@@ -124,48 +124,22 @@ const store = new Vuex.Store({
     },
 
     SAVE (state, payload) {
-      let resArr = []
-      return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-        Object.keys(response.data).forEach(key => {
-          let result = response.data[key]
-          let newObj = result
-          if (result.description) {
-            let description = result.description
-            delete result.description
-            newObj = Object.assign({ description: description }, newObj)
-          }
-          if (result.title) {
-            let title = result.title
-            delete newObj.title
-            newObj = Object.assign({ title: title }, newObj)
-          }
-          if (result.name) {
-            let name = result.name
-            delete newObj.name
-            newObj = Object.assign({ name: name }, newObj)
-          }
-          if (result.docType) {
-            let docType = result.docType
-            delete newObj.docType
-            newObj = Object.assign({ docType: docType }, newObj)
-          }
-          newObj = Object.assign({ key: key }, newObj)
-          resArr.push(newObj)
-        })
-        let stringData = JSON.stringify(resArr, null, 4)
-        console.log(stringData)
+      EosApiService.getCommonByKey('gzthjuyjca4z').then(obj => {
+        console.log('obj', obj ) 
       })
+      // return EosApiService.loadEos()
+      // return EosApiService.eraseallCommon()
     }
   },
   actions: {
     getCommonByKey (store, key) {
-      return IndexedDBApiService.getCommonByKey(key)
+      return EosApiService.getCommonByKey(key)
     },
 
     query: async function (store, queryObj) {
       // Recursivly get an array of subclass keys
       const getSubclassKeys = async (classKey) => {
-        let subClassArr = await IndexedDBApiService.queryByIndex('parentId', classKey)
+        let subClassArr = await EosApiService.queryByIndex('parentId', classKey)
         let promisses = subClassArr.map(classObj => {
           return getSubclassKeys(classObj.key)
         })
@@ -186,14 +160,14 @@ const store = new Vuex.Store({
         operator = where.operator
         value = where.value
         // Replace vlaue with forigne key
-        if (value === '$parentNode.$key') value = queryObj.fk
+        if (value === '$fk') value = queryObj.fk
         if (operator === 'eq') {
           if (docProp === '$key') {
             // Get single value based on key
             let result = await store.dispatch('getCommonByKey', value)
             return [result]
           } else {
-            resultsArr = await IndexedDBApiService.queryByIndex(docProp, value)
+            resultsArr = await EosApiService.queryByIndex(docProp, value)
           }
         } else throw new Error('Cannot query with ' + operator + 'operator yet')
       } else if (from) {
@@ -203,7 +177,7 @@ const store = new Vuex.Store({
         let subClassKeysArr = await getSubclassKeys(from)
         // Collect all of the objects for these subclasses
         let promisses = subClassKeysArr.map(classKey => {
-          return IndexedDBApiService.queryByIndex('classId', classKey)
+          return EosApiService.queryByIndex('classId', classKey)
         })
         let subClassObjectsArr = await Promise.all(promisses)
         // Flatten array of arrays.
@@ -212,10 +186,12 @@ const store = new Vuex.Store({
       // Sort the result, if needed
       if (queryObj.query.sortBy) {
         resultsArr.sort((a, b) => {
-          let aa = a[queryObj.query.sortBy].toUpperCase()
-          let bb = b[queryObj.query.sortBy].toUpperCase()
-          if (aa > bb) return 1
-          if (aa < bb) return -1
+          if(a[queryObj.query.sortBy] && b[queryObj.query.sortBy]) {
+            let aa = a[queryObj.query.sortBy].toUpperCase()
+            let bb = b[queryObj.query.sortBy].toUpperCase()
+            if (aa > bb) return 1
+            if (aa < bb) return -1
+          }
           return 0
         })
       }

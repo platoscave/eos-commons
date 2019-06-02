@@ -34,7 +34,6 @@ export default {
     return IndexedDBApiService.loadIndexedDB().then(res => {
       if (!window.location.hash) window.location.hash = '#/.j4ichkhammzm' // Demo Page
       this.loading = false
-      // return EosApiService.loadEos()
     })
   }
 }

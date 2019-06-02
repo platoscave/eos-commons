@@ -9,7 +9,7 @@
                 "description": "<p>Base32 identifier.</p>",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "readOnly": true,
-                "title": "cid",
+                "title": "key",
                 "type": "string"
             },
             "classId": {
@@ -2090,9 +2090,9 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true,
-                "title": "cid",
+                "title": "key",
                 "type": "string"
             },
             "description": {
@@ -2146,7 +2146,7 @@
                     "where": {
                         "docProp": "parentId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 },
                 {
@@ -2158,7 +2158,7 @@
                     "where": {
                         "docProp": "classId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -2240,7 +2240,7 @@
                     "where": {
                         "docProp": "parentId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 },
                 {
@@ -2258,7 +2258,7 @@
                             "where": {
                                 "docProp": "parentOrgId",
                                 "operator": "eq",
-                                "value": "$parentNode.$key"
+                                "value": "$fk"
                             }
                         }
                     ],
@@ -2267,7 +2267,7 @@
                     "where": {
                         "docProp": "classId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -2536,7 +2536,7 @@
                     "where": {
                         "docProp": "classId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -2567,7 +2567,7 @@
                     "where": {
                         "docProp": "classId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -2588,9 +2588,9 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true,
-                "title": "cid",
+                "title": "key",
                 "type": "string"
             },
             "accordionOrTab": {
@@ -2655,9 +2655,9 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true,
-                "title": "cid",
+                "title": "key",
                 "type": "string"
             },
             "description": {
@@ -2991,7 +2991,7 @@
                             "where": {
                                 "docProp": "parentId",
                                 "operator": "eq",
-                                "value": "$parentNode.$key"
+                                "value": "$fk"
                             }
                         },
                         {
@@ -3002,7 +3002,7 @@
                             "where": {
                                 "docProp": "classId",
                                 "operator": "eq",
-                                "value": "$parentNode.$key"
+                                "value": "$fk"
                             }
                         }
                     ],
@@ -3011,7 +3011,7 @@
                     "where": {
                         "docProp": "parentId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -3055,7 +3055,7 @@
                             "where": {
                                 "docProp": "parentId",
                                 "operator": "eq",
-                                "value": "$parentNode.$key"
+                                "value": "$fk"
                             }
                         },
                         {
@@ -3066,7 +3066,7 @@
                             "where": {
                                 "docProp": "classId",
                                 "operator": "eq",
-                                "value": "$parentNode.$key"
+                                "value": "$fk"
                             }
                         }
                     ],
@@ -3075,7 +3075,7 @@
                     "where": {
                         "docProp": "parentId",
                         "operator": "eq",
-                        "value": "$parentNode.$key"
+                        "value": "$fk"
                     }
                 }
             ],
@@ -3153,7 +3153,7 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true
             },
             "name": {
@@ -3189,7 +3189,7 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true
             },
             "name": {
@@ -3570,9 +3570,9 @@
         "classId": "pylvseoljret",
         "ownerId": "jwzwfaehsqks",
         "properties": {
-            "cid": {
+            "key": {
                 "readOnly": true,
-                "title": "cid",
+                "title": "key",
                 "type": "string"
             },
             "description": {
