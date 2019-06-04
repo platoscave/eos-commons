@@ -129,6 +129,19 @@ class EosApiService {
     }
   }
 
+  static async getAccountInfo(account) {
+    try {
+      const rpc = new JsonRpc(HTTPENDPOINT)
+      const result = await rpc.get_account(account)
+      return result
+      console.log(result)
+      return JSON.parse(result)
+    } catch (err) {
+      console.error(err)
+      return {}
+    }
+  }
+
   static async loadEos() {
     const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
