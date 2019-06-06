@@ -10,12 +10,12 @@
         <v-layout justify-start row wrap>
 
           <!-- Label: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md2 v-if="editMode || data[propName]">
+          <v-flex xs12 md2 align-self-center v-if="editMode || data[propName]">
             <div>{{ property.title }}</div>
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md10 v-if="editMode || data[propName]">
+          <v-flex xs12 md10 align-self-center v-if="editMode || data[propName]">
 
             <!-- Richtext -->
             <div v-if="propertyHas( property, 'media.mediaType', 'text/html') ">
@@ -73,8 +73,9 @@
               <v-select
                 v-bind:label="property.title"
                 v-model="data[propName]"
-                :diaable="!editMode || property.readOnly || property.enum.length < 2"
-                :items="property.enum"
+                v-bind:diaable="!editMode || property.readOnly || property.enum.length < 2"
+                v-bind:items="property.enum"
+                v-bind:idx="data[propName]"
               ></v-select>
             </div>
 
@@ -84,6 +85,7 @@
                 v-bind:key="data[propName]"
                 v-bind:property="property"
                 v-bind:readonly="property.readOnly || !editMode"
+                v-bind:idx="data[propName]"
               ></ec-select>
             </div>
 
@@ -241,11 +243,7 @@ export default {
   },
   created() {
     if (!this.parentData) {
-      this.$store.dispatch("getCommonByKey", "eoscommonsio").then(data => {
-        // console.log('data', data)
-        this.data = data;
-      });
-      /* this.$store.watch(
+      this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
         newVal => {
           // console.log('selectedObjId Changed!', newVal)
@@ -256,16 +254,16 @@ export default {
           });
         },
         { immediate: true }
-      ) */
+      )
     }
 
     if (!this.parentSchema && this.viewId) {
       this.$store.dispatch("materializedView", this.viewId).then(view => {
         // console.log('view', view)
         this.schema = view;
-        EosApiService.getAccountInfo("eoscommonsio").then(info => {
+        /* EosApiService.getAccountInfo("eoscommonsio").then(info => {
           this.data = info;
-        });
+        }); */
       });
     }
     /* if (this.parentData) this.data = this.parentData

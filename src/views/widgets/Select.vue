@@ -18,7 +18,7 @@
 export default {
   props: {
     readonly: Boolean,
-    // key: String,
+    idx: String,
     property: {
       type: Object,
       default: () => {}
@@ -48,7 +48,7 @@ export default {
         };
         return obj;
       });
-      // this.selected = this.key
+      this.selected = this.idx
     }
   }
 };

@@ -91,6 +91,10 @@ const store = new Vuex.Store({
 
       if (payload.nextLevel) {
         payload.nextLevel.level = payload.level + 1
+        if(!payload.nextLevel.selectedObjId) {
+          if (payload.selectedObjId) payload.nextLevel.selectedObjId = payload.selectedObjId
+          else payload.nextLevel.selectedObjId = state.levelIdsArr[payload.level].selectedObjId
+        }
         store.commit('SET_PAGE_STATE2', payload.nextLevel)
       } else updateRoute(state)
     },
