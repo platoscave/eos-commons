@@ -2,35 +2,29 @@
   <div>
     <!-- Wait for data and schema to arrive -->
     <v-container v-if="schema && data">
-
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in schema.properties" v-bind:key="propName">
-
         <!-- Start owr layout. v-flex must be immidiate child-->
         <v-layout justify-start row wrap>
-
           <!-- Label: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md2 align-self-center v-if="editMode || data[propName]">
+          <v-flex class="label" xs12 md2 v-if="editMode || data[propName]">
             <div>{{ property.title }}</div>
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md10 align-self-center v-if="editMode || data[propName]">
-
+          <v-flex xs12 md10 v-if="editMode || data[propName]">
             <!-- Richtext -->
-            <div v-if="propertyHas( property, 'media.mediaType', 'text/html') ">
-              <div v-if="!editMode || property.readOnly">
-                <div class="readOnlyInput" v-html="data[propName] ? data[propName] : property.default"></div>
-              </div>
+            <div v-if="property.media && property.media.mediaType === 'text/html' ">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly" v-html="data[propName] ? data[propName] : property.default"></div>
               <div v-else>
-                <div class="readOnlyInput" v-html="data[propName] ? data[propName] : property.default"></div>
+                <div class="readonlyoutput" v-html="data[propName] ? data[propName] : property.default"></div>
               </div>
             </div>
 
             <!-- WbbGl -->
-            <div v-else-if="propertyHas( property, 'media.mediaType', 'image/webgl') ">
+            <div v-else-if="property.media && property.media.mediaType === 'image/webgl' ">
               <div v-if="!editMode || property.readOnly">
-                <img class="readOnlyInput" src="data[propName]" width="500px" height="500px">
+                <img class="readonlyoutput" src="data[propName]" width="500px" height="500px">
               </div>
               <div v-else>
                 <img src="data[propName]" width="500px" height="500px">
@@ -38,10 +32,10 @@
             </div>
 
             <!-- Base64 -->
-            <div v-else-if="propertyHas( property, 'media.type', 'image/png') ">
+            <div v-else-if="property.media && property.media.type === 'image/png' ">
               <div v-if="!editMode || property.readOnly">
                 <!--{{data[propName]}}-->
-                <img class="readOnlyInput" v-bind:src="data[propName]">
+                <img class="readonlyoutput" v-bind:src="data[propName]">
               </div>
               <div v-else>
                 <img v-bind:src="data[propName]" width="24px" height="24px">
@@ -49,9 +43,9 @@
             </div>
 
             <!-- Date -->
-            <div v-else-if="propertyHas( property, 'media.format', 'date-time') ">
+            <div v-else-if="property.media && property.media.format === 'date-time' ">
               <div v-if="!editMode || property.readOnly">
-                <div class="readOnlyInput">Date.parse(data[propName]).toLocaleDateString()</div>
+                <div class="readonlyoutput">Date.parse(data[propName]).toLocaleDateString()</div>
               </div>
               <div v-else>
                 <div>Date.parse(data[propName]).toLocaleDateString()</div>
@@ -59,9 +53,9 @@
             </div>
 
             <!-- Uri -->
-            <div v-else-if="propertyHas( property, 'media.format', 'uri') ">
+            <div v-else-if="property.media && property.media.format === 'uri' ">
               <div v-if="!editMode || property.readOnly">
-                <a class="readOnlyInput" uri="data[propName]"></a>
+                <a class="readonlyoutput" uri="data[propName]"></a>
               </div>
               <div v-else>
                 <a uri="data[propName]"></a>
@@ -69,18 +63,23 @@
             </div>
 
             <!-- Enum -->
-            <div v-else-if="propertyHas( property, 'enum' )">
-              <v-select
-                v-bind:label="property.title"
-                v-model="data[propName]"
-                v-bind:diaable="!editMode || property.readOnly || property.enum.length < 2"
-                v-bind:items="property.enum"
-                v-bind:idx="data[propName]"
-              ></v-select>
+            <div v-else-if="property.enum">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div v-else>
+                <v-select
+                  v-bind:label="property.title"
+                  v-model="data[propName]"
+                  v-bind:readonly="!editMode || property.readOnly || property.enum.length < 2"
+                  v-bind:items="property.enum"
+                  v-bind:idx="data[propName]"
+                  single-line
+                  outline
+                ></v-select>
+              </div>
             </div>
 
             <!-- Query -->
-            <div v-else-if="propertyHas( property, 'query' )">
+            <div v-else-if="property.query">
               <ec-select
                 v-bind:key="data[propName]"
                 v-bind:property="property"
@@ -90,32 +89,39 @@
             </div>
 
             <!--String-->
-            <div v-else-if="propertyHas( property, 'type', 'string') ">
-              <v-text-field
-                v-bind:label="property.title"
-                v-bind:disabled="property.readOnly || !editMode"
-                v-bind:value="data[propName]"
-                append-outer-icon="property.description ? 'help_outline'"
-                v-bind:hint="property.description"
-                single-line
-                outline
-              ></v-text-field>
+            <div v-else-if="property.type === 'string'">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div v-else>
+                <v-text-field
+                  class="inputclass"
+                  v-bind:readonly="property.readOnly || !editMode"
+                  v-bind:value="data[propName]"
+                  single-line
+                  outline
+                ></v-text-field>
+              </div>
+              <!-- v-bind:hint="property.description"
+              append-outer-icon="property.description ? 'help_outline'"-->
             </div>
 
             <!--Number-->
-            <div v-else-if="propertyHas( property, 'type', 'number') ">
-              <v-text-field
-                v-bind:label="property.title"
-                v-bind:disabled="property.readOnly || !editMode"
-                v-bind:value="data[propName]"
+            <div v-else-if="property.type === 'number'">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div v-else>
+                <v-text-field
+                  class="inputclass"
+                  v-bind:readonly="property.readOnly || !editMode"
+                  v-bind:value="data[propName]"
                 type="number"
-              ></v-text-field>
+                  single-line
+                  outline
+                ></v-text-field>
+              </div>
             </div>
 
-            <!-- Boolean -->
-            <div v-else-if="propertyHas( property, 'type', 'boolean') ">
+            <div v-else-if="property.type === 'boolean'">
               <div v-if="!editMode || property.readOnly">
-                <div class="readOnlyInput">{{ data[propName] === true ? 'true' : 'false' }}</div>
+                <div class="readonlyoutput">{{ data[propName] === true ? 'true' : 'false' }}</div>
               </div>
               <div v-else>
                 <v-checkbox></v-checkbox>
@@ -123,47 +129,47 @@
             </div>
 
             <!-- Array -->
-            <div v-else-if="propertyHas( property, 'type', 'array') ">
-                <div v-if="propertyHas( property.items, 'type', 'object') ">
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <ec-form
-                      class="readOnlyInput"
-                      v-bind:level="level"
-                      v-bind:editMode="editMode"
-                      v-bind:parent-data="childData"
-                      v-bind:parent-schema="property.items"
-                    ></ec-form>
-                    <br>
-                  </div>
+            <div v-else-if="property.type === 'array'">
+              <div v-if="property.items.type === 'object'">
+                <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
+                  <ec-form
+                    class="readonlyoutput"
+                    v-bind:level="level"
+                    v-bind:editMode="editMode"
+                    v-bind:parent-data="childData"
+                    v-bind:parent-schema="property.items"
+                  ></ec-form>
+                  <br>
                 </div>
-                <div v-else>
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <div class="readOnlyInput">{{ childData }}</div>
-                  </div>
+              </div>
+              <div v-else>
+                <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
+                  <div class="readonlyoutput">{{ childData }}</div>
                 </div>
+              </div>
             </div>
 
             <!-- Object -->
-            <div v-else-if="propertyHas( property, 'type', 'object') ">
-              <div class="readOnlyInput">
+            <div v-else-if="property.type === 'object'">
+              <div class="readonlyoutput">
                 <div v-if="property.properties">
                   <ec-form
                     v-bind:level="level"
                     v-bind:editMode="editMode"
-                    v-bind:parent-data="data[propNane]"
+                    v-bind:parent-data="data[propName]"
                     v-bind:parent-schema="property"
                   ></ec-form>
                 </div>
                 <div v-else>
-                  <div class="monoSpaced">{{ JSON.stringify(data[propNane], replacer, 2) }}></div>
+                  <div class="monoSpaced">{{ JSON.stringify(data[propName], replacer, 2) }}></div>
                 </div>
               </div>
             </div>
 
             <!--Json-->
-            <div v-else-if="propertyHas(property, 'type', 'json')">
+            <div v-else-if="property.type === 'json'">
               <div v-if="!editMode || property.readOnly">
-                <div class="readOnlyInput">{{ JSON.stringify(data[propName], null, 2) }}></div>
+                <div class="readonlyoutput">{{ JSON.stringify(data[propName], null, 2) }}></div>
               </div>
               <div v-else>
                 <div class="monoSpaced">{{ JSON.stringify(data[propName], null, 2) }}></div>
@@ -172,7 +178,7 @@
 
             <div v-else>
               <div>
-                Unknown property: {{ propNane }}
+                Unknown property: {{ propName }}
                 <br>
                 <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
                 <br>
@@ -213,35 +219,22 @@ export default {
     };
   },
   methods: {
-    propertyHas(property, path, value) {
-      if (value) return Vue._.get(property, path) === value;
-
-      return !!Vue._.get(property, path);
-    },
-    propertyType(property, type) {
-        console.log(Vue._.get(property, 'media.mediaType'), type)
-      if(Vue._.get(property, 'media.mediaType') === type) return true
-      if(Vue._.get(property, 'media.type') === type) return true
-      if(Vue._.get(property, 'media.format') === type) return true
-      if(property[type]) return true
-      if(Vue._.get(property, 'type') === type) return true
-
-      return false
-    },
     replacer(name, val) {
-      // console.log(name, val)
+      // we do this because icons are very long
       if (name === "icon") {
-        return undefined; // remove from result
+        return "base64 icon string";
       } else {
         return val;
       }
-    },
-    queryItems: async query => {
-      const results = await this.$store.dispatch("query", query);
-      return results;
     }
   },
   created() {
+    console.log(
+      "parentData",
+      this.parentData,
+      "parentSchema",
+      this.parentSchema
+    );
     if (!this.parentData) {
       this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
@@ -254,7 +247,7 @@ export default {
           });
         },
         { immediate: true }
-      )
+      );
     }
 
     if (!this.parentSchema && this.viewId) {
@@ -278,10 +271,27 @@ export default {
 };
 </script>
 <style scoped>
-.readOnlyInput {
+.label {
+  padding: 10px;
+  font-size: 16px;
+  line-height: 42px;
+}
+.readonlyoutput {
   background-color: #ffffff0d;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 42px;
+  border-radius: 5px;
+  margin: 4px;
+}
+
+.v-input__slot {
+  background-color: green !important;
   min-height: 24px;
-  padding-left: 4px;
+}
+
+input:read-only {
+  background-color: blue;
 }
 
 .p {

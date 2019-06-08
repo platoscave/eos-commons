@@ -42,22 +42,22 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    SET_CLASSES_LOADING (state) {
+    SET_CLASSES_LOADING(state) {
       state.loading = true
       state.message = 'loading...'
     },
-    SET_CLASSES_SUCCESS (state, payload) {
+    SET_CLASSES_SUCCESS(state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
       state.classes = payload.data
       state.loading = false
     },
-    SET_CLASSES_FAILURE (state, payload) {
+    SET_CLASSES_FAILURE(state, payload) {
       state.statusCode = payload.statusCode
       state.message = payload.message
     },
 
-    SET_PAGE_STATE2 (state, payload) {
+    SET_PAGE_STATE2(state, payload) {
       /* let example = {
         level: 0,
         pageId: '',
@@ -91,7 +91,7 @@ const store = new Vuex.Store({
 
       if (payload.nextLevel) {
         payload.nextLevel.level = payload.level + 1
-        if(!payload.nextLevel.selectedObjId) {
+        if (!payload.nextLevel.selectedObjId) {
           if (payload.selectedObjId) payload.nextLevel.selectedObjId = payload.selectedObjId
           else payload.nextLevel.selectedObjId = state.levelIdsArr[payload.level].selectedObjId
         }
@@ -99,7 +99,7 @@ const store = new Vuex.Store({
       } else updateRoute(state)
     },
 
-    SET_PAGE_STATE_FROM_ROUTE (state, payload) {
+    SET_PAGE_STATE_FROM_ROUTE(state, payload) {
       let levelsArr = payload.split('/')
       levelsArr = levelsArr.slice(1)
       levelsArr.forEach((levelStr, level) => {
@@ -122,12 +122,12 @@ const store = new Vuex.Store({
       state.levelIdsArr = state.levelIdsArr.splice(0, levelsArr.length)
     },
 
-    SET_NODE_TOGGLE (state, payload) {
+    SET_NODE_TOGGLE(state, payload) {
       if (payload.opened) state.isOpened[payload.key] = true
       else delete state.isOpened[payload.key]
     },
 
-    SAVE (state, payload) {
+    SAVE(state, payload) {
       const getRandomKey = () => {
         // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters. 
         // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
@@ -138,7 +138,7 @@ const store = new Vuex.Store({
         }
         return randomKey
       }
-      console.log('random',  getRandomKey() )
+      console.log('random', getRandomKey())
       /* EosApiService.getCommonByKey('gzthjuyjca4z').then(obj => {
         console.log('obj', obj ) 
       }) */
@@ -147,9 +147,9 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getCommonByKey (store, key) {
+    getCommonByKey(store, key) {
       return ApiService.getCommonByKey(key)
-    }, 
+    },
 
     query: async function (store, queryObj) {
       // Recursivly get an array of subclass keys
@@ -201,7 +201,7 @@ const store = new Vuex.Store({
       // Sort the result, if needed
       if (queryObj.query.sortBy) {
         resultsArr.sort((a, b) => {
-          if(a[queryObj.query.sortBy] && b[queryObj.query.sortBy]) {
+          if (a[queryObj.query.sortBy] && b[queryObj.query.sortBy]) {
             let aa = a[queryObj.query.sortBy].toUpperCase()
             let bb = b[queryObj.query.sortBy].toUpperCase()
             if (aa > bb) return 1
@@ -212,7 +212,7 @@ const store = new Vuex.Store({
       }
       return resultsArr
     },
-    treeQueryArr (store, queryObj) {
+    treeQueryArr(store, queryObj) {
       let promises = []
       queryObj.queryArr.forEach((query) => {
         promises.push(store.dispatch('treeQuery', {
@@ -292,7 +292,7 @@ const store = new Vuex.Store({
       // console.log('done', queryObj.query, treeNodeArr)
       return treeNodeArr
     },
-    mergeAncestorClasses (store, classId) {
+    mergeAncestorClasses(store, classId) {
       return store.dispatch('getCommonByKey', classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
@@ -301,8 +301,8 @@ const store = new Vuex.Store({
         } else return classObj
       })
     },
-    materializedView (store, viewId) {
-      const smartMergeProperties = (viewObj, classObj) => {
+    materializedView(store, viewId) {
+      /* const smartMergeProperties = (viewObj, classObj) => {
         if (!viewObj.properties) return
         Object.keys(viewObj.properties).forEach(propName => {
           const classProp = classObj.properties[propName]
@@ -329,12 +329,32 @@ const store = new Vuex.Store({
         })
         viewObj.required = Vue._.union(viewObj.required, classObj.required)
         viewObj.classIcon = classObj.icon
+      } */
+      const smartMerge = (viewObj, classObj) => {
+        if (!viewObj.properties) return
+        Object.keys(viewObj.properties).forEach(propName => {
+          const classProp = classObj.properties[propName]
+          if (classProp) {
+            const viewProp = viewObj.properties[propName]
+            Vue._.merge(viewProp, classProp, function (a, b) {
+              if (_.isArray(a)) {
+                return a.concat(b);
+              }
+              /*
+              if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+              if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+              if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
+              if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+            */
+            })
+          }
+        })
       }
       return store.dispatch('getCommonByKey', viewId).then((viewObj) => {
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
-            smartMergeProperties(viewObj, classObj)
+            smartMerge(viewObj, classObj)
             return viewObj
           })
         } else return viewObj

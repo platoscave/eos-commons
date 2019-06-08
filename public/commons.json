@@ -2634,12 +2634,10 @@
                                         "readOnly": false
                                     }
                                 }
-                            },
-                            "readOnly": false
+                            }
                         }
                     }
-                },
-                "readOnly": false
+                }
             }
         },
         "query": {
@@ -2668,9 +2666,6 @@
                 "readOnly": false
             },
             "name": {
-                "readOnly": false
-            },
-            "properties": {
                 "readOnly": false
             },
             "query": {
@@ -2874,7 +2869,11 @@
                             }
                         }
                     }
-                }
+                },
+                "type": "öbject"
+            },
+            "properties": {
+                "readOnly": false
             }
         },
         "query": {
