@@ -50,12 +50,11 @@ export default {
         };
         return obj;
       });
-      debugger
       this.selected = this.idx;
       const selectedObj = this.items.find(item => {
         return item.value === this.idx
       })
-      this.selectedText = selectedObj ? selectedObj.text : '[Selected Item Not Found]'
+      this.selectedText = selectedObj ? selectedObj.text : '[Selected Item Not Found: '+this.idx+']'
     }
   }
 };

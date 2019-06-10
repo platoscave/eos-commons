@@ -2,6 +2,7 @@
   <div>
     <!-- Wait for data and schema to arrive -->
     <v-container v-if="schema && data">
+      <div>viewId {{ schema.key }}</div>
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in schema.properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
@@ -15,9 +16,16 @@
           <v-flex xs12 md10 v-if="editMode || data[propName]">
             <!-- Richtext -->
             <div v-if="property.media && property.media.mediaType === 'text/html' ">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly" v-html="data[propName] ? data[propName] : property.default"></div>
+              <div
+                class="readonlyoutput"
+                v-if="!editMode || property.readOnly"
+                v-html="data[propName] ? data[propName] : property.default"
+              ></div>
               <div v-else>
-                <div class="readonlyoutput" v-html="data[propName] ? data[propName] : property.default"></div>
+                <div
+                  class="readonlyoutput"
+                  v-html="data[propName] ? data[propName] : property.default"
+                ></div>
               </div>
             </div>
 
@@ -33,7 +41,7 @@
 
             <!-- Base64 -->
             <div v-else-if="property.media && property.media.type === 'image/png' ">
-              <div v-if="!editMode || property.readOnly">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
                 <!--{{data[propName]}}-->
                 <img class="readonlyoutput" v-bind:src="data[propName]">
               </div>
@@ -43,12 +51,12 @@
             </div>
 
             <!-- Date -->
-            <div v-else-if="property.media && property.media.format === 'date-time' ">
-              <div v-if="!editMode || property.readOnly">
-                <div class="readonlyoutput">Date.parse(data[propName]).toLocaleDateString()</div>
+            <div v-else-if="property && property.format === 'date-time' ">
+              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
+                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
               </div>
               <div v-else>
-                <div>Date.parse(data[propName]).toLocaleDateString()</div>
+                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
               </div>
             </div>
 
@@ -112,19 +120,20 @@
                   class="inputclass"
                   v-bind:readonly="property.readOnly || !editMode"
                   v-bind:value="data[propName]"
-                type="number"
+                  type="number"
                   single-line
                   outline
                 ></v-text-field>
               </div>
             </div>
 
+            <!-- Boolean -->
             <div v-else-if="property.type === 'boolean'">
               <div v-if="!editMode || property.readOnly">
                 <div class="readonlyoutput">{{ data[propName] === true ? 'true' : 'false' }}</div>
               </div>
               <div v-else>
-                <v-checkbox></v-checkbox>
+                <v-checkbox value="data[propName]"></v-checkbox>
               </div>
             </div>
 
@@ -229,12 +238,6 @@ export default {
     }
   },
   created() {
-    console.log(
-      "parentData",
-      this.parentData,
-      "parentSchema",
-      this.parentSchema
-    );
     if (!this.parentData) {
       this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
@@ -242,7 +245,7 @@ export default {
           // console.log('selectedObjId Changed!', newVal)
           if (!newVal) return;
           this.$store.dispatch("getCommonByKey", newVal).then(data => {
-            // console.log('data', data)
+            console.log('data', data)
             this.data = data;
           });
         },
@@ -252,11 +255,24 @@ export default {
 
     if (!this.parentSchema && this.viewId) {
       this.$store.dispatch("materializedView", this.viewId).then(view => {
-        // console.log('view', view)
+        console.log('view', view)
+        
+        // resolve $ref
+        Object.keys(view.properties).forEach(propName => {
+          let viewProp = view.properties[propName]
+          if(viewProp.$ref) {
+              const defName = viewProp.$ref.substr(viewProp.$ref.lastIndexOf('/')+1)
+              view.properties[propName] = view.definitions[defName]
+          }
+        })
+        console.log('view', view)
         this.schema = view;
-        /* EosApiService.getAccountInfo("eoscommonsio").then(info => {
-          this.data = info;
-        }); */
+
+        if (view.rpc) {
+          EosApiService.getAccountInfo("eoscommonsio").then(info => {
+            this.data = info;
+          });
+        }
       });
     }
     /* if (this.parentData) this.data = this.parentData

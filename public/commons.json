@@ -266,6 +266,158 @@
         "type": "object"
     },
     {
+        "key": "q234ooehrk5v",
+        "docType": "class",
+        "title": "Queries",
+        "description": "<p>Queriwes used by views</p>",
+        "parentId": "nrioirgelhpi",
+        "properties": {
+            "from": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "classes"
+                },
+                "title": "From",
+                "type": "string"
+            },
+            "icon": {
+                "maxLength": 2000,
+                "media": {
+                    "binaryEncoding": "base64",
+                    "type": "image/png"
+                },
+                "minLength": 0,
+                "title": "Icon",
+                "type": "string"
+            },
+            "joinQueries": {
+                "items": {
+                    "properties": {
+                        "queryId": {
+                            "title": "Subquery",
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "from": "q234ooehrk5v"
+                            },
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Join Queries",
+                "type": "array"
+            },
+            "menu": {
+                "items": {
+                    "properties": {
+                        "action": {
+                            "enum": [
+                                "add",
+                                "delete",
+                                "login",
+                                "signup"
+                            ],
+                            "title": "Action",
+                            "type": "string"
+                        },
+                        "iconClass": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Icon Class",
+                            "type": "string"
+                        },
+                        "label": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Label",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Menu",
+                "type": "array"
+            },
+            "pageId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "pejdgrwd5qso"
+                },
+                "title": "Page",
+                "type": "string"
+            },
+            "queryName": {
+                "maxLength": 1000,
+                "minLength": 0,
+                "title": "Query Name",
+                "type": "string"
+            },
+            "select": {
+                "items": {
+                    "type": "string"
+                },
+                "title": "Select",
+                "type": "array"
+            },
+            "where": {
+                "additionalProperties": false,
+                "properties": {
+                    "docProp": {
+                        "maxLength": 1000,
+                        "minLength": 0,
+                        "title": "Document Property",
+                        "type": "string"
+                    },
+                    "operator": {
+                        "enum": [
+                            "eq"
+                        ],
+                        "title": "Operator",
+                        "type": "string"
+                    },
+                    "value": {
+                        "maxLength": 1000,
+                        "minLength": 0,
+                        "title": "Value",
+                        "type": "string"
+                    }
+                },
+                "title": "Where",
+                "type": "object"
+            }
+        },
+        "pageId": "qcd1eefe432r",
+        "type": "object"
+    },
+    {
+        "key": "siutzqsj5dgc",
+        "docType": "class",
+        "title": "Documents",
+        "description": "<p>Ordinary HTML pages</p>",
+        "parentId": "nrioirgelhpi",
+        "properties": {
+            "join": {
+                "items": {
+                    "properties": {
+                        "pageId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "from": "siutzqsj5dgc"
+                            },
+                            "title": "Sub Ducument",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Sub Documents",
+                "type": "array"
+            }
+        },
+        "pageId": "nnksb2zyphob",
+        "type": "object"
+    },
+    {
         "key": "pylvseoljret",
         "docType": "class",
         "title": "Views",
@@ -277,7 +429,18 @@
                 "title": "Properties",
                 "type": "object"
             },
+            "initialQuery": {
+                "title": "Initial Query",
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "q234ooehrk5v"
+                },
+                "type": "string"
+            },
             "query": {
+                "$ref": "#/definitions/queryDef"
+            },
+            "Xquery": {
                 "additionalProperties": false,
                 "properties": {
                     "from": {
@@ -342,6 +505,20 @@
                 "title": "Query",
                 "type": "object"
             },
+            "queryStructure": {
+                "items": {
+                    "$ref": "#/definitions/queryDef"
+                },
+                "title": "Named Queries",
+                "type": "array"
+            },
+            "namedQueries": {
+                "items": {
+                    "$ref": "#/definitions/queryDef"
+                },
+                "title": "Named Queries",
+                "type": "array"
+            },
             "required": {
                 "items": {
                     "type": "string"
@@ -359,7 +536,22 @@
         },
         "type": "object",
         "definitions": {
-            "query": {
+            "queryStructureDef": {
+                "items": {
+                    "properties": {
+                        "queryName": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Query Name",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Named Queries",
+                "type": "array"
+            },
+            "queryDef": {
                 "additionalProperties": false,
                 "properties": {
                     "from": {
@@ -434,15 +626,7 @@
                     },
                     "select": {
                         "items": {
-                            "properties": {
-                                "label": {
-                                    "maxLength": 1000,
-                                    "minLength": 0,
-                                    "title": "Label",
-                                    "type": "string"
-                                }
-                            },
-                            "type": "object"
+                            "type": "string"
                         },
                         "title": "Select",
                         "type": "array"
@@ -476,9 +660,7 @@
                 },
                 "title": "Query",
                 "type": "object"
-            },
-            "title": "Query",
-            "type": "object"
+            }
         }
     },
     {
@@ -1180,7 +1362,7 @@
         "accordionOrTab": "Accordions",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Navigation",
@@ -1209,7 +1391,7 @@
         "name": "Balance Sheet View",
         "description": "<p>The standard balance sheet view</p>",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "accountReceivibale": {
                 "col": 1,
@@ -2092,7 +2274,7 @@
         "name": "Class Model Tree View",
         "description": "<p>Descibes the class model hierarchy, including a children array</p>",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true,
@@ -2129,6 +2311,7 @@
                 "type": "string"
             }
         },
+        "subqueryIds": "tllcmvjazmz2",
         "query": {
             "from": "classes",
             "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
@@ -2175,10 +2358,6 @@
                 "value": "gzthjuyjca4s"
             }
         },
-        "required": [
-            "_id",
-            "name"
-        ],
         "type": "object"
     },
     {
@@ -2188,7 +2367,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Properties",
@@ -2218,7 +2397,7 @@
         "name": "Owners Class Tree View",
         "description": "<p>Descibes the owner hierarchy, including a children array</p>",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "name": {
                 "readOnly": false
@@ -2302,7 +2481,7 @@
         "name": "Server",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Server</div></div><p>The Neuralquest server</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "pageId": "34dgfl43da2i",
         "parentOrgId": "jwzwfaehsqks"
     },
@@ -2312,7 +2491,7 @@
         "name": "Client",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Client</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "pageId": "34dgfl43da2i",
         "parentOrgId": "jwzwfaehsqks"
     },
@@ -2350,7 +2529,7 @@
         "description": "<p>Purchase Agreement</p>",
         "amount": 150,
         "assetId": "pwyzd1adoyzu",
-        "buyerId": "egmvdpaa5svc",
+        "buyerId": "testuser1111",
         "classId": "hhg2u2zptnfo",
         "currency": "EUR",
         "processId": "ynaxakdc423e",
@@ -2443,7 +2622,7 @@
         "docType": "object",
         "name": "Page Form Page",
         "classId": "pejdgrwd5qso",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Pages",
@@ -2462,7 +2641,7 @@
         "docType": "object",
         "name": "View Form Page",
         "classId": "pejdgrwd5qso",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Views",
@@ -2477,11 +2656,49 @@
         ]
     },
     {
+        "key": "qcd1eefe432r",
+        "docType": "object",
+        "name": "Query Form Page",
+        "classId": "pejdgrwd5qso",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "Query",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Query Form",
+                        "viewId": "dsae2kl342hk"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "nnksb2zyphob",
+        "docType": "object",
+        "name": "Document Form Page",
+        "classId": "pejdgrwd5qso",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "Documents",
+                "widgets": [
+                    {
+                        "displayType": "Document",
+                        "name": "Document Form",
+                        "viewId": "wh1nnojktarq"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "key": "nq4cdhem2j5f",
         "docType": "object",
         "name": "Page Tree View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "query": {
             "from": "ikjyhlqewxs3",
             "join": [
@@ -2559,7 +2776,7 @@
         "docType": "object",
         "name": "View Tree View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "query": {
             "from": "ikjyhlqewxs3",
             "join": [
@@ -2572,7 +2789,25 @@
                         "docProp": "classId",
                         "operator": "eq",
                         "value": "$fk"
-                    }
+                    },
+                    "join": [
+                        {
+                            "from": "pylvseoljret",
+                            "pageId": "qcd1eefe432r",
+                            "queryName": "queries",
+                            "select": "name",
+                            "where": {
+                                "docProp": "key",
+                                "operator": "in",
+                                "value": "#subqueryIds"
+                            },
+                            "join": [
+                                {
+                                    "queryByName": "queries"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "queryName": "owner",
@@ -2590,7 +2825,7 @@
         "docType": "object",
         "name": "Page Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true,
@@ -2655,7 +2890,7 @@
         "docType": "object",
         "name": "View Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true,
@@ -2668,169 +2903,38 @@
             "name": {
                 "readOnly": false
             },
+            "initialQuery": {
+                "readOnly": false
+            },
             "query": {
                 "properties": {
-                    "from": {
+                    "queryName": {
                         "readOnly": false
                     },
                     "icon": {
                         "readOnly": false
                     },
-                    "join": {
-                        "items": {
-                            "properties": {
-                                "from": {
-                                    "readOnly": false
-                                },
-                                "icon": {
-                                    "readOnly": false
-                                },
-                                "join": {
-                                    "items": {
-                                        "properties": {
-                                            "from": {
-                                                "readOnly": false
-                                            },
-                                            "icon": {
-                                                "readOnly": false
-                                            },
-                                            "join": {
-                                                "items": {
-                                                    "properties": {
-                                                        "from": {
-                                                            "readOnly": false
-                                                        },
-                                                        "icon": {
-                                                            "readOnly": false
-                                                        },
-                                                        "menu": {
-                                                            "items": {
-                                                                "properties": {
-                                                                    "action": {
-                                                                        "readOnly": false
-                                                                    },
-                                                                    "iconClass": {
-                                                                        "readOnly": false
-                                                                    },
-                                                                    "label": {
-                                                                        "readOnly": false
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                        "pageId": {
-                                                            "readOnly": false
-                                                        },
-                                                        "queryByName": {
-                                                            "readOnly": false
-                                                        },
-                                                        "queryName": {
-                                                            "readOnly": false
-                                                        },
-                                                        "select": {
-                                                            "readOnly": false
-                                                        },
-                                                        "where": {
-                                                            "properties": {
-                                                                "docProp": {
-                                                                    "readOnly": false
-                                                                },
-                                                                "operator": {
-                                                                    "readOnly": false
-                                                                },
-                                                                "value": {
-                                                                    "readOnly": false
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "menu": {
-                                                "items": {
-                                                    "properties": {
-                                                        "action": {
-                                                            "readOnly": false
-                                                        },
-                                                        "iconClass": {
-                                                            "readOnly": false
-                                                        },
-                                                        "label": {
-                                                            "readOnly": false
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "pageId": {
-                                                "readOnly": false
-                                            },
-                                            "queryByName": {
-                                                "readOnly": false
-                                            },
-                                            "queryName": {
-                                                "readOnly": false
-                                            },
-                                            "select": {
-                                                "readOnly": false
-                                            },
-                                            "where": {
-                                                "properties": {
-                                                    "docProp": {
-                                                        "readOnly": false
-                                                    },
-                                                    "operator": {
-                                                        "readOnly": false
-                                                    },
-                                                    "value": {
-                                                        "readOnly": false
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "menu": {
-                                    "items": {
-                                        "properties": {
-                                            "action": {
-                                                "readOnly": false
-                                            },
-                                            "iconClass": {
-                                                "readOnly": false
-                                            },
-                                            "label": {
-                                                "readOnly": false
-                                            }
-                                        }
-                                    }
-                                },
-                                "pageId": {
-                                    "readOnly": false
-                                },
-                                "queryByName": {
-                                    "readOnly": false
-                                },
-                                "queryName": {
-                                    "readOnly": false
-                                },
-                                "select": {
-                                    "readOnly": false
-                                },
-                                "where": {
-                                    "properties": {
-                                        "docProp": {
-                                            "readOnly": false
-                                        },
-                                        "operator": {
-                                            "readOnly": false
-                                        },
-                                        "value": {
-                                            "readOnly": false
-                                        }
-                                    }
-                                }
+                    "select": {
+                        "readOnly": false
+                    },
+                    "from": {
+                        "readOnly": false
+                    },
+                    "where": {
+                        "properties": {
+                            "docProp": {
+                                "readOnly": false
+                            },
+                            "operator": {
+                                "readOnly": false
+                            },
+                            "value": {
+                                "readOnly": false
                             }
                         }
+                    },
+                    "pageId": {
+                        "readOnly": false
                     },
                     "menu": {
                         "items": {
@@ -2846,34 +2950,9 @@
                                 }
                             }
                         }
-                    },
-                    "pageId": {
-                        "readOnly": false
-                    },
-                    "queryName": {
-                        "readOnly": false
-                    },
-                    "select": {
-                        "readOnly": false
-                    },
-                    "where": {
-                        "properties": {
-                            "docProp": {
-                                "readOnly": false
-                            },
-                            "operator": {
-                                "readOnly": false
-                            },
-                            "value": {
-                                "readOnly": false
-                            }
-                        }
                     }
                 },
                 "type": "öbject"
-            },
-            "properties": {
-                "readOnly": false
             }
         },
         "query": {
@@ -2882,6 +2961,84 @@
                 "docProp": "$key",
                 "operator": "eq",
                 "value": "pylvseoljret"
+            }
+        },
+        "type": "object"
+    },
+    {
+        "key": "dsae2kl342hk",
+        "docType": "object",
+        "name": "Query Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "key": {
+                "readOnly": true,
+                "title": "key",
+                "type": "string"
+            },
+            "name": {
+                "readOnly": false
+            },
+            "description": {
+                "readOnly": false
+            },
+            "icon": {
+                "readOnly": false
+            },
+            "select": {
+                "readOnly": false
+            },
+            "from": {
+                "readOnly": false
+            },
+            "where": {
+                "properties": {
+                    "docProp": {
+                        "readOnly": false
+                    },
+                    "operator": {
+                        "readOnly": false
+                    },
+                    "value": {
+                        "readOnly": false
+                    }
+                }
+            },
+            "pageId": {
+                "readOnly": false
+            },
+            "joinQueries": {
+                "items": {
+                    "properties": {
+                        "queryId": {
+                            "readOnly": false
+                        }
+                    }
+                }
+            },
+            "menu": {
+                "items": {
+                    "properties": {
+                        "action": {
+                            "readOnly": false
+                        },
+                        "iconClass": {
+                            "readOnly": false
+                        },
+                        "label": {
+                            "readOnly": false
+                        }
+                    }
+                }
+            }
+        },
+        "query": {
+            "from": "q234ooehrk5v",
+            "where": {
+                "docProp": "$key",
+                "operator": "eq",
+                "value": "$docId"
             }
         },
         "type": "object"
@@ -2969,7 +3126,7 @@
         "docType": "object",
         "name": "States Tree View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "query": {
             "from": "classes",
             "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
@@ -3033,7 +3190,7 @@
         "docType": "object",
         "name": "Agreements Tree View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "query": {
             "from": "classes",
             "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
@@ -3097,7 +3254,7 @@
         "docType": "object",
         "name": "Processes Form Page",
         "classId": "z2xnjsqcs5bj",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "States",
@@ -3126,7 +3283,7 @@
         "docType": "object",
         "name": "Agreements Form Page",
         "classId": "pejdgrwd5qso",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Agreements",
@@ -3154,7 +3311,7 @@
         "docType": "object",
         "name": "State Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true
@@ -3190,7 +3347,7 @@
         "docType": "object",
         "name": "Agreement Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true
@@ -3240,7 +3397,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Pages",
@@ -3262,7 +3419,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Views",
@@ -3284,7 +3441,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Processes",
@@ -3306,7 +3463,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Agreements",
@@ -3326,7 +3483,7 @@
         "docType": "object",
         "name": "States Process View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "name": {
                 "readOnly": false
@@ -3343,11 +3500,35 @@
         "type": "object"
     },
     {
+        "key": "wh1nnojktarq",
+        "docType": "object",
+        "name": "Document Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "name": {
+                "readOnly": false
+            },
+            "description": {
+                "readOnly": false
+            }
+        },
+        "query": {
+            "from": "dwl1kwhalwj4",
+            "where": {
+                "docProp": "documentId",
+                "operator": "eq",
+                "value": "$docId"
+            }
+        },
+        "type": "object"
+    },
+    {
         "key": "2r2creqljk4z",
         "docType": "object",
         "name": "Page Tab Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "name": {
                 "readOnly": false
@@ -3371,7 +3552,7 @@
         "docType": "object",
         "name": "Page Form Page",
         "classId": "pejdgrwd5qso",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Pages",
@@ -3394,7 +3575,7 @@
         "buyerId": "vgvj4zbapslj",
         "classId": "w3mzeetidb5n",
         "offeringId": "58322160425310133a49f115",
-        "sellerId": "egmvdpaa5svc",
+        "sellerId": "testuser1111",
         "stateHistory": [
             {
                 "date": "2008-10-17T00:00:00Z",
@@ -3419,7 +3600,7 @@
         "name": "Request for comment",
         "description": "<p>Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.</p>",
         "assetId": "pwyzd1adoyzu",
-        "buyerId": "egmvdpaa5svc",
+        "buyerId": "testuser1111",
         "classId": "w3mzeetidb5n",
         "offeringId": "583221c9425310133a49f117",
         "sellerId": "vgvj4zbapslj",
@@ -3541,7 +3722,7 @@
         "name": "Standard Model",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "pageId": "kvicynpfgzwz",
         "parentOrgId": "jwzwfaehsqks"
     },
@@ -3551,7 +3732,7 @@
         "name": "Standard Model Tree Page",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Class Model",
@@ -3571,7 +3752,7 @@
         "name": "Standard Model Form View",
         "description": "<p>Descibes home page of the organization</p>",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "key": {
                 "readOnly": true,
@@ -3786,7 +3967,7 @@
                 ]
             }
         ]
-    },    
+    },
     {
         "key": "41rnxkv1bsve",
         "docType": "object",
@@ -3833,7 +4014,7 @@
         "docType": "object",
         "name": "What Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "description": {
                 "readOnly": false
@@ -3854,7 +4035,7 @@
         "docType": "object",
         "name": "What Form View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
             "name": {
                 "readOnly": false
@@ -3885,20 +4066,104 @@
     {
         "key": "houaanpf35nu",
         "docType": "object",
-        "name": "Account Info Form View",
+        "name": "Account Info View",
         "classId": "pylvseoljret",
-        "ownerId": "jwzwfaehsqks",
+        "ownerId": "eoscommonsio",
         "properties": {
-            "creator": {
+            "account_name": {
                 "maxLength": 12,
                 "minLength": 1,
-                "title": "Creator Account",
-                "type": "string"
+                "title": "Account Name",
+                "type": "string",
+                "readOnly": true
             },
-            "create_timestamp": {
+            "head_block_num": {
+                "title": "Head Block Number",
+                "type": "number",
+                "readOnly": true
+            },
+            "head_block_time": {
                 "format": "date-time",
-                "title": "Create Date",
-                "type": "string"
+                "title": "Head Block Time",
+                "type": "string",
+                "readOnly": true
+            },
+            "privileged": {
+                "title": "Privileged",
+                "type": "boolean",
+                "readOnly": true
+            },
+            "last_code_update": {
+                "format": "date-time",
+                "title": "Last Code Update",
+                "type": "string",
+                "readOnly": true
+            },
+            "created": {
+                "format": "date-time",
+                "title": "Created",
+                "type": "string",
+                "readOnly": true
+            },
+            "ram_quota": {
+                "title": "Ram Quota",
+                "type": "number",
+                "readOnly": true
+            },
+            "net_weight": {
+                "title": "Net Weight",
+                "type": "number",
+                "readOnly": true
+            },
+            "cpu_weight": {
+                "title": "Cpu Weight",
+                "type": "number",
+                "readOnly": true
+            },
+            "net_limit": {
+                "properties": {
+                    "used": {
+                        "title": "Used",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "available": {
+                        "title": "Available",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "max": {
+                        "title": "Maximum",
+                        "type": "number",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "cpu_limit": {
+                "properties": {
+                    "used": {
+                        "title": "Used",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "available": {
+                        "title": "Available",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "max": {
+                        "title": "Maximum",
+                        "type": "number",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "ram_usage": {
+                "title": "Ram Usage",
+                "type": "number",
+                "readOnly": true
             },
             "permissions": {
                 "items": {
@@ -3907,19 +4172,22 @@
                             "maxLength": 12,
                             "minLength": 1,
                             "title": "Permission Name",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "parent": {
                             "maxLength": 12,
                             "minLength": 1,
                             "title": "Parent Permission",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "required_auth": {
                             "properties": {
                                 "threshold": {
                                     "title": "Threshold",
-                                    "type": "number"
+                                    "type": "number",
+                                    "readOnly": true
                                 },
                                 "keys": {
                                     "items": {
@@ -3928,11 +4196,13 @@
                                                 "maxLength": 44,
                                                 "minLength": 0,
                                                 "title": "Key",
-                                                "type": "string"
+                                                "type": "string",
+                                                "readOnly": true
                                             },
                                             "weight": {
                                                 "title": "Weight",
-                                                "type": "number"
+                                                "type": "number",
+                                                "readOnly": true
                                             }
                                         },
                                         "type": "object"
@@ -3948,19 +4218,22 @@
                                                     "maxLength": 12,
                                                     "minLength": 0,
                                                     "title": "Actor",
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "readOnly": true
                                                 },
                                                 "permission": {
                                                     "maxLength": 12,
                                                     "minLength": 0,
                                                     "title": "Permission",
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "readOnly": true
                                                 }
                                             },
                                             "type": "object",
                                             "weight": {
                                                 "title": "Weight",
-                                                "type": "number"
+                                                "type": "number",
+                                                "readOnly": true
                                             }
                                         },
                                         "type": "object"
@@ -3970,9 +4243,7 @@
                                 },
                                 "waits": {
                                     "items": {
-                                        "properties": {
-    
-                                        },
+                                        "properties": {},
                                         "type": "object"
                                     },
                                     "title": "Waits",
@@ -3988,9 +4259,86 @@
                 },
                 "title": "Permissions",
                 "type": "array"
+            },
+            "total_resources": {
+                "title": "Ram Usage",
+                "type": "string",
+                "readOnly": true
+            },
+            "self_delegated_bandwidth": {
+                "title": "Ram Usage",
+                "type": "string",
+                "readOnly": true
+            },
+            "refund_request": {
+                "title": "Ram Usage",
+                "type": "string",
+                "readOnly": true
+            },
+            "voter_info": {
+                "title": "Ram Usage",
+                "type": "string",
+                "readOnly": true
             }
         },
         "rpc": "get_account_info",
         "type": "object"
+    },
+    {
+        "key": "tllcmvjazmz2",
+        "docType": "object",
+        "name": "Root Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
+        "subqueryIds": [
+            "2jfs4is4icct",
+            "x1lrv2xdq2tu"
+        ],
+        "pageId": "24cnex2sayeh",
+        "queryName": "standardModel",
+        "select": "title",
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "gzthjuyjca4s"
+        }
+    },
+    {
+        "key": "2jfs4is4icct",
+        "docType": "object",
+        "name": "Subclasses Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
+        "XsubqueryIds": [
+            "2jfs4is4icct",
+            "x1lrv2xdq2tu"
+        ],
+        "pageId": "24cnex2sayeh",
+        "sortBy": "title",
+        "where": {
+            "docProp": "parentId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "x1lrv2xdq2tu",
+        "docType": "object",
+        "name": "Object Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "gzthjuyjca4s",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
+        "pageId": "24cnex2sayeh",
+        "sortBy": "name",
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        }
     }
 ]

@@ -1,0 +1,59 @@
+[
+    {
+        "key": "tllcmvjazmz2",
+        "docType": "object",
+        "name": "Root Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
+        "joinQueries": [
+            "2jfs4is4icct",
+            "x1lrv2xdq2tu"
+        ],
+        "pageId": "24cnex2sayeh",
+        "queryName": "standardModel",
+        "select": "title",
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "gzthjuyjca4s"
+        }
+    },
+    {
+        "key": "2jfs4is4icct",
+        "docType": "object",
+        "name": "Subclasses Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
+        "joinQueries": [
+            "2jfs4is4icct",
+            "x1lrv2xdq2tu"
+        ],
+        "pageId": "24cnex2sayeh",
+        "sortBy": "title",
+        "where": {
+            "docProp": "parentId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "x1lrv2xdq2tu",
+        "docType": "object",
+        "name": "Object Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "gzthjuyjca4s",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
+        "pageId": "24cnex2sayeh",
+        "sortBy": "name",
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    }
+]
