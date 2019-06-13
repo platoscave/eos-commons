@@ -14,7 +14,7 @@
                 ref="tree2">
             <template slot-scope="_">
                 <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
-                    <img class="tree-default tree-icon" :src="_.model.data.icon" role="presentation" v-if="!_.model.loading">
+                    <img class="tree-default tree-icon" :src="_.model.Xdata.icon" role="presentation" v-if="!_.model.loading">
                     {{_.model.text}}
                     <button style="border: 0px; background-color: transparent; cursor: pointer;" @click="customItemClick(_.vm, _.model, $event)"><i class="fa fa-remove"></i></button>
                 </div>
@@ -48,25 +48,46 @@ export default {
       },
       asyncData: [],
       loadData: function (oriNode, resolve) {
+        // debugger
         if (!oriNode || !oriNode.data.key) {
           let viewQueryObj = this.$parent.viewRootQueryObj()
           this.$store.dispatch('treeQuery', viewQueryObj).then((result) => {
             resolve(result)
+            let promises = []
+            /* result.forEach(child => {
+              promises.push(this.$store.dispatch('treeQueryArr', child.Xdata.queryArrObj))
+            })
+            return Promise.all(promises).then((values) => {
+              result[0].children = values[0]
+              resolve(result)
+            }) */
           })
-        } else {
-          this.$store.dispatch('treeQueryArr', oriNode.data.queryArrObj).then((result) => {
+        } 
+        else {
+          let promises = []
+          this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then(result => {
             resolve(result)
           })
+          /* oriNode.data.children.forEach(child => {
+            promises.push())
+          })
+          
+          resolve(Promise.all(promises).then((values) => {
+            return result.children = values
+          }))
+           this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then((result) => {
+            resolve(result)
+          }) */
         }
       }
     }
   },
   methods: {
     itemClick (node) {
-      if (node.model.data.pageId) {
+      if (node.model.Xdata.pageId) {
         this.$store.commit('SET_PAGE_STATE2', {
           level: this.level + 1,
-          pageId: node.model.data.pageId,
+          pageId: node.model.Xdata.pageId,
           selectedObjId: node.model.key
         })
       }

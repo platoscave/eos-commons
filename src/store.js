@@ -236,8 +236,8 @@ const store = new Vuex.Store({
 
     treeQueryArr(store, queryObj) {
       let promises = []
-      if (queryObj.subqueryIdsX) {
-        queryObj.queryArr.forEach((subqueryId) => {
+      if (queryObj.subqueryIds) {
+        queryObj.subqueryIds.forEach((subqueryId) => {
           promises.push(store.dispatch('treeQuery', {
             currentObj: queryObj.currentObj,
             subqueryIds: subqueryId,
@@ -304,28 +304,33 @@ const store = new Vuex.Store({
             let pageId = queryObj.query.pageId ? queryObj.query.pageId : item.pageId
             if (!pageId && item.classId) pageId = await getPageIdFromClassById(item.classId)
 
-            // Prepoulate the grandchildren, so that we know if this is a leaf node.
-            // TODO find a way to do this async from the tree
-            // let childQueryArrObj = getChildQueryObj(item.key)
-            // childQueryArrObj.currentObj = item
-            // childQueryArrObj.subqueryIds = query.subqueryIds
-            // let grandchildren = await store.dispatch('treeQueryArr', childQueryArrObj)
-
             const ids = store.state.levelIdsArr[queryObj.level + 1]
             const selected = ids ? ids.selectedObjId === item.key : false
 
             return {
               key: item.key,
               text: item.title ? item.title : item.name,
-              data: {
-                queryArrObj: { currentObj: item, subQueryIds: query.subqueryIds},
+              Xdata: {
+                queryArrObj: { currentObj: item, subqueryIds: queryObj.query.subqueryIds },
                 pageId: pageId,
                 icon: icon
               },
-              children: [],
+              children: [{
+                text: 'loading...',
+                icon: '',
+                value: 'Loading...',
+                icon: '',
+                opened: false,
+                selected: false,
+                disabled: true,
+                loading: true,
+                children: []
+              }],
               isLeaf: false,
-              opened: !!store.state.isOpened[item.key],
-              selected: selected
+              // opened: !!store.state.isOpened[item.key],
+              opened: false,
+              selected: selected,
+              loading: false
             }
           })
 
@@ -338,14 +343,36 @@ const store = new Vuex.Store({
         let query = await ApiService.getCommonByKey(queryObj.subqueryIds)
 
         let treeNodeArr = await getTreeNodes({ currentObj: queryObj.currentObj, query: query })
+        return treeNodeArr
 
+        // Prepoulate the grandchildren, so that we know if this is a leaf node.
         let grandchildrenPromises = treeNodeArr.map(async item => {
+          // debugger
+          if (!item.Xdata.queryArrObj.subqueryIds) return []
+          let queryPromises = item.Xdata.queryArrObj.subqueryIds.map(async queryId => {
+            // Get the query
+            let query = await ApiService.getCommonByKey(queryId)
+            // Get the nodes
+            return await getTreeNodes({ currentObj: item.Xdata.queryArrObj.currentObj, query: query })
+          })
 
+          let grandchildrenNodesArrs = await Promise.all(queryPromises)
+          let grandchildrenNodes = Vue._.union.apply(null, grandchildrenNodesArrs)
+
+          item.children = grandchildrenNodes
+          item.isLeaf = grandchildrenNodes.length === 0
+          item.loading = false
+          return item
         })
-        let treeNodes = await Promise.all(grandchildrenPromises)
 
-        return treeNodes
+        let treeNodesWithGrandChildrem = await Promise.all(grandchildrenPromises)
+        debugger
+        return treeNodesWithGrandChildrem
       }
+
+
+
+
       else {
         // Execute the query
         let resultsArr = await store.dispatch('query', queryObj)
