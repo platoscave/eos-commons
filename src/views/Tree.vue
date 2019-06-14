@@ -48,19 +48,10 @@ export default {
       },
       asyncData: [],
       loadData: function (oriNode, resolve) {
-        // debugger
         if (!oriNode || !oriNode.data.key) {
-          let viewQueryObj = this.$parent.viewRootQueryObj()
+          let viewQueryObj = {currentObj: {}, subqueryIds: this.$parent.view.subqueryIds}
           this.$store.dispatch('treeQuery', viewQueryObj).then((result) => {
             resolve(result)
-            let promises = []
-            /* result.forEach(child => {
-              promises.push(this.$store.dispatch('treeQueryArr', child.Xdata.queryArrObj))
-            })
-            return Promise.all(promises).then((values) => {
-              result[0].children = values[0]
-              resolve(result)
-            }) */
           })
         } 
         else {
@@ -68,16 +59,6 @@ export default {
           this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then(result => {
             resolve(result)
           })
-          /* oriNode.data.children.forEach(child => {
-            promises.push())
-          })
-          
-          resolve(Promise.all(promises).then((values) => {
-            return result.children = values
-          }))
-           this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then((result) => {
-            resolve(result)
-          }) */
         }
       }
     }
