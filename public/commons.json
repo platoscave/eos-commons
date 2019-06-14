@@ -2,7 +2,7 @@
     {
         "key": "gzthjuyjca4s",
         "docType": "class",
-        "title": "Standard Model",
+        "title": "The Standard Model",
         "description": "<p>The root of all classes and objects</p>",
         "properties": {
             "key": {
@@ -290,7 +290,7 @@
                 "title": "Icon",
                 "type": "string"
             },
-            "joinQueries": {
+            "subqueryIds": {
                 "items": {
                     "properties": {
                         "queryId": {
@@ -396,7 +396,7 @@
         "description": "<p>Ordinary HTML pages</p>",
         "parentId": "nrioirgelhpi",
         "properties": {
-            "join": {
+            "subdocumentIds": {
                 "items": {
                     "properties": {
                         "pageId": {
@@ -429,95 +429,13 @@
                 "title": "Properties",
                 "type": "object"
             },
-            "initialQuery": {
+            "subqueryIds": {
                 "title": "Initial Query",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "from": "q234ooehrk5v"
                 },
                 "type": "string"
-            },
-            "query": {
-                "$ref": "#/definitions/queryDef"
-            },
-            "Xquery": {
-                "additionalProperties": false,
-                "properties": {
-                    "from": {
-                        "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                        "query": {
-                            "from": "classes"
-                        },
-                        "title": "From",
-                        "type": "string"
-                    },
-                    "icon": {
-                        "maxLength": 2000,
-                        "media": {
-                            "binaryEncoding": "base64",
-                            "type": "image/png"
-                        },
-                        "minLength": 0,
-                        "title": "Icon",
-                        "type": "string"
-                    },
-                    "pageId": {
-                        "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                        "query": {
-                            "from": "pejdgrwd5qso"
-                        },
-                        "title": "Page",
-                        "type": "string"
-                    },
-                    "queryName": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Query Name",
-                        "type": "string"
-                    },
-                    "where": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "docProp": {
-                                "maxLength": 1000,
-                                "minLength": 0,
-                                "title": "Document Property",
-                                "type": "string"
-                            },
-                            "operator": {
-                                "enum": [
-                                    "eq"
-                                ],
-                                "title": "Operator",
-                                "type": "string"
-                            },
-                            "value": {
-                                "maxLength": 1000,
-                                "minLength": 0,
-                                "title": "Value",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Where",
-                        "type": "object"
-                    }
-                },
-                "title": "Query",
-                "type": "object"
-            },
-            "queryStructure": {
-                "items": {
-                    "$ref": "#/definitions/queryDef"
-                },
-                "title": "Named Queries",
-                "type": "array"
-            },
-            "namedQueries": {
-                "items": {
-                    "$ref": "#/definitions/queryDef"
-                },
-                "title": "Named Queries",
-                "type": "array"
             },
             "required": {
                 "items": {
@@ -534,134 +452,7 @@
                 "type": "string"
             }
         },
-        "type": "object",
-        "definitions": {
-            "queryStructureDef": {
-                "items": {
-                    "properties": {
-                        "queryName": {
-                            "maxLength": 1000,
-                            "minLength": 0,
-                            "title": "Query Name",
-                            "type": "string"
-                        }
-                    },
-                    "type": "object"
-                },
-                "title": "Named Queries",
-                "type": "array"
-            },
-            "queryDef": {
-                "additionalProperties": false,
-                "properties": {
-                    "from": {
-                        "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                        "query": {
-                            "from": "classes"
-                        },
-                        "title": "From",
-                        "type": "string"
-                    },
-                    "icon": {
-                        "maxLength": 2000,
-                        "media": {
-                            "binaryEncoding": "base64",
-                            "type": "image/png"
-                        },
-                        "minLength": 0,
-                        "title": "Icon",
-                        "type": "string"
-                    },
-                    "join": {
-                        "items": {
-                            "$ref": "#/definitions/query"
-                        },
-                        "title": "Join",
-                        "type": "array"
-                    },
-                    "menu": {
-                        "items": {
-                            "properties": {
-                                "action": {
-                                    "enum": [
-                                        "add",
-                                        "delete",
-                                        "login",
-                                        "signup"
-                                    ],
-                                    "title": "Action",
-                                    "type": "string"
-                                },
-                                "iconClass": {
-                                    "maxLength": 1000,
-                                    "minLength": 0,
-                                    "title": "Icon Class",
-                                    "type": "string"
-                                },
-                                "label": {
-                                    "maxLength": 1000,
-                                    "minLength": 0,
-                                    "title": "Label",
-                                    "type": "string"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        "title": "Menu",
-                        "type": "array"
-                    },
-                    "pageId": {
-                        "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                        "query": {
-                            "from": "pejdgrwd5qso"
-                        },
-                        "title": "Page",
-                        "type": "string"
-                    },
-                    "queryName": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Query Name",
-                        "type": "string"
-                    },
-                    "select": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "title": "Select",
-                        "type": "array"
-                    },
-                    "where": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "docProp": {
-                                "maxLength": 1000,
-                                "minLength": 0,
-                                "title": "Document Property",
-                                "type": "string"
-                            },
-                            "operator": {
-                                "enum": [
-                                    "eq"
-                                ],
-                                "title": "Operator",
-                                "type": "string"
-                            },
-                            "value": {
-                                "maxLength": 1000,
-                                "minLength": 0,
-                                "title": "Value",
-                                "type": "string"
-                            }
-                        },
-                        "title": "Where",
-                        "type": "object"
-                    }
-                },
-                "title": "Query",
-                "type": "object"
-            }
-        }
+        "type": "object"
     },
     {
         "key": "3ihg3mjdbqzv",
@@ -726,7 +517,7 @@
     {
         "key": "i1gjptcb2skq",
         "docType": "class",
-        "title": "Contracts",
+        "title": "Agreements",
         "description": "<p>Contracts between accounts about resources</p>",
         "parentId": "gzthjuyjca4s",
         "properties": {
@@ -1166,7 +957,7 @@
                     "properties": {
                         "action": {
                             "maxLength": 100,
-                            "title": "Height",
+                            "title": "Action",
                             "type": "string"
                         },
                         "stateId": {
@@ -1188,7 +979,7 @@
                 "title": "Next States",
                 "type": "array"
             },
-            "substateId": {
+            "substateIds": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "from": "1jrqyjoabx1a",
@@ -1220,7 +1011,7 @@
                     "properties": {
                         "action": {
                             "maxLength": 100,
-                            "title": "Height",
+                            "title": "Action",
                             "type": "string"
                         },
                         "stateId": {
@@ -1251,7 +1042,7 @@
         "title": "Processes",
         "description": "<p>Processes</p>",
         "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMGZmMDAiIGlkPSJzdmdfMSIgZD0ibTE1LjM3NSw3bC01LjM3NSwtNC40NmMtMC4zMDUsLTAuMjUzIC0wLjUzOSwtMC41NCAtMSwtMC41NGMtMC42MjUsMCAtMSwwLjUxNiAtMSwxbDAsM2wtNywwYy0wLjU1LDAgLTEsMC40NSAtMSwxbDAsMmMwLDAuNTUgMC40NSwxIDEsMWw3LDBsMCwzYzAsMC40ODQgMC4zNzUsMSAxLDFjMC40NjEsMCAwLjY5NSwtMC4yODcgMSwtMC41NGw1LjM3NSwtNC40NmMwLjM4MywtMC4zMTIgMC42MjUsLTAuNTU1IDAuNjI1LC0xcy0wLjI0MiwtMC42ODcgLTAuNjI1LC0xeiIvPgogPC9nPgo8L3N2Zz4=",
-        "parentId": "1jrqyjoabx1a",
+        "parentId": "nrioirgelhpi",
         "properties": {
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -2312,52 +2103,6 @@
             }
         },
         "subqueryIds": "tllcmvjazmz2",
-        "query": {
-            "from": "classes",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
-            "join": [
-                {
-                    "from": "classes",
-                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
-                    "join": [
-                        {
-                            "queryByName": "subClasses"
-                        },
-                        {
-                            "queryByName": "objects"
-                        }
-                    ],
-                    "pageId": "24cnex2sayeh",
-                    "queryName": "subClasses",
-                    "sortBy": "title",
-                    "where": {
-                        "docProp": "parentId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                },
-                {
-                    "from": "gzthjuyjca4s",
-                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
-                    "pageId": "24cnex2sayeh",
-                    "queryName": "objects",
-                    "sortBy": "name",
-                    "where": {
-                        "docProp": "classId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                }
-            ],
-            "pageId": "24cnex2sayeh",
-            "queryName": "standardModel",
-            "select": "title",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "gzthjuyjca4s"
-            }
-        },
         "type": "object"
     },
     {
@@ -2403,65 +2148,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "classes",
-            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
-            "join": [
-                {
-                    "from": "classes",
-                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
-                    "join": [
-                        {
-                            "queryByName": "ownerClasses"
-                        },
-                        {
-                            "queryByName": "owners"
-                        }
-                    ],
-                    "queryName": "ownerClasses",
-                    "select": "title",
-                    "where": {
-                        "docProp": "parentId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                },
-                {
-                    "from": "ikjyhlqewxs3",
-                    "join": [
-                        {
-                            "from": "dasprps1lrwf",
-                            "join": [
-                                {
-                                    "queryByName": "organizatinalUnits"
-                                }
-                            ],
-                            "queryName": "organizatinalUnits",
-                            "select": "name",
-                            "where": {
-                                "docProp": "parentOrgId",
-                                "operator": "eq",
-                                "value": "$fk"
-                            }
-                        }
-                    ],
-                    "queryName": "owners",
-                    "select": "name",
-                    "where": {
-                        "docProp": "classId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                }
-            ],
-            "queryName": "viewQuery",
-            "select": "title",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "ikjyhlqewxs3"
-            }
-        },
+        "subqueryIds": "lg2seb3lyals",
         "type": "object"
     },
     {
@@ -2699,76 +2386,7 @@
         "name": "Page Tree View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
-        "query": {
-            "from": "ikjyhlqewxs3",
-            "join": [
-                {
-                    "from": "pejdgrwd5qso",
-                    "join": [
-                        {
-                            "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUJGMEI5RkI2OUExMTFFM0IyNENGMTlBRjA3REE4OEMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUJGMEI5RkM2OUExMTFFM0IyNENGMTlBRjA3REE4OEMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QkYwQjlGOTY5QTExMUUzQjI0Q0YxOUFGMDdEQTg4QyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QkYwQjlGQTY5QTExMUUzQjI0Q0YxOUFGMDdEQTg4QyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pgl1Uy4AAAHGSURBVHjanFM7SwNBEP52b5ML8VnoL/BHWKqdaCHYiO/WgFgp2FiIlaSRiGinGHwgCAY1aqVi53+wMU0KRQwqedztObOXO08FkQzsze7NN9/MzswKz/OweXD14jpuu6Z9IFIKKMt6So31d24dXB1rrYcjZgjBGJlTfGDn2ckBlMoO4PnGpoTCRjbfwXZ27uvtRumjEhK0Jm1c39wPGQKOrMmx+FQKCVoIUKnWsLZz6lWrDi4u7xBJAJaUiMUVDAGnpkkrS4aAeMxCamKQyAREHYOQQiBpW1jP5n0CBtCVYRMjIwUdyhS1XHOMo6i7hkS0SdrN4PrJOqHZLKRzSMRjRheKL0bbMYX59MmXpiD8Pywms2R2z725qUG8flS5YIY5kJ+V5ytR9dGWjLMfZKQumFk+oqsIvybaX0zG50CznXGBqCjB9sooao5r6vEVWITa9J4+jAvnJUowvbRvOkED9MeSBvctg+Ceh6uTcF0NpaRfB4FfXeAMGBf4fctgZCFrIowv7uGh8IwJ0rayzDnQbGdcpMoeTduZ14iwnwweTiNiHhxvyu9vt5lsvkebvv3D03+J1Gf30QwSDUcX/W5vIInKpwADAKBBAEGN5kJNAAAAAElFTkSuQmCC",
-                            "join": [
-                                {
-                                    "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAa9JREFUeNqck7tKA0EUhv+5bGIheCkEiWgKu0SNNoJgYoiCMQn4NKltbHwaURAREzWFICgoWPgCFlHxUtiYZNZzZjYma1TU2Z1lmZnvP3P+MyPGNg92Gi1Tavk+AO6/aQJKCHhK7uo3grfW50EifxIgGOXtsxILID7ch63TWx7n98fmB5/yQgzM6iYFzowaZEoj6MHFdwrUIgbMamMHBS6ubwiQXSw9slfBZ6+MwdxsAszq9oQX6SNAO4gW8bqry3ML+MaFdYICqZnZD8GOgPZwWDmEkhKGoNzyCmLjcWTTi6EdVE9qkEp2CQTVU1piNZ+3UTiioW2mksmeFFJTU7i/q6PNaT9whiP7wmYOSFfnx+dnPDw92ZRcDnYWmnbLjB9OgX6lgmShAKhWKx3jLO9MzWWzX3jgRbC3v28XMbCWL2BsIo7cUiaUQuXomILoTwIECKVQKBbJAxk4bzCdSPR4ME2+tJqNj7S0cJVBVCvYaongBCkWMriv10MpcI962p1a6trj2hI81B/9dBV+uBfCMcxq8/pSG9w4Tjc4/O/vkoWZ5Q1PUh/A/9rLuwADAK8loV8tdNaPAAAAAElFTkSuQmCC",
-                                    "join": [
-                                        {
-                                            "from": "pylvseoljret",
-                                            "pageId": "qwhjia43h1s4",
-                                            "queryName": "views",
-                                            "select": "name",
-                                            "where": {
-                                                "docProp": "$key",
-                                                "operator": "eq",
-                                                "value": "$parentNode.viewId"
-                                            }
-                                        }
-                                    ],
-                                    "pageId": "ubuh53f1khpn",
-                                    "queryName": "widgets",
-                                    "select": "name",
-                                    "subDoc": "widgets"
-                                },
-                                {
-                                    "from": "pejdgrwd5qso",
-                                    "join": [
-                                        {
-                                            "queryByName": "tabs"
-                                        }
-                                    ],
-                                    "pageId": "icfdprzi442m",
-                                    "queryName": "SubPages",
-                                    "select": "name",
-                                    "where": {
-                                        "docProp": "$key",
-                                        "operator": "eq",
-                                        "value": "$parentNode.pageId"
-                                    }
-                                }
-                            ],
-                            "pageId": "gdfiwgatulea",
-                            "queryName": "tabs",
-                            "select": "name",
-                            "subDoc": "tabs"
-                        }
-                    ],
-                    "pageId": "icfdprzi442m",
-                    "queryName": "pages",
-                    "select": "name",
-                    "where": {
-                        "docProp": "classId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                }
-            ],
-            "queryName": "owner",
-            "select": "name",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "pejdgrwd5qso"
-            }
-        },
+        "subqueryIds": "4jicds3j34ay",
         "type": "object"
     },
     {
@@ -2777,47 +2395,7 @@
         "name": "View Tree View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
-        "query": {
-            "from": "ikjyhlqewxs3",
-            "join": [
-                {
-                    "from": "pylvseoljret",
-                    "pageId": "qwhjia43h1s4",
-                    "queryName": "views",
-                    "select": "name",
-                    "where": {
-                        "docProp": "classId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    },
-                    "join": [
-                        {
-                            "from": "pylvseoljret",
-                            "pageId": "qcd1eefe432r",
-                            "queryName": "queries",
-                            "select": "name",
-                            "where": {
-                                "docProp": "key",
-                                "operator": "in",
-                                "value": "#subqueryIds"
-                            },
-                            "join": [
-                                {
-                                    "queryByName": "queries"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "queryName": "owner",
-            "select": "name",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "pylvseoljret"
-            }
-        },
+        "subqueryIds": "tadmq5fujns1",
         "type": "object"
     },
     {
@@ -2905,54 +2483,6 @@
             },
             "initialQuery": {
                 "readOnly": false
-            },
-            "query": {
-                "properties": {
-                    "queryName": {
-                        "readOnly": false
-                    },
-                    "icon": {
-                        "readOnly": false
-                    },
-                    "select": {
-                        "readOnly": false
-                    },
-                    "from": {
-                        "readOnly": false
-                    },
-                    "where": {
-                        "properties": {
-                            "docProp": {
-                                "readOnly": false
-                            },
-                            "operator": {
-                                "readOnly": false
-                            },
-                            "value": {
-                                "readOnly": false
-                            }
-                        }
-                    },
-                    "pageId": {
-                        "readOnly": false
-                    },
-                    "menu": {
-                        "items": {
-                            "properties": {
-                                "action": {
-                                    "readOnly": false
-                                },
-                                "iconClass": {
-                                    "readOnly": false
-                                },
-                                "label": {
-                                    "readOnly": false
-                                }
-                            }
-                        }
-                    }
-                },
-                "type": "öbject"
             }
         },
         "query": {
@@ -3124,65 +2654,10 @@
     {
         "key": "1qpopibixvnh",
         "docType": "object",
-        "name": "States Tree View",
+        "name": "Processes Tree View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
-        "query": {
-            "from": "classes",
-            "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-            "join": [
-                {
-                    "from": "dlpwvptczyeb",
-                    "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-                    "join": [
-                        {
-                            "from": "classes",
-                            "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-                            "join": [
-                                {
-                                    "queryByName": "stateClasses"
-                                },
-                                {
-                                    "queryByName": "states"
-                                }
-                            ],
-                            "queryName": "stateClasses",
-                            "select": "name",
-                            "where": {
-                                "docProp": "parentId",
-                                "operator": "eq",
-                                "value": "$fk"
-                            }
-                        },
-                        {
-                            "from": "ikjyhlqewxs3",
-                            "pageId": "z2xnjsqcs5bj",
-                            "queryName": "states",
-                            "select": "name",
-                            "where": {
-                                "docProp": "classId",
-                                "operator": "eq",
-                                "value": "$fk"
-                            }
-                        }
-                    ],
-                    "queryName": "viewQuery",
-                    "select": "name",
-                    "where": {
-                        "docProp": "parentId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                }
-            ],
-            "queryName": "owner",
-            "select": "name",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "dlpwvptczyeb"
-            }
-        },
+        "subqueryIds": "lhrhr4tr1pv1",
         "type": "object"
     },
     {
@@ -3191,62 +2666,7 @@
         "name": "Agreements Tree View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
-        "query": {
-            "from": "classes",
-            "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-            "join": [
-                {
-                    "from": "i1gjptcb2skq",
-                    "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-                    "join": [
-                        {
-                            "from": "classes",
-                            "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-                            "join": [
-                                {
-                                    "queryByName": "agreementsClasses"
-                                },
-                                {
-                                    "queryByName": "agreemnents"
-                                }
-                            ],
-                            "queryName": "stateClasses",
-                            "select": "name",
-                            "where": {
-                                "docProp": "parentId",
-                                "operator": "eq",
-                                "value": "$fk"
-                            }
-                        },
-                        {
-                            "from": "i1gjptcb2skq",
-                            "pageId": "n1dvzgi132ap",
-                            "queryName": "agreemnents",
-                            "select": "name",
-                            "where": {
-                                "docProp": "classId",
-                                "operator": "eq",
-                                "value": "$fk"
-                            }
-                        }
-                    ],
-                    "queryName": "agreementsClasses",
-                    "select": "name",
-                    "where": {
-                        "docProp": "parentId",
-                        "operator": "eq",
-                        "value": "$fk"
-                    }
-                }
-            ],
-            "queryName": "owner",
-            "select": "name",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "i1gjptcb2skq"
-            }
-        },
+        "subqueryIds": "lhrhr4tr1pv1",
         "type": "object"
     },
     {
@@ -4339,6 +3759,196 @@
             "docProp": "classId",
             "operator": "eq",
             "value": "$fk"
+        }
+    },
+    {
+        "key": "4jicds3j34ay",
+        "docType": "object",
+        "name": "Pages Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "ikjyhlqewxs3",
+        "subqueryIds": [
+            "gfe35d3jtdbk"
+        ],
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "pejdgrwd5qso"
+        }
+    },
+    {
+        "key": "gfe35d3jtdbk",
+        "docType": "object",
+        "name": "Pages Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "pejdgrwd5qso",
+        "pageId": "icfdprzi442m",
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        },
+        "sortBy": "name"
+    },
+    {
+        "key": "tadmq5fujns1",
+        "docType": "object",
+        "name": "Views Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "ikjyhlqewxs3",
+        "subqueryIds": [
+            "zybmeeszytik"
+        ],
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "pylvseoljret"
+        }
+    },
+    {
+        "key": "zybmeeszytik",
+        "docType": "object",
+        "name": "Views Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "pylvseoljret",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "itypb41mkq2v"
+        ],
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        },
+        "sortBy": "name"
+    },
+    {
+        "key": "itypb41mkq2v",
+        "docType": "object",
+        "name": "Queries Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "pylvseoljret",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "itypb41mkq2v"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "#subqueryIds"
+        },
+        "sortBy": "name"
+    },
+    {
+        "key": "lg2seb3lyals",
+        "docType": "object",
+        "name": "Owners Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "mhi13xo2io4q"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "ikjyhlqewxs3"
+        }
+    },
+    {
+        "key": "mhi13xo2io4q",
+        "docType": "object",
+        "name": "Subclasses Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "subqueryIds": [
+            "mhi13xo2io4q",
+            "4gnvq2ctvtiw"
+        ],
+        "pageId": "24cnex2sayeh",
+        "sortBy": "title",
+        "where": {
+            "docProp": "parentId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "4gnvq2ctvtiw",
+        "docType": "object",
+        "name": "Account Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "gzthjuyjca4s",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
+        "pageId": "24cnex2sayeh",
+        "sortBy": "name",
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "lhrhr4tr1pv1",
+        "docType": "object",
+        "name": "Precesses Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
+        "subqueryIds": [
+            "aouorwuhz5cv"
+        ],
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "dwl1kwhalwj4"
+        }
+    },
+    {
+        "key": "aouorwuhz5cv",
+        "docType": "object",
+        "name": "Processes Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "pylvseoljret",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "5fcag1lt11gj"
+        ],
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        },
+        "sortBy": "name"
+    },
+    {
+        "key": "5fcag1lt11gj",
+        "docType": "object",
+        "name": "Initial State Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "5fcag1lt11gj"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "#substateIds"
         }
     }
 ]

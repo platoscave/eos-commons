@@ -218,8 +218,8 @@ export default {
         }
         return queryNames
       }
-      const queryNames = getQueriesByName(this.view.query)
-
+      //const queryNames = getQueriesByName(this.view.query)
+      return {currentObj: {}, subqueryIds: this.view.subqueryIds}
       return { fk: null, query: this.view.query, queryNames: queryNames, level: this.level,  currentObj: {}, subqueryIds: this.view.subqueryIds}
     }
   },
