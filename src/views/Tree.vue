@@ -187,21 +187,6 @@ export default {
     },
     customItemClickWithCtrl: function () {
       console.log('click + ctrl')
-    },
-    viewRootQueryObj: function () {
-      const getQueriesByName = (query) => {
-        let queryNames = {}
-        if (query.queryName) queryNames[query.queryName] = query
-        if (query.join) {
-          query.join.forEach((item) => {
-            queryNames = Object.assign(queryNames, getQueriesByName(item))
-          })
-        }
-        return queryNames
-      }
-      //const queryNames = getQueriesByName(this.view.query)
-      return {currentObj: {}, subqueryIds: this.view.subqueryIds}
-      return { fk: null, query: this.view.query, queryNames: queryNames, level: this.level,  currentObj: {}, subqueryIds: this.view.subqueryIds}
     }
   },
   created () {
