@@ -233,6 +233,10 @@
         "description": "<p>Balance sheet owned by users/organizations</p>",
         "parentId": "ync5iiwvtsf3",
         "properties": {
+            "name": {
+                "title": "Value",
+                "type": "number"
+            },
             "currency": {
                 "enum": [
                     "EUR",
@@ -240,19 +244,6 @@
                 ],
                 "title": "Currency",
                 "type": "string"
-            },
-            "value": {
-                "currency": {
-                    "enum": [
-                        "EUR",
-                        "USD"
-                    ],
-                    "title": "Currency",
-                    "type": "string"
-                },
-                "styleColumn": "width : 50px",
-                "title": "Value",
-                "type": "number"
             }
         },
         "type": "object"
@@ -1210,889 +1201,6 @@
         "ownerId": "eoscommonsio"
     },
     {
-        "key": "his5huquoiej",
-        "docType": "object",
-        "name": "Balance Sheet View",
-        "description": "<p>The standard balance sheet view</p>",
-        "classId": "pylvseoljret",
-        "ownerId": "eoscommonsio",
-        "properties": {
-            "accountReceivibale": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "qhybqzojgu3c",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Accounts Receivible -net",
-                "type": "number"
-            },
-            "accountsPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "fk1smvoky3xg",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Accounts Payable",
-                "type": "number"
-            },
-            "accumOtherComprehesiveIncome": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "2ldk2a2lqo35",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Accum Other Comprehensive Income",
-                "type": "number"
-            },
-            "assets": {
-                "col": 1,
-                "labelStyle": {
-                    "font-size": "1.2em",
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Assets"
-            },
-            "bondsPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "wjowivkwwidy",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Bonds Payable",
-                "type": "number"
-            },
-            "buildings": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "wgf2tigutjme",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Buildings",
-                "type": "number"
-            },
-            "commonStock": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "zob5kwxrv2y4",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Common Stock",
-                "type": "number"
-            },
-            "currentAssets": {
-                "col": 1,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Current Assets"
-            },
-            "currentLiabilities": {
-                "bold": "true",
-                "col": 2,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Current Libilities"
-            },
-            "equipment": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "1jexzlqdnhsu",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Equipment",
-                "type": "number"
-            },
-            "goodwill": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "bmsvo1ebgpxx",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Goodwill",
-                "type": "number"
-            },
-            "intangibleAssets": {
-                "col": 1,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Intangible Assets"
-            },
-            "intrestPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "ng4q2edt4hxu",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Intrest Payable",
-                "type": "number"
-            },
-            "inventory": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "nlmgc3dmrwxs",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Inventory",
-                "type": "number"
-            },
-            "investments": {
-                "col": 1,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "wrkevvx2cvzs",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Investments",
-                "type": "number"
-            },
-            "land": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "1rj2pxp22h2x",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Land",
-                "type": "number"
-            },
-            "landImprovements": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "txvkztvvgdgx",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Land Improvements",
-                "type": "number"
-            },
-            "lessAccumDeprecation": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "ft2ai3uocmxq",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Less: Accum Deprecation",
-                "type": "number"
-            },
-            "lessTreasuryStock": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "5ke5dozqwj34",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Less: Treasury Stock",
-                "type": "number"
-            },
-            "libilities": {
-                "col": 2,
-                "labelStyle": {
-                    "font-size": "1.2em",
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Liabilities"
-            },
-            "longTermLiabilities": {
-                "col": 2,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Long-Term Libilities"
-            },
-            "notesPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "jxduzc4ntt5a",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Notes Payable",
-                "type": "number"
-            },
-            "notesPayable2": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "wza5ek5naftn",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Notes Payable",
-                "type": "number"
-            },
-            "pettyCash": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "cgwdxsoekxr3",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Petty Cash",
-                "type": "number"
-            },
-            "prepaidInsurance": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "my142mxokill",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Prepaid Insurance",
-                "type": "number"
-            },
-            "propertyPlantEquipment": {
-                "col": 1,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Property, Plant and Equipment"
-            },
-            "retainedEarnings": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "1bqgan41c55z",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Retained Earnings",
-                "type": "number"
-            },
-            "stockoldersEquity": {
-                "col": 2,
-                "labelStyle": {
-                    "font-size": "1.2em",
-                    "font-weight": "bold"
-                },
-                "readOnly": true,
-                "row": 1,
-                "title": "Stockholder's Equity"
-            },
-            "supplies": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "x4i32i5xdwnb",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Supplies",
-                "type": "number"
-            },
-            "taxesPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "44y5au13dck2",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Taxes Payable",
-                "type": "number"
-            },
-            "temporaryInvestments": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "emssafohapp3",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Temporary Investments",
-                "type": "number"
-            },
-            "totalAssests": {
-                "col": 1,
-                "default": 0,
-                "labelStyle": {
-                    "font-size": "1.2em",
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "3ihg3mjdbqzv",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 2,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-size": "1.2em",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Assests",
-                "type": "number"
-            },
-            "totalCurrentAssests": {
-                "col": 1,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "zbi1e31jzb1u",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Current Assents",
-                "type": "number"
-            },
-            "totalCurrentLiabilities": {
-                "bold": true,
-                "col": 2,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "yiajzp3bwqsc",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Current Liabilities",
-                "type": "number"
-            },
-            "totalIntangibleAssests": {
-                "col": 1,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "3st1rw53qugx",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Intabgible Assets",
-                "type": "number"
-            },
-            "totalLiabilities": {
-                "col": 2,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "yiajzp3bwqsc",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Liabilities",
-                "type": "number"
-            },
-            "totalLibilitiesAndStock": {
-                "col": 2,
-                "default": 0,
-                "labelStyle": {
-                    "font-size": "1.2em",
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "sgefdtu1bttq",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 2,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-size": "1.2em",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Libilities and<br>Stockholder's Equity",
-                "type": "number"
-            },
-            "totalLongTermLiabilities": {
-                "col": 2,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "thrjrlfgcjrt",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Long-Term Liabilities",
-                "type": "number"
-            },
-            "totalPropPlantEquipment": {
-                "bold": true,
-                "col": 1,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "xpra3jnokvas",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Property, Plant and Equipment",
-                "type": "number"
-            },
-            "totalStockholdersEquity": {
-                "col": 2,
-                "default": 0,
-                "labelStyle": {
-                    "font-weight": "bold"
-                },
-                "query": {
-                    "from": "4r2rhlh4gvqw",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "border-top-color": "lightgrey",
-                    "border-top-style": "solid",
-                    "border-width": "1px",
-                    "font-weight": "bold",
-                    "padding-right": "10px"
-                },
-                "title": "Total Stockholders Equity",
-                "type": "number"
-            },
-            "tradeNames": {
-                "col": 1,
-                "default": 0,
-                "query": {
-                    "from": "hm1nlusa3c51",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Trade Names",
-                "type": "number"
-            },
-            "unearnedRevenues": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "reywu3lshttg",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Unearned Revenues",
-                "type": "number"
-            },
-            "wagesPayable": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "htl3fqiec35p",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Wages Payable",
-                "type": "number"
-            },
-            "warantyLiability": {
-                "col": 2,
-                "default": 0,
-                "query": {
-                    "from": "i5nl5d1sqfta",
-                    "select": "value",
-                    "where": {
-                        "docProp": "ownerId",
-                        "operator": "eq",
-                        "value": "$docId"
-                    }
-                },
-                "readOnly": true,
-                "row": 1,
-                "style": {
-                    "padding-right": "50px"
-                },
-                "title": "Waranty Liability",
-                "type": "number"
-            }
-        },
-        "type": "object"
-    },
-    {
         "key": "vzhw2vpaflmw",
         "docType": "object",
         "name": "Class Model Tree View",
@@ -2712,6 +1820,15 @@
         "type": "object"
     },
     {
+        "key": "vcde5e5rxwpg",
+        "docType": "object",
+        "name": "EC Resources Tree View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "subqueryIds": "znn3osz1igvm",
+        "type": "object"
+    },
+    {
         "key": "z2xnjsqcs5bj",
         "docType": "object",
         "name": "Processes Form Page",
@@ -2956,6 +2073,27 @@
                         "displayType": "Tree",
                         "name": "Document Tree",
                         "viewId": "4r3khpgxgq3i"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "1xiosn5ttuea",
+        "docType": "object",
+        "name": "EC Resources Tab Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "Vertical",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "EC Resources",
+                "widgets": [
+                    {
+                        "displayType": "Tree",
+                        "name": "EC Resources",
+                        "viewId": "vcde5e5rxwpg"
                     }
                 ]
             }
@@ -3342,6 +2480,10 @@
             {
                 "name": "Classes",
                 "pageId": "4lk3hxyyfac3"
+            },
+            {
+                "name": "ec resources",
+                "pageId": "1xiosn5ttuea"
             },
             {
                 "name": "Processes",
@@ -3931,6 +3073,62 @@
             "operator": "eq",
             "value": "$fk"
         }
+    },
+    
+    {
+        "key": "znn3osz1igvm",
+        "docType": "object",
+        "name": "EC Resources Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "sokmvpm4lbgu"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "nrioirgelhpi"
+        }
+    },
+    {
+        "key": "sokmvpm4lbgu",
+        "docType": "object",
+        "name": "EC Resources Subclasses Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "subqueryIds": [
+            "sokmvpm4lbgu", "p5vkzvapgwxg"
+        ],
+        "pageId": "",
+        "sortBy": "title",
+        "where": {
+            "docProp": "parentId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "p5vkzvapgwxg",
+        "docType": "object",
+        "name": "EC Resources Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "nrioirgelhpi",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            ""
+        ],
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        },
+        "sortBy": "name"
     },
     {
         "key": "lhrhr4tr1pv1",
