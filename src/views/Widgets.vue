@@ -2,12 +2,25 @@
     <div class="full-height">
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
-        <template  class="full-height" v-for="(widget, key) in widgets">
+        <div  class="full-height" v-for="(widget, key) in widgets " v-bind:key="key"  >
             <!-- Get rid of linting error
             <div v-bind:key="widget">-->
                 <!-- Document-->
                 <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Document'">
-                    <div>Widget {{ widget.displayType }}</div>
+                    <ec-document class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-document>
+                    <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
+                        <div v-if="editMode">
+                            <v-icon>done</v-icon>
+                        </div>
+                        <div v-else>
+                            <v-icon>edit</v-icon>
+                        </div>
+                    </v-btn>
+                </div>
+
+                <!-- Balance Sheet-->
+                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Balance Sheet'">
+                    <ec-balance-sheet class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-balance-sheet>
                 </div>
 
                 <!-- Tree-->
@@ -39,12 +52,12 @@
                 <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Form'">
                     <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
                     <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
-                        <template v-if="editMode">
-                            <v-icon>done</v-icon>
-                        </template>
-                        <template v-else>
-                            <v-icon>edit</v-icon>
-                        </template>
+                    <div v-if="editMode">
+                        <v-icon>done</v-icon>
+                    </div>
+                    <div v-else>
+                        <v-icon>edit</v-icon>
+                    </div>
                     </v-btn>
                 </div>
 
@@ -53,7 +66,7 @@
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
             <!--</div>-->
-        </template>
+        </div>
             <!--</v-layout>-->
         <!--</v-container>-->
     </div>

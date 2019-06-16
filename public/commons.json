@@ -1174,7 +1174,32 @@
         "description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
         "classId": "be1ub1vtofjo",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTCtCgrAAAAB/UlEQVQ4T31TW08aQRTev6cCJtWk6ZOJNupzq1WDeGmb4vVFo/DSpG1sWqNyEZVlRQRLXLHYJihQqLRemoIWb3iLRvh6ZiwC2bUP32bO+eZ8850zswKA/0KSI/B/TdBSnVdNFmN0UkZj/wwt1XnVZDGejUjQtM/Bt7ZJoZJXJIqRywEPO62o7F5AQ5+6C0WC4fLqGocn50gfn6GsxcIFmAtv8DvRpXtLgjwG37mR2P2D1Y0tXsgEGOp7lS5KAoaV9S3omsdwc5PFB3ENlV3uOwFNuxOez3Hado/A8ekFHnXb8WTIRSFgfOu7K87jcY+DUUoBmheev/bwE01TMkVAfd+sQkBjcMIdiDG6VECSv/F+tR0iFv/Z1LROKgQY6owFF/yTSmdQZbBxsqzFir2DDDZ39lHeZlcUMzAXkhzlIkI2m0PTsItbZw5qXliRowewsBrjArqueVWR2le3LoTozxRMlgAVxPFr74gn8zjKXCBAt/JxPgTj2DIaBiRo9dO8Ta1BhLgcgcDsOnwhmCc+wUzDe+8KweINQ5RjWPqSQDC8jciPJLZ/H/CHxW4qkkhi1h+F3bteOI09293UIU04DrMtiObRRVR1OHhbuk76H6jvCv0MtTWN8lYbqvXjcPrDBQE1sFmwk6WVGEzWIJ6OePDAYMfLN0tIpk9oC4S/0Zv8n5hu2/EAAAAASUVORK5CYII=",
-        "initialDocId": "575d4c3f2cf3d6dc3ed83151"
+        "subdocumentIds": "xqxkmto5njxi"
+    },
+    {
+        "key": "xqxkmto5njxi",
+        "docType": "object",
+        "name": "How Document",
+        "description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
+        "classId": "siutzqsj5dgc",
+        "ownerId": "eoscommonsio",
+        "subdocumentIds": ["jc2dv1u5rcp5", "rewk2w4kvavm"]
+    },
+    {
+        "key": "jc2dv1u5rcp5",
+        "docType": "object",
+        "name": "How Document 2",
+        "description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
+        "classId": "siutzqsj5dgc",
+        "ownerId": "eoscommonsio"
+    },
+    {
+        "key": "rewk2w4kvavm",
+        "docType": "object",
+        "name": "How Document 3",
+        "description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
+        "classId": "siutzqsj5dgc",
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "his5huquoiej",
@@ -2666,7 +2691,16 @@
         "name": "Agreements Tree View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
-        "subqueryIds": "lhrhr4tr1pv1",
+        "subqueryIds": "ixup4ajsmt1o",
+        "type": "object"
+    },
+    {
+        "key": "4r3khpgxgq3i",
+        "docType": "object",
+        "name": "Documents Tree View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "subqueryIds": "sd5zsuvlxdgf",
         "type": "object"
     },
     {
@@ -2681,7 +2715,7 @@
                 "widgets": [
                     {
                         "displayType": "Form",
-                        "name": "State Form",
+                        "name": "Processes Form",
                         "viewId": "wfejmbcgmmpm"
                     }
                 ]
@@ -2813,7 +2847,7 @@
     {
         "key": "gosud45ttatt",
         "docType": "object",
-        "name": "Resources Page Page",
+        "name": "Page Tab Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
@@ -2835,7 +2869,7 @@
     {
         "key": "e2vsbujn4blr",
         "docType": "object",
-        "name": "Resources View Page",
+        "name": "View Tab Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
@@ -2857,7 +2891,7 @@
     {
         "key": "mc144yoeeu33",
         "docType": "object",
-        "name": "Resources Processes Page",
+        "name": "Processes Tab Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
@@ -2879,7 +2913,7 @@
     {
         "key": "naavmwatxvsh",
         "docType": "object",
-        "name": "Resources Agreements Page",
+        "name": "Agreements Tab Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "Vertical",
@@ -2893,6 +2927,27 @@
                         "name": "Agreements Tree",
                         "pageId": "n1dvzgi132ap",
                         "viewId": "z4hnomj1itrk"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "4far2aqwurdo",
+        "docType": "object",
+        "name": "Document Tab Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "Vertical",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "Documents",
+                "widgets": [
+                    {
+                        "displayType": "Tree",
+                        "name": "Document Tree",
+                        "viewId": "4r3khpgxgq3i"
                     }
                 ]
             }
@@ -3311,7 +3366,7 @@
                 "name": "What",
                 "widgets": [
                     {
-                        "displayType": "Form",
+                        "displayType": "Document",
                         "name": "What Form",
                         "viewId": "qzc3hwzroplf"
                     }
@@ -3319,21 +3374,14 @@
             },
             {
                 "name": "How",
-                "widgets": [
-                    {
-                        "displayType": "Form",
-                        "name": "How Form",
-                        "viewId": ""
-                    }
-                ]
+                "pageId": "4far2aqwurdo"
             },
             {
                 "name": "Why",
                 "widgets": [
                     {
-                        "displayType": "Form",
-                        "name": "Why Form",
-                        "viewId": ""
+                        "displayType": "Document",
+                        "name": "Why Form"
                     }
                 ]
             },
@@ -3365,7 +3413,7 @@
                 "pageId": "mc144yoeeu33"
             },
             {
-                "name": "Contracts",
+                "name": "Agreements",
                 "pageId": "naavmwatxvsh"
             },
             {
@@ -3380,9 +3428,8 @@
                 "name": "Balance Sheet",
                 "widgets": [
                     {
-                        "displayType": "Form",
-                        "name": "Balance Sheet",
-                        "viewId": "his5huquoiej"
+                        "displayType": "Balance Sheet",
+                        "name": "Balance Sheet"
                     }
                 ]
             }
@@ -3428,27 +3475,6 @@
                 ]
             }
         ]
-    },
-    {
-        "key": "qzc3hwzroplf",
-        "docType": "object",
-        "name": "What Form View",
-        "classId": "pylvseoljret",
-        "ownerId": "eoscommonsio",
-        "properties": {
-            "description": {
-                "readOnly": false
-            }
-        },
-        "query": {
-            "from": "pejdgrwd5qso",
-            "where": {
-                "docProp": "$key",
-                "operator": "eq",
-                "value": "$fk"
-            }
-        },
-        "type": "object"
     },
     {
         "key": "mairnfr3iilv",
@@ -3865,7 +3891,7 @@
     {
         "key": "mhi13xo2io4q",
         "docType": "object",
-        "name": "Subclasses Query",
+        "name": "Owners Subclasses Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "classes",
@@ -3890,7 +3916,7 @@
         "ownerId": "eoscommonsio",
         "from": "gzthjuyjca4s",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
-        "pageId": "24cnex2sayeh",
+        "pageId": "44yiclbxugop",
         "sortBy": "name",
         "where": {
             "docProp": "classId",
@@ -3949,6 +3975,90 @@
             "docProp": "key",
             "operator": "in",
             "value": "#substateIds"
+        }
+    },
+    {
+        "key": "ixup4ajsmt1o",
+        "docType": "object",
+        "name": "Agreements Class Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
+        "subqueryIds": [
+            "ajhw5apzkiry"
+        ],
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "i1gjptcb2skq"
+        }
+    },
+    {
+        "key": "ajhw5apzkiry",
+        "docType": "object",
+        "name": "Agreements Subclasses Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "subqueryIds": [
+            "xlwwknje5cjt"
+        ],
+        "sortBy": "title",
+        "where": {
+            "docProp": "parentId",
+            "operator": "eq",
+            "value": "$fk"
+        }
+    },
+    {
+        "key": "xlwwknje5cjt",
+        "docType": "object",
+        "name": "Agreements Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "pylvseoljret",
+        "pageId": "n1dvzgi132ap",
+        "where": {
+            "docProp": "classId",
+            "operator": "eq",
+            "value": "$fk"
+        },
+        "sortBy": "name"
+    },
+    {
+        "key": "sd5zsuvlxdgf",
+        "docType": "object",
+        "name": "Document Root Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "siutzqsj5dgc",
+        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
+        "subqueryIds": [
+            "2vwvbhvflpp1"
+        ],
+        "where": {
+            "docProp": "$key",
+            "operator": "eq",
+            "value": "xqxkmto5njxi"
+        }
+    },
+    {
+        "key": "2vwvbhvflpp1",
+        "docType": "object",
+        "name": "Document Sub Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "siutzqsj5dgc",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "2vwvbhvflpp1"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "#subdocumentIds"
         }
     }
 ]

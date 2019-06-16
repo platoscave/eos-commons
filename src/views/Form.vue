@@ -2,7 +2,6 @@
   <div>
     <!-- Wait for data and schema to arrive -->
     <v-container v-if="schema && data">
-      <div>viewId {{ schema.key }}</div>
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in schema.properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
@@ -22,10 +21,7 @@
                 v-html="data[propName] ? data[propName] : property.default"
               ></div>
               <div v-else>
-                <div
-                  class="readonlyoutput"
-                  v-html="data[propName] ? data[propName] : property.default"
-                ></div>
+                <wysiwyg class="readonlyoutput" v-model="data[propName]"/>
               </div>
             </div>
 
@@ -73,8 +69,9 @@
             <!-- Enum -->
             <div v-else-if="property.enum">
               <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
-              <div v-else>
+              <div v-else >
                 <v-select
+                 class="readonlyoutput"
                   v-bind:label="property.title"
                   v-model="data[propName]"
                   v-bind:readonly="!editMode || property.readOnly || property.enum.length < 2"
@@ -101,7 +98,7 @@
               <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
               <div v-else>
                 <v-text-field
-                  class="inputclass"
+                  class="readonlyoutput"
                   v-bind:readonly="property.readOnly || !editMode"
                   v-bind:value="data[propName]"
                   single-line

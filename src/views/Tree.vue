@@ -14,6 +14,7 @@
                 ref="tree2">
             <template slot-scope="_">
                 <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
+                  <!-- <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
                     <img class="tree-default tree-icon" :src="_.model.Xdata.icon" role="presentation" v-if="!_.model.loading">
                     {{_.model.text}}
                     <button style="border: 0px; background-color: transparent; cursor: pointer;" @click="customItemClick(_.vm, _.model, $event)"><i class="fa fa-remove"></i></button>
@@ -55,7 +56,6 @@ export default {
           })
         } 
         else {
-          let promises = []
           this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then(result => {
             resolve(result)
           })

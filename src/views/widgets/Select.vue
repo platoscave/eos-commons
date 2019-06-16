@@ -4,7 +4,7 @@
       <div class="readonlyoutput" v-if="readonly || items.length < 2">{{ selectedText }}</div>
       <div v-else>
         <v-select
-          class="custom"
+          class="custom readonlyoutput"
           v-bind:label="property.title"
           v-model="selected"
           :items="items"

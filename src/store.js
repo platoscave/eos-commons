@@ -188,7 +188,7 @@ const store = new Vuex.Store({
         if (operator === 'eq') {
           if (docProp === '$key') {
             // Get single value based on key
-            let result = await store.dispatch('getCommonByKey', value)
+            let result = await ApiService.getCommonByKey(value)
             return [result]
           } else resultsArr = await ApiService.queryByIndex(docProp, value)
         }
@@ -197,7 +197,7 @@ const store = new Vuex.Store({
           let prommisesArr = []
           if (!Array.isArray(value)) value = [value]
           value.forEach(key => {
-            prommisesArr.push(store.dispatch('getCommonByKey', key))
+            prommisesArr.push(ApiService.getCommonByKey(key))
           })
           resultsArr = await Promise.all(prommisesArr)
         }
@@ -249,54 +249,61 @@ const store = new Vuex.Store({
     },
 
     treeQuery: async function (store, queryObj) {
-      const getIconFromClassById = (classId) => {
-        return store.dispatch('getCommonByKey', classId).then(classObj => {
-          if (classObj.icon) return classObj.icon
-          else if (classObj.parentId) return getIconFromClassById(classObj.parentId)
-          return '' // set to default icon
-        })
-      }
-      const getPageIdFromClassById = (classId) => {
-        return store.dispatch('getCommonByKey', classId).then(classObj => {
-          if (classObj.pageId) return classObj.pageId
-          else if (classObj.parentId) return getPageIdFromClassById(classObj.parentId)
-          return '' // set to default pageId
-        })
-      }
-      const getChildQueryObj = (fk) => {
-        let queryArr = []
-        if (queryObj.query.join) {
-          queryObj.query.join.forEach((query) => {
-            // Query referenced by name
-            if (query.queryByName) queryArr.push(queryObj.queryNames[query.queryByName])
-            // Query as object
-            else queryArr.push(query)
-          })
-        }
-        return { fk: fk, queryArr: queryArr, queryNames: queryObj.queryNames, level: queryObj.level }
-      }
-      if (queryObj.fk === 'vzhw2vpaflmw') debugger
 
-      const getTreeNodes = async (queryObj) => {
-        // Execute the query
-        let resultsArr = await store.dispatch('query', queryObj)
+      // Get the default icon from the first ancestor class that has one
+      const getIconFromClassById = async classId => {
+        let classObj = await ApiService.getCommonByKey(classId)
+        if (classObj.icon) return classObj.icon
+        else if (classObj.parentId) return await getIconFromClassById(classObj.parentId)
+        return '' // set to default icon
+      }
 
-        // Normalize the results so that they are suited for the tree
+      // Get the default pageId from the first ancestor class that has one
+      const getPageIdFromClassById = async classId => {
+        let classObj = await ApiService.getCommonByKey(classId)
+        if (classObj.pageId) return classObj.pageId
+        else if (classObj.parentId) return await getPageIdFromClassById(classObj.parentId)
+        return '' // set to default pageId
+      }
+
+      // Execute the queryObj to see if there are any grandchildren
+      // This feels a bit waistful 
+      const getGrandChildrenLength = async queryObj => {
+        let subqueryIdsArr = queryObj.subqueryIds
+        if(!subqueryIdsArr) return true
+        if(!Array.isArray(subqueryIdsArr)) subqueryIdsArr = [subqueryIdsArr]
+        let grandChildrenPromises = subqueryIdsArr.map(async subqueryId => {
+          let query = await ApiService.getCommonByKey(subqueryId)
+          return await store.dispatch('query', { currentObj: queryObj.currentObj, query: query })
+        })
+        let grandChildrenArrArr =  await Promise.all(grandChildrenPromises)
+        let grandChildrenArr = Vue._.union.apply(null, grandChildrenArrArr)
+        return grandChildrenArr.length === 0
+      }
+
+      // Normalize the results so that they are suited for the tree
+      const makeNodesFromResults = async (resultsArr, queryObj) => {
+
         let treeNodePromissesArr = resultsArr.map(async item => {
           let icon = queryObj.query.icon ? queryObj.query.icon : item.icon
-          if (!icon) icon = await getIconFromClassById(item.classId)
+          // Get the default icon from the class
+          if (!icon) icon = await getIconFromClassById(item.classId ? item.classId : item.parentId)
 
           let pageId = queryObj.query.pageId ? queryObj.query.pageId : item.pageId
+          // Get the default icon from the class          
           if (!pageId && item.classId) pageId = await getPageIdFromClassById(item.classId)
 
           const ids = store.state.levelIdsArr[queryObj.level + 1]
           const selected = ids ? ids.selectedObjId === item.key : false
+          const grandChildrenQueryObj = { currentObj: item, subqueryIds: queryObj.query.subqueryIds }
+          const opened = !!store.state.isOpened[item.key]
+          const isLeaf = await getGrandChildrenLength(grandChildrenQueryObj)
 
           return {
             key: item.key,
             text: item.title ? item.title : item.name,
             Xdata: {
-              queryArrObj: { currentObj: item, subqueryIds: queryObj.query.subqueryIds },
+              queryArrObj: grandChildrenQueryObj,
               pageId: pageId,
               icon: icon
             },
@@ -311,8 +318,8 @@ const store = new Vuex.Store({
               loading: true,
               children: []
             }],
-            isLeaf: false,
-            opened: !!store.state.isOpened[item.key],
+            isLeaf: isLeaf,
+            opened: opened,
             // opened: false,
             selected: selected,
             loading: false
@@ -320,17 +327,23 @@ const store = new Vuex.Store({
         })
 
         let treeNodeArr = await Promise.all(treeNodePromissesArr)
-        // console.log('done', queryObj.query, treeNodeArr)
         return treeNodeArr
       }
+      // if (queryObj.fk === 'vzhw2vpaflmw') debugger
 
       // Get the query
       let query = await ApiService.getCommonByKey(queryObj.subqueryIds)
 
-      let treeNodeArr = await getTreeNodes({ currentObj: queryObj.currentObj, query: query })
+      // Execute the query
+      let queryObj2 = { currentObj: queryObj.currentObj, query: query }
+      let resultsArr = await store.dispatch('query', queryObj2)
+
+      // Normalize the results
+      let treeNodeArr = await makeNodesFromResults(resultsArr, queryObj2)
+
       return treeNodeArr
 
-      // Prepoulate the grandchildren, so that we know if this is a leaf node.
+/*       // Prepoulate the grandchildren, so that we know if this is a leaf node.
       let grandchildrenPromises = treeNodeArr.map(async item => {
         // debugger
         if (!item.Xdata.queryArrObj.subqueryIds) return []
@@ -352,10 +365,10 @@ const store = new Vuex.Store({
 
       let treeNodesWithGrandChildrem = await Promise.all(grandchildrenPromises)
       debugger
-      return treeNodesWithGrandChildrem
+      return treeNodesWithGrandChildrem */
     },
     mergeAncestorClasses(store, classId) {
-      return store.dispatch('getCommonByKey', classId).then((classObj) => {
+      return ApiService.getCommonByKey(classId).then((classObj) => {
         if (classObj.parentId) {
           return store.dispatch('mergeAncestorClasses', classObj.parentId).then((parentClassObj) => {
             return Vue._.merge(parentClassObj, classObj)
@@ -387,7 +400,7 @@ const store = new Vuex.Store({
         if (classObj.definitions) viewObj.definitions = classObj.definitions
       }
 
-      return store.dispatch('getCommonByKey', viewId).then((viewObj) => {
+      return ApiService.getCommonByKey(viewId).then((viewObj) => {
         const classId = Vue._.get(viewObj, 'query.from')
         if (classId && classId !== 'classes') {
           return store.dispatch('mergeAncestorClasses', classId).then((classObj) => {
