@@ -1,39 +1,57 @@
 <template>
   <div>
-    <v-container v-if="data">
+    <v-container v-if="bsItemArr.length">
       <v-layout row>
-        <v-flex class="readonlyoutput">{{data[0].title}}</v-flex>
-        <v-flex class="readonlyoutput">{{data[1].title}}</v-flex>
+        <v-flex class="readonlyoutput">
+          {{bsItemArr[0].title}}
+          <ec-bsitems v-bind:parent-id="bsItemArr[0].key"></ec-bsitems>
+          <v-layout row>
+            <v-flex xs9>Total {{bsItemArr[0].title}}</v-flex>
+            <v-flex xs3 class="sumTotal value">{{bsItemArr[0].value.toLocaleString()}}</v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex class="readonlyoutput">
+          {{bsItemArr[1].title}}
+          <ec-bsitems v-bind:parent-id="bsItemArr[1].key"></ec-bsitems>
+          <v-layout row>
+            <v-flex xs9>Total {{bsItemArr[1].title}}</v-flex>
+            <v-flex xs3 class="sumTotal value">{{bsItemArr[1].value.toLocaleString()}}</v-flex>
+          </v-layout>
+        </v-flex>
       </v-layout>
     </v-container>
   </div>
 </template>
 <script>
-import Vue from "vue";
-
 export default {
   props: {
     level: Number
   },
   data() {
     return {
-      data: {}
+      bsItemArr: {}
     };
   },
   created() {
     let queryObj = {
       query: {
-        sortBy: 'title',
+        sortBy: "title",
         where: {
-          docProp: 'parentId',
-          operator: 'eq',
-          value: '5jdnjqxsqmgn'
+          docProp: "parentId",
+          operator: "eq",
+          value: "5jdnjqxsqmgn"
         }
       }
-    }
-    return this.$store.dispatch('query', queryObj).then((resultsArr) => {
-      this.data = resultsArr
-    })
+    };
+    return this.$store.dispatch("query", queryObj).then(resultsArr => {
+      let enrichedBsItemsPromissesArr = resultsArr.map(async bsItem => {
+        bsItem.value = Math.floor(Math.random() * (10000 - 100)) + 100;
+        return bsItem;
+      });
+      Promise.all(enrichedBsItemsPromissesArr).then(enrichedBsItems => {
+        this.bsItemArr = enrichedBsItems;
+      });
+    });
     /* this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
       newVal => {
@@ -53,9 +71,14 @@ export default {
 .readonlyoutput {
   background-color: #ffffff0d;
   padding: 10px;
-  font-size: 16px;
-  line-height: 42px;
+  font-size: 20px;
   border-radius: 5px;
   margin: 4px;
+}
+.sumTotal {
+  border-top-style: solid;
+}
+.value {
+  text-align: right;
 }
 </style>

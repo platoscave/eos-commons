@@ -16,6 +16,7 @@ import ProcessModel from './views/ProcessModel.vue'
 import WorkflowModel from './views/WorkflowModel.vue'
 import Document from './views/Document.vue'
 import BalanceSheet from './views/BalanceSheet.vue'
+import BalanceSheetItems from './views/widgets/BalanceSheetItems.vue'
 import { sync } from 'vuex-router-sync'
 import wysiwyg from "vue-wysiwyg"
 
@@ -32,6 +33,7 @@ Vue.component('ec-process-model', ProcessModel)
 Vue.component('ec-workflow-model', WorkflowModel)
 Vue.component('ec-document', Document)
 Vue.component('ec-balance-sheet', BalanceSheet)
+Vue.component('ec-bsitems', BalanceSheetItems)
 
 global.THREE = require('../node_modules/three/three.js')
 global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')

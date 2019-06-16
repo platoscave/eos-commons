@@ -197,7 +197,6 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
 import EosApiService from "../services/EosApiService";
 
 export default {

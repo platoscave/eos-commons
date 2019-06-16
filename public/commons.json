@@ -465,9 +465,17 @@
     {
         "key": "sgefdtu1bttq",
         "docType": "class",
-        "title": "Liabilities",
+        "title": "Liabilities and Stockholder's Equity",
         "description": "<p>Liabilities owned by users/organizations</p>",
         "parentId": "5jdnjqxsqmgn",
+        "type": "object"
+    },
+    {
+        "key": "u4prbnlw4emq",
+        "docType": "class",
+        "title": "Liabilities",
+        "description": "<p>Liabilities owned by users/organizations</p>",
+        "parentId": "sgefdtu1bttq",
         "type": "object"
     },
     {
@@ -821,7 +829,7 @@
         "docType": "class",
         "title": "Current Libilities",
         "description": "<p>Current Libilities owned by users/organizations</p>",
-        "parentId": "sgefdtu1bttq",
+        "parentId": "u4prbnlw4emq",
         "type": "object"
     },
     {
@@ -885,7 +893,7 @@
         "docType": "class",
         "title": "Long-Term Libilities",
         "description": "<p>Long-Term Libilities owned by users/organizations</p>",
-        "parentId": "sgefdtu1bttq",
+        "parentId": "u4prbnlw4emq",
         "type": "object"
     },
     {
