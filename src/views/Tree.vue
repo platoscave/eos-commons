@@ -51,12 +51,12 @@ export default {
       loadData: function (oriNode, resolve) {
         if (!oriNode || !oriNode.data.key) {
           let viewQueryObj = {currentObj: {}, subqueryIds: this.$parent.view.subqueryIds}
-          this.$store.dispatch('treeQuery', viewQueryObj).then((result) => {
+          this.$store.dispatch('getTreeNodes', viewQueryObj).then((result) => {
             resolve(result)
           })
         } 
         else {
-          this.$store.dispatch('treeQueryArr', oriNode.data.Xdata.queryArrObj).then(result => {
+          this.$store.dispatch('getTreeNodes', oriNode.data.Xdata.queryArrObj).then(result => {
             resolve(result)
           })
         }

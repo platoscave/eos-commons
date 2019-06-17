@@ -6,7 +6,7 @@
             <!-- Get rid of linting error
             <div v-bind:key="widget">-->
                 <!-- Document-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Document'">
+                <div class="full-height" v-if="widget.displayType === 'Document'">
                     <ec-document class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-document>
                     <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                         <div v-if="editMode">
@@ -19,37 +19,37 @@
                 </div>
 
                 <!-- Balance Sheet-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Balance Sheet'">
+                <div class="full-height" v-if="widget.displayType === 'Balance Sheet'">
                     <ec-balance-sheet class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-balance-sheet>
                 </div>
 
                 <!-- Tree-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Tree'">
+                <div class="full-height" v-if="widget.displayType === 'Tree'">
                     <ec-tree class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
                 </div>
 
                 <!-- Table -->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Table'">
+                <div class="full-height" v-if="widget.displayType === 'Table'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
 
                 <!-- 3dClassModel-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === '3D Class Model'">
+                <div class="full-height" v-if="widget.displayType === '3D Class Model'">
                     <ec-class-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-class-model>
                 </div>
 
                 <!-- ProcessModel-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Process Model'">
+                <div class="full-height" v-if="widget.displayType === 'Process Model'">
                     <ec-process-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
                 </div>
 
                 <!-- WorkflowModel-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Workflow Model'">
+                <div class="full-height" v-if="widget.displayType === 'Workflow Model'">
                     <ec-workflow-model class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-workflow-model>
                 </div>
 
                 <!-- Form-->
-                <div class="full-height" v-bind:key="key" v-if="widget.displayType === 'Form'">
+                <div class="full-height" v-if="widget.displayType === 'Form'">
                     <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
                     <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                     <div v-if="editMode">
@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- HomePage-->
-                <div v-bind:key="key" v-if="widget.displayType === 'HomePage'">
+                <div v-if="widget.displayType === 'HomePage'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
             <!--</div>-->

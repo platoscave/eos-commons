@@ -52,10 +52,10 @@ export default {
     this.$store.dispatch("query", queryObj).then(resultsArr => {
       let enrichedBsItemsPromissesArr = resultsArr.map(async bsItem => {
         queryObj.query.where.value = bsItem.key;
-        const subBsItemsArray = await this.$store.dispatch("query", queryObj);
+        const subBsItemsArray = await this.$store.dispatch("query", queryObj)
         //debugger
-        if (subBsItemsArray.length > 0) this.bottomClass = false;
-        bsItem.value = Math.floor(Math.random() * (10000 - 100)) + 100;
+        if (subBsItemsArray.length > 0) this.bottomClass = false
+        bsItem.value = Math.floor(Math.random() * (100000 - 10)) + 10;
         return bsItem;
       });
       Promise.all(enrichedBsItemsPromissesArr).then(enrichedBsItems => {
