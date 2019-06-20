@@ -164,12 +164,16 @@ const store = new Vuex.Store({
 				return flattend
 			}
 
-			let query = query = queryObj.query
+			let query = queryObj.query
+			// queryId takes precidence over query
+			if(queryObj.queryId) query = await ApiService.getCommonByKey(queryObj.queryId)
+
 			const where = query.where
 			const from = query.from
+
 			let resultsArr = []
-			// TODO right now the where and from clauses are treated sepparatly. The where clause takes prekeyence
-			// The should be combined
+			// TODO right now the where and from clauses are treated sepparatly. The where clause takes precedence
+			// They should be combined
 			if (where) {
 				const docProp = where.docProp
 				const operator = where.operator
@@ -180,8 +184,11 @@ const store = new Vuex.Store({
 
 				// Replace value with currentObj.path
 				else if (value.startsWith('#')) {
+					let currentObj = queryObj.currentObj
+					// If currentObj is a string, assume it's a key
+					if(typeof currentObj === 'string') query = await ApiService.getCommonByKey(currentObj)
 					const path = value.substr(1)
-					value = Vue._.get(queryObj.currentObj, path)
+					value = Vue._.get(currentObj, path)
 				}
 				if (!value) return []
 
@@ -324,7 +331,7 @@ const store = new Vuex.Store({
 				// Get the query
 				let query = await ApiService.getCommonByKey(queryId)
 
-				// Execute the query. The query action needs a materalized query
+				// Execute the query.
 				let queryObj2 = { currentObj: queryObj.currentObj, query: query }
 				let resultsArr = await store.dispatch('query', queryObj2)
 
@@ -346,7 +353,7 @@ const store = new Vuex.Store({
 				if (classObj.parentId) {
 					let parentClassObj = await mergeAncestorClasses(classObj.parentId)
 					return Vue._.merge(parentClassObj, classObj, (a, b) => {
-						if (_.isArray(a)) return a.concat(b) // Arrays must be concanated
+						if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
 					})
 				}
 				else return classObj
@@ -360,7 +367,7 @@ const store = new Vuex.Store({
 					if (classProp) {
 						const viewProp = viewObj.properties[propName]
 						Vue._.merge(viewProp, classProp, (a, b) => {
-							if (_.isArray(a)) return a.concat(b)
+							if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
 							/*
 							if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
 							if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength

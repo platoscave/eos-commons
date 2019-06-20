@@ -242,8 +242,8 @@ export default {
           if (!newVal) return;
           this.$store.dispatch("getCommonByKey", newVal).then(data => {
             console.log('data', data)
-            this.data = data;
-          });
+            this.data = Object.assign({}, data) // Force reactive update
+          })
         },
         { immediate: true }
       );
