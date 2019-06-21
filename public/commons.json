@@ -15,7 +15,8 @@
             "classId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes"
+                    "from": "classes",
+                    "sortBy": "title"
                 },
                 "title": "Class",
                 "type": "string"
@@ -72,7 +73,8 @@
             "pageId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "pejdgrwd5qso"
+                    "from": "pejdgrwd5qso",
+                    "sortBy": "name"
                 },
                 "title": "Page",
                 "type": "string"
@@ -90,7 +92,8 @@
             "ownerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "ikjyhlqewxs3"
+                    "from": "ikjyhlqewxs3",
+                    "sortBy": "name"
                 },
                 "title": "Owner",
                 "type": "string"
@@ -157,7 +160,8 @@
                         "pageId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "pejdgrwd5qso"
+                                "from": "pejdgrwd5qso",
+                                "sortBy": "name"
                             },
                             "title": "Page",
                             "type": "string"
@@ -198,7 +202,8 @@
                                     "pageId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                                         "query": {
-                                            "from": "pejdgrwd5qso"
+                                            "from": "pejdgrwd5qso",
+                                            "sortBy": "name"
                                         },
                                         "title": "Page",
                                         "type": "string"
@@ -206,7 +211,8 @@
                                     "viewId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                                         "query": {
-                                            "from": "pylvseoljret"
+                                            "from": "pylvseoljret",
+                                            "sortBy": "name"
                                         },
                                         "title": "View",
                                         "type": "string"
@@ -266,7 +272,8 @@
             "from": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes"
+                    "from": "classes",
+                    "sortBy": "name"
                 },
                 "title": "From",
                 "type": "string"
@@ -288,7 +295,8 @@
                             "title": "Subquery",
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "q234ooehrk5v"
+                                "from": "q234ooehrk5v",
+                                "sortBy": "name"
                             },
                             "type": "string"
                         }
@@ -332,7 +340,8 @@
             "pageId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "pejdgrwd5qso"
+                    "from": "pejdgrwd5qso",
+                    "sortBy": "name"
                 },
                 "title": "Page",
                 "type": "string"
@@ -393,7 +402,8 @@
                         "pageId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "siutzqsj5dgc"
+                                "from": "siutzqsj5dgc",
+                                "sortBy": "name"
                             },
                             "title": "Sub Ducument",
                             "type": "string"
@@ -424,7 +434,8 @@
                 "title": "Initial Query",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "q234ooehrk5v"
+                    "from": "q234ooehrk5v",
+                    "sortBy": "name"
                 },
                 "type": "string"
             },
@@ -527,7 +538,7 @@
             "buyerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dasprps1lrwf",
+                    "from": "ikjyhlqewxs3",
                     "sortBy": "name"
                 },
                 "title": "Buyer",
@@ -540,7 +551,7 @@
             "sellerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dasprps1lrwf",
+                    "from": "ikjyhlqewxs3",
                     "sortBy": "name"
                 },
                 "title": "Seller",
@@ -549,16 +560,16 @@
             "assetId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dasprps1lrwf",
+                    "from": "3ihg3mjdbqzv",
                     "sortBy": "name"
                 },
-                "title": "Assest",
+                "title": "Asset",
                 "type": "string"
             },
             "processId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dasprps1lrwf",
+                    "from": "dwl1kwhalwj4",
                     "sortBy": "name"
                 },
                 "title": "Process",
@@ -567,7 +578,7 @@
             "sellerProcessId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dasprps1lrwf",
+                    "from": "dwl1kwhalwj4",
                     "sortBy": "name"
                 },
                 "title": "Seller Process",
@@ -603,7 +614,8 @@
             "ownerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "ikjyhlqewxs3"
+                    "from": "ikjyhlqewxs3",
+                    "sortBy": "name"
                 },
                 "title": "Owner",
                 "type": "string"
@@ -611,7 +623,8 @@
             "parentOrgId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "pae2bfbrab5n"
+                    "from": "pae2bfbrab5n",
+                    "sortBy": "name"
                 },
                 "title": "Parent Organization",
                 "type": "string"
@@ -623,7 +636,8 @@
                 },
                 "minItems": 0,
                 "query": {
-                    "from": "dlpwvptczyeb"
+                    "from": "dlpwvptczyeb",
+                    "sortBy": "name"
                 },
                 "title": "Responsible for States",
                 "type": "array",
@@ -1362,7 +1376,7 @@
         "currency": "EUR",
         "processId": "ynaxakdc423e",
         "sellerProcessId": "h3q1vchxahoh",
-        "sellerId": "kdiqu24wclde"
+        "sellerId": "bicyleshop11"
     },
     {
         "key": "ynaxakdc423e",
@@ -1385,7 +1399,7 @@
             }
         ],
         "substateId": "3r5kgovlor1o",
-        "ownerId": "kdiqu24wclde"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "h3q1vchxahoh",
@@ -1402,7 +1416,7 @@
             }
         ],
         "substateId": "yefagaab4ua2",
-        "ownerId": "kdiqu24wclde"
+        "ownerId": "bicyleshop11"
     },
     {
         "key": "vvcx4zgoogxv",
@@ -1412,7 +1426,7 @@
         "classId": "nlmgc3dmrwxs",
         "currency": "EUR",
         "imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "value": 150
     },
     {
@@ -1423,7 +1437,7 @@
         "classId": "nlmgc3dmrwxs",
         "currency": "EUR",
         "imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "value": 160
     },
     {
@@ -1434,7 +1448,7 @@
         "classId": "nlmgc3dmrwxs",
         "currency": "EUR",
         "imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "value": 155
     },
     {
@@ -1442,7 +1456,7 @@
         "docType": "object",
         "classId": "zob5kwxrv2y4",
         "currency": "EUR",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "value": 465
     },
     {
@@ -1622,8 +1636,16 @@
             "name": {
                 "readOnly": false
             },
-            "initialQuery": {
+            "subqueryIds": {
                 "readOnly": false
+            },
+            "required": {
+                "readOnly": false
+
+            },
+            "properties": {
+                "readOnly": false
+
             }
         },
         "query": {
@@ -1723,9 +1745,9 @@
         "involvedInOfferingIds": [
             "577909043c6d3cd598a5a39e"
         ],
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "pageId": "34dgfl43da2i",
-        "parentOrgId": "kdiqu24wclde",
+        "parentOrgId": "bicyleshop11",
         "responsibleForStateIds": [
             "ynaxakdc423e"
         ]
@@ -1739,9 +1761,9 @@
         "involvedInOfferingIds": [
             "577909043c6d3cd598a5a39e"
         ],
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "bicyleshop11",
         "pageId": "34dgfl43da2i",
-        "parentOrgId": "kdiqu24wclde",
+        "parentOrgId": "bicyleshop11",
         "responsibleForStateIds": [
             "3r5kgovlor1o"
         ]
@@ -1766,7 +1788,7 @@
             "product escrow",
             "payment escrow"
         ],
-        "ownerId": "kdiqu24wclde"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "h15wtpxaetki",
@@ -1782,7 +1804,7 @@
         "execute": [
             "return payment"
         ],
-        "ownerId": "kdiqu24wclde"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "3hxkire2nn4v",
@@ -1790,7 +1812,7 @@
         "name": "Fulfilled",
         "description": "<p>Fulfilled</p>",
         "classId": "5xwbhxgihspd",
-        "ownerId": "kdiqu24wclde"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "1qpopibixvnh",
@@ -1836,7 +1858,7 @@
         "ownerId": "eoscommonsio",
         "tabs": [
             {
-                "name": "States",
+                "name": "Process",
                 "widgets": [
                     {
                         "displayType": "Form",
@@ -2410,7 +2432,8 @@
             "parentId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes"
+                    "from": "classes",
+                    "sortBy": "name"
                 },
                 "title": "Super Class",
                 "type": "string"
@@ -2471,7 +2494,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Accounts",
@@ -2510,7 +2533,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "What",
@@ -2548,7 +2571,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Account Details",
@@ -2592,7 +2615,7 @@
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
-        "ownerId": "kdiqu24wclde",
+        "ownerId": "eoscommonsio",
         "tabs": [
             {
                 "name": "Details",
@@ -3133,7 +3156,7 @@
     {
         "key": "lhrhr4tr1pv1",
         "docType": "object",
-        "name": "Precesses Class Query",
+        "name": "Processes Class Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "classes",
@@ -3154,7 +3177,7 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "pylvseoljret",
-        "pageId": "qwhjia43h1s4",
+        "pageId": "z2xnjsqcs5bj",
         "subqueryIds": [
             "5fcag1lt11gj"
         ],

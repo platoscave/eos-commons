@@ -20,14 +20,6 @@ module.exports = {
       color: 0xAAAAFF,
       depth: 3
     },
-    parentOrgId: {
-      color: 0xFFFFAA,
-      depth: 4
-    },
-    responsibleForStateIds: {
-      color: 0xFFFFAA,
-      depth: 5
-    },
     substateId: {
       color: 0xAAFFFF,
       depth: 6

@@ -90,7 +90,8 @@ export default class ClassObject3d extends THREE.Object3D {
     assocsArr.forEach(assoc => {
       let assocToObj3d = placeholderObj3d.getObjectByProperty('key', assoc.key)
 
-      this.drawTubeTopSideToBottom(assocToObj3d, assoc.key)
+      if(!assocToObj3d) console.error('Assoc destination mot found', assoc)
+      else this.drawTubeTopSideToBottom(assocToObj3d, assoc.key)
     })
   }
   drawObjectToClassBeam (length) {
