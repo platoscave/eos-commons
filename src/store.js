@@ -178,7 +178,8 @@ const store = new Vuex.Store({
 				const docProp = where.docProp
 				const operator = where.operator
 				let value = where.value
-
+				const mapValue = where.mapValue
+if(value === '#nextstateIds') debugger
 				// Replace value with foreigne key
 				if (value === '$fk') value = queryObj.currentObj.key
 
@@ -189,11 +190,22 @@ const store = new Vuex.Store({
 					if(typeof currentObj === 'string') query = await ApiService.getCommonByKey(currentObj)
 					const path = value.substr(1)
 					value = Vue._.get(currentObj, path)
+					
 				}
-				if (!value) return []
+				if(mapValue && Array.isArray(value)){
+					value = value.map( valueObj => {
+						console.log('valueObj[mapValue]', valueObj[mapValue])
+						return valueObj[mapValue]
+					})
+					console.log('value', value)
+				}
+				/* if (!value) {
+					// console.error('Invalid value in: ', queryObj)
+					return []
+				} */
 
 				if (operator === 'eq') {
-					if (docProp === '$key') {
+					if (docProp === 'key') {
 						// Get single value based on key
 						let result = await ApiService.getCommonByKey(value)
 						return [result]
@@ -204,7 +216,7 @@ const store = new Vuex.Store({
 					let prommisesArr = []
 					if (!Array.isArray(value)) value = [value]
 					value.forEach(key => {
-						prommisesArr.push(ApiService.getCommonByKey(key))
+						if (key) prommisesArr.push(ApiService.getCommonByKey(key))
 					})
 					resultsArr = await Promise.all(prommisesArr)
 				}

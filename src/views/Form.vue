@@ -1,5 +1,6 @@
 <template>
   <div>
+                          <div>{{viewId}}</div>
     <!-- Wait for data and schema to arrive -->
     <v-container v-if="schema && data">
       <!-- For each of the properties in schema -->

@@ -26,7 +26,7 @@ class IndexedDBApiService {
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
             if(!commonsStore.indexNames.contains(indexName)) {
-                console.log('Add index: ', indexName)
+                console.error('Add index: ', indexName)
                 resolve([])
                 return
             } 

@@ -992,7 +992,7 @@
                 "title": "Next States",
                 "type": "array"
             },
-            "substateIds": {
+            "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "from": "1jrqyjoabx1a",
@@ -1380,8 +1380,8 @@
     },
     {
         "key": "ynaxakdc423e",
-        "docType": "object",
-        "name": "Purchase",
+        "docType": "object Process",
+        "name": "Purchase Process",
         "description": "<p>Purchase</p>",
         "classId": "dwl1kwhalwj4",
         "nextStateIds": [
@@ -1404,7 +1404,7 @@
     {
         "key": "h3q1vchxahoh",
         "docType": "object",
-        "name": "Bicycle Shop",
+        "name": "Bicycle Shop Process",
         "description": "<p>Bicycle Shop Purchase Process</p>",
         "classId": "dwl1kwhalwj4",
         "nextStateIds": [
@@ -1611,7 +1611,7 @@
         "query": {
             "from": "pejdgrwd5qso",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "pejdgrwd5qso"
             }
@@ -1651,7 +1651,7 @@
         "query": {
             "from": "pylvseoljret",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "pylvseoljret"
             }
@@ -1729,7 +1729,7 @@
         "query": {
             "from": "q234ooehrk5v",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "$docId"
             }
@@ -1936,7 +1936,7 @@
         "query": {
             "from": "dlpwvptczyeb",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "$docId"
             }
@@ -1984,7 +1984,7 @@
         "query": {
             "from": "i1gjptcb2skq",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "$docId"
             }
@@ -2183,7 +2183,7 @@
         "query": {
             "from": "pejdgrwd5qso",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "$docId"
             }
@@ -2460,7 +2460,7 @@
         "query": {
             "from": "classes",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "$docId"
             }
@@ -2675,7 +2675,7 @@
         "query": {
             "from": "pae2bfbrab5n",
             "where": {
-                "docProp": "$key",
+                "docProp": "key",
                 "operator": "eq",
                 "value": "eoscommonsio"
             }
@@ -2919,7 +2919,7 @@
         "queryName": "standardModel",
         "select": "title",
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "gzthjuyjca4s"
         }
@@ -2971,7 +2971,7 @@
             "gfe35d3jtdbk"
         ],
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "pejdgrwd5qso"
         }
@@ -3002,7 +3002,7 @@
             "zybmeeszytik"
         ],
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "pylvseoljret"
         }
@@ -3165,7 +3165,7 @@
             "aouorwuhz5cv"
         ],
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "dwl1kwhalwj4"
         }
@@ -3176,7 +3176,7 @@
         "name": "Processes Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "pylvseoljret",
+        "from": "dwl1kwhalwj4",
         "pageId": "z2xnjsqcs5bj",
         "subqueryIds": [
             "5fcag1lt11gj"
@@ -3189,21 +3189,41 @@
         "sortBy": "name"
     },
     {
-        "key": "5fcag1lt11gj",
+        "key": "ydwhxijs4nrw",
         "docType": "object",
-        "name": "Initial State Query",
+        "name": "Next States Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "pageId": "qwhjia43h1s4",
         "subqueryIds": [
-            "5fcag1lt11gj"
+            "ydwhxijs4nrw"
         ],
         "where": {
             "docProp": "key",
             "operator": "in",
-            "value": "#substateIds"
+            "value": "#nextStateIds",
+            "mapValue": "stateId"
+        }
+    },
+    {
+        "key": "5fcag1lt11gj",
+        "docType": "object",
+        "name": "Sub State Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "classes",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
+        "pageId": "qwhjia43h1s4",
+        "subqueryIds": [
+            "5fcag1lt11gj",
+            "ydwhxijs4nrw"
+        ],
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "value": "#substateId"
         }
     },
     {
@@ -3218,7 +3238,7 @@
             "ajhw5apzkiry"
         ],
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "i1gjptcb2skq"
         }
@@ -3267,7 +3287,7 @@
             "2vwvbhvflpp1"
         ],
         "where": {
-            "docProp": "$key",
+            "docProp": "key",
             "operator": "eq",
             "value": "xqxkmto5njxi"
         }
