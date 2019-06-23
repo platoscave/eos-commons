@@ -290,7 +290,7 @@ export default {
         )
         let newObject = {
           parentId: parentId,
-          name: "[new object]",
+          name: "[new class]",
           docType: "class"
         }
         let key = await this.$store.dispatch("upsertCommon", newObject)
