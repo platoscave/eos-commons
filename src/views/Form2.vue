@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <!-- Wait for data and schema to arrive -->
+  <div v-if="schema && data">
     <div>{{viewId}}</div>
-    <!-- Wait for data and schema to arrive -->
-    <v-sub-form v-if="schema && data"></v-sub-form>
+    <ec-sub-form v-bind:editMode="editMode" v-model="data" v-bind:properties="schema.properties"></ec-sub-form>
   </div>
 </template>
 <script>
@@ -12,49 +12,43 @@ export default {
   props: {
     level: Number,
     viewId: String,
-    editMode: Boolean,
+    editMode: Boolean
   },
   data() {
     return {
       schema: {},
       data: {}
-	  }
+    };
   },
   methods: {
     storeData(newData) {
-      console.log("Data Change: ", newData);
+	  console.log("Data Change: ", newData)
+	  this.$store.dispatch('upsertCommon', newData)
     }
   },
-  created() {
-      this.$store.watch(
-        state => state.levelIdsArr[this.level].selectedObjId,
-        newVal => {
-          // console.log('selectedObjId Changed!', newVal)
-          if (!newVal) return;
-          this.$store.dispatch("getCommonByKey", newVal).then(data => {
-            console.log("data", data);
-            this.data = Object.assign({}, data); // Force reactive update
-          })
-        },
-        { immediate: true }
-      )
+  created: async function ()  {
+    this.$store.watch(
+      state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
+		if (!selectedObjId) return;
+		this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
+			console.log("data", newData);
+			this.data = Object.assign({}, newData); // Force reactive update
+		})
+      },
+      { immediate: true }
+    );
 
-    if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch("materializedView", this.viewId).then(view => {
-        console.log("view", view)
-        this.schema = view
-        if (view.rpc) {
-          EosApiService.getAccountInfo("eoscommonsio").then(info => {
-            this.data = info;
-          })
-        }
-      });
-    }
+	this.schema = await this.$store.dispatch("materializedView", this.viewId)
+	console.log("view", this.schema);
+	if (this.schema.rpc) {
+		EosApiService.getAccountInfo("eoscommonsio").then(info => {
+		this.data = info;
+		});
+	}
   },
   watch: {
     data: {
       handler: "storeData",
-      immediate: true,
       deep: true
     }
   }

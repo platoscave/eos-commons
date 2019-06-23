@@ -6,76 +6,75 @@
         <!-- Start owr layout. v-flex must be immidiate child-->
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
-          <v-flex class="label" xs12 md2 v-if="editMode || data[propName]">
+          <v-flex class="label" xs12 md2 v-if="editMode || value[propName]">
             <div>{{ property.title }}</div>
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md10 v-if="editMode || data[propName]">
+          <v-flex xs12 md10 v-if="editMode || value[propName]">
             <!-- Richtext -->
             <div v-if="property.media && property.media.mediaType === 'text/html' ">
               <div
-                class="readonlyoutput"
+                class="outputclass"
                 v-if="!editMode || property.readOnly"
-                v-html="data[propName] ? data[propName] : property.default"
+                v-html="value[propName] ? value[propName] : property.default"
               ></div>
               <div v-else>
-                <wysiwyg class="readonlyoutput" v-model="data[propName]"/>
+                <wysiwyg class="outputclass" v-model="value[propName]"/>
               </div>
             </div>
 
             <!-- WbbGl -->
             <div v-else-if="property.media && property.media.mediaType === 'image/webgl' ">
               <div v-if="!editMode || property.readOnly">
-                <img class="readonlyoutput" src="data[propName]" width="500px" height="500px">
+                <img class="outputclass" src="value[propName]" width="500px" height="500px">
               </div>
               <div v-else>
-                <img src="data[propName]" width="500px" height="500px">
+                <img src="value[propName]" width="500px" height="500px">
               </div>
             </div>
 
             <!-- Base64 -->
             <div v-else-if="property.media && property.media.type === 'image/png' ">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
-                <!--{{data[propName]}}-->
-                <img class="readonlyoutput" v-bind:src="data[propName]">
+              <div class="outputclass" v-if="!editMode || property.readOnly">
+                <!--{{value[propName]}}-->
+                <img class="outputclass" v-bind:src="value[propName]">
               </div>
               <div v-else>
-                <img v-bind:src="data[propName]" width="24px" height="24px">
+                <img v-bind:src="value[propName]" width="24px" height="24px">
               </div>
             </div>
 
             <!-- Date -->
             <div v-else-if="property && property.format === 'date-time' ">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
-                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
+              <div class="outputclass" v-if="!editMode || property.readOnly">
+                <div>{{ new Date(Date.parse(value[propName])).toLocaleDateString() }}</div>
               </div>
               <div v-else>
-                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
+                <div>{{ new Date(Date.parse(value[propName])).toLocaleDateString() }}</div>
               </div>
             </div>
 
             <!-- Uri -->
             <div v-else-if="property.media && property.media.format === 'uri' ">
               <div v-if="!editMode || property.readOnly">
-                <a class="readonlyoutput" uri="data[propName]"></a>
+                <a class="outputclass" uri="value[propName]"></a>
               </div>
               <div v-else>
-                <a uri="data[propName]"></a>
+                <a uri="value[propName]"></a>
               </div>
             </div>
 
             <!-- Enum -->
             <div v-else-if="property.enum">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
               <div v-else>
                 <v-select
-                  class="readonlyoutput"
+                  class="outputclass"
                   v-bind:label="property.title"
-                  v-model="data[propName]"
+                  v-model="value[propName]"
                   v-bind:readonly="!editMode || property.readOnly || property.enum.length < 2"
                   v-bind:items="property.enum"
-                  v-bind:idx="data[propName]"
                   single-line
                   outline
                 ></v-select>
@@ -85,7 +84,7 @@
             <!-- Select from Query Results -->
             <div v-else-if="property.query">
               <ec-select
-                v-model="data[propName]"
+                v-model="value[propName]"
                 v-bind:query="property.query"
                 v-bind:readonly="property.readOnly || !editMode"
               ></ec-select>
@@ -93,11 +92,11 @@
 
             <!--String-->
             <div v-else-if="property.type === 'string'">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
               <div v-else>
                 <v-text-field
-                  class="readonlyoutput"
-                  v-model.trim="data[propName]"
+                  class="outputclass"
+                  v-model.trim="value[propName]"
                   single-line
                   outline
                 ></v-text-field>
@@ -108,11 +107,11 @@
 
             <!--Number-->
             <div v-else-if="property.type === 'number'">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
+              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
               <div v-else>
                 <v-text-field
                   class="inputclass"
-                  v-model.number="data[propName]"
+                  v-model.number="value[propName]"
                   type="number"
                   single-line
                   outline
@@ -123,30 +122,30 @@
             <!-- Boolean -->
             <div v-else-if="property.type === 'boolean'">
               <div v-if="!editMode || property.readOnly">
-                <div class="readonlyoutput">{{ data[propName] === true ? 'true' : 'false' }}</div>
+                <div class="outputclass">{{ value[propName] === true ? 'true' : 'false' }}</div>
               </div>
               <div v-else>
-                <v-checkbox value="data[propName]"></v-checkbox>
+                <v-checkbox value="value[propName]"></v-checkbox>
               </div>
             </div>
 
             <!-- Array -->
             <div v-else-if="property.type === 'array'">
-              <div class="readonlyoutput">
+              <div class="outputclass">
                 <div v-if="property.items.type === 'object'">
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
+                  <div v-for="(childData, idx) in value[propName]" v-bind:key="idx">
                     <ec-sub-form
-                      class="readonlyoutput"
+                      class="outputclass"
                       v-bind:editMode="editMode"
-                      v-model="data[propName][idx]"
-                      v-bind:property="property.items"
+                      v-model="value[propName][idx]"
+                      v-bind:properties="property.items.properties"
                     ></ec-sub-form>
                     <br>
                   </div>
                 </div>
                 <div v-else>
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <div class="readonlyoutput">{{ childData }}</div>
+                  <div v-for="(childData, idx) in value[propName]" v-bind:key="idx">
+                    <div class="outputclass">{{ childData }}</div>
                   </div>
                 </div>
               </div>
@@ -154,16 +153,16 @@
 
             <!-- Object -->
             <div v-else-if="property.type === 'object'">
-              <div class="readonlyoutput">
+              <div class="outputclass">
                 <div v-if="property.properties">
                   <ec-sub-form
                     v-bind:editMode="editMode"
-                    v-model="data[propName]"
-                    v-bind:property="property"
+                    v-model="value[propName]"
+                    v-bind:properties="property.properties"
                   ></ec-sub-form>
                 </div>
                 <div v-else>
-                  <div class="monoSpaced">{{ JSON.stringify(data[propName], replacer, 2) }}></div>
+                  <div class="monoSpaced">{{ JSON.stringify(value[propName], replacer, 2) }}></div>
                 </div>
               </div>
             </div>
@@ -171,10 +170,10 @@
             <!--Json-->
             <div v-else-if="property.type === 'json'">
               <div v-if="!editMode || property.readOnly">
-                <div class="readonlyoutput">{{ JSON.stringify(data[propName], null, 2) }}></div>
+                <div class="outputclass">{{ JSON.stringify(value[propName], null, 2) }}></div>
               </div>
               <div v-else>
-                <div class="monoSpaced">{{ JSON.stringify(data[propName], null, 2) }}></div>
+                <div class="monoSpaced">{{ JSON.stringify(value[propName], null, 2) }}></div>
               </div>
             </div>
 
@@ -198,23 +197,13 @@ export default {
   props: {
     editMode: Boolean,
     properties: Object,
-    data: Object
+    value: Object
   },
   methods: {
-    storeData(newData) {
-      console.log("Data Change: ", newData);
-    },
     replacer(name, val) {
       // we do this because icons are very long
       if (name === "icon") return "base64 icon string";
       else return val;
-    }
-  },
-  watch: {
-    data: {
-      handler: "storeData",
-      immediate: true,
-      deep: true
     }
   }
 };
@@ -225,7 +214,7 @@ export default {
   font-size: 16px;
   line-height: 42px;
 }
-.readonlyoutput {
+.outputclass {
   background-color: #ffffff0d;
   padding: 10px;
   font-size: 16px;

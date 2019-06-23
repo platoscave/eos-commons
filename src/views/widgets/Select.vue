@@ -32,7 +32,6 @@ export default {
     };
   },
   mounted: async function () {
-	  debugger
 	  const results = await this.$store.dispatch("query", {
         query: this.query
       });

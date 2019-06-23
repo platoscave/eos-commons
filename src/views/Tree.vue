@@ -268,7 +268,7 @@ export default {
       });
     },
     takeAction: async function(action, parentNode, subIdsName) {
-	  console.log("action", action, subIdsName);
+	  // console.log("action", action, subIdsName);
 	  
       if (action === "addObject") {
         const classId = _.get(
