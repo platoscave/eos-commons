@@ -183,12 +183,14 @@ const store = new Vuex.Store({
       if (where) {
         const docProp = where.docProp
         const operator = where.operator
-        let value = where.value
         const mapValue = where.mapValue
-        const valuePath = where.valuePath
+		const valuePath = where.valuePath
+        let value = where.value
+		
         // if (value === '#nextstateIds') debugger
         // Replace value with foreigne key
-        if (value === '$fk') value = queryObj.currentObj.key
+		if (value === '$fk') value = queryObj.currentObj.key
+		
         // Replace value with currentObj.valuePath
         if (valuePath) {
 			let currentObj = queryObj.currentObj
@@ -197,15 +199,12 @@ const store = new Vuex.Store({
 			value = Vue._.get(currentObj, valuePath)
 		}
 
-        /* else if (value.startsWith('#')) {
-          const path = value.substr(1)
-          value = Vue._.get(currentObj, path)
-        } */
         if (mapValue && Array.isArray(value)) {
           value = value.map(valueObj => {
             return valueObj[mapValue]
           })
-        }
+		}
+		
         if (!value) {
           console.error('Invalid value in: ', queryObj)
           return []
