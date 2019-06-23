@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div>{{viewId}}</div>
-    <!-- Wait for data and schema to arrive -->
-    <v-container v-if="schema && data">
+    <v-container>
       <!-- For each of the properties in schema -->
-      <div v-for="(property, propName) in schema.properties" v-bind:key="propName">
+      <div v-for="(property, propName) in properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
@@ -97,7 +95,12 @@
             <div v-else-if="property.type === 'string'">
               <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
               <div v-else>
-                <v-text-field class="readonlyoutput" v-model.trim="data[propName]" single-line outline></v-text-field>
+                <v-text-field
+                  class="readonlyoutput"
+                  v-model.trim="data[propName]"
+                  single-line
+                  outline
+                ></v-text-field>
               </div>
               <!-- v-bind:hint="property.description"
               append-outer-icon="property.description ? 'help_outline'"-->
@@ -132,19 +135,18 @@
               <div class="readonlyoutput">
                 <div v-if="property.items.type === 'object'">
                   <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <ec-form
-                      class="readonlyoutputX"
-                      v-bind:level="level"
+                    <ec-sub-form
+                      class="readonlyoutput"
                       v-bind:editMode="editMode"
-                      v-bind:parent-data="childData"
-                      v-bind:parent-schema="property.items"
-                    ></ec-form>
+                      v-model="data[propName][idx]"
+                      v-bind:property="property.items"
+                    ></ec-sub-form>
                     <br>
                   </div>
                 </div>
                 <div v-else>
                   <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <div class="readonlyoutputX">{{ childData }}</div>
+                    <div class="readonlyoutput">{{ childData }}</div>
                   </div>
                 </div>
               </div>
@@ -154,12 +156,11 @@
             <div v-else-if="property.type === 'object'">
               <div class="readonlyoutput">
                 <div v-if="property.properties">
-                  <ec-form
-                    v-bind:level="level"
+                  <ec-sub-form
                     v-bind:editMode="editMode"
-                    v-bind:parent-data="data[propName]"
-                    v-bind:parent-schema="property"
-                  ></ec-form>
+                    v-model="data[propName]"
+                    v-bind:property="property"
+                  ></ec-sub-form>
                 </div>
                 <div v-else>
                   <div class="monoSpaced">{{ JSON.stringify(data[propName], replacer, 2) }}></div>
@@ -192,91 +193,22 @@
   </div>
 </template>
 <script>
-import EosApiService from "../services/EosApiService";
-
 export default {
+  name: "subForm",
   props: {
-    level: Number,
-    viewId: String,
     editMode: Boolean,
-    parentSchema: {
-      type: Object,
-      default: null
-    },
-    parentData: {
-      type: Object,
-      default: null
-    }
-  },
-  data() {
-    return {
-      schema: this.parentSchema,
-      data: this.parentData,
-      childData: Object,
-      model: {
-        name: "Yourtion"
-	  },
-    };
+    properties: Object,
+    data: Object
   },
   methods: {
-    replacer(name, val) {
-      // we do this because icons are very long
-      if (name === "icon") {
-        return "base64 icon string";
-      } else {
-        return val;
-      }
-    },
     storeData(newData) {
       console.log("Data Change: ", newData);
+    },
+    replacer(name, val) {
+      // we do this because icons are very long
+      if (name === "icon") return "base64 icon string";
+      else return val;
     }
-  },
-  created() {
-    if (!this.parentData) {
-      this.$store.watch(
-        state => state.levelIdsArr[this.level].selectedObjId,
-        newVal => {
-          // console.log('selectedObjId Changed!', newVal)
-          if (!newVal) return;
-          this.$store.dispatch("getCommonByKey", newVal).then(data => {
-            console.log("data", data);
-            this.data = Object.assign({}, data); // Force reactive update
-          });
-        },
-        { immediate: true }
-      );
-    }
-
-    if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch("materializedView", this.viewId).then(view => {
-        console.log("view", view);
-
-        // resolve $ref
-        /* Object.keys(view.properties).forEach(propName => {
-          let viewProp = view.properties[propName]
-          if(viewProp.$ref) {
-              const defName = viewProp.$ref.substr(viewProp.$ref.lastIndexOf('/')+1)
-              view.properties[propName] = view.definitions[defName]
-          }
-        })
-        console.log('view', view) */
-        this.schema = view;
-
-        if (view.rpc) {
-          EosApiService.getAccountInfo("eoscommonsio").then(info => {
-            this.data = info;
-          });
-        }
-      });
-    }
-    /* if (this.parentData) this.data = this.parentData
-      else {
-        const pageDesc = this.$store.state.levelIdsArr[this.level]
-        this.$store.dispatch('getCommonByKey', pageDesc.selectedObjId).then((data) => {
-          console.log('data', data)
-          this.data = data
-        })
-      } */
   },
   watch: {
     data: {

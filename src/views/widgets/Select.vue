@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="items.length">
+    <div v-if="items.length && value">
       <div class="readonlyoutput" v-if="readonly || items.length < 2">{{ selectedText }}</div>
       <div v-else>
         <v-select
           class="custom readonlyoutput"
-          v-bind:label="property.title"
-          v-model="selected"
+          v-bind:value="value"
+          v-on:input="$emit('input', $event)"
           :items="items"
           single-line
           outline
@@ -19,8 +19,8 @@
 export default {
   props: {
     readonly: Boolean,
-    idx: String,
-    property: {
+    value: String,
+    query: {
       type: Object,
       default: () => {}
     }
@@ -28,34 +28,32 @@ export default {
   data() {
     return {
       items: [],
-      selected: "",
       selectedText: ""
     };
   },
-  watch: {
-    property: {
-      handler: "queryItems",
-      immediate: true,
-      deep: true
-    }
-  },
-  methods: {
-    // Don't use arrow function. Messes with this.
-    queryItems: async function() {
-      const results = await this.$store.dispatch("query", this.property);
+  mounted: async function () {
+	  debugger
+	  const results = await this.$store.dispatch("query", {
+        query: this.query
+      });
       this.items = results.map(item => {
         let obj = {
           value: item.key,
           text: item.title ? item.title : item.name
         };
         return obj;
-      });
-      this.selected = this.idx;
+	  });
+	  this.items.push({
+		  value: '',
+		  text: '[not selected]'
+	  })
+      // Gwt the selected text in case of readonly
       const selectedObj = this.items.find(item => {
-        return item.value === this.idx
-      })
-      this.selectedText = selectedObj ? selectedObj.text : '[Selected Item Not Found: '+this.idx+']'
-    }
+        return item.value === this.value;
+      });
+      this.selectedText = selectedObj
+        ? selectedObj.text
+        : "[Selected Item Not Found: " + this.value + "]";
   }
 };
 </script>

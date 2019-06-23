@@ -10,6 +10,8 @@ import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
 import Form from './views/Form.vue'
+import Form2 from './views/Form2.vue'
+import SubForm from './views/widgets/SubForm.vue'
 import Select from './views/widgets/Select.vue'
 import ClassModel from './views/ClassModel.vue'
 import ProcessModel from './views/ProcessModel.vue'
@@ -28,6 +30,8 @@ Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
 Vue.component('ec-select', Select)
 Vue.component('ec-form', Form)
+Vue.component('ec-form2', Form2)
+Vue.component('ec-sub-form', SubForm)
 Vue.component('ec-class-model', ClassModel)
 Vue.component('ec-process-model', ProcessModel)
 Vue.component('ec-workflow-model', WorkflowModel)

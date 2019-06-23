@@ -150,6 +150,12 @@ const store = new Vuex.Store({
 		getCommonByKey: async function (store, key) {
 			return ApiService.getCommonByKey(key)
 		},
+		upsertCommon: async function (store, common) {
+			return ApiService.upsertCommon(common)
+		},
+		eraseCommon: async function (store, key) {
+			return ApiService.eraseCommon(key)
+		},
 
 		query: async function (store, queryObj) {
 			// Recursivly get an array of subclass keys
@@ -194,15 +200,13 @@ if(value === '#nextstateIds') debugger
 				}
 				if(mapValue && Array.isArray(value)){
 					value = value.map( valueObj => {
-						console.log('valueObj[mapValue]', valueObj[mapValue])
 						return valueObj[mapValue]
 					})
-					console.log('value', value)
 				}
-				/* if (!value) {
-					// console.error('Invalid value in: ', queryObj)
+				if (!value) {
+					console.error('Invalid value in: ', queryObj)
 					return []
-				} */
+				}
 
 				if (operator === 'eq') {
 					if (docProp === 'key') {
