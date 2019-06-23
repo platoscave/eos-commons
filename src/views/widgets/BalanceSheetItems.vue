@@ -28,40 +28,40 @@
 </template>
 <script>
 export default {
-  name: "bsItems",
+  name: 'bsItems',
   props: {
     parentId: String
   },
-  data() {
+  data () {
     return {
       bsItemArr: [],
       bottomClass: true
-    };
+    }
   },
-  created() {
+  created () {
     let queryObj = {
       query: {
-        sortBy: "title",
+        sortBy: 'title',
         where: {
-          docProp: "parentId",
-          operator: "eq",
+          docProp: 'parentId',
+          operator: 'eq',
           value: this.parentId
         }
       }
-    };
-    this.$store.dispatch("query", queryObj).then(resultsArr => {
+    }
+    this.$store.dispatch('query', queryObj).then(resultsArr => {
       let enrichedBsItemsPromissesArr = resultsArr.map(async bsItem => {
-        queryObj.query.where.value = bsItem.key;
-        const subBsItemsArray = await this.$store.dispatch("query", queryObj)
-        //debugger
+        queryObj.query.where.value = bsItem.key
+        const subBsItemsArray = await this.$store.dispatch('query', queryObj)
+        // debugger
         if (subBsItemsArray.length > 0) this.bottomClass = false
-        bsItem.value = Math.floor(Math.random() * (100000 - 10)) + 10;
-        return bsItem;
-      });
+        bsItem.value = Math.floor(Math.random() * (100000 - 10)) + 10
+        return bsItem
+      })
       Promise.all(enrichedBsItemsPromissesArr).then(enrichedBsItems => {
-        this.bsItemArr = enrichedBsItems;
-      });
-    });
+        this.bsItemArr = enrichedBsItems
+      })
+    })
     /* this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
       newVal => {
@@ -75,7 +75,7 @@ export default {
       { immediate: true }
     ); */
   }
-};
+}
 </script>
 <style scoped>
 /* line-height: 42px; */

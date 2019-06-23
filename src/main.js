@@ -20,8 +20,7 @@ import Document from './views/Document.vue'
 import BalanceSheet from './views/BalanceSheet.vue'
 import BalanceSheetItems from './views/widgets/BalanceSheetItems.vue'
 import { sync } from 'vuex-router-sync'
-import wysiwyg from "vue-wysiwyg"
-
+import wysiwyg from 'vue-wysiwyg'
 
 Vue.component('ec-layout', Layout)
 Vue.component('multipane', Multipane)

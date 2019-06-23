@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import EosApiService from "../services/EosApiService";
+import EosApiService from '../services/EosApiService'
 
 export default {
   props: {
@@ -14,45 +14,45 @@ export default {
     viewId: String,
     editMode: Boolean
   },
-  data() {
+  data () {
     return {
       schema: {},
       data: {}
-    };
+    }
   },
   methods: {
-    storeData(newData) {
-	  console.log("Data Change: ", newData)
+    storeData (newData) {
+	  console.log('Data Change: ', newData)
 	  this.$store.dispatch('upsertCommon', newData)
     }
   },
-  created: async function ()  {
+  created: async function () {
     this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
-		if (!selectedObjId) return;
-		this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
-			console.log("data", newData);
-			this.data = Object.assign({}, newData); // Force reactive update
-		})
+        if (!selectedObjId) return
+        this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
+          console.log('data', newData)
+          this.data = Object.assign({}, newData) // Force reactive update
+        })
       },
       { immediate: true }
-    );
+    )
 
-	this.schema = await this.$store.dispatch("materializedView", this.viewId)
-	console.log("view", this.schema);
-	if (this.schema.rpc) {
-		EosApiService.getAccountInfo("eoscommonsio").then(info => {
-		this.data = info;
-		});
-	}
+    this.schema = await this.$store.dispatch('materializedView', this.viewId)
+    console.log('view', this.schema)
+    if (this.schema.rpc) {
+      EosApiService.getAccountInfo('eoscommonsio').then(info => {
+        this.data = info
+      })
+    }
   },
   watch: {
     data: {
-      handler: "storeData",
+      handler: 'storeData',
       deep: true
     }
   }
-};
+}
 </script>
 <style scoped>
 .label {

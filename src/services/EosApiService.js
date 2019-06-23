@@ -5,14 +5,13 @@ import axios from 'axios'
 import BigNumber from 'bignumber.js/bignumber'
 import { encodeName, decodeName } from '../lib/format.js'
 
-
 const HTTPENDPOINT = 'http://localhost:8888'
 const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
 const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Usually the same as code
 const TABLE = 'commons' // name of the table as specified by the contract abi
 
 // Main action call to blockchain
-async function takeAction(action, dataValue) {
+async function takeAction (action, dataValue) {
   const ACCOUNT = 'eoscommonsio'
   const ACTOR = 'eoscommonsio'
 
@@ -34,9 +33,9 @@ async function takeAction(action, dataValue) {
         data: dataValue
       }]
     }, {
-        blocksBehind: 3,
-        expireSeconds: 30
-      })
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
     return resultWithConfig
   } catch (err) {
     console.error('\nCaught exception: ' + err)
@@ -45,9 +44,9 @@ async function takeAction(action, dataValue) {
 }
 
 class EosApiService {
-  static upsertCommon(common) {
+  static upsertCommon (common) {
     const getRandomKey = () => {
-      // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters. 
+      // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
       // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
       var characters = 'abcdefghijklmnopqrstuvwxyz12345'
       var randomKey = ''
@@ -73,7 +72,7 @@ class EosApiService {
     })
   }
 
-  static eraseCommon(key) {
+  static eraseCommon (key) {
     return new Promise((resolve, reject) => {
       takeAction('erase', { username: 'eoscommonsio', key: key })
         .then(() => {
@@ -85,7 +84,7 @@ class EosApiService {
     })
   }
 
-  static async getCommonByKey(keyValue) {
+  static async getCommonByKey (keyValue) {
     return this.queryByIndex('key', keyValue).then(result => {
       if (result.length == 0) {
         console.error('Key Not found: ' + keyValue)
@@ -95,7 +94,7 @@ class EosApiService {
     })
   }
 
-  static async queryByIndex(indexName, keyValue) {
+  static async queryByIndex (indexName, keyValue) {
     try {
       // See https://github.com/EOSIO/eosjs/issues/154
       const lowerBoundBigNumber = new BigNumber(encodeName(keyValue, false))
@@ -116,7 +115,7 @@ class EosApiService {
         'table': TABLE, // name of the table as specified by the contract abi
         'limit': 500,
         'key_type': 'name', // account name type
-        "index_position": index,
+        'index_position': index,
         'lower_bound': keyValue,
         'upper_bound': upperBound // must be numericlly equal to key plus one
       })
@@ -129,7 +128,7 @@ class EosApiService {
     }
   }
 
-  static async getAccountInfo(account) {
+  static async getAccountInfo (account) {
     try {
       const rpc = new JsonRpc(HTTPENDPOINT)
       const result = await rpc.get_account(account)
@@ -142,7 +141,7 @@ class EosApiService {
     }
   }
 
-  static async loadEos() {
+  static async loadEos () {
     const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
         await fnPromiseArr[i]()
@@ -166,7 +165,7 @@ class EosApiService {
     })
   }
 
-  static eraseallCommon() {
+  static eraseallCommon () {
     const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
         await fnPromiseArr[i]()

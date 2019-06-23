@@ -27,31 +27,31 @@ export default {
   props: {
     level: Number
   },
-  data() {
+  data () {
     return {
       bsItemArr: {}
-    };
+    }
   },
-  created() {
+  created () {
     let queryObj = {
       query: {
-        sortBy: "title",
+        sortBy: 'title',
         where: {
-          docProp: "parentId",
-          operator: "eq",
-          value: "5jdnjqxsqmgn"
+          docProp: 'parentId',
+          operator: 'eq',
+          value: '5jdnjqxsqmgn'
         }
       }
-    };
-    return this.$store.dispatch("query", queryObj).then(resultsArr => {
+    }
+    return this.$store.dispatch('query', queryObj).then(resultsArr => {
       let enrichedBsItemsPromissesArr = resultsArr.map(async bsItem => {
-        bsItem.value = Math.floor(Math.random() * (10000 - 100)) + 100;
-        return bsItem;
-      });
+        bsItem.value = Math.floor(Math.random() * (10000 - 100)) + 100
+        return bsItem
+      })
       Promise.all(enrichedBsItemsPromissesArr).then(enrichedBsItems => {
-        this.bsItemArr = enrichedBsItems;
-      });
-    });
+        this.bsItemArr = enrichedBsItems
+      })
+    })
     /* this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
       newVal => {
@@ -65,7 +65,7 @@ export default {
       { immediate: true }
     ); */
   }
-};
+}
 </script>
 <style scoped>
 .readonlyoutput {

@@ -192,7 +192,7 @@
   </div>
 </template>
 <script>
-import EosApiService from "../services/EosApiService";
+import EosApiService from '../services/EosApiService'
 
 export default {
   props: {
@@ -208,48 +208,48 @@ export default {
       default: null
     }
   },
-  data() {
+  data () {
     return {
       schema: this.parentSchema,
       data: this.parentData,
       childData: Object,
       model: {
-        name: "Yourtion"
-	  },
-    };
-  },
-  methods: {
-    replacer(name, val) {
-      // we do this because icons are very long
-      if (name === "icon") {
-        return "base64 icon string";
-      } else {
-        return val;
-      }
-    },
-    storeData(newData) {
-      console.log("Data Change: ", newData);
+        name: 'Yourtion'
+	  }
     }
   },
-  created() {
+  methods: {
+    replacer (name, val) {
+      // we do this because icons are very long
+      if (name === 'icon') {
+        return 'base64 icon string'
+      } else {
+        return val
+      }
+    },
+    storeData (newData) {
+      console.log('Data Change: ', newData)
+    }
+  },
+  created () {
     if (!this.parentData) {
       this.$store.watch(
         state => state.levelIdsArr[this.level].selectedObjId,
         newVal => {
           // console.log('selectedObjId Changed!', newVal)
-          if (!newVal) return;
-          this.$store.dispatch("getCommonByKey", newVal).then(data => {
-            console.log("data", data);
-            this.data = Object.assign({}, data); // Force reactive update
-          });
+          if (!newVal) return
+          this.$store.dispatch('getCommonByKey', newVal).then(data => {
+            console.log('data', data)
+            this.data = Object.assign({}, data) // Force reactive update
+          })
         },
         { immediate: true }
-      );
+      )
     }
 
     if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch("materializedView", this.viewId).then(view => {
-        console.log("view", view);
+      this.$store.dispatch('materializedView', this.viewId).then(view => {
+        console.log('view', view)
 
         // resolve $ref
         /* Object.keys(view.properties).forEach(propName => {
@@ -260,14 +260,14 @@ export default {
           }
         })
         console.log('view', view) */
-        this.schema = view;
+        this.schema = view
 
         if (view.rpc) {
-          EosApiService.getAccountInfo("eoscommonsio").then(info => {
-            this.data = info;
-          });
+          EosApiService.getAccountInfo('eoscommonsio').then(info => {
+            this.data = info
+          })
         }
-      });
+      })
     }
     /* if (this.parentData) this.data = this.parentData
       else {
@@ -280,12 +280,12 @@ export default {
   },
   watch: {
     data: {
-      handler: "storeData",
+      handler: 'storeData',
       immediate: true,
       deep: true
     }
   }
-};
+}
 </script>
 <style scoped>
 .label {

@@ -193,20 +193,20 @@
 </template>
 <script>
 export default {
-  name: "subForm",
+  name: 'subForm',
   props: {
     editMode: Boolean,
     properties: Object,
     value: Object
   },
   methods: {
-    replacer(name, val) {
+    replacer (name, val) {
       // we do this because icons are very long
-      if (name === "icon") return "base64 icon string";
-      else return val;
+      if (name === 'icon') return 'base64 icon string'
+      else return val
     }
   }
-};
+}
 </script>
 <style scoped>
 .label {

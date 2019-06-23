@@ -25,36 +25,36 @@ export default {
       default: () => {}
     }
   },
-  data() {
+  data () {
     return {
       items: [],
-      selectedText: ""
-    };
+      selectedText: ''
+    }
   },
   mounted: async function () {
-	  const results = await this.$store.dispatch("query", {
-        query: this.query
-      });
-      this.items = results.map(item => {
-        let obj = {
-          value: item.key,
-          text: item.title ? item.title : item.name
-        };
-        return obj;
-	  });
+	  const results = await this.$store.dispatch('query', {
+      query: this.query
+    })
+    this.items = results.map(item => {
+      let obj = {
+        value: item.key,
+        text: item.title ? item.title : item.name
+      }
+      return obj
+	  })
 	  this.items.push({
 		  value: '',
 		  text: '[not selected]'
 	  })
-      // Gwt the selected text in case of readonly
-      const selectedObj = this.items.find(item => {
-        return item.value === this.value;
-      });
-      this.selectedText = selectedObj
-        ? selectedObj.text
-        : "[Selected Item Not Found: " + this.value + "]";
+    // Gwt the selected text in case of readonly
+    const selectedObj = this.items.find(item => {
+      return item.value === this.value
+    })
+    this.selectedText = selectedObj
+      ? selectedObj.text
+      : '[Selected Item Not Found: ' + this.value + ']'
   }
-};
+}
 </script>
 <style>
 .readonlyoutput {
