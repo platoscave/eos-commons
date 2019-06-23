@@ -1,8 +1,8 @@
 <template>
-  <!-- Wait for data and schema to arrive -->
-  <div v-if="schema && data">
+  <!-- Wait for dataObj and viewObj to arrive -->
+  <div v-if="viewObj && dataObj">
     <div>{{viewId}}</div>
-    <ec-sub-form v-bind:editMode="editMode" v-model="data" v-bind:properties="schema.properties"></ec-sub-form>
+    <ec-sub-form v-bind:editMode="editMode" v-model="dataObj" v-bind:properties="viewObj.properties"></ec-sub-form>
   </div>
 </template>
 <script>
@@ -16,12 +16,13 @@ export default {
   },
   data () {
     return {
-      schema: {},
-      data: {}
+      viewObj: {},
+      dataObj: {}
     }
   },
   methods: {
     storeData (newData) {
+		// if(_.isEqual(a, b)) return // returns false if different
 	  console.log('Data Change: ', newData)
 	  this.$store.dispatch('upsertCommon', newData)
     }
@@ -31,23 +32,23 @@ export default {
       state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
         if (!selectedObjId) return
         this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
-          console.log('data', newData)
-          this.data = Object.assign({}, newData) // Force reactive update
+          // console.log('dataObj', newData)
+          this.dataObj = Object.assign({}, newData) // Force reactive update
         })
       },
       { immediate: true }
     )
 
-    this.schema = await this.$store.dispatch('materializedView', this.viewId)
-    console.log('view', this.schema)
-    if (this.schema.rpc) {
+    this.viewObj = await this.$store.dispatch('materializedView', this.viewId)
+    // console.log('view', this.viewObj)
+    if (this.viewObj.rpc) {
       EosApiService.getAccountInfo('eoscommonsio').then(info => {
-        this.data = info
+        this.dataObj = info
       })
     }
   },
   watch: {
-    data: {
+    dataObj: {
       handler: 'storeData',
       deep: true
     }

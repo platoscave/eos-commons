@@ -185,18 +185,22 @@ const store = new Vuex.Store({
         const operator = where.operator
         let value = where.value
         const mapValue = where.mapValue
-        if (value === '#nextstateIds') debugger
+        const valuePath = where.valuePath
+        // if (value === '#nextstateIds') debugger
         // Replace value with foreigne key
         if (value === '$fk') value = queryObj.currentObj.key
+        // Replace value with currentObj.valuePath
+        if (valuePath) {
+			let currentObj = queryObj.currentObj
+			// If currentObj is a string, assume it's a key
+			if (typeof currentObj === 'string') query = await ApiService.getCommonByKey(currentObj)
+			value = Vue._.get(currentObj, valuePath)
+		}
 
-        // Replace value with currentObj.path
-        else if (value.startsWith('#')) {
-          let currentObj = queryObj.currentObj
-          // If currentObj is a string, assume it's a key
-          if (typeof currentObj === 'string') query = await ApiService.getCommonByKey(currentObj)
+        /* else if (value.startsWith('#')) {
           const path = value.substr(1)
           value = Vue._.get(currentObj, path)
-        }
+        } */
         if (mapValue && Array.isArray(value)) {
           value = value.map(valueObj => {
             return valueObj[mapValue]

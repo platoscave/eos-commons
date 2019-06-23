@@ -2,7 +2,7 @@
   <div>
     <v-container v-if="bsItemArr.length">
       <v-layout row>
-        <v-flex class="readonlyoutput">
+        <v-flex class="outputclass largest">
           {{bsItemArr[0].title}}
           <ec-bsitems v-bind:parent-id="bsItemArr[0].key"></ec-bsitems>
           <v-layout row>
@@ -10,7 +10,7 @@
             <v-flex xs3 class="sumTotal value">{{bsItemArr[0].value.toLocaleString()}}</v-flex>
           </v-layout>
         </v-flex>
-        <v-flex class="readonlyoutput">
+        <v-flex class="outputclass largest">
           {{bsItemArr[1].title}}
           <ec-bsitems v-bind:parent-id="bsItemArr[1].key"></ec-bsitems>
           <v-layout row>
@@ -67,11 +67,11 @@ export default {
   }
 }
 </script>
-<style scoped>
-.readonlyoutput {
+<style>
+.outputclass {
   background-color: #ffffff0d;
   padding: 10px;
-  font-size: 20px;
+  font-size: 16px;
   border-radius: 5px;
   margin: 4px;
 }
@@ -80,5 +80,11 @@ export default {
 }
 .value {
   text-align: right;
+}
+.larger {
+  font-size: 20px;
+}
+.largest {
+  font-size: 24px;
 }
 </style>

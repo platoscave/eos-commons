@@ -3039,7 +3039,7 @@
         "where": {
             "docProp": "key",
             "operator": "in",
-            "value": "#subqueryIds"
+            "valuePath": "subqueryIds"
         },
         "sortBy": "name"
     },
@@ -3203,7 +3203,7 @@
         "where": {
             "docProp": "key",
             "operator": "in",
-            "value": "#nextStateIds",
+            "valuePath": "nextStateIds",
             "mapValue": "stateId"
         }
     },
@@ -3223,7 +3223,7 @@
         "where": {
             "docProp": "key",
             "operator": "in",
-            "value": "#substateId"
+            "valuePath": "substateId"
         }
     },
     {
@@ -3300,14 +3300,13 @@
         "ownerId": "eoscommonsio",
         "from": "siutzqsj5dgc",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
-        "pageId": "qwhjia43h1s4",
         "subqueryIds": [
             "2vwvbhvflpp1"
         ],
         "where": {
             "docProp": "key",
             "operator": "in",
-            "value": "#subdocumentIds"
+            "valuePath": "subdocumentIds"
         }
     }
 ]

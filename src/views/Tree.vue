@@ -35,7 +35,7 @@
     </v-jstree>
     <v-menu v-model="showMenu" :position-x="x" :position-y="y" absolute offset-y>
       <v-list>
-        <v-list-tile v-for="(item, index) in menuItems" :key="index" @click="takeAction(item.action, item.parentNode, item.value)" >
+        <v-list-tile v-for="(item, index) in menuItems" :key="index" @click="takeAction(item.action, item.parentNode, item.valuePath)" >
           <v-list-tile-title>{{ item.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -109,6 +109,8 @@ export default {
       console.log(node.model.text + ' drag end !')
     },
     itemDropBefore (node, item, draggedItem, e) {
+		return false
+		//return draggingNode.data.label !== dropNode.data.label
       if (!draggedItem) {
         item.addChild({
           text: 'newNode',
@@ -117,6 +119,10 @@ export default {
       }
     },
     itemDrop (node, item, draggedItem, e) {
+		return false
+		// Get the queries
+		// find out which doctype / classId we can drop on
+		// if item is right type  
       let sortBy = function (attr, rev) {
         if (rev === undefined) {
           rev = 1
@@ -250,25 +256,28 @@ export default {
               action: 'addSubClass',
               parentNode: node
             }
-          } else if (value.startsWith('#')) {
+          } else if (valuePath) {
             return {
               title: 'Add Sub to ' + node.text,
               action: 'addSubObject',
               parentNode: node,
-              value: value
+              valuePath: valuePath
             }
           } else return { title: 'Dont Know' }
         })
 
         this.menuItems = await Promise.all(menuItemsArrPromisses)
       }
-      this.menuItems.push({ title: 'Delete ' + node.text })
+      this.menuItems.push({ 
+		  	title: 'Delete ' + node.text,
+            action: 'delete',
+            parentNode: node })
 
       this.$nextTick(() => {
         this.showMenu = true
       })
     },
-    takeAction: async function (action, parentNode, subIdsName) {
+    takeAction: async function (action, parentNode, valuePath) {
 	  // console.log("action", action, subIdsName);
 
       if (action === 'addObject') {
@@ -306,12 +315,13 @@ export default {
         let key = await this.$store.dispatch('upsertCommon', newObject)
 
         let currentObj = _.get(parentNode, 'Xdata.queryArrObj.currentObj')
-        const path = subIdsName.substr(1)
-        let subIdsArr = _.get(currentObj, path)
+        let subIdsArr = _.get(currentObj, valuePath)
         if (subIdsArr) subIdsArr.push(key)
         else _.set(currentObj, path, [key])
         let updatedObj = await this.$store.dispatch('upsertCommon', currentObj)
-      }
+      } else if (action === 'delete') {
+        let key = await this.$store.dispatch('eraseCommon', parentNode.key)
+	  } 
     }
   },
   created () {
@@ -324,5 +334,12 @@ export default {
 <style>
 .tree-default .tree-selected {
   background: #616161 !important;
+}
+.tree-default .tree-anchor {
+  font-size: 16px;
+}
+.tree-anchor:hover {
+  background: #616161 !important;
+
 }
 </style>

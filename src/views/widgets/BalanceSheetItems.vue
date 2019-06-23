@@ -13,10 +13,10 @@
       </div>
       <div v-else>
         <v-layout v-for="(bsItem, idx) in bsItemArr" v-bind:key="idx">
-          <v-flex class="readonlyoutput larger">
-            {{bsItem.title}}
+          <v-flex class="outputclass">
+            <div class="largerX"> {{bsItem.title}}</div>
             <ec-bsitems v-bind:parent-id="bsItem.key"></ec-bsitems>
-            <v-layout row>
+            <v-layout row class="largerX">
               <v-flex xs9>Total {{bsItem.title}}</v-flex>
               <v-flex xs3 class="value sumTotal">{{bsItem.value.toLocaleString()}}</v-flex>
             </v-layout>
@@ -77,22 +77,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-/* line-height: 42px; */
-.readonlyoutput {
-  background-color: #ffffff0d;
-  padding: 4px;
-  font-size: 16px;
-  border-radius: 5px;
-  margin: 4px;
-}
-.larger {
-  font-size: 18px;
-}
-.sumTotal {
-  border-top-style: solid;
-}
-.value {
-  text-align: right;
-}
-</style>
