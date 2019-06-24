@@ -408,11 +408,11 @@
                 "type": "string"
             },
             "baseClassId": {
-                "title": "Base Class for this View",
+                "title": "Base Class",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "from": "classes",
-                    "sortBy": "titlt"
+                    "sortBy": "title"
                 },
                 "type": "string"
             },
