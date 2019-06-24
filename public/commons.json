@@ -407,6 +407,15 @@
                 },
                 "type": "string"
             },
+            "baseClassId": {
+                "title": "Base Class for this View",
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "classes",
+                    "sortBy": "titlt"
+                },
+                "type": "string"
+            },
             "required": {
                 "items": {
                     "type": "string"
@@ -1569,15 +1578,8 @@
                     }
                 }
             }
-        },
-        "query": {
-            "from": "pejdgrwd5qso",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "pejdgrwd5qso"
-            }
-        },
+		},
+		"baseClassId": "pejdgrwd5qso",
         "type": "object"
     },
     {
@@ -1601,22 +1603,17 @@
             "subqueryIds": {
                 "readOnly": false
             },
+            "baseClassId": {
+                "readOnly": false
+            },
             "required": {
                 "readOnly": false
-
             },
             "properties": {
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "pylvseoljret",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "pylvseoljret"
-            }
-        },
+		"baseClassId": "pylvseoljret",
         "type": "object"
     },
     {
@@ -1675,14 +1672,7 @@
                 }
             }
         },
-        "query": {
-            "from": "q234ooehrk5v",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "q234ooehrk5v",
         "type": "object"
     },
     {
@@ -1882,14 +1872,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "dlpwvptczyeb",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "dlpwvptczyeb",
         "type": "object"
     },
     {
@@ -1930,14 +1913,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "i1gjptcb2skq",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "i1gjptcb2skq",
         "type": "object"
     },
     {
@@ -2081,14 +2057,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "dwl1kwhalwj4",
-            "where": {
-                "docProp": "classId",
-                "operator": "eq",
-                "value": "dwl1kwhalwj4"
-            }
-        },
+		"baseClassId": "dwl1kwhalwj4",
         "type": "object"
     },
     {
@@ -2105,14 +2074,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "dwl1kwhalwj4",
-            "where": {
-                "docProp": "documentId",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "dwl1kwhalwj4",
         "type": "object"
     },
     {
@@ -2129,14 +2091,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "pejdgrwd5qso",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "pejdgrwd5qso",
         "type": "object"
     },
     {
@@ -2406,14 +2361,7 @@
                 "type": "string"
             }
         },
-        "query": {
-            "from": "classes",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "$docId"
-            }
-        },
+		"baseClassId": "classes",
         "type": "object"
     },
     {
@@ -2621,14 +2569,7 @@
                 "readOnly": false
             }
         },
-        "query": {
-            "from": "pae2bfbrab5n",
-            "where": {
-                "docProp": "key",
-                "operator": "eq",
-                "value": "eoscommonsio"
-            }
-        },
+		"baseClassId": "pae2bfbrab5n",
         "type": "object"
     },
     {
@@ -2849,6 +2790,7 @@
                 "readOnly": true
             }
         },
+		"baseClassId": "get_account_info",
         "rpc": "get_account_info",
         "type": "object"
     },

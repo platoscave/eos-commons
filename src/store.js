@@ -357,10 +357,10 @@ const store = new Vuex.Store({
 
     materializedView: async function (store, viewId) {
       // Recusivly merge all the ancestor classes, starting with the root. Sub class properties take precedence over parent class
-      const mergeAncestorClasses = async classId => {
+      const getMergeAncestorClasses = async classId => {
         let classObj = await ApiService.getCommonByKey(classId)
         if (classObj.parentId) {
-          let parentClassObj = await mergeAncestorClasses(classObj.parentId)
+          let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
           return Vue._.merge(parentClassObj, classObj, (a, b) => {
             if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
           })
@@ -389,9 +389,8 @@ const store = new Vuex.Store({
 
       const viewObj = await ApiService.getCommonByKey(viewId)
       let classId = viewObj.baseClassId
-      if (!classId) classId = Vue._.get(viewObj, 'query.from')
       if (!classId) return viewObj
-      const mergedAncestorClasses = await mergeAncestorClasses(classId)
+      const mergedAncestorClasses = await getMergeAncestorClasses(classId)
       smartMerge(viewObj, mergedAncestorClasses)
       return viewObj
     }
