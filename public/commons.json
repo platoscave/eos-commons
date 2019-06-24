@@ -303,38 +303,7 @@
                     },
                     "type": "object"
                 },
-                "title": "Join Queries",
-                "type": "array"
-            },
-            "menu": {
-                "items": {
-                    "properties": {
-                        "action": {
-                            "enum": [
-                                "add",
-                                "delete",
-                                "login",
-                                "signup"
-                            ],
-                            "title": "Action",
-                            "type": "string"
-                        },
-                        "iconClass": {
-                            "maxLength": 1000,
-                            "minLength": 0,
-                            "title": "Icon Class",
-                            "type": "string"
-                        },
-                        "label": {
-                            "maxLength": 1000,
-                            "minLength": 0,
-                            "title": "Label",
-                            "type": "string"
-                        }
-                    },
-                    "type": "object"
-                },
-                "title": "Menu",
+                "title": "Sub-Queries",
                 "type": "array"
             },
             "pageId": {
@@ -345,19 +314,6 @@
                 },
                 "title": "Page",
                 "type": "string"
-            },
-            "queryName": {
-                "maxLength": 1000,
-                "minLength": 0,
-                "title": "Query Name",
-                "type": "string"
-            },
-            "select": {
-                "items": {
-                    "type": "string"
-                },
-                "title": "Select",
-                "type": "array"
             },
             "where": {
                 "additionalProperties": false,
@@ -370,7 +326,7 @@
                     },
                     "operator": {
                         "enum": [
-                            "eq"
+                            "eq", "in"
                         ],
                         "title": "Operator",
                         "type": "string"
@@ -379,6 +335,18 @@
                         "maxLength": 1000,
                         "minLength": 0,
                         "title": "Value",
+                        "type": "string"
+                    },
+                    "valuePath": {
+                        "maxLength": 1000,
+                        "minLength": 0,
+                        "title": "Value Path",
+                        "type": "string"
+                    },
+                    "mapValue": {
+                        "maxLength": 1000,
+                        "minLength": 0,
+                        "title": "Map Value",
                         "type": "string"
                     }
                 },
@@ -445,15 +413,9 @@
                 },
                 "title": "Required",
                 "type": "array"
-            },
-            "type": {
-                "enum": [
-                    "object"
-                ],
-                "title": "Schema Type",
-                "type": "string"
             }
         },
+        "pageId": "qwhjia43h1s4",
         "type": "object"
     },
     {
@@ -1645,7 +1607,6 @@
             },
             "properties": {
                 "readOnly": false
-
             }
         },
         "query": {
@@ -1679,12 +1640,12 @@
             "icon": {
                 "readOnly": false
             },
-            "select": {
-                "readOnly": false
-            },
             "from": {
                 "readOnly": false
-            },
+			},
+			"pageId": {
+				"readOnly": false
+			},
             "where": {
                 "properties": {
                     "docProp": {
@@ -1695,31 +1656,19 @@
                     },
                     "value": {
                         "readOnly": false
+                    },
+                    "valuePath": {
+                        "readOnly": false
+                    },
+                    "mapValue": {
+                        "readOnly": false
                     }
-                }
-            },
-            "pageId": {
-                "readOnly": false
-            },
-            "joinQueries": {
+				}
+			},
+            "subqueryIds": {
                 "items": {
                     "properties": {
                         "queryId": {
-                            "readOnly": false
-                        }
-                    }
-                }
-            },
-            "menu": {
-                "items": {
-                    "properties": {
-                        "action": {
-                            "readOnly": false
-                        },
-                        "iconClass": {
-                            "readOnly": false
-                        },
-                        "label": {
                             "readOnly": false
                         }
                     }
@@ -3014,7 +2963,6 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "pylvseoljret",
-        "pageId": "qwhjia43h1s4",
         "subqueryIds": [
             "itypb41mkq2v"
         ],
@@ -3032,7 +2980,7 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "pylvseoljret",
-        "pageId": "qwhjia43h1s4",
+        "pageId": "qcd1eefe432r",
         "subqueryIds": [
             "itypb41mkq2v"
         ],
@@ -3046,7 +2994,7 @@
     {
         "key": "lg2seb3lyals",
         "docType": "object",
-        "name": "Owners Class Query",
+        "name": "Accounts Class Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "classes",
@@ -3064,7 +3012,7 @@
     {
         "key": "mhi13xo2io4q",
         "docType": "object",
-        "name": "Owners Subclasses Query",
+        "name": "Accounts Subclasses Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "classes",
@@ -3196,7 +3144,6 @@
         "ownerId": "eoscommonsio",
         "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
-        "pageId": "qwhjia43h1s4",
         "subqueryIds": [
             "ydwhxijs4nrw"
         ],
@@ -3215,7 +3162,6 @@
         "ownerId": "eoscommonsio",
         "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
-        "pageId": "qwhjia43h1s4",
         "subqueryIds": [
             "5fcag1lt11gj",
             "ydwhxijs4nrw"

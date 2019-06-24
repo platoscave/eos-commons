@@ -50,7 +50,7 @@
 
                 <!-- Form-->
                 <div class="full-height" v-if="widget.displayType === 'Form'">
-                    <ec-form2 class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form2>
+                    <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
                     <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                     <div v-if="editMode">
                         <v-icon>done</v-icon>

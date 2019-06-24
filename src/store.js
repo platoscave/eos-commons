@@ -206,7 +206,7 @@ const store = new Vuex.Store({
 		}
 		
         if (!value) {
-          console.error('Invalid value in: ', queryObj)
+          // console.error('Invalid value in: ', queryObj)
           return []
         }
 
@@ -295,8 +295,8 @@ const store = new Vuex.Store({
 
           let pageId = queryObj.query.pageId ? queryObj.query.pageId : item.pageId
           // Get the default pageId from the class
+		  if(queryObj.query.name === 'Queries Query') debugger
           if (!pageId && item.classId) pageId = await getPageIdFromClassById(item.classId)
-
           const ids = store.state.levelIdsArr[queryObj.level + 1]
           const selected = ids ? ids.selectedObjId === item.key : false
           const grandChildrenQueryObj = { currentObj: item, subqueryIds: queryObj.query.subqueryIds }

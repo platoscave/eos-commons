@@ -1,194 +1,8 @@
 <template>
-  <div>
+  <!-- Wait for dataObj and viewObj to arrive -->
+  <div v-if="viewObj && dataObj">
     <div>{{viewId}}</div>
-    <!-- Wait for data and schema to arrive -->
-    <v-container v-if="schema && data">
-      <!-- For each of the properties in schema -->
-      <div v-for="(property, propName) in schema.properties" v-bind:key="propName">
-        <!-- Start owr layout. v-flex must be immidiate child-->
-        <v-layout justify-start row wrap>
-          <!-- Label: If we are in edit mode or, there is data for this property -->
-          <v-flex class="label" xs12 md2 v-if="editMode || data[propName]">
-            <div>{{ property.title }}</div>
-          </v-flex>
-
-          <!-- Value: If we are in edit mode or, there is data for this property -->
-          <v-flex xs12 md10 v-if="editMode || data[propName]">
-            <!-- Richtext -->
-            <div v-if="property.media && property.media.mediaType === 'text/html' ">
-              <div
-                class="readonlyoutput"
-                v-if="!editMode || property.readOnly"
-                v-html="data[propName] ? data[propName] : property.default"
-              ></div>
-              <div v-else>
-                <wysiwyg class="readonlyoutput" v-model="data[propName]"/>
-              </div>
-            </div>
-
-            <!-- WbbGl -->
-            <div v-else-if="property.media && property.media.mediaType === 'image/webgl' ">
-              <div v-if="!editMode || property.readOnly">
-                <img class="readonlyoutput" src="data[propName]" width="500px" height="500px">
-              </div>
-              <div v-else>
-                <img src="data[propName]" width="500px" height="500px">
-              </div>
-            </div>
-
-            <!-- Base64 -->
-            <div v-else-if="property.media && property.media.type === 'image/png' ">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
-                <!--{{data[propName]}}-->
-                <img class="readonlyoutput" v-bind:src="data[propName]">
-              </div>
-              <div v-else>
-                <img v-bind:src="data[propName]" width="24px" height="24px">
-              </div>
-            </div>
-
-            <!-- Date -->
-            <div v-else-if="property && property.format === 'date-time' ">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">
-                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
-              </div>
-              <div v-else>
-                <div>{{ new Date(Date.parse(data[propName])).toLocaleDateString() }}</div>
-              </div>
-            </div>
-
-            <!-- Uri -->
-            <div v-else-if="property.media && property.media.format === 'uri' ">
-              <div v-if="!editMode || property.readOnly">
-                <a class="readonlyoutput" uri="data[propName]"></a>
-              </div>
-              <div v-else>
-                <a uri="data[propName]"></a>
-              </div>
-            </div>
-
-            <!-- Enum -->
-            <div v-else-if="property.enum">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
-              <div v-else>
-                <v-select
-                  class="readonlyoutput"
-                  v-bind:label="property.title"
-                  v-model="data[propName]"
-                  v-bind:readonly="!editMode || property.readOnly || property.enum.length < 2"
-                  v-bind:items="property.enum"
-                  v-bind:idx="data[propName]"
-                  single-line
-                  outline
-                ></v-select>
-              </div>
-            </div>
-
-            <!-- Select from Query Results -->
-            <div v-else-if="property.query">
-              <ec-select
-                v-model="data[propName]"
-                v-bind:query="property.query"
-                v-bind:readonly="property.readOnly || !editMode"
-              ></ec-select>
-            </div>
-
-            <!--String-->
-            <div v-else-if="property.type === 'string'">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
-              <div v-else>
-                <v-text-field class="readonlyoutput" v-model.trim="data[propName]" single-line outline></v-text-field>
-              </div>
-              <!-- v-bind:hint="property.description"
-              append-outer-icon="property.description ? 'help_outline'"-->
-            </div>
-
-            <!--Number-->
-            <div v-else-if="property.type === 'number'">
-              <div class="readonlyoutput" v-if="!editMode || property.readOnly">{{ data[propName] }}</div>
-              <div v-else>
-                <v-text-field
-                  class="inputclass"
-                  v-model.number="data[propName]"
-                  type="number"
-                  single-line
-                  outline
-                ></v-text-field>
-              </div>
-            </div>
-
-            <!-- Boolean -->
-            <div v-else-if="property.type === 'boolean'">
-              <div v-if="!editMode || property.readOnly">
-                <div class="readonlyoutput">{{ data[propName] === true ? 'true' : 'false' }}</div>
-              </div>
-              <div v-else>
-                <v-checkbox value="data[propName]"></v-checkbox>
-              </div>
-            </div>
-
-            <!-- Array -->
-            <div v-else-if="property.type === 'array'">
-              <div class="readonlyoutput">
-                <div v-if="property.items.type === 'object'">
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <ec-form
-                      class="readonlyoutputX"
-                      v-bind:level="level"
-                      v-bind:editMode="editMode"
-                      v-bind:parent-data="childData"
-                      v-bind:parent-schema="property.items"
-                    ></ec-form>
-                    <br>
-                  </div>
-                </div>
-                <div v-else>
-                  <div v-for="(childData, idx) in data[propName]" v-bind:key="idx">
-                    <div class="readonlyoutputX">{{ childData }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Object -->
-            <div v-else-if="property.type === 'object'">
-              <div class="readonlyoutput">
-                <div v-if="property.properties">
-                  <ec-form
-                    v-bind:level="level"
-                    v-bind:editMode="editMode"
-                    v-bind:parent-data="data[propName]"
-                    v-bind:parent-schema="property"
-                  ></ec-form>
-                </div>
-                <div v-else>
-                  <div class="monoSpaced">{{ JSON.stringify(data[propName], replacer, 2) }}></div>
-                </div>
-              </div>
-            </div>
-
-            <!--Json-->
-            <div v-else-if="property.type === 'json'">
-              <div v-if="!editMode || property.readOnly">
-                <div class="readonlyoutput">{{ JSON.stringify(data[propName], null, 2) }}></div>
-              </div>
-              <div v-else>
-                <div class="monoSpaced">{{ JSON.stringify(data[propName], null, 2) }}></div>
-              </div>
-            </div>
-
-            <div v-else>
-              <div>
-                Unknown property: {{ propName }}
-                <br>
-                <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
-                <br>
-              </div>
-            </div>
-          </v-flex>
-        </v-layout>
-      </div>
-    </v-container>
+    <ec-sub-form v-bind:editMode="editMode" v-model="dataObj" v-bind:properties="viewObj.properties"></ec-sub-form>
   </div>
 </template>
 <script>
@@ -198,90 +12,44 @@ export default {
   props: {
     level: Number,
     viewId: String,
-    editMode: Boolean,
-    parentSchema: {
-      type: Object,
-      default: null
-    },
-    parentData: {
-      type: Object,
-      default: null
-    }
+    editMode: Boolean
   },
   data () {
     return {
-      schema: this.parentSchema,
-      data: this.parentData,
-      childData: Object,
-      model: {
-        name: 'Yourtion'
-	  }
+      viewObj: {},
+      dataObj: {}
     }
   },
   methods: {
-    replacer (name, val) {
-      // we do this because icons are very long
-      if (name === 'icon') {
-        return 'base64 icon string'
-      } else {
-        return val
-      }
-    },
     storeData (newData) {
-      console.log('Data Change: ', newData)
+		// if(_.isEqual(a, b)) return // returns false if different
+	  console.log('Data Change: ', newData)
+	  this.$store.dispatch('upsertCommon', newData)
     }
   },
-  created () {
-    if (!this.parentData) {
-      this.$store.watch(
-        state => state.levelIdsArr[this.level].selectedObjId,
-        newVal => {
-          // console.log('selectedObjId Changed!', newVal)
-          if (!newVal) return
-          this.$store.dispatch('getCommonByKey', newVal).then(data => {
-            console.log('data', data)
-            this.data = Object.assign({}, data) // Force reactive update
-          })
-        },
-        { immediate: true }
-      )
-    }
-
-    if (!this.parentSchema && this.viewId) {
-      this.$store.dispatch('materializedView', this.viewId).then(view => {
-        console.log('view', view)
-
-        // resolve $ref
-        /* Object.keys(view.properties).forEach(propName => {
-          let viewProp = view.properties[propName]
-          if(viewProp.$ref) {
-              const defName = viewProp.$ref.substr(viewProp.$ref.lastIndexOf('/')+1)
-              view.properties[propName] = view.definitions[defName]
-          }
+  created: async function () {
+    this.$store.watch(
+      state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
+        if (!selectedObjId) return
+        this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
+          // console.log('dataObj', newData)
+          this.dataObj = Object.assign({}, newData) // Force reactive update
         })
-        console.log('view', view) */
-        this.schema = view
+      },
+      { immediate: true }
+    )
 
-        if (view.rpc) {
-          EosApiService.getAccountInfo('eoscommonsio').then(info => {
-            this.data = info
-          })
-        }
+    this.viewObj = await this.$store.dispatch('materializedView', this.viewId)
+    // console.log('view', this.viewObj)
+    if (this.viewObj.rpc) {
+      EosApiService.getAccountInfo('eoscommonsio').then(info => {
+        this.dataObj = info
       })
     }
-    /* if (this.parentData) this.data = this.parentData
-      else {
-        const pageDesc = this.$store.state.levelIdsArr[this.level]
-        this.$store.dispatch('getCommonByKey', pageDesc.selectedObjId).then((data) => {
-          console.log('data', data)
-          this.data = data
-        })
-      } */
   },
   watch: {
-    data: {
+    dataObj: {
       handler: 'storeData',
-      immediate: true,
       deep: true
     }
   }
