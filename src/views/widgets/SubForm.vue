@@ -161,19 +161,25 @@
                     v-bind:properties="property.properties"
                   ></ec-sub-form>
                 </div>
+                <div v-else-if="property.additionalProperties">
+                  <div
+                    v-for="(childData, subPropName) in baseClassViewObj[propName]"
+                    v-bind:key="subPropName"
+                  >
+                    <div class="outputclass">{{ subPropName }}</div>
+                    <div class="outputclass">{{ baseClassViewObj[propName][subPropName] }}</div>
+                    <ec-sub-form
+                      class="outputclass"
+                      v-bind:editMode="editMode"
+                      v-model="baseClassViewObj[propName][subPropName]"
+                      v-bind:properties="property.additionalProperties"
+                    ></ec-sub-form>
+                    <br>
+                  </div>
+                </div>
                 <div v-else>
                   <div class="monoSpaced">{{ JSON.stringify(value[propName], replacer, 2) }}></div>
                 </div>
-              </div>
-            </div>
-
-            <!--Json-->
-            <div v-else-if="property.type === 'json'">
-              <div v-if="!editMode || property.readOnly">
-                <div class="outputclass">{{ JSON.stringify(value[propName], null, 2) }}></div>
-              </div>
-              <div v-else>
-                <div class="monoSpaced">{{ JSON.stringify(value[propName], null, 2) }}></div>
               </div>
             </div>
 
@@ -193,20 +199,50 @@
 </template>
 <script>
 export default {
-  name: 'subForm',
+  name: "subForm",
   props: {
     editMode: Boolean,
     properties: Object,
     value: Object
   },
+  data() {
+    return {
+      baseClassViewObj: {}
+    };
+  },
   methods: {
-    replacer (name, val) {
+    replacer(name, val) {
       // we do this because icons are very long
-      if (name === 'icon') return 'base64 icon string'
-      else return val
+      if (name === "icon") return "base64 icon string";
+      else return val;
+	},
+	getSubView: async function() {
+		if (this.value.classId === "pylvseoljret") {
+			let baseClassViewObj = await this.$store.dispatch(
+				"materializedView",
+				this.value.key
+			)
+			this.baseClassViewObj = baseClassViewObj
+	  	}
+	}
+  },
+
+  created: async function() {
+    /* debugger;
+    if (this.value.classId === "pylvseoljret")
+      this.baseClassViewObj = await this.$store.dispatch(
+        "materializedView",
+        this.value.key
+      ) */
+  },
+  watch: {
+    value: {
+      handler: "getSubView",
+	  deep: true,
+	  immediate: false 
     }
   }
-}
+};
 </script>
 <style scoped>
 .label {

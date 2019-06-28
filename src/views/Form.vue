@@ -2,11 +2,15 @@
   <!-- Wait for dataObj and viewObj to arrive -->
   <div v-if="viewObj && dataObj">
     <div>{{viewId}}</div>
-    <ec-sub-form v-bind:editMode="editMode" v-model="dataObj" v-bind:properties="viewObj.properties"></ec-sub-form>
+    <ec-sub-form
+      v-bind:editMode="editMode"
+      v-model="dataObj"
+      v-bind:properties="viewObj.properties"
+    ></ec-sub-form>
   </div>
 </template>
 <script>
-import EosApiService from '../services/EosApiService'
+import EosApiService from "../services/EosApiService";
 
 export default {
   props: {
@@ -14,46 +18,48 @@ export default {
     viewId: String,
     editMode: Boolean
   },
-  data () {
+  data() {
     return {
       viewObj: {},
       dataObj: {}
-    }
+    };
   },
   methods: {
-    storeData (newData) {
-		// if(_.isEqual(a, b)) return // returns false if different
-	  console.log('Data Change: ', newData)
-	  this.$store.dispatch('upsertCommon', newData)
+    storeData(newData) {
+      // if(_.isEqual(a, b)) return // returns false if different
+      if (!this.editMode) return
+      console.log("Data Change: ", newData)
+      this.$store.dispatch("upsertCommon", newData)
     }
   },
-  created: async function () {
+  created: async function() {
     this.$store.watch(
-      state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
-        if (!selectedObjId) return
-        this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
+      state => state.levelIdsArr[this.level].selectedObjId,
+      selectedObjId => {
+        if (!selectedObjId) return;
+        this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
           // console.log('dataObj', newData)
-          this.dataObj = Object.assign({}, newData) // Force reactive update
-        })
+          this.dataObj = Object.assign({}, newData); // Force reactive update
+        });
       },
       { immediate: true }
-    )
+    );
 
-    this.viewObj = await this.$store.dispatch('materializedView', this.viewId)
+    this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
     // console.log('view', this.viewObj)
     if (this.viewObj.rpc) {
-      EosApiService.getAccountInfo('eoscommonsio').then(info => {
-        this.dataObj = info
-      })
+      EosApiService.getAccountInfo("eoscommonsio").then(info => {
+        this.dataObj = info;
+      });
     }
   },
   watch: {
     dataObj: {
-      handler: 'storeData',
+      handler: "storeData",
       deep: true
     }
   }
-}
+};
 </script>
 <style scoped>
 .label {

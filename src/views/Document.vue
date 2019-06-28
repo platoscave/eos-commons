@@ -1,17 +1,25 @@
 <template>
   <div>
-    <div v-if="data">
+    <div v-if="dataObj">
       <div v-if="!editMode">
-        <div v-html="data.description"></div>
+		  <h1>{{ dataObj.name }}</h1>
+        <div v-html="dataObj.description"></div>
       </div>
       <div v-else>
-        <wysiwyg v-model="data.description"/>
+		  <h1>
+                <v-text-field
+                  class="outputclass"
+                  v-model.trim="dataObj.name"
+                  single-line
+                  outline
+                ></v-text-field>
+			</h1>
+        <wysiwyg v-model="dataObj.description"/>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Vue from 'vue'
 
 export default {
   props: {
@@ -20,7 +28,14 @@ export default {
   },
   data () {
     return {
-      data: {}
+      dataObj: {}
+    }
+  },
+  methods: {
+    storeData (newData) {
+		// if(_.isEqual(a, b)) return // returns false if different
+	  console.log('Data Change: ', newData)
+	  this.$store.dispatch('upsertCommon', newData)
     }
   },
   created () {
@@ -29,13 +44,19 @@ export default {
       newVal => {
         // console.log('selectedObjId Changed!', newVal)
         if (!newVal) return
-        this.$store.dispatch('getCommonByKey', newVal).then(data => {
-          console.log('data', data)
-          this.data = data
+        this.$store.dispatch('getCommonByKey', newVal).then(newData => {
+          console.log('data', newData)
+          this.dataObj = Object.assign({}, newData) // Force reactive update
         })
       },
       { immediate: true }
     )
+  },
+  watch: {
+    dataObj: {
+      handler: 'storeData',
+      deep: true
+    }
   }
 }
 </script>
