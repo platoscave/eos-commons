@@ -398,6 +398,7 @@
 			"properties": {
 				"title": "Properties",
 				"type": "object",
+				"XadditionalProperties":{"$ref": "#/definitions/additionalProperties"},
 				"additionalProperties": {
 					"title": {
 						"title": "Title",
@@ -412,7 +413,8 @@
 							"number",
 							"boolean",
 							"array",
-							"object"
+							"object",
+							"date"
 						],
 						"type": "string"
 					},
@@ -495,13 +497,21 @@
 						"properties": {
 							"from": {
 								"title": "From",
-								"query": {}
+								"type": "string"
 							},
 							"sortBy": {
 								"title": "Sort By",
 								"type": "string"
 							}
 						}
+					},
+					"properties": {
+						"title": "Properties",
+						"type": "object"
+					},
+					"items": {
+						"title": "Items",
+						"type": "object"
 					}
 				}
 			},
@@ -532,119 +542,120 @@
 			}
 		},
 		"definitions": {
-			"propertyProperties": {
-				"title": "Properties",
-				"type": "object",
-				"properties": {
-					"title": {
-						"title": "Title",
-						"type": "string",
-						"maxLength": 100,
-						"minLength": 1
-					},
-					"type": {
-						"title": "Type",
-						"enum": [
-							"string",
-							"number",
-							"boolean",
-							"array",
-							"object"
-						],
-						"type": "string"
-					},
-					"description": {
-						"title": "Description",
-						"default": "<p>[no text]</p>",
-						"maxLength": 10000,
-						"media": {
-							"mediaType": "text/html"
-						},
-						"minLength": 0,
-						"type": "string"
-					},
-					"readOnly": {
-						"title": "Read Only",
-						"type": "boolean"
-					},
-					"default": {
-						"title": "Default",
-						"type": "string"
-					},
-					"pattern": {
-						"title": "Pattern",
-						"maxLength": 100,
-						"minLength": 0,
-						"type": "string"
-					},
-					"maximum": {
-						"title": "Maximum",
-						"type": "number"
-					},
-					"minimum": {
-						"title": "Minimum",
-						"type": "number"
-					},
-					"maxLength": {
-						"title": "Max Length",
-						"type": "number"
-					},
-					"minLength": {
-						"title": "Min Length",
-						"type": "number"
-					},
+			"additionalProperties": {
+				"title": {
+					"title": "Title",
+					"type": "string",
+					"maxLength": 100,
+					"minLength": 1
+				},
+				"type": {
+					"title": "Type",
+					"enum": [
+						"string",
+						"number",
+						"boolean",
+						"array",
+						"object",
+						"date"
+					],
+					"type": "string"
+				},
+				"description": {
+					"title": "Description",
+					"default": "<p>[no text]</p>",
+					"maxLength": 10000,
 					"media": {
-						"title": "Media",
-						"type": "object",
-						"properties": {
-							"mediaType": {
-								"title": "Media Type",
-								"enum": [
-									"text/html"
-								]
-							},
-							"binaryEncoding": {
-								"title": "Binary Encoding",
-								"enum": [
-									"base64"
-								]
-							},
-							"type": {
-								"title": "Type",
-								"enum": [
-									"image/png"
-								]
-							}
-						}
+						"mediaType": "text/html"
 					},
-					"enum": {
-						"title": "Enum",
-						"type": "array",
-						"items": {
-							"properties": {
-								"type": "string"
-							}
-						}
-					},
-					"query": {
-						"title": "Query",
-						"type": "object",
-						"properties": {
-							"from": {
-								"title": "From",
-								"query": {}
-							},
-							"sortBy": {
-								"title": "Sort By",
-								"type": "string"
-							}
+					"minLength": 0,
+					"type": "string"
+				},
+				"readOnly": {
+					"title": "Read Only",
+					"type": "boolean"
+				},
+				"default": {
+					"title": "Default",
+					"type": "string"
+				},
+				"pattern": {
+					"title": "Pattern",
+					"maxLength": 100,
+					"minLength": 0,
+					"type": "string"
+				},
+				"maximum": {
+					"title": "Maximum",
+					"type": "number"
+				},
+				"minimum": {
+					"title": "Minimum",
+					"type": "number"
+				},
+				"maxLength": {
+					"title": "Max Length",
+					"type": "number"
+				},
+				"minLength": {
+					"title": "Min Length",
+					"type": "number"
+				},
+				"media": {
+					"title": "Media",
+					"type": "object",
+					"properties": {
+						"mediaType": {
+							"title": "Media Type",
+							"enum": [
+								"text/html"
+							]
+						},
+						"binaryEncoding": {
+							"title": "Binary Encoding",
+							"enum": [
+								"base64"
+							]
+						},
+						"type": {
+							"title": "Type",
+							"enum": [
+								"image/png"
+							]
 						}
 					}
 				},
-				"required": [
-					"title",
-					"type"
-				]
+				"enum": {
+					"title": "Enum",
+					"type": "array",
+					"items": {
+						"properties": {
+							"type": "string"
+						}
+					}
+				},
+				"query": {
+					"title": "Query",
+					"type": "object",
+					"properties": {
+						"from": {
+							"title": "From",
+							"type": "string"
+						},
+						"sortBy": {
+							"title": "Sort By",
+							"type": "string"
+						}
+					}
+				},
+				"properties": {
+					"title": "Properties",
+					"type": "object"
+				},
+				"items": {
+					"title": "Items",
+					"type": "object"
+				}
 			}
 		},
 		"pageId": "qwhjia43h1s4",

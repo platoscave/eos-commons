@@ -6,6 +6,7 @@
       v-bind:editMode="editMode"
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
+      v-bind:definitions="viewObj.definitions"
     ></ec-sub-form>
   </div>
 </template>

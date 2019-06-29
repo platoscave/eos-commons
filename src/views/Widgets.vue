@@ -3,8 +3,6 @@
         <!--<v-container fluid>-->
             <!--<v-layout flex column>-->
         <div  class="full-height" v-for="(widget, key) in widgets " v-bind:key="key"  >
-            <!-- Get rid of linting error
-            <div v-bind:key="widget">-->
                 <!-- Document-->
                 <div class="full-height" v-if="widget.displayType === 'Document'">
                     <ec-document class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-document>
@@ -65,7 +63,6 @@
                 <div v-if="widget.displayType === 'HomePage'">
                     <div>Widget {{ widget.displayType }}</div>
                 </div>
-            <!--</div>-->
         </div>
             <!--</v-layout>-->
         <!--</v-container>-->

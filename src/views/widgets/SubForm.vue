@@ -167,7 +167,7 @@
                     v-bind:key="subPropName"
                   >
                     <div class="outputclass">{{ subPropName }}</div>
-                    <div class="outputclass">{{ baseClassViewObj[propName][subPropName] }}</div>
+                    <!-- <div class="outputclass">{{ baseClassViewObj[propName][subPropName] }}</div> -->
                     <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
@@ -203,11 +203,12 @@ export default {
   props: {
     editMode: Boolean,
     properties: Object,
+    definitions: Object,
     value: Object
   },
   data() {
     return {
-      baseClassViewObj: {}
+    	baseClassViewObj: {}
     };
   },
   methods: {
@@ -217,6 +218,8 @@ export default {
       else return val;
 	},
 	getSubView: async function() {
+		if(!this.value) return
+		// If value (object being edited) is a View, go ahead and materialize it
 		if (this.value.classId === "pylvseoljret") {
 			let baseClassViewObj = await this.$store.dispatch(
 				"materializedView",
@@ -226,20 +229,11 @@ export default {
 	  	}
 	}
   },
-
-  created: async function() {
-    /* debugger;
-    if (this.value.classId === "pylvseoljret")
-      this.baseClassViewObj = await this.$store.dispatch(
-        "materializedView",
-        this.value.key
-      ) */
-  },
   watch: {
     value: {
       handler: "getSubView",
 	  deep: true,
-	  immediate: false 
+	  immediate: true 
     }
   }
 };
