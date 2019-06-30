@@ -35,12 +35,16 @@ export default {
   },
   created: async function () {
     this.$store.watch(
-      state => state.levelIdsArr[this.level].selectedObjId,
-      selectedObjId => {
+      state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
         if (!selectedObjId) return
         this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
-          // console.log('dataObj', newData)
-          this.dataObj = Object.assign({}, newData) // Force reactive update
+			// console.log('dataObj', newData)
+			if (newData.classId === 'pylvseoljret') {
+				this.$store.dispatch( 'materializedView', selectedObjId).then(materializedView => {
+					this.dataObj = Object.assign({}, materializedView) // Force reactive update
+				})
+			}
+			else this.dataObj = Object.assign({}, newData) // Force reactive update
         })
       },
       { immediate: true }

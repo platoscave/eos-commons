@@ -306,10 +306,10 @@ const store = new Vuex.Store({
       // Execute the queryObj to see if there are any grandchildren
       // This feels a bit wasteful
       const getGrandChildrenLength = async queryObj => {
-        let subqueryIdsArr = queryObj.subqueryIds
-        if (!subqueryIdsArr) return true
-        if (!Array.isArray(subqueryIdsArr)) subqueryIdsArr = [subqueryIdsArr]
-        let grandChildrenPromises = subqueryIdsArr.map(async subqueryId => {
+        let subQueryIdsArr = queryObj.subQueryIds
+        if (!subQueryIdsArr) return true
+        if (!Array.isArray(subQueryIdsArr)) subQueryIdsArr = [subQueryIdsArr]
+        let grandChildrenPromises = subQueryIdsArr.map(async subqueryId => {
           let query = await ApiService.getCommonByKey(subqueryId)
           return await store.dispatch('query', { currentObj: queryObj.currentObj, query: query })
         })
@@ -331,7 +331,7 @@ const store = new Vuex.Store({
           if (!pageId && item.classId) pageId = await getPageIdFromClassById(item.classId)
           const ids = store.state.levelIdsArr[queryObj.level + 1]
           const selected = ids ? ids.selectedObjId === item.key : false
-          const grandChildrenQueryObj = { currentObj: item, subqueryIds: queryObj.query.subqueryIds }
+          const grandChildrenQueryObj = { currentObj: item, subQueryIds: queryObj.query.subQueryIds }
           const opened = !!store.state.isOpened[item.key]
           const isLeaf = await getGrandChildrenLength(grandChildrenQueryObj)
           const children = [{
@@ -365,11 +365,11 @@ const store = new Vuex.Store({
         return await Promise.all(treeNodePromissesArr)
       }
 
-      let subqueryIds = queryObj.subqueryIds
-      // Make sure subqueryIds is an Array
-      if (!Array.isArray(subqueryIds)) subqueryIds = [subqueryIds]
+      let subQueryIds = queryObj.subQueryIds
+      // Make sure subQueryIds is an Array
+      if (!Array.isArray(subQueryIds)) subQueryIds = [subQueryIds]
 
-      let subQueryPromisses = subqueryIds.map(async queryId => {
+      let subQueryPromisses = subQueryIds.map(async queryId => {
         // Get the query
         let query = await ApiService.getCommonByKey(queryId)
 

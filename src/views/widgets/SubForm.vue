@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-container>
+		<!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
+		<br>
+		<div class="monoSpaced">{{ JSON.stringify(value, replacer, 2) }}></div>  -->
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
@@ -107,7 +110,7 @@
 
             <!--Number-->
             <div v-else-if="property.type === 'number'">
-              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
+              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName].toLocaleString() }}</div>
               <div v-else>
                 <v-text-field
                   class="inputclass"
@@ -164,22 +167,15 @@
                   ></ec-sub-form>
                 </div>
                 <div v-else-if="property.additionalProperties">
-					<!-- TODO baseClassViewObj is only available on the first level, find a way to pass it to subforms
-					then we cad add ,
-					"additionalProperties": {
-						"$ref": "#/definitions/additionalProperties"
-					} to properties and items in additionalproperties-->
                   <div
-                    v-for="(childData, subPropName) in baseClassViewObj[propName]"
-                    v-bind:key="subPropName"
-                  >
+                    v-for="(childData, subPropName) in value[propName]"
+                    v-bind:key="subPropName">
                     <div class="outputclass">{{ subPropName }}</div>
-                    <!-- <div class="outputclass">{{ baseClassViewObj[propName][subPropName] }}</div> -->
 					<!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
                     <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
-                      v-model="baseClassViewObj[propName][subPropName]"
+                      v-model="value[propName][subPropName]"
                       v-bind:properties="definitions.additionalProperties"
       					v-bind:definitions="definitions"
                     ></ec-sub-form>
@@ -238,13 +234,13 @@ export default {
 	  	}
     }
   },
-  watch: {
+  /* watch: {
     value: {
       handler: 'getSubView',
 	  deep: true,
 	  immediate: true
     }
-  }
+  } */
 }
 </script>
 <style scoped>

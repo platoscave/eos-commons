@@ -61,7 +61,7 @@ export default {
         if (!oriNode || !oriNode.data.key) {
           let viewQueryObj = {
             currentObj: {},
-            subqueryIds: this.$parent.view.subqueryIds
+            subQueryIds: this.$parent.view.subQueryIds
           }
           this.$store.dispatch('getTreeNodes', viewQueryObj).then(result => {
             resolve(result)
@@ -232,12 +232,12 @@ export default {
       this.y = event.clientY
       this.menuItems = []
 
-      let subqueryIds = _.get(node, 'Xdata.queryArrObj.subqueryIds')
-      if (subqueryIds) {
-        // Make sure subqueryIds is an Array
-        if (!Array.isArray(subqueryIds)) subqueryIds = [subqueryIds]
+      let subQueryIds = _.get(node, 'Xdata.queryArrObj.subQueryIds')
+      if (subQueryIds) {
+        // Make sure subQueryIds is an Array
+        if (!Array.isArray(subQueryIds)) subQueryIds = [subQueryIds]
 
-        let menuItemsArrPromisses = subqueryIds.map(async queryId => {
+        let menuItemsArrPromisses = subQueryIds.map(async queryId => {
           // Get the query
           let query = await this.$store.dispatch('getCommonByKey', queryId)
 
