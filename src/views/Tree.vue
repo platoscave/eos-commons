@@ -109,8 +109,8 @@ export default {
       console.log(node.model.text + ' drag end !')
     },
     itemDropBefore (node, item, draggedItem, e) {
-		return false
-		//return draggingNode.data.label !== dropNode.data.label
+      return false
+      // return draggingNode.data.label !== dropNode.data.label
       if (!draggedItem) {
         item.addChild({
           text: 'newNode',
@@ -119,10 +119,10 @@ export default {
       }
     },
     itemDrop (node, item, draggedItem, e) {
-		return false
-		// Get the queries
-		// find out which doctype / classId we can drop on
-		// if item is right type  
+      return false
+      // Get the queries
+      // find out which doctype / classId we can drop on
+      // if item is right type
       let sortBy = function (attr, rev) {
         if (rev === undefined) {
           rev = 1
@@ -268,10 +268,10 @@ export default {
 
         this.menuItems = await Promise.all(menuItemsArrPromisses)
       }
-      this.menuItems.push({ 
+      this.menuItems.push({
 		  	title: 'Delete ' + node.text,
-            action: 'delete',
-            parentNode: node })
+        action: 'delete',
+        parentNode: node })
 
       this.$nextTick(() => {
         this.showMenu = true
@@ -321,7 +321,7 @@ export default {
         let updatedObj = await this.$store.dispatch('upsertCommon', currentObj)
       } else if (action === 'delete') {
         let key = await this.$store.dispatch('eraseCommon', parentNode.key)
-	  } 
+	  }
     }
   },
   created () {

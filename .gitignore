@@ -19,4 +19,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-src/config/ipfsKeys.js
+src/config/ipfsConfig.js

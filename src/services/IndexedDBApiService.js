@@ -1,5 +1,6 @@
 
 import axios from 'axios'
+import IpfsApiService from './IpfsApiService'
 
 class IndexedDBApiService {
   static upsertCommon (common) {
@@ -80,6 +81,7 @@ class IndexedDBApiService {
         store.createIndex('classId', 'classId')
         store.createIndex('ownerId', 'ownerId')
         store.createIndex('isDirty', 'isDirty')
+        store.createIndex('cid', 'cid')
       }
 
       openRequest.onsuccess = e => {
@@ -89,6 +91,14 @@ class IndexedDBApiService {
           const transaction = this.db.transaction('commons', 'readwrite')
           const commonsStore = transaction.objectStore('commons')
           // console.log(response.data)
+
+          /* const ipfsPromisses = response.data.map(obj => {
+						IpfsApiService.pinJSONToIPFS(obj).then( result => {
+							console.log('result', result)
+							obj.cid = result.data.IpfsHash
+						})
+					}) */
+
           response.data.forEach(obj => {
             commonsStore.put(obj)
           })

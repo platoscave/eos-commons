@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     storeData (newData) {
-		// if(_.isEqual(a, b)) return // returns false if different
+      // if(_.isEqual(a, b)) return // returns false if different
 	  console.log('Data Change: ', newData)
 	  this.$store.dispatch('upsertCommon', newData)
     }

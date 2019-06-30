@@ -139,6 +139,7 @@
                       v-bind:editMode="editMode"
                       v-model="value[propName][idx]"
                       v-bind:properties="property.items.properties"
+      					v-bind:definitions="definitions"
                     ></ec-sub-form>
                     <br>
                   </div>
@@ -159,20 +160,28 @@
                     v-bind:editMode="editMode"
                     v-model="value[propName]"
                     v-bind:properties="property.properties"
+      				v-bind:definitions="definitions"
                   ></ec-sub-form>
                 </div>
                 <div v-else-if="property.additionalProperties">
+					<!-- TODO baseClassViewObj is only available on the first level, find a way to pass it to subforms
+					then we cad add ,
+					"additionalProperties": {
+						"$ref": "#/definitions/additionalProperties"
+					} to properties and items in additionalproperties-->
                   <div
                     v-for="(childData, subPropName) in baseClassViewObj[propName]"
                     v-bind:key="subPropName"
                   >
                     <div class="outputclass">{{ subPropName }}</div>
                     <!-- <div class="outputclass">{{ baseClassViewObj[propName][subPropName] }}</div> -->
+					<!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
                     <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
                       v-model="baseClassViewObj[propName][subPropName]"
-                      v-bind:properties="property.additionalProperties"
+                      v-bind:properties="definitions.additionalProperties"
+      					v-bind:definitions="definitions"
                     ></ec-sub-form>
                     <br>
                   </div>
@@ -199,44 +208,44 @@
 </template>
 <script>
 export default {
-  name: "subForm",
+  name: 'subForm',
   props: {
     editMode: Boolean,
     properties: Object,
     definitions: Object,
     value: Object
   },
-  data() {
+  data () {
     return {
     	baseClassViewObj: {}
-    };
+    }
   },
   methods: {
-    replacer(name, val) {
+    replacer (name, val) {
       // we do this because icons are very long
-      if (name === "icon") return "base64 icon string";
-      else return val;
-	},
-	getSubView: async function() {
-		if(!this.value) return
-		// If value (object being edited) is a View, go ahead and materialize it
-		if (this.value.classId === "pylvseoljret") {
-			let baseClassViewObj = await this.$store.dispatch(
-				"materializedView",
-				this.value.key
-			)
-			this.baseClassViewObj = baseClassViewObj
+      if (name === 'icon') return 'base64 icon string'
+      else return val
+    },
+    getSubView: async function () {
+      if (!this.value) return
+      // If value (object being edited) is a View, go ahead and materialize it
+      if (this.value.classId === 'pylvseoljret') {
+        let baseClassViewObj = await this.$store.dispatch(
+          'materializedView',
+          this.value.key
+        )
+        this.baseClassViewObj = baseClassViewObj
 	  	}
-	}
+    }
   },
   watch: {
     value: {
-      handler: "getSubView",
+      handler: 'getSubView',
 	  deep: true,
-	  immediate: true 
+	  immediate: true
     }
   }
-};
+}
 </script>
 <style scoped>
 .label {
