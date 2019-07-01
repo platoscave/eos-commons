@@ -233,7 +233,7 @@ export default {
         this.baseClassViewObj = baseClassViewObj
 	  	}
     }
-  },
+  }
   /* watch: {
     value: {
       handler: 'getSubView',

@@ -1136,6 +1136,15 @@
 				},
 				"title": "Next States",
 				"type": "array"
+			},
+			"substateId": {
+				"pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+				"query": {
+					"from": "1jrqyjoabx1a",
+					"sortBy": "name"
+				},
+				"title": "Substate",
+				"type": "string"
 			}
 		},
 		"type": "object"
@@ -1148,6 +1157,13 @@
 		"icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMGZmMDAiIGlkPSJzdmdfMSIgZD0ibTE1LjM3NSw3bC01LjM3NSwtNC40NmMtMC4zMDUsLTAuMjUzIC0wLjUzOSwtMC41NCAtMSwtMC41NGMtMC42MjUsMCAtMSwwLjUxNiAtMSwxbDAsM2wtNywwYy0wLjU1LDAgLTEsMC40NSAtMSwxbDAsMmMwLDAuNTUgMC40NSwxIDEsMWw3LDBsMCwzYzAsMC40ODQgMC4zNzUsMSAxLDFjMC40NjEsMCAwLjY5NSwtMC4yODcgMSwtMC41NGw1LjM3NSwtNC40NmMwLjM4MywtMC4zMTIgMC42MjUsLTAuNTU1IDAuNjI1LC0xcy0wLjI0MiwtMC42ODcgLTAuNjI1LC0xeiIvPgogPC9nPgo8L3N2Zz4=",
 		"parentId": "nrioirgelhpi",
 		"properties": {
+			"returnActions": {
+				"title": "Return Actions",
+				"items": {
+					"type": "string"
+				},
+				"type": "array"
+			},
 			"substateId": {
 				"pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
 				"query": {
@@ -1907,7 +1923,7 @@
 	{
 		"key": "z2xnjsqcs5bj",
 		"docType": "object",
-		"name": "Processes Form Page",
+		"name": "Process Form Page",
 		"classId": "z2xnjsqcs5bj",
 		"ownerId": "eoscommonsio",
 		"tabs": [
@@ -1917,6 +1933,35 @@
 					{
 						"displayType": "Form",
 						"name": "Processes Form",
+						"viewId": "qtubgorhvukr"
+					}
+				]
+			},
+			{
+				"name": "Process Model",
+				"widgets": [
+					{
+						"displayType": "Process Model",
+						"name": "Process",
+						"viewId": "nqnnj5xfzg4y"
+					}
+				]
+			}
+		]
+	},
+	{
+		"key": "2vnljdsieyjw",
+		"docType": "object",
+		"name": "State Form Page",
+		"classId": "z2xnjsqcs5bj",
+		"ownerId": "eoscommonsio",
+		"tabs": [
+			{
+				"name": "Process",
+				"widgets": [
+					{
+						"displayType": "Form",
+						"name": "State Form",
 						"viewId": "wfejmbcgmmpm"
 					}
 				]
@@ -1962,6 +2007,34 @@
 		]
 	},
 	{
+		"key": "qtubgorhvukr",
+		"docType": "object",
+		"name": "Process Form View",
+		"classId": "pylvseoljret",
+		"ownerId": "eoscommonsio",
+		"properties": {
+			"key": {
+				"readOnly": true
+			},
+			"name": {
+				"readOnly": false
+			},
+			"description": {
+				"readOnly": false
+			},
+			"returnActions": {
+				"items": {
+					"readOnly": false
+				}
+			},
+			"substateId": {
+				"readOnly": false
+			}
+		},
+		"baseClassId": "dwl1kwhalwj4",
+		"type": "object"
+	},
+	{
 		"key": "wfejmbcgmmpm",
 		"docType": "object",
 		"name": "State Form View",
@@ -1978,7 +2051,16 @@
 				"readOnly": false
 			},
 			"nextStateIds": {
-				"readOnly": false
+				"items": {
+					"properties": {
+						"action": {
+							"readOnly": false
+						},
+						"stateId": {
+							"readOnly": false
+						}
+					}
+				}
 			},
 			"substateId": {
 				"readOnly": false
@@ -2090,7 +2172,6 @@
 					{
 						"displayType": "Tree",
 						"name": "Processes Tree",
-						"pageId": "z2xnjsqcs5bj",
 						"viewId": "1qpopibixvnh"
 					}
 				]
@@ -3222,6 +3303,7 @@
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "classes",
+		"pageId": "2vnljdsieyjw",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
 		"subQueryIds": [
 			"ydwhxijs4nrw"
@@ -3240,6 +3322,7 @@
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "classes",
+		"pageId": "2vnljdsieyjw",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
 		"subQueryIds": [
 			"5fcag1lt11gj",
