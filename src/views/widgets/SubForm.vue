@@ -137,6 +137,9 @@
               <div class="outputclass">
                 <div v-if="property.items.type === 'object'">
                   <div v-for="(childData, idx) in value[propName]" v-bind:key="idx">
+					  	<!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
+						<br>
+						<div class="monoSpaced">{{ JSON.stringify(property.items.properties, replacer, 2) }}></div> -->
                     <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
@@ -172,7 +175,8 @@
                     v-bind:key="subPropName">
                     <div class="outputclass">{{ subPropName }}</div>
 					<!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
-                    <ec-sub-form
+                    <!-- {{value[propName][subPropName]}} -->
+					<ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
                       v-model="value[propName][subPropName]"
@@ -209,38 +213,16 @@ export default {
     editMode: Boolean,
     properties: Object,
     definitions: Object,
+    required: Array,
     value: Object
-  },
-  data () {
-    return {
-    	baseClassViewObj: {}
-    }
   },
   methods: {
     replacer (name, val) {
       // we do this because icons are very long
       if (name === 'icon') return 'base64 icon string'
       else return val
-    },
-    getSubView: async function () {
-      if (!this.value) return
-      // If value (object being edited) is a View, go ahead and materialize it
-      if (this.value.classId === 'pylvseoljret') {
-        let baseClassViewObj = await this.$store.dispatch(
-          'materializedView',
-          this.value.key
-        )
-        this.baseClassViewObj = baseClassViewObj
-	  	}
     }
   }
-  /* watch: {
-    value: {
-      handler: 'getSubView',
-	  deep: true,
-	  immediate: true
-    }
-  } */
 }
 </script>
 <style scoped>

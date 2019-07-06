@@ -15,7 +15,7 @@ async function takeAction (action, dataValue) {
   const ACCOUNT = 'eoscommonsio'
   const ACTOR = 'eoscommonsio'
 
-  const privateKey = testAccounts.testAccounts.eoscommonsio.privateKey
+  const privateKey = testAccounts.eoscommonsio.privateKey
   const rpc = new JsonRpc(HTTPENDPOINT)
   const signatureProvider = new JsSignatureProvider([privateKey])
   const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })

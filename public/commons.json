@@ -1500,19 +1500,10 @@
 		"name": "Purchase Process",
 		"description": "<p>Purchase</p>",
 		"classId": "dwl1kwhalwj4",
-		"nextStateIds": [
-			{
-				"action": "unhappy",
-				"stateId": "zdwdoqpxks2s"
-			},
-			{
-				"action": "happy",
-				"stateId": "3hxkire2nn4v"
-			},
-			{
-				"action": "reject",
-				"stateId": "zdwdoqpxks2s"
-			}
+		"returnActions": [
+			"happy",
+			"unhappy",
+			"reject"
 		],
 		"substateId": "3r5kgovlor1o",
 		"ownerId": "eoscommonsio"
@@ -1523,13 +1514,9 @@
 		"name": "Bicycle Shop Process",
 		"description": "<p>Bicycle Shop Purchase Process</p>",
 		"classId": "dwl1kwhalwj4",
-		"nextStateIds": [
-			{
-				"action": "unhappy"
-			},
-			{
-				"action": "happy"
-			}
+		"returnActions": [
+			"happy",
+			"unhappy"
 		],
 		"substateId": "yefagaab4ua2",
 		"ownerId": "bicyleshop11"
@@ -1924,7 +1911,7 @@
 		"key": "z2xnjsqcs5bj",
 		"docType": "object",
 		"name": "Process Form Page",
-		"classId": "z2xnjsqcs5bj",
+		"classId": "pejdgrwd5qso",
 		"ownerId": "eoscommonsio",
 		"tabs": [
 			{
@@ -1953,7 +1940,7 @@
 		"key": "2vnljdsieyjw",
 		"docType": "object",
 		"name": "State Form Page",
-		"classId": "z2xnjsqcs5bj",
+		"classId": "pejdgrwd5qso",
 		"ownerId": "eoscommonsio",
 		"tabs": [
 			{
@@ -2377,8 +2364,8 @@
 	{
 		"key": "bavb2g1inh2t",
 		"docType": "object",
-		"name": "Agreement",
-		"description": "<p>Agreement</p>",
+		"name": "Acceptance",
+		"description": "<p>Acceptance</p>",
 		"classId": "xsaq3l5hncb2",
 		"nextStateIds": [
 			{

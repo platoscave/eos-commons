@@ -28,34 +28,19 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
 
   state: {
-    commons: {}, // REMOVE
-    classes: {}, // REMOVE
-    loading: false,
-    statusCode: null,
-    message: '',
+    account: '[not selected]',
+    network: '[not selected]',
     levelIdsArr: [],
     pageStates: {},
     isOpened: {}
   },
-  getters: {
-    getMessage: (state) => {
-      return state.statusCode + ' ' + state.message
-    }
-  },
+
   mutations: {
-    SET_CLASSES_LOADING (state) {
-      state.loading = true
-      state.message = 'loading...'
+    SET_ACCOUNT (state, payload) {
+		  state.account = payload
     },
-    SET_CLASSES_SUCCESS (state, payload) {
-      state.statusCode = payload.statusCode
-      state.message = payload.message
-      state.classes = payload.data
-      state.loading = false
-    },
-    SET_CLASSES_FAILURE (state, payload) {
-      state.statusCode = payload.statusCode
-      state.message = payload.message
+    SET_NETWORK (state, payload) {
+		state.network = payload
     },
 
     SET_PAGE_STATE2 (state, payload) {
@@ -126,29 +111,6 @@ const store = new Vuex.Store({
     SET_NODE_TOGGLE (state, payload) {
       if (payload.opened) state.isOpened[payload.key] = true
       else delete state.isOpened[payload.key]
-    },
-
-    SAVE (state, payload) {
-      const getRandomKey = () => {
-        // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
-        // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
-        var characters = 'abcdefghijklmnopqrstuvwxyz12345'
-        var randomKey = ''
-        for (var i = 0; i < 12; i++) {
-          randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
-        }
-        return randomKey
-      }
-      console.log('random', getRandomKey())
-
-      IpfsApiService.testAuthentication().then(result => {
-        console.log('result', result)
-      })
-      /* EosApiService.getCommonByKey('gzthjuyjca4z').then(obj => {
-					console.log('obj', obj )
-				  }) */
-      // return EosApiService.loadEos()
-      // return EosApiService.eraseallCommon()
     }
   },
   actions: {
