@@ -1,61 +1,59 @@
 <template>
   <v-app dark>
-	  <div v-if="!loading" class="content-pane" ><ec-layout v-bind:level="0"></ec-layout></div>
-    
+    <div v-if="!loading" class="content-pane">
+      <ec-layout v-bind:level="0"></ec-layout>
+    </div>
     <div class="footer">
-          <v-dialog   v-model="dialog" width="350">
-            <template v-slot:activator="{ on }">
-			  <v-icon  class="left" v-on="on">settings</v-icon>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">Settings</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12>
-                      <v-select v-bind:items="networks" v-model="network" label="Network"></v-select>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-select v-bind:items="accounts" v-model="account" label="Account*"></v-select>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-btn
-                        color="blue darken-1"
-                        @click="onImportFromStatic()"
-                      >Import From Static File</v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-btn color="blue darken-1" @click="onSaveToEos()">Save to EOS</v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-btn
-                        color="blue darken-1"
-                        @click="onDownFromIndexeddb()"
-                      >Download From IndexedDB</v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                      <div>Random Key: {{ randomKey }}</div>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <div class="left">{{network}}</div>
-          <div class="left">{{account}}</div>
-          <div class="right">eos-commons.io</div>
+      <v-dialog v-model="dialog" width="350">
+        <template v-slot:activator="{ on }">
+          <v-icon class="left" v-on="on">settings</v-icon>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Settings</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-select v-bind:items="networks" v-model="network" label="Network"></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <v-select v-bind:items="accounts" v-model="account" label="Account*"></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onSaveToEos()">Save to EOS</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="onDownFromIndexeddb()"
+                  >Download From IndexedDB</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <div>Random Key: {{ randomKey }}</div>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <div class="left">{{network}}</div>
+      <div class="left">{{account}}</div>
+      <div class="right">eos-commons.io</div>
     </div>
     <v-snackbar v-model="snackbar" :color="color" :timeout="3000">
       {{ text }}
@@ -199,15 +197,13 @@ export default {
   text-align: center;
 }
 .left {
-	float:left;
+  float: left;
   padding-left: 20px;
   line-height: 42px;
-
 }
 .right {
-	float:right;
+  float: right;
   padding-right: 20px;
-
 }
 </style>
 <style>
