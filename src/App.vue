@@ -1,68 +1,61 @@
 <template>
   <v-app dark>
-    <ec-layout v-if="!loading" class="content-pane" v-bind:level="0"></ec-layout>
-
+	  <div v-if="!loading" class="content-pane" ><ec-layout v-bind:level="0"></ec-layout></div>
+    
     <div class="footer">
-      <v-dialog v-model="dialog" width="500">
-        <template v-slot:activator="{ on }">
-          <v-btn  v-on="on">
-            <v-icon>settings</v-icon>
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">Settings</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-select
-				  	v-bind:items="networks"
-				  	v-model="network"
-                    label="Network"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <v-select
-				  	v-bind:items="accounts"
-				  	v-model="account"
-                    label="Account*"
-                  ></v-select>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onSaveToEos()">Save to EOS</v-btn>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
-                </v-flex>
-                <v-flex xs12>
-                  <v-btn
-                    color="blue darken-1"
-                    @click="onDownFromIndexeddb()"
-                  >Download From IndexedDB</v-btn>
-                </v-flex>
-                <v-flex xs12>
-                  <div>Random Key: {{ randomKey }}</div>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <div>{{network}}</div>
-      <div>{{account}}</div>
-      <div>eos-commons.io</div>
+          <v-dialog   v-model="dialog" width="350">
+            <template v-slot:activator="{ on }">
+			  <v-icon  class="left" v-on="on">settings</v-icon>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">Settings</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12>
+                      <v-select v-bind:items="networks" v-model="network" label="Network"></v-select>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-select v-bind:items="accounts" v-model="account" label="Account*"></v-select>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-btn
+                        color="blue darken-1"
+                        @click="onImportFromStatic()"
+                      >Import From Static File</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-btn color="blue darken-1" @click="onSaveToEos()">Save to EOS</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-btn
+                        color="blue darken-1"
+                        @click="onDownFromIndexeddb()"
+                      >Download From IndexedDB</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                      <div>Random Key: {{ randomKey }}</div>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <div class="left">{{network}}</div>
+          <div class="left">{{account}}</div>
+          <div class="right">eos-commons.io</div>
     </div>
     <v-snackbar v-model="snackbar" :color="color" :timeout="3000">
       {{ text }}
@@ -74,9 +67,8 @@
 <script>
 import IndexedDBApiService from "./services/IndexedDBApiService";
 import EosApiService from "./services/EosApiService";
-import testAccounts from './config/testaccounts.js'
-import networks from './config/networks.js'
-
+import testAccounts from "./config/testaccounts.js";
+import networks from "./config/networks.js";
 
 export default {
   name: "App",
@@ -85,34 +77,34 @@ export default {
       loading: true,
       dialog: false,
       snackbar: false,
-      text: '',
-      color: ''
+      text: "",
+      color: ""
     };
   },
   computed: {
     network: {
-      get () {
-		return this.$store.state.network
+      get() {
+        return this.$store.state.network;
       },
-      set (value) {
-        this.$store.commit('SET_NETWORK', value)
+      set(value) {
+        this.$store.commit("SET_NETWORK", value);
       }
     },
     account: {
-      get () {
-		return this.$store.state.account
+      get() {
+        return this.$store.state.account;
       },
-      set (value) {
-        this.$store.commit('SET_ACCOUNT', value)
+      set(value) {
+        this.$store.commit("SET_ACCOUNT", value);
       }
-	},
-	accounts: function () {
-		return Object.keys(testAccounts)
-	},
-	networks: function () {
-		return Object.keys(networks)
-	},
-	randomKey: function () {
+    },
+    accounts: function() {
+      return Object.keys(testAccounts);
+    },
+    networks: function() {
+      return Object.keys(networks);
+    },
+    randomKey: function() {
       var characters = "abcdefghijklmnopqrstuvwxyz12345";
       var randomKey = "";
       for (var i = 0; i < 12; i++) {
@@ -121,20 +113,20 @@ export default {
         );
       }
       return randomKey;
-	}
+    }
   },
   methods: {
     onImportFromStatic() {
       IndexedDBApiService.loadIndexedDB()
         .then(result => {
-		  this.dialog = false 
-		  this.color = "success"
+          this.dialog = false;
+          this.color = "success";
           this.text = "Loaded from static file";
           this.snackbar = true;
         })
         .catch(error => {
-		  this.dialog = false
-		  this.color = "error"
+          this.dialog = false;
+          this.color = "error";
           this.text = error;
           this.snackbar = true;
         });
@@ -142,29 +134,29 @@ export default {
     onImportFromEos() {
       IndexedDBApiService.loadIndexedDB()
         .then(result => {
-		  this.dialog = false 
-		  this.color = "success"
+          this.dialog = false;
+          this.color = "success";
           this.text = "Loaded from static file";
           this.snackbar = true;
         })
         .catch(error => {
-		  this.dialog = false
-		  this.color = "error"
-          this.text = error
-          this.snackbar = true
+          this.dialog = false;
+          this.color = "error";
+          this.text = error;
+          this.snackbar = true;
         });
     },
     onSaveToEos() {
       IndexedDBApiService.loadIndexedDB()
         .then(result => {
-		  this.dialog = false 
-		  this.color = "success"
+          this.dialog = false;
+          this.color = "success";
           this.text = "Loaded from static file";
           this.snackbar = true;
         })
         .catch(error => {
-		  this.dialog = false
-		  this.color = "error"
+          this.dialog = false;
+          this.color = "error";
           this.text = error;
           this.snackbar = true;
         });
@@ -172,14 +164,14 @@ export default {
     onEraseAllEos() {
       IndexedDBApiService.loadIndexedDB()
         .then(result => {
-		  this.dialog = false 
-		  this.color = "success"
+          this.dialog = false;
+          this.color = "success";
           this.text = "Loaded from static file";
           this.snackbar = true;
         })
         .catch(error => {
-		  this.dialog = false
-		  this.color = "error"
+          this.dialog = false;
+          this.color = "error";
           this.text = error;
           this.snackbar = true;
         });
@@ -188,29 +180,34 @@ export default {
   },
   created() {
     IndexedDBApiService.loadIndexedDB().then(res => {
-		this.$store.commit('SET_NETWORK','localhost')
-		this.$store.commit('SET_ACCOUNT','platoscave11')
-      	if (!window.location.hash) window.location.hash = "#/.j4ichkhammzm"; // Demo Page
-      	this.loading = false;
+      this.$store.commit("SET_NETWORK", "localhost");
+      this.$store.commit("SET_ACCOUNT", "platoscave11");
+      if (!window.location.hash) window.location.hash = "#/.j4ichkhammzm"; // Demo Page
+      this.loading = false;
     });
   }
 };
 </script>
 <style scoped>
 .content-pane {
-  width: 100vw;
-  height: calc(100vh - 35px);
+  height: calc(100vh - 42px);
 }
 .footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 10px 0px 10px;
   background: #212121;
-  color: #fff;
-  height: 35px;
-  width: 100vw;
+  font-size: 16px;
+  line-height: 42px;
+  text-align: center;
+}
+.left {
+	float:left;
+  padding-left: 20px;
+  line-height: 42px;
+
+}
+.right {
+	float:right;
+  padding-right: 20px;
+
 }
 </style>
 <style>
