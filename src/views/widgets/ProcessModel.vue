@@ -9,8 +9,8 @@
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/sceneMixin.js'
-import ProcessObject3d from '../lib/processObject3d.js'
+import Scene from '../../lib/sceneMixin.js'
+import ProcessObject3d from '../../lib/processObject3d.js'
 
 const WIDTH = 400
 const HEIGHT = 200
@@ -50,13 +50,13 @@ export default {
     interfaceStateObj3dArr.forEach(interfaceStateObj3d => {
       // Draw the final action tubes form this interface state
       let y = 0
-      interfaceStateObj3d.userData.nextStateIds.forEach(nextState => {
+      interfaceStateObj3d.userData.returnActions.forEach(nextState => {
         console.log('nextState', nextState)
         let position = interfaceStateObj3d.position.clone()
         position.setY(y)
         position.setX(position.x + WIDTH * 4)
         let toState = { position: position }
-        interfaceStateObj3d.drawTubeRightSideToLeftSide(toState, nextState.action)
+        interfaceStateObj3d.drawTubeRightSideToLeftSide(toState, nextState)
         y += HEIGHT
       })
 

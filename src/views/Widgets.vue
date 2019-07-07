@@ -5,15 +5,7 @@
         <div  class="full-height" v-for="(widget, key) in widgets " v-bind:key="key"  >
                 <!-- Document-->
                 <div class="full-height" v-if="widget.displayType === 'Document'">
-                    <ec-document class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-document>
-                    <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
-                        <div v-if="editMode">
-                            <v-icon>done</v-icon>
-                        </div>
-                        <div v-else>
-                            <v-icon>edit</v-icon>
-                        </div>
-                    </v-btn>
+                    <ec-document class="ec-container" v-bind:level="level"></ec-document>
                 </div>
 
                 <!-- Balance Sheet-->
@@ -68,17 +60,11 @@
         <!--</v-container>-->
     </div>
 </template>
-<script src="../node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<script src="../node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js"></script>
+
 <script>
-import Tree from './Tree.vue'
-import Form from './Form.vue'
+
 
 export default {
-  components: {
-    'ec-tree': Tree,
-    'ec-form': Form
-  },
   props: {
     level: Number,
     widgets: {

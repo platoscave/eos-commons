@@ -28,7 +28,7 @@
                   <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onSaveToEos()">Save to EOS</v-btn>
+                  <v-btn color="blue darken-1" @click="onSaveDirtyToEos()">Save to EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     onImportFromStatic() {
-      IndexedDBApiService.loadIndexedDB()
+      IndexedDBApiService.ImportFromIndexedDB()
         .then(result => {
           this.dialog = false;
           this.color = "success";
@@ -130,11 +130,11 @@ export default {
         });
     },
     onImportFromEos() {
-      IndexedDBApiService.loadIndexedDB()
+      EosApiService.ImportFromEos()
         .then(result => {
           this.dialog = false;
           this.color = "success";
-          this.text = "Loaded from static file";
+          this.text = "Loaded from EOS";
           this.snackbar = true;
         })
         .catch(error => {
@@ -144,12 +144,12 @@ export default {
           this.snackbar = true;
         });
     },
-    onSaveToEos() {
-      IndexedDBApiService.loadIndexedDB()
+    onSaveDirtyToEos() {
+      EosApiService.SaveDirtyToEos()
         .then(result => {
           this.dialog = false;
           this.color = "success";
-          this.text = "Loaded from static file";
+          this.text = "Updates have been saved to EOS";
           this.snackbar = true;
         })
         .catch(error => {
@@ -160,11 +160,11 @@ export default {
         });
     },
     onEraseAllEos() {
-      IndexedDBApiService.loadIndexedDB()
+      EosApiService.EraseAllEos()
         .then(result => {
           this.dialog = false;
           this.color = "success";
-          this.text = "Loaded from static file";
+          this.text = "Erased all EOS";
           this.snackbar = true;
         })
         .catch(error => {
@@ -177,7 +177,7 @@ export default {
     onDownFromIndexeddb() {}
   },
   created() {
-    IndexedDBApiService.loadIndexedDB().then(res => {
+    IndexedDBApiService.ImportFromIndexedDB().then(res => {
       this.$store.commit("SET_NETWORK", "localhost");
       this.$store.commit("SET_ACCOUNT", "platoscave11");
       if (!window.location.hash) window.location.hash = "#/.j4ichkhammzm"; // Demo Page

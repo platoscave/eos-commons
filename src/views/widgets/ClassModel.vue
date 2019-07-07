@@ -9,8 +9,8 @@
 
 <script>
 import * as THREE from 'three'
-import Scene from '../lib/sceneMixin.js'
-import ClassObject3d from '../lib/classObject3d.js'
+import Scene from '../../lib/sceneMixin.js'
+import ClassObject3d from '../../lib/classObject3d.js'
 
 const WIDTH = 400
 const HEIGHT = 200

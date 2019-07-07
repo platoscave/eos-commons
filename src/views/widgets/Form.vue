@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import EosApiService from '../services/EosApiService'
+import EosApiService from '../../services/EosApiService'
 
 export default {
   props: {

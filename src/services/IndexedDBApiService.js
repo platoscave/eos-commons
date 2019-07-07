@@ -70,7 +70,7 @@ class IndexedDBApiService {
     })
   }
 
-  static async loadIndexedDB () {
+  static async ImportFromIndexedDB () {
     return new Promise((resolve, reject) => {
       const openRequest = indexedDB.open('commonsDB', 1)
 

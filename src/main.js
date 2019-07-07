@@ -6,18 +6,20 @@ import router from './router'
 import store from './store'
 import VueLodash from 'vue-lodash'
 import Layout from './views/Layout.vue'
-import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
-import Form from './views/Form.vue'
-import SubForm from './views/widgets/SubForm.vue'
-import Select from './views/widgets/Select.vue'
-import ClassModel from './views/ClassModel.vue'
-import ProcessModel from './views/ProcessModel.vue'
-import WorkflowModel from './views/WorkflowModel.vue'
-import Document from './views/Document.vue'
-import BalanceSheet from './views/BalanceSheet.vue'
-import BalanceSheetItems from './views/widgets/BalanceSheetItems.vue'
+import { Multipane, MultipaneResizer } from 'vue-multipane'
+import Form from './views/widgets/Form.vue'
+import ClassModel from './views/widgets/ClassModel.vue'
+import ProcessModel from './views/widgets/ProcessModel.vue'
+import WorkflowModel from './views/widgets/WorkflowModel.vue'
+import Document from './views/widgets/Document.vue'
+import BalanceSheet from './views/widgets/BalanceSheet.vue'
+import Tree from './views/widgets/Tree.vue'
+import SubForm from './views/widgets/recursive/SubForm.vue'
+import Select from './views/widgets/recursive/Select.vue'
+import BalanceSheetItems from './views/widgets/recursive/BalanceSheetItems.vue'
+import Paragraph from './views/widgets/recursive/Paragraph.vue'
 import { sync } from 'vuex-router-sync'
 import wysiwyg from 'vue-wysiwyg'
 
@@ -33,7 +35,9 @@ Vue.component('ec-class-model', ClassModel)
 Vue.component('ec-process-model', ProcessModel)
 Vue.component('ec-workflow-model', WorkflowModel)
 Vue.component('ec-document', Document)
+Vue.component('ec-paragraph', Paragraph)
 Vue.component('ec-balance-sheet', BalanceSheet)
+Vue.component('ec-tree', Tree)
 Vue.component('ec-bsitems', BalanceSheetItems)
 
 global.THREE = require('../node_modules/three/three.js')

@@ -1,13 +1,15 @@
 import { Api, JsonRpc, RpcError } from 'eosjs'
 import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig'
 import testAccounts from '../config/testaccounts.js'
+import networks from '../config/networks.js'
 import axios from 'axios'
 import BigNumber from 'bignumber.js/bignumber'
 import { encodeName, decodeName } from '../lib/format.js'
+import IndexedDBApiService from "./IndexedDBApiService";
 
 const HTTPENDPOINT = 'http://localhost:8888'
 const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
-const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Usually the same as code
+const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Otherwise the same as code
 const TABLE = 'commons' // name of the table as specified by the contract abi
 
 // Main action call to blockchain
@@ -128,21 +130,35 @@ class EosApiService {
     }
   }
 
-  static async getAccountInfo (account) {
-    try {
-      const rpc = new JsonRpc(HTTPENDPOINT)
-      const result = await rpc.get_account(account)
-      return result
-      console.log(result)
-      return JSON.parse(result)
-    } catch (err) {
-      console.error(err)
-      return {}
+  static async ImportFromEOS () {
+    const doAllSequentually = async (fnPromiseArr) => {
+      for (let i = 0; i < fnPromiseArr.length; i++) {
+        await fnPromiseArr[i]()
+      }
     }
+
+    const createFnPromise = (common) => {
+      return () => this.upsertCommon(common)
+    }
+
   }
 
-  static async loadEos () {
+  static async SaveDirtyToEos () {
     const doAllSequentually = async (fnPromiseArr) => {
+      for (let i = 0; i < fnPromiseArr.length; i++) {
+        await fnPromiseArr[i]()
+      }
+    }
+
+    const createFnPromise = (common) => {
+      return () => this.upsertCommon(common)
+    }
+
+
+  }
+
+  static async ImportFromEOS () {
+    /* const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
         await fnPromiseArr[i]()
       }
@@ -162,10 +178,10 @@ class EosApiService {
         console.log('finished upsert')
         return true
       })
-    })
+    }) */
   }
 
-  static eraseallCommon () {
+  static EraseAllEos () {
     const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
         await fnPromiseArr[i]()
@@ -196,6 +212,19 @@ class EosApiService {
           reject(err)
         })
     }) */
+  }
+
+  static async getAccountInfo (account) {
+    try {
+      const rpc = new JsonRpc(HTTPENDPOINT)
+      const result = await rpc.get_account(account)
+      return result
+      console.log(result)
+      return JSON.parse(result)
+    } catch (err) {
+      console.error(err)
+      return {}
+    }
   }
 }
 
