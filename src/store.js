@@ -40,7 +40,7 @@ const store = new Vuex.Store({
 		  state.account = payload
     },
     SET_NETWORK (state, payload) {
-		state.network = payload
+      state.network = payload
     },
 
     SET_PAGE_STATE2 (state, payload) {

@@ -5,7 +5,7 @@ import networks from '../config/networks.js'
 import axios from 'axios'
 import BigNumber from 'bignumber.js/bignumber'
 import { encodeName, decodeName } from '../lib/format.js'
-import IndexedDBApiService from "./IndexedDBApiService";
+import IndexedDBApiService from './IndexedDBApiService'
 
 const HTTPENDPOINT = 'http://localhost:8888'
 const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
@@ -140,7 +140,6 @@ class EosApiService {
     const createFnPromise = (common) => {
       return () => this.upsertCommon(common)
     }
-
   }
 
   static async SaveDirtyToEos () {
@@ -153,8 +152,6 @@ class EosApiService {
     const createFnPromise = (common) => {
       return () => this.upsertCommon(common)
     }
-
-
   }
 
   static async ImportFromEOS () {

@@ -24,29 +24,29 @@ export default {
     headerLevel: Number,
     subParagraphId: String
   },
-  data() {
+  data () {
     return {
 	  paragraphObj: {},
 	  editMode: false
-    };
+    }
   },
   methods: {
-    updateParagraph() {
+    updateParagraph () {
       this.$store
-        .dispatch("getCommonByKey", this.subParagraphId)
+        .dispatch('getCommonByKey', this.subParagraphId)
         .then(newData => {
           // console.log("data", newData);
-          this.paragraphObj = Object.assign({}, newData); // Force reactive update
-        });
+          this.paragraphObj = Object.assign({}, newData) // Force reactive update
+        })
     }
   },
   watch: {
-	subParagraphId: {
-		handler: "updateParagraph",
+    subParagraphId: {
+      handler: 'updateParagraph',
       	immediate: true
     }
   }
-};
+}
 </script>
 <style scoped>
 @import "~vue-wysiwyg/dist/vueWysiwyg.css";

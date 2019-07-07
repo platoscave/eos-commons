@@ -10,11 +10,11 @@ export default {
     editMode: Boolean
   },
   computed: {
-    subParagraphId: function() {
+    subParagraphId: function () {
       return this.$store.state.levelIdsArr[this.level].selectedObjId
     }
   }
-};
+}
 </script>
 <style scoped>
 </style>

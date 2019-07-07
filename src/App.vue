@@ -63,128 +63,128 @@
 </template>
 
 <script>
-import IndexedDBApiService from "./services/IndexedDBApiService";
-import EosApiService from "./services/EosApiService";
-import testAccounts from "./config/testaccounts.js";
-import networks from "./config/networks.js";
+import IndexedDBApiService from './services/IndexedDBApiService'
+import EosApiService from './services/EosApiService'
+import testAccounts from './config/testaccounts.js'
+import networks from './config/networks.js'
 
 export default {
-  name: "App",
-  data() {
+  name: 'App',
+  data () {
     return {
       loading: true,
       dialog: false,
       snackbar: false,
-      text: "",
-      color: ""
-    };
+      text: '',
+      color: ''
+    }
   },
   computed: {
     network: {
-      get() {
-        return this.$store.state.network;
+      get () {
+        return this.$store.state.network
       },
-      set(value) {
-        this.$store.commit("SET_NETWORK", value);
+      set (value) {
+        this.$store.commit('SET_NETWORK', value)
       }
     },
     account: {
-      get() {
-        return this.$store.state.account;
+      get () {
+        return this.$store.state.account
       },
-      set(value) {
-        this.$store.commit("SET_ACCOUNT", value);
+      set (value) {
+        this.$store.commit('SET_ACCOUNT', value)
       }
     },
-    accounts: function() {
-      return Object.keys(testAccounts);
+    accounts: function () {
+      return Object.keys(testAccounts)
     },
-    networks: function() {
-      return Object.keys(networks);
+    networks: function () {
+      return Object.keys(networks)
     },
-    randomKey: function() {
-      var characters = "abcdefghijklmnopqrstuvwxyz12345";
-      var randomKey = "";
+    randomKey: function () {
+      var characters = 'abcdefghijklmnopqrstuvwxyz12345'
+      var randomKey = ''
       for (var i = 0; i < 12; i++) {
         randomKey += characters.charAt(
           Math.floor(Math.random() * characters.length)
-        );
+        )
       }
-      return randomKey;
+      return randomKey
     }
   },
   methods: {
-    onImportFromStatic() {
+    onImportFromStatic () {
       IndexedDBApiService.ImportFromIndexedDB()
         .then(result => {
-          this.dialog = false;
-          this.color = "success";
-          this.text = "Loaded from static file";
-          this.snackbar = true;
+          this.dialog = false
+          this.color = 'success'
+          this.text = 'Loaded from static file'
+          this.snackbar = true
         })
         .catch(error => {
-          this.dialog = false;
-          this.color = "error";
-          this.text = error;
-          this.snackbar = true;
-        });
+          this.dialog = false
+          this.color = 'error'
+          this.text = error
+          this.snackbar = true
+        })
     },
-    onImportFromEos() {
+    onImportFromEos () {
       EosApiService.ImportFromEos()
         .then(result => {
-          this.dialog = false;
-          this.color = "success";
-          this.text = "Loaded from EOS";
-          this.snackbar = true;
+          this.dialog = false
+          this.color = 'success'
+          this.text = 'Loaded from EOS'
+          this.snackbar = true
         })
         .catch(error => {
-          this.dialog = false;
-          this.color = "error";
-          this.text = error;
-          this.snackbar = true;
-        });
+          this.dialog = false
+          this.color = 'error'
+          this.text = error
+          this.snackbar = true
+        })
     },
-    onSaveDirtyToEos() {
+    onSaveDirtyToEos () {
       EosApiService.SaveDirtyToEos()
         .then(result => {
-          this.dialog = false;
-          this.color = "success";
-          this.text = "Updates have been saved to EOS";
-          this.snackbar = true;
+          this.dialog = false
+          this.color = 'success'
+          this.text = 'Updates have been saved to EOS'
+          this.snackbar = true
         })
         .catch(error => {
-          this.dialog = false;
-          this.color = "error";
-          this.text = error;
-          this.snackbar = true;
-        });
+          this.dialog = false
+          this.color = 'error'
+          this.text = error
+          this.snackbar = true
+        })
     },
-    onEraseAllEos() {
+    onEraseAllEos () {
       EosApiService.EraseAllEos()
         .then(result => {
-          this.dialog = false;
-          this.color = "success";
-          this.text = "Erased all EOS";
-          this.snackbar = true;
+          this.dialog = false
+          this.color = 'success'
+          this.text = 'Erased all EOS'
+          this.snackbar = true
         })
         .catch(error => {
-          this.dialog = false;
-          this.color = "error";
-          this.text = error;
-          this.snackbar = true;
-        });
+          this.dialog = false
+          this.color = 'error'
+          this.text = error
+          this.snackbar = true
+        })
     },
-    onDownFromIndexeddb() {}
+    onDownFromIndexeddb () {}
   },
-  created() {
+  created () {
     IndexedDBApiService.ImportFromIndexedDB().then(res => {
-      this.$store.commit("SET_NETWORK", "localhost");
-      this.$store.commit("SET_ACCOUNT", "platoscave11");
-      if (!window.location.hash) window.location.hash = "#/.j4ichkhammzm"; // Demo Page
-      this.loading = false;
-    });
+      this.$store.commit('SET_NETWORK', 'localhost')
+      this.$store.commit('SET_ACCOUNT', 'platoscave11')
+      if (!window.location.hash) window.location.hash = '#/.j4ichkhammzm' // Demo Page
+      this.loading = false
+    })
   }
-};
+}
 </script>
 <style scoped>
 .content-pane {
