@@ -1644,7 +1644,7 @@
 	{
 		"key": "nq4cdhem2j5f",
 		"docType": "object",
-		"name": "Page Tree View",
+		"name": "Page Tree View REMOVE",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"subQueryIds": "4jicds3j34ay",
@@ -1653,7 +1653,7 @@
 	{
 		"key": "mqajmzylchwb",
 		"docType": "object",
-		"name": "View Tree View",
+		"name": "View Tree View REMOVE",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"subQueryIds": "tadmq5fujns1",
@@ -1877,7 +1877,7 @@
 	{
 		"key": "1qpopibixvnh",
 		"docType": "object",
-		"name": "Processes Tree View",
+		"name": "Processes Tree View REMOVE",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"subQueryIds": "lhrhr4tr1pv1",
@@ -1886,7 +1886,7 @@
 	{
 		"key": "z4hnomj1itrk",
 		"docType": "object",
-		"name": "Agreements Tree View",
+		"name": "Agreements Tree View REMOVE",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"subQueryIds": "ixup4ajsmt1o",
@@ -2106,7 +2106,7 @@
 	{
 		"key": "gosud45ttatt",
 		"docType": "object",
-		"name": "Page Tab Page",
+		"name": "Page Tab Page REMOVE",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
 		"divider": "Vertical",
@@ -2130,7 +2130,7 @@
 		"docType": "object",
 		"name": "View Tab Page",
 		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso",
+		"classId": "pejdgrwd5qso REMOVE",
 		"divider": "Vertical",
 		"ownerId": "eoscommonsio",
 		"tabs": [
@@ -2150,7 +2150,7 @@
 	{
 		"key": "mc144yoeeu33",
 		"docType": "object",
-		"name": "Processes Tab Page",
+		"name": "Processes Tab Page REMOVE",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
 		"divider": "Vertical",
@@ -2171,7 +2171,7 @@
 	{
 		"key": "naavmwatxvsh",
 		"docType": "object",
-		"name": "Agreements Tab Page",
+		"name": "Agreements Tab Page REMOVE",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
 		"divider": "Vertical",
@@ -2214,18 +2214,18 @@
 	{
 		"key": "1xiosn5ttuea",
 		"docType": "object",
-		"name": "EC Resources Tab Page",
+		"name": "OB Resources Tab Page",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
 		"divider": "Vertical",
 		"ownerId": "eoscommonsio",
 		"tabs": [
 			{
-				"name": "EC Resources",
+				"name": "OB Resources",
 				"widgets": [
 					{
 						"displayType": "Tree",
-						"name": "EC Resources",
+						"name": "OB Resources",
 						"viewId": "vcde5e5rxwpg"
 					}
 				]
@@ -2677,22 +2677,6 @@
 				"pageId": "1xiosn5ttuea"
 			},
 			{
-				"name": "Processes",
-				"pageId": "mc144yoeeu33"
-			},
-			{
-				"name": "Agreements",
-				"pageId": "naavmwatxvsh"
-			},
-			{
-				"name": "Pages",
-				"pageId": "gosud45ttatt"
-			},
-			{
-				"name": "Views",
-				"pageId": "e2vsbujn4blr"
-			},
-			{
 				"name": "Balance Sheet",
 				"widgets": [
 					{
@@ -3059,6 +3043,12 @@
 		"from": "gzthjuyjca4s",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
 		"sortBy": "name",
+		"subQueryIds": [
+			"2vwvbhvflpp1",
+			"5fcag1lt11gj",
+			"itypb41mkq2v",
+			"itypb41mkq2v"
+		],
 		"where": {
 			"docProp": "classId",
 			"operator": "eq",
@@ -3068,7 +3058,7 @@
 	{
 		"key": "4jicds3j34ay",
 		"docType": "object",
-		"name": "Pages Class Query",
+		"name": "Pages Class Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "ikjyhlqewxs3",
@@ -3084,7 +3074,7 @@
 	{
 		"key": "gfe35d3jtdbk",
 		"docType": "object",
-		"name": "Pages Query",
+		"name": "Pages Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "pejdgrwd5qso",
@@ -3099,7 +3089,7 @@
 	{
 		"key": "tadmq5fujns1",
 		"docType": "object",
-		"name": "Views Class Query",
+		"name": "Views Class Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "ikjyhlqewxs3",
@@ -3115,7 +3105,7 @@
 	{
 		"key": "zybmeeszytik",
 		"docType": "object",
-		"name": "Views Query",
+		"name": "Views Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "pylvseoljret",
@@ -3211,7 +3201,6 @@
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
 		"pageId": "qwhjia43h1s4",
 		"subQueryIds": [
-			
 			"2jfs4is4icct",
 			"x1lrv2xdq2tu"
 		],
@@ -3224,7 +3213,7 @@
 	{
 		"key": "lhrhr4tr1pv1",
 		"docType": "object",
-		"name": "Processes Class Query",
+		"name": "Processes Class Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "classes",
@@ -3241,7 +3230,7 @@
 	{
 		"key": "aouorwuhz5cv",
 		"docType": "object",
-		"name": "Processes Query",
+		"name": "Processes Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "dwl1kwhalwj4",
@@ -3297,7 +3286,7 @@
 	{
 		"key": "ixup4ajsmt1o",
 		"docType": "object",
-		"name": "Agreements Class Query",
+		"name": "Agreements Class Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "classes",
@@ -3314,7 +3303,7 @@
 	{
 		"key": "ajhw5apzkiry",
 		"docType": "object",
-		"name": "Agreements Subclasses Query",
+		"name": "Agreements Subclasses Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "classes",
@@ -3331,7 +3320,7 @@
 	{
 		"key": "xlwwknje5cjt",
 		"docType": "object",
-		"name": "Agreements Query",
+		"name": "Agreements Query REMOVE",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
 		"from": "pylvseoljret",
