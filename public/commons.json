@@ -1642,24 +1642,6 @@
 		]
 	},
 	{
-		"key": "nq4cdhem2j5f",
-		"docType": "object",
-		"name": "Page Tree View REMOVE",
-		"classId": "pylvseoljret",
-		"ownerId": "eoscommonsio",
-		"subQueryIds": "4jicds3j34ay",
-		"type": "object"
-	},
-	{
-		"key": "mqajmzylchwb",
-		"docType": "object",
-		"name": "View Tree View REMOVE",
-		"classId": "pylvseoljret",
-		"ownerId": "eoscommonsio",
-		"subQueryIds": "tadmq5fujns1",
-		"type": "object"
-	},
-	{
 		"key": "mdqg4rkzezxa",
 		"docType": "object",
 		"name": "Page Form View",
@@ -1875,24 +1857,6 @@
 		"ownerId": "eoscommonsio"
 	},
 	{
-		"key": "1qpopibixvnh",
-		"docType": "object",
-		"name": "Processes Tree View REMOVE",
-		"classId": "pylvseoljret",
-		"ownerId": "eoscommonsio",
-		"subQueryIds": "lhrhr4tr1pv1",
-		"type": "object"
-	},
-	{
-		"key": "z4hnomj1itrk",
-		"docType": "object",
-		"name": "Agreements Tree View REMOVE",
-		"classId": "pylvseoljret",
-		"ownerId": "eoscommonsio",
-		"subQueryIds": "ixup4ajsmt1o",
-		"type": "object"
-	},
-	{
 		"key": "4r3khpgxgq3i",
 		"docType": "object",
 		"name": "Documents Tree View",
@@ -2102,93 +2066,6 @@
 		},
 		"baseClassId": "i1gjptcb2skq",
 		"type": "object"
-	},
-	{
-		"key": "gosud45ttatt",
-		"docType": "object",
-		"name": "Page Tab Page REMOVE",
-		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso",
-		"divider": "Vertical",
-		"ownerId": "eoscommonsio",
-		"tabs": [
-			{
-				"name": "Pages",
-				"widgets": [
-					{
-						"displayType": "Tree",
-						"name": "Page Table",
-						"pageId": "icfdprzi442m",
-						"viewId": "nq4cdhem2j5f"
-					}
-				]
-			}
-		]
-	},
-	{
-		"key": "e2vsbujn4blr",
-		"docType": "object",
-		"name": "View Tab Page",
-		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso REMOVE",
-		"divider": "Vertical",
-		"ownerId": "eoscommonsio",
-		"tabs": [
-			{
-				"name": "Views",
-				"widgets": [
-					{
-						"displayType": "Tree",
-						"name": "View Tree",
-						"pageId": "qwhjia43h1s4",
-						"viewId": "mqajmzylchwb"
-					}
-				]
-			}
-		]
-	},
-	{
-		"key": "mc144yoeeu33",
-		"docType": "object",
-		"name": "Processes Tab Page REMOVE",
-		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso",
-		"divider": "Vertical",
-		"ownerId": "eoscommonsio",
-		"tabs": [
-			{
-				"name": "Processes",
-				"widgets": [
-					{
-						"displayType": "Tree",
-						"name": "Processes Tree",
-						"viewId": "1qpopibixvnh"
-					}
-				]
-			}
-		]
-	},
-	{
-		"key": "naavmwatxvsh",
-		"docType": "object",
-		"name": "Agreements Tab Page REMOVE",
-		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso",
-		"divider": "Vertical",
-		"ownerId": "eoscommonsio",
-		"tabs": [
-			{
-				"name": "Agreements",
-				"widgets": [
-					{
-						"displayType": "Tree",
-						"name": "Agreements Tree",
-						"pageId": "n1dvzgi132ap",
-						"viewId": "z4hnomj1itrk"
-					}
-				]
-			}
-		]
 	},
 	{
 		"key": "4far2aqwurdo",
@@ -2577,45 +2454,6 @@
 		"isActive": true,
 		"pageId": "koufnboaimfz",
 		"password": "$2a$10$pSbeb7qPuqUn.1wHeprOhOSxCo2f5mc7D8BcSKXGvRR/0KA84lfOm"
-	},
-	{
-		"key": "j4ichkhammzm",
-		"docType": "object",
-		"name": "Demo Page",
-		"accordionOrTab": "Tabs",
-		"classId": "pejdgrwd5qso",
-		"divider": "None",
-		"ownerId": "eoscommonsio",
-		"tabs": [
-			{
-				"name": "Accounts",
-				"pageId": "kmghbh3qovtq"
-			},
-			{
-				"name": "Classes",
-				"pageId": "4lk3hxyyfac3"
-			},
-			{
-				"name": "ec resources",
-				"pageId": "1xiosn5ttuea"
-			},
-			{
-				"name": "Processes",
-				"pageId": "mc144yoeeu33"
-			},
-			{
-				"name": "Agreements",
-				"pageId": "naavmwatxvsh"
-			},
-			{
-				"name": "Pages",
-				"pageId": "gosud45ttatt"
-			},
-			{
-				"name": "Views",
-				"pageId": "e2vsbujn4blr"
-			}
-		]
 	},
 	{
 		"key": "44yiclbxugop",
@@ -3055,70 +2893,7 @@
 			"value": "$fk"
 		}
 	},
-	{
-		"key": "4jicds3j34ay",
-		"docType": "object",
-		"name": "Pages Class Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "ikjyhlqewxs3",
-		"subQueryIds": [
-			"gfe35d3jtdbk"
-		],
-		"where": {
-			"docProp": "key",
-			"operator": "eq",
-			"value": "pejdgrwd5qso"
-		}
-	},
-	{
-		"key": "gfe35d3jtdbk",
-		"docType": "object",
-		"name": "Pages Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "pejdgrwd5qso",
-		"pageId": "icfdprzi442m",
-		"where": {
-			"docProp": "classId",
-			"operator": "eq",
-			"value": "$fk"
-		},
-		"sortBy": "name"
-	},
-	{
-		"key": "tadmq5fujns1",
-		"docType": "object",
-		"name": "Views Class Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "ikjyhlqewxs3",
-		"subQueryIds": [
-			"zybmeeszytik"
-		],
-		"where": {
-			"docProp": "key",
-			"operator": "eq",
-			"value": "pylvseoljret"
-		}
-	},
-	{
-		"key": "zybmeeszytik",
-		"docType": "object",
-		"name": "Views Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "pylvseoljret",
-		"subQueryIds": [
-			"itypb41mkq2v"
-		],
-		"where": {
-			"docProp": "classId",
-			"operator": "eq",
-			"value": "$fk"
-		},
-		"sortBy": "name"
-	},
+
 	{
 		"key": "itypb41mkq2v",
 		"docType": "object",
@@ -3211,41 +2986,6 @@
 		}
 	},
 	{
-		"key": "lhrhr4tr1pv1",
-		"docType": "object",
-		"name": "Processes Class Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "classes",
-		"icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-		"subQueryIds": [
-			"aouorwuhz5cv"
-		],
-		"where": {
-			"docProp": "key",
-			"operator": "eq",
-			"value": "dwl1kwhalwj4"
-		}
-	},
-	{
-		"key": "aouorwuhz5cv",
-		"docType": "object",
-		"name": "Processes Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "dwl1kwhalwj4",
-		"pageId": "z2xnjsqcs5bj",
-		"subQueryIds": [
-			"5fcag1lt11gj"
-		],
-		"where": {
-			"docProp": "classId",
-			"operator": "eq",
-			"value": "$fk"
-		},
-		"sortBy": "name"
-	},
-	{
 		"key": "ydwhxijs4nrw",
 		"docType": "object",
 		"name": "Next States Query",
@@ -3282,55 +3022,6 @@
 			"operator": "in",
 			"valuePath": "substateId"
 		}
-	},
-	{
-		"key": "ixup4ajsmt1o",
-		"docType": "object",
-		"name": "Agreements Class Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "classes",
-		"icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
-		"subQueryIds": [
-			"ajhw5apzkiry"
-		],
-		"where": {
-			"docProp": "key",
-			"operator": "eq",
-			"value": "i1gjptcb2skq"
-		}
-	},
-	{
-		"key": "ajhw5apzkiry",
-		"docType": "object",
-		"name": "Agreements Subclasses Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "classes",
-		"subQueryIds": [
-			"xlwwknje5cjt"
-		],
-		"sortBy": "title",
-		"where": {
-			"docProp": "parentId",
-			"operator": "eq",
-			"value": "$fk"
-		}
-	},
-	{
-		"key": "xlwwknje5cjt",
-		"docType": "object",
-		"name": "Agreements Query REMOVE",
-		"classId": "q234ooehrk5v",
-		"ownerId": "eoscommonsio",
-		"from": "pylvseoljret",
-		"pageId": "n1dvzgi132ap",
-		"where": {
-			"docProp": "classId",
-			"operator": "eq",
-			"value": "$fk"
-		},
-		"sortBy": "name"
 	},
 	{
 		"key": "sd5zsuvlxdgf",
