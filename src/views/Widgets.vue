@@ -8,6 +8,11 @@
                     <ec-document class="ec-container" v-bind:level="level"></ec-document>
                 </div>
 
+                <!-- HTML Page-->
+                <div class="full-height" v-if="widget.displayType === 'HTMLPage'">
+                    <ec-html-page class="ec-container" v-bind:level="level"></ec-html-page>
+                </div>
+
                 <!-- Balance Sheet-->
                 <div class="full-height" v-if="widget.displayType === 'Balance Sheet'">
                     <ec-balance-sheet class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-balance-sheet>

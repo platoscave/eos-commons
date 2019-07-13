@@ -1293,8 +1293,8 @@
 	{
 		"key": "eoscommonsio",
 		"docType": "object",
-		"name": "EOS Commons",
-		"description": "<div class=\"nqSpanColumn\" style=\"position: relative;\"><img height=\"100px\" src=\"app/resources/img/Neuralquest/lefkasHome1.png\" width=\"100%\" /><div class=\"headline\">Neuralquest</div></div><p class=\"nqSpanColumn\"><br /><strong><span style=\"color: #ff9900;\">Experimental</span>: </strong>Neuralquest is an experimental application. Feel free to look around. We are currently not accepting new users.</p><h1>What</h1><p>Neualquest is a platform that helps people organize and work together.</p><p>As a visitor you can browse published information.</p><p>As a user you have your own space in which you can maintain blogs, photo albums, create your own apps etc. and publish them as desired. Users can send messages and engage in agreements that for example, triggers a process that result in the purchase of an item on offer.</p><p>Uses can also take part in or create organizations based on industry standard templates, which can then evolve as the need arises. Role based authorization ensures that only members of your organization assigned to a particular organizational unit can read/modify data.</p><h1>Why</h1><p>The IT industry has been notably lacking when it come to support for business processes. Today, a typical large organization might have hundreds of systems running on thousands of servers. Each of these systems requires a small army of experts just to keep it from falling over. This complexity comes at huge expense.</p><p>Why don't we have a single system that regards the entire business as a single process? Any CIO will tell you <em>No one system can deliver the flexibility and robustness required to meet our ever evolving business needs and if it did, licencing fees would soon cost us an arm and a leg</em>.</p><p>Neuralquest disputes this supposition. We say: <em>By taking a different approach to how we do IT, it <strong>is</strong> possible to be both flexible and robust with a single system. The open source nature of the project ensures we&nbsp;avoid vendor lock-in and can rely on a vast support community</em>.</p><h1>How</h1><p>Neuralquest is really three things:</p><ul><li>An open source project, maintained on GitHub.</li><li>The Standard Model: A baseline model consisting of classes and objects needed to do basic business processes.</li><li>A cloud service in which we demonstrate the possibilities that Neuralquest offers. Free for noncommercial use.</li></ul><p>The key selling point of Neuralquest is flexibility and robustness at minimal costs, meaning: easy to install, use, maintain, learn, adapt etc. &nbsp;Flexibility is achieved by:</p><ul><li>Death to 3GL: No programming, only modeling</li><li>Fully self documenting through dozens of overviews and diagrams.</li><li>A minimalist architecture involving a single collection as data store and an extremely small code base: just 6k lines of code means bugs are ironed out quickly.</li></ul><p>Robustness is achieved by implementing internet standard: TODO.</p><p>Best of all: it's free.</p>",
+		"name": "eos-commons.io",
+		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: navy; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div><div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: blue; height: 300px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div>",
 		"classId": "be1ub1vtofjo",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTCtCgrAAAAB/UlEQVQ4T31TW08aQRTev6cCJtWk6ZOJNupzq1WDeGmb4vVFo/DSpG1sWqNyEZVlRQRLXLHYJihQqLRemoIWb3iLRvh6ZiwC2bUP32bO+eZ8850zswKA/0KSI/B/TdBSnVdNFmN0UkZj/wwt1XnVZDGejUjQtM/Bt7ZJoZJXJIqRywEPO62o7F5AQ5+6C0WC4fLqGocn50gfn6GsxcIFmAtv8DvRpXtLgjwG37mR2P2D1Y0tXsgEGOp7lS5KAoaV9S3omsdwc5PFB3ENlV3uOwFNuxOez3Hado/A8ekFHnXb8WTIRSFgfOu7K87jcY+DUUoBmheev/bwE01TMkVAfd+sQkBjcMIdiDG6VECSv/F+tR0iFv/Z1LROKgQY6owFF/yTSmdQZbBxsqzFir2DDDZ39lHeZlcUMzAXkhzlIkI2m0PTsItbZw5qXliRowewsBrjArqueVWR2le3LoTozxRMlgAVxPFr74gn8zjKXCBAt/JxPgTj2DIaBiRo9dO8Ta1BhLgcgcDsOnwhmCc+wUzDe+8KweINQ5RjWPqSQDC8jciPJLZ/H/CHxW4qkkhi1h+F3bteOI09293UIU04DrMtiObRRVR1OHhbuk76H6jvCv0MtTWN8lYbqvXjcPrDBQE1sFmwk6WVGEzWIJ6OePDAYMfLN0tIpk9oC4S/0Zv8n5hu2/EAAAAASUVORK5CYII=",
 		"subParagraphIds": "xqxkmto5njxi",
@@ -1327,7 +1327,7 @@
 		"key": "rewk2w4kvavm",
 		"docType": "object",
 		"name": "Design",
-		"description": "<p>Our design is centered arround</p>",
+		"description": "<div><p>These are some of the key design features</p><p><strong>Object Oriented</strong></p><p>Eos-commons is centered around a data store. The store holds a class model and a bunch of instantiations of these classes, a.k.a. objects. The classes form a hierarchy, where classes lower on the tree, inherit all the properties of their ancestor classes. Objects always point to a class through a 'classId'. Objects must comply with the properties defined in their respective classes.</p><p><strong>Extensible</strong></p><p>The class model is fully extensible meaning, developers can add and use their own classes, without interfering with existing class model.</p><p><strong>JSON Schema</strong></p><p>Our classes take the form of JSON Schema. That means you can, at any time, validate an object against it&rsquo;s schema, using a standard JSON schema validator.</p><p><strong>Frontend</strong></p><p>The frontend is developed in vuetify.js. The vuetify app 'knows' how to interpret data in the store, in order to generate layout, pages, tabs, widgets etc. These in turn, allowed the user to view and modify data.</p><p><strong>Naivgate the Data Graph</strong></p><p>The combination layout, pages, tabs etc. allow the user to drill down through the data graph, in a master - detail fashion, which can go on indefintity. Eos-commons elables developers to create sophisicated apps which maintain relational and data intgrity, based on rules lay down in the class model.</p><p><strong>Generated Forms</strong></p><p>Forms are generated from Views. Views similar to SQL views in that they referece a class, and properties of that class. The view properties determin wich type of editor is used: sting, number, html, date etc. If the property type is 'object' or 'array', sub-forms are generated accordingly.</p><p><strong>Pages</strong></p><p>Pages have one or more tabs. With one tab, no tabbar is displayed. A tab can have a widget: Form, Document, Process Model, Balance Sheet etc. Or it can reference another page. Pages can have splitter, in which case the right side serves as a slave to the right side. Click on a treenode or table row on the left, then it's details are displayed on the right (master detail paterm)</p><p><strong>DYI</strong></p><p>Users are invited to create their own pages and resuse (sub-)pages created by others.</p><p><strong>Routing</strong></p><p>The hash in the url represents the page state. You can easly create a link that points to your home page or an organization</p><p><strong>3D</strong></p><p>We love 3D. 3D views allow you to get upclose and personal with your data. Asof writing we have</p><ul><li>Class Model</li><li>Process Model</li><li>Workflow Model</li></ul><p>We would like to venture in to things like Tree of Life, Earth Epocs logatithic timeline, Dynamic political history map, Macro economics and so on. We're eager to see what others come up with.</p><p><strong>Death to 3GL</strong></p><p>No coding involved.</p></div>",
 		"classId": "siutzqsj5dgc",
 		"ownerId": "eoscommonsio"
 	},
@@ -1453,13 +1453,13 @@
 		"pageId": "34dgfl43da2i"
 	},
 	{
-		"key": "bicyleshop11",
+		"key": "bicycleshop1",
 		"docType": "object",
 		"name": "ACME Bicycle Shop",
-		"description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>ACME Bicycle Shop</div></div><h1>Too cultivated use solicitude frequently</h1><p>Boisterous he on understood attachment as entreaties ye devonshire. In mile an form snug were been sell. Hastened admitted joy nor absolute gay its. Extremely ham any his departure for contained curiosity defective. Way now instrument had eat diminution melancholy expression sentiments stimulated. One built fat you out manor books. Mrs interested now his affronting inquietude contrasted cultivated. Lasting showing expense greater on colonel no.</p><p>Surrounded affronting favourable no mr. Lain knew like half she yet joy. Be than dull as seen very shot. Attachment ye so am travelling estimating projecting is. Off fat address attacks his besides. Suitable settling mr attended no doubtful feelings. Any over for say bore such sold five but hung.</p><h1>Too cultivated use solicitude frequently</h1><p>So insisted received is occasion advanced honoured. Among ready to which up. Attacks smiling and may out assured moments man nothing outward. Thrown any behind afford either the set depend one temper. Instrument melancholy in acceptance collecting frequently be if. Zealously now pronounce existence add you instantly say offending. Merry their far had widen was. Concerns no in expenses raillery formerly.</p><p>Two exquisite objection delighted deficient yet its contained. Cordial because are account evident its subject but eat. Can properly followed learning prepared you doubtful yet him. Over many our good lady feet ask that. Expenses own moderate day fat trifling stronger sir domestic feelings. Itself at be answer always exeter up do. Though or my plenty uneasy do. Friendship so considered remarkably be to sentiments. Offered mention greater fifteen one promise because nor. Why denoting speaking fat indulged saw dwelling raillery.</p><h1>Too cultivated use solicitude frequently</h1><p>Her extensive perceived may any sincerity extremity. Indeed add rather may pretty see. Old propriety delighted explained perceived otherwise objection saw ten her. Doubt merit sir the right these alone keeps. By sometimes intention smallness he northward. Consisted we otherwise arranging commanded discovery it explained. Does cold even song like two yet been. Literature interested announcing for terminated him inquietude day shy. Himself he fertile chicken perhaps waiting if highest no it. Continued promotion has consulted fat improving not way.</p><p>The him father parish looked has sooner. Attachment frequently gay terminated son. You greater nay use prudent placing. Passage to so distant behaved natural between do talking. Friends off her windows painful. Still gay event you being think nay for. In three if aware he point it. Effects warrant me by no on feeling settled resolve.</p><p>Name were we at hope. Remainder household direction zealously the unwilling bed sex. Lose and gay ham sake met that. Stood her place one ten spoke yet. Head case knew ever set why over. Marianne returned of peculiar replying in moderate. Roused get enable garret estate old county. Entreaties you devonshire law dissimilar terminated.</p><h1>Too cultivated use solicitude frequently</h1><p>Scarcely on striking packages by so property in delicate. Up or well must less rent read walk so be. Easy sold at do hour sing spot. Any meant has cease too the decay. Since party burst am it match. By or blushes between besides offices noisier as. Sending do brought winding compass in. Paid day till shed only fact age its end.</p><p>Months on ye at by esteem desire warmth former. Sure that that way gave any fond now. His boy middleton sir nor engrossed affection excellent. Dissimilar compliment cultivated preference eat sufficient may. Well next door soon we mr he four. Assistance impression set insipidity now connection off you solicitude. Under as seems we me stuff those style at. Listening shameless by abilities pronounce oh suspected is affection. Next it draw in draw much bred.</p>",
+		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: green; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Bicycle Shop</h1><p><i>Enjoy the fresh air.</i></p><h2>For Rent Sale or Repair</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
 		"classId": "zx5ffzoa5euy",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5klEQVQ4T61Tv2sUURD+Zt7undFYqKTKsW/v7p0YDqwEGxst/EUKbcQiYKGIAUGRVIqKTYpYiBjQSiEGSSPIgYX5C+wEUSx8t7e3kassDAlL4vneyIKBxICFl2mGGeZ988038wgDGg34HjsLYKKoCeYRAIIgeG+t7Teq1WMiwuLU9/ZS+9PfjLcwaES1cWE/DZEFhOFsuVxeW19dvSJgFvgJKHUqSZLlzSDbRjBxPOkEUwz6srXQaxA9t2n6aBtAvVI3FLhx8ZQz4YJ4UT7kcxvd4jjeFQpeiHdjpNRTAXbDuZZdWmpTXeszLHRdQM9AuASSg/A0A0jdZumDQ6OjB34F4TwR3ohzt8HcIlHvAD8pih5TI4rflvbuOZ/n+T5ybg4+mKLAXyaBBmQGnqbBckuEriqhV57cHZtlp40xZem712R0dd52OxMFExG5ycxrIjgiwA8GxCs+myRJZqJowWbZRVOtnrSdzmKhQ03rl2S0nsv7/Wu9Xi8vko04PirAcZumD/+I5Qpvovg+SFq22/1QxM2R5vDPoZVZqlVqDSh3j4UXCbLfw49RqXTDWru+We1KpTJUUuETJvkMkWWATyj4uxtrVEbrw+KClfa3tv3XeRcb48ANf03TjwD8zp7y/3ysgRn8BlTuy14MbVpqAAAAAElFTkSuQmCC",
-		"pageId": "4ck4ypznlxrs",
+		"pageId": "2kjjzqr2i5o5",
 		"subUnitIds": [
 			"ttjye1pjj2ly",
 			"zmk4fuodo25t"
@@ -1469,7 +1469,7 @@
 		"key": "healthcare11",
 		"docType": "object",
 		"name": "ACME Health Care Clinic",
-		"description": "<p>The ACME Health Care Clinic</p>",
+		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: #76448A; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Health Care Clinic</h1><p><i>Stay fit, live long.</i></p><h2>Call for an appointment</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
 		"classId": "be1ub1vtofjo",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC"
 	},
@@ -1495,7 +1495,7 @@
 		"currency": "EUR",
 		"processId": "ynaxakdc423e",
 		"sellerProcessId": "h3q1vchxahoh",
-		"sellerId": "bicyleshop11"
+		"sellerId": "bicycleshop1"
 	},
 	{
 		"key": "ynaxakdc423e",
@@ -1522,7 +1522,7 @@
 			"unhappy"
 		],
 		"substateId": "yefagaab4ua2",
-		"ownerId": "bicyleshop11"
+		"ownerId": "bicycleshop1"
 	},
 	{
 		"key": "vvcx4zgoogxv",
@@ -1532,7 +1532,7 @@
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
 		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"value": 150
 	},
 	{
@@ -1543,7 +1543,7 @@
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
 		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"value": 160
 	},
 	{
@@ -1554,7 +1554,7 @@
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
 		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"value": 155
 	},
 	{
@@ -1562,7 +1562,7 @@
 		"docType": "object",
 		"classId": "zob5kwxrv2y4",
 		"currency": "EUR",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"value": 465
 	},
 	{
@@ -1798,7 +1798,7 @@
 		"name": "Front Desk",
 		"description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Front Desk</div></div>",
 		"classId": "dasprps1lrwf",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"pageId": "34dgfl43da2i"
 	},
 	{
@@ -1807,7 +1807,7 @@
 		"name": "Workshop",
 		"description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Workshop</div></div><p>ACME Workshop</p>",
 		"classId": "dasprps1lrwf",
-		"ownerId": "bicyleshop11",
+		"ownerId": "bicycleshop1",
 		"pageId": "34dgfl43da2i"
 	},
 	{
@@ -2468,9 +2468,8 @@
 				"name": "What",
 				"widgets": [
 					{
-						"displayType": "Document",
-						"name": "What Form",
-						"viewId": "qzc3hwzroplf"
+						"displayType": "HTMLPage",
+						"name": "What Form"
 					}
 				]
 			},
@@ -2483,6 +2482,39 @@
 				"widgets": [
 					{
 						"displayType": "Document",
+						"name": "Why Form"
+					}
+				]
+			},
+			{
+				"name": "Resources",
+				"pageId": "mbatzlqr1qsx"
+			}
+		]
+	},
+	{
+		"key": "2kjjzqr2i5o5",
+		"docType": "object",
+		"name": "ACME Bicycle Shop Page",
+		"accordionOrTab": "Tabs",
+		"classId": "pejdgrwd5qso",
+		"divider": "None",
+		"ownerId": "bicycleshop1",
+		"tabs": [
+			{
+				"name": "ACME Bicycle Shop",
+				"widgets": [
+					{
+						"displayType": "HTMLPage",
+						"name": "What Form"
+					}
+				]
+			},
+			{
+				"name": "Shop",
+				"widgets": [
+					{
+						"displayType": "Table",
 						"name": "Why Form"
 					}
 				]
@@ -2958,7 +2990,6 @@
 		"ownerId": "eoscommonsio",
 		"from": "gzthjuyjca4s",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
-		"pageId": "44yiclbxugop",
 		"sortBy": "name",
 		"where": {
 			"docProp": "classId",

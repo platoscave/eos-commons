@@ -180,7 +180,7 @@ export default {
     IndexedDBApiService.ImportFromIndexedDB().then(res => {
       this.$store.commit('SET_NETWORK', 'localhost')
       this.$store.commit('SET_ACCOUNT', 'platoscave11')
-      if (!window.location.hash) window.location.hash = '#/.j4ichkhammzm' // Demo Page
+      if (!window.location.hash) window.location.hash = '#/.kmghbh3qovtq' // Demo Page
       this.loading = false
     })
   }
