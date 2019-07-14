@@ -25,8 +25,8 @@
 
                 <!-- Table -->
                 <div class="full-height" v-if="widget.displayType === 'Table'">
-                    <div>Widget {{ widget.displayType }}</div>
-                </div>
+                     <ec-table class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId"></ec-table>
+               </div>
 
                 <!-- 3dClassModel-->
                 <div class="full-height" v-if="widget.displayType === '3D Class Model'">

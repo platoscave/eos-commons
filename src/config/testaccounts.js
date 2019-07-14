@@ -19,7 +19,7 @@ module.exports = {
     publicKey: '',
     privateKey: ''
   },
-  bicyleshop11: {
+  bicycleshop1: {
     publicKey: '',
     privateKey: ''
   },

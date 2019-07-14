@@ -17,6 +17,7 @@ import Document from './views/widgets/Document.vue'
 import HTMLPage from './views/widgets/HTMLPage.vue'
 import BalanceSheet from './views/widgets/BalanceSheet.vue'
 import Tree from './views/widgets/Tree.vue'
+import Table from './views/widgets/Table.vue'
 import SubForm from './views/widgets/recursive/SubForm.vue'
 import Select from './views/widgets/recursive/Select.vue'
 import BalanceSheetItems from './views/widgets/recursive/BalanceSheetItems.vue'
@@ -40,6 +41,7 @@ Vue.component('ec-html-page', HTMLPage)
 Vue.component('ec-paragraph', Paragraph)
 Vue.component('ec-balance-sheet', BalanceSheet)
 Vue.component('ec-tree', Tree)
+Vue.component('ec-table', Table)
 Vue.component('ec-bsitems', BalanceSheetItems)
 
 global.THREE = require('../node_modules/three/three.js')

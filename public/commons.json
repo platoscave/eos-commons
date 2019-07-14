@@ -1471,7 +1471,8 @@
 		"name": "ACME Health Care Clinic",
 		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: #76448A; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Health Care Clinic</h1><p><i>Stay fit, live long.</i></p><h2>Call for an appointment</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
 		"classId": "be1ub1vtofjo",
-		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC"
+		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC",
+		"pageId": "4devwsepaig1"
 	},
 	{
 		"key": "platoscave11",
@@ -1986,6 +1987,46 @@
 			}
 		},
 		"baseClassId": "dwl1kwhalwj4",
+		"type": "object"
+	},
+	{
+		"key": "d55qg32h5hdr",
+		"docType": "object",
+		"name": "Purchase Form View",
+		"classId": "pylvseoljret",
+		"ownerId": "eoscommonsio",
+		"properties": {
+			"key": {
+				"readOnly": true
+			},
+			"name": {
+				"readOnly": false
+			},
+			"description": {
+				"readOnly": false
+			}
+		},
+		"queryId": "kl2fe4hvhhtg",
+		"type": "object"
+	},	
+	{
+		"key": "5p3j1unpm2pq",
+		"docType": "object",
+		"name": "Purchase Form View",
+		"classId": "pylvseoljret",
+		"ownerId": "eoscommonsio",
+		"properties": {
+			"key": {
+				"readOnly": true
+			},
+			"name": {
+				"readOnly": false
+			},
+			"description": {
+				"readOnly": false
+			}
+		},
+		"queryId": "vu2j5khcsdrv",
 		"type": "object"
 	},
 	{
@@ -2512,6 +2553,77 @@
 			},
 			{
 				"name": "Shop",
+				"pageId": "h5syw45c3qg1"
+
+			},
+			{
+				"name": "Resources",
+				"pageId": "mbatzlqr1qsx"
+			}
+		]
+	},
+	{
+		"key": "h5syw45c3qg1",
+		"docType": "object",
+		"name": "Purchase Assest Table Page",
+		"accordionOrTab": "Tabs",
+		"classId": "pejdgrwd5qso",
+		"divider": "None",
+		"ownerId": "bicycleshop1",
+		"tabs": [
+			{
+				"name": "Purchase Assest Form Tab",
+				"widgets": [
+					{
+						"displayType": "Table",
+						"name": "Purchase Form",
+						"viewId": "d55qg32h5hdr"
+					}
+				]
+			}
+		]
+	},
+	{
+		"key": "1us2bjzz2i3h",
+		"docType": "object",
+		"name": "Agreements Table Page",
+		"accordionOrTab": "Tabs",
+		"classId": "pejdgrwd5qso",
+		"divider": "None",
+		"ownerId": "bicycleshop1",
+		"tabs": [
+			{
+				"name": "Agreements Table Tab",
+				"widgets": [
+					{
+						"displayType": "Table",
+						"name": "Agreements Table",
+						"viewId": "5p3j1unpm2pq"
+					}
+				]
+			}
+		]
+	},
+	{
+		"key": "4devwsepaig1",
+		"docType": "object",
+		"name": "ACME Health Care Clinic Page",
+		"accordionOrTab": "Tabs",
+		"classId": "pejdgrwd5qso",
+		"divider": "None",
+		"ownerId": "bicycleshop1",
+		"tabs": [
+			{
+				"name": "ACME Health Care Clinic ",
+				"widgets": [
+					{
+						"displayType": "HTMLPage",
+						"name": "What Form"
+					}
+				]
+			},
+			{
+				"name": "Make an Appointment",
 				"widgets": [
 					{
 						"displayType": "Table",
@@ -2556,7 +2668,8 @@
 				]
 			},
 			{
-				"name": "Backlog"
+				"name": "Backlog",
+				"pageId": "1us2bjzz2i3h"
 			}
 		]
 	},
@@ -3087,5 +3200,26 @@
 			"operator": "in",
 			"valuePath": "subParagraphIds"
 		}
+	},
+	{
+		"key": "kl2fe4hvhhtg",
+		"docType": "object",
+		"name": "Assests Query",
+		"classId": "q234ooehrk5v",
+		"ownerId": "eoscommonsio",
+		"from": "nlmgc3dmrwxs",
+		"where": {
+			"docProp": "classId",
+			"operator": "eq",
+			"value": "nlmgc3dmrwxs"
+		}
+	},
+	{
+		"key": "vu2j5khcsdrv",
+		"docType": "object",
+		"name": "Agreements Query",
+		"classId": "q234ooehrk5v",
+		"ownerId": "eoscommonsio",
+		"from": "i1gjptcb2skq"
 	}
 ]

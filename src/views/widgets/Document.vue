@@ -1,6 +1,6 @@
 <template>
-  	<div> 
-		<div class="docmargin"> 
+  	<div>
+		<div class="docmargin">
 			<ec-paragraph v-bind:headerLevel="1" v-bind:subParagraphId="subParagraphId"></ec-paragraph>
 		</div>
   	</div>
@@ -19,8 +19,8 @@ export default {
 }
 </script>
 <style >
-	.docmargin { 
-		margin: 20px; 
+	.docmargin {
+		margin: 20px;
   		font-size: 16px;
 		counter-reset: h2;
 	}

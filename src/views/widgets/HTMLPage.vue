@@ -11,25 +11,25 @@ export default {
     level: Number,
     editMode: Boolean
   },
-  data() {
+  data () {
     return {
       dataObj: {}
-    };
+    }
   },
-  created: async function() {
+  created: async function () {
     this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
       selectedObjId => {
-        if (!selectedObjId) return;
-        this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
+        if (!selectedObjId) return
+        this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
           // console.log('dataObj', newData)
-          this.dataObj = Object.assign({}, newData); // Force reactive update
-        });
+          this.dataObj = Object.assign({}, newData) // Force reactive update
+        })
       },
       { immediate: true }
-    );
+    )
   }
-};
+}
 </script>
 <style >
 .container {

@@ -202,7 +202,10 @@ const store = new Vuex.Store({
             // Get single value based on key
             let result = await ApiService.getCommonByKey(value)
             return [result]
-          } else resultsArr = await ApiService.queryByIndex(docProp, value)
+		  } 
+		  else {
+			  resultsArr = await ApiService.queryByIndex(docProp, value)
+		  }		  
         } else if (operator === 'in') {
           let prommisesArr = []
           if (!Array.isArray(value)) value = [value]
@@ -233,11 +236,11 @@ const store = new Vuex.Store({
       }
 
       // Sort the result, if needed
-      if (queryObj.query.sortBy) {
+      if (query.sortBy) {
         resultsArr.sort((a, b) => {
-          if (a[queryObj.query.sortBy] && b[queryObj.query.sortBy]) {
-            let aa = a[queryObj.query.sortBy].toUpperCase()
-            let bb = b[queryObj.query.sortBy].toUpperCase()
+          if (a[query.sortBy] && b[query.sortBy]) {
+            let aa = a[query.sortBy].toUpperCase()
+            let bb = b[query.sortBy].toUpperCase()
             if (aa > bb) return 1
             if (aa < bb) return -1
           }
