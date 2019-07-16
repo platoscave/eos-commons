@@ -1995,6 +1995,7 @@
 		"name": "Purchase Form View",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
+		"baseClassId": "nlmgc3dmrwxs",
 		"properties": {
 			"key": {
 				"readOnly": true
@@ -2004,6 +2005,9 @@
 			},
 			"description": {
 				"readOnly": false
+			},
+			"imageUrl": {
+				"readOnly": true
 			}
 		},
 		"queryId": "kl2fe4hvhhtg",
@@ -2012,18 +2016,19 @@
 	{
 		"key": "5p3j1unpm2pq",
 		"docType": "object",
-		"name": "Purchase Form View",
+		"name": "Agreement Form View",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
+		"baseClassId": "i1gjptcb2skq",
 		"properties": {
 			"key": {
 				"readOnly": true
 			},
 			"name": {
-				"readOnly": false
+				"readOnly": true
 			},
 			"description": {
-				"readOnly": false
+				"readOnly": true
 			}
 		},
 		"queryId": "vu2j5khcsdrv",

@@ -202,10 +202,9 @@ const store = new Vuex.Store({
             // Get single value based on key
             let result = await ApiService.getCommonByKey(value)
             return [result]
-		  } 
-		  else {
+		  } else {
 			  resultsArr = await ApiService.queryByIndex(docProp, value)
-		  }		  
+		  }
         } else if (operator === 'in') {
           let prommisesArr = []
           if (!Array.isArray(value)) value = [value]
