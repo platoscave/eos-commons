@@ -1500,7 +1500,7 @@
 	},
 	{
 		"key": "ynaxakdc423e",
-		"docType": "object Process",
+		"docType": "object",
 		"name": "Purchase Process",
 		"description": "<p>Purchase</p>",
 		"classId": "dwl1kwhalwj4",
@@ -1992,7 +1992,7 @@
 	{
 		"key": "d55qg32h5hdr",
 		"docType": "object",
-		"name": "Purchase Form View",
+		"name": "Purchase Table View",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"baseClassId": "nlmgc3dmrwxs",
@@ -2573,7 +2573,7 @@
 		"name": "Purchase Assest Table Page",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
-		"divider": "None",
+		"divider": "Vertical",
 		"ownerId": "bicycleshop1",
 		"tabs": [
 			{
@@ -2594,7 +2594,7 @@
 		"name": "Agreements Table Page",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
-		"divider": "None",
+		"divider": "Vertical",
 		"ownerId": "bicycleshop1",
 		"tabs": [
 			{
@@ -3225,6 +3225,7 @@
 		"name": "Agreements Query",
 		"classId": "q234ooehrk5v",
 		"ownerId": "eoscommonsio",
+		"pageId": "n1dvzgi132ap",
 		"from": "i1gjptcb2skq"
 	}
 ]
