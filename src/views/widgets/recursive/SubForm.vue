@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-container>
-		<!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
+      <!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
 		<br>
-		<div class="monoSpaced">{{ JSON.stringify(value, replacer, 2) }}></div>  -->
+      <div class="monoSpaced">{{ JSON.stringify(value, replacer, 2) }}></div>-->
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
@@ -23,17 +23,7 @@
                 v-html="value[propName] ? value[propName] : property.default"
               ></div>
               <div v-else>
-                <wysiwyg class="outputclass" v-model="value[propName]"/>
-              </div>
-            </div>
-
-            <!-- WbbGl -->
-            <div v-else-if="property.media && property.media.mediaType === 'image/webgl' ">
-              <div v-if="!editMode || property.readOnly">
-                <img class="outputclass" src="value[propName]" width="500px" height="500px">
-              </div>
-              <div v-else>
-                <img src="value[propName]" width="500px" height="500px">
+                <wysiwyg class="outputclass" v-model="value[propName]" />
               </div>
             </div>
 
@@ -41,22 +31,19 @@
             <div v-else-if="property.media && property.media.type === 'image/png' ">
               <div class="outputclass" v-if="!editMode || property.readOnly">
                 <!--{{value[propName]}}-->
-                <img class="outputclass" v-bind:src="value[propName]">
+                <img class="outputclass" v-bind:src="value[propName]" />
               </div>
               <div v-else>
-                <img v-bind:src="value[propName]" width="24px" height="24px">
+                <img v-bind:src="value[propName]" width="24px" height="24px" />
               </div>
             </div>
 
             <!-- Date -->
-            <div v-else-if="property && property.format === 'date-time' ">
-              <div class="outputclass" v-if="!editMode || property.readOnly">
-                <div>{{ new Date(Date.parse(value[propName])).toLocaleDateString() }}</div>
-              </div>
-              <div v-else>
-                <div>{{ new Date(Date.parse(value[propName])).toLocaleDateString() }}</div>
-              </div>
-            </div>
+            <ec-date
+              v-else-if="property.type === 'date'"
+              v-model.number="value[propName]"
+              v-bind:property="property"
+            ></ec-date>
 
             <!-- Uri -->
             <div v-else-if="property.media && property.media.format === 'uri' ">
@@ -69,85 +56,57 @@
             </div>
 
             <!-- Enum -->
-            <div v-else-if="property.enum">
-              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
-              <div v-else>
-                <v-select
-                  class="outputclass"
-                  v-bind:label="property.title"
-                  v-model="value[propName]"
-                  v-bind:readonly="!editMode || property.readOnly || property.enum.length < 2"
-                  v-bind:items="property.enum"
-                  single-line
-                  outline
-                ></v-select>
-              </div>
-            </div>
+			<ec-select
+              v-else-if="property.enum"
+              v-model="value[propName]"
+              v-bind:property="property"
+              v-bind:items="property.enum"
+            ></ec-select>
 
             <!-- Select from Query Results -->
-            <div v-else-if="property.query">
-              <ec-select
-                v-model="value[propName]"
-                v-bind:query="property.query"
-                v-bind:readonly="property.readOnly || !editMode"
-              ></ec-select>
-            </div>
+            <ec-query-select
+              v-else-if="property.query"
+              v-model.trim="value[propName]"
+              v-bind:property="property"
+            ></ec-query-select>
 
             <!--String-->
-            <div v-else-if="property.type === 'string'">
-              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName] }}</div>
-              <div v-else>
-                <v-text-field
-                  class="outputclass"
-                  v-model.trim="value[propName]"
-                  single-line
-                  outline
-                ></v-text-field>
-              </div>
-              <!-- v-bind:hint="property.description"
-              append-outer-icon="property.description ? 'help_outline'"-->
-            </div>
+            <ec-string
+              v-else-if="property.type === 'string'"
+              v-model.trim="value[propName]"
+              v-bind:property="property"
+            ></ec-string>
 
             <!--Number-->
-            <div v-else-if="property.type === 'number'">
-              <div class="outputclass" v-if="!editMode || property.readOnly">{{ value[propName].toLocaleString() }}</div>
-              <div v-else>
-                <v-text-field
-                  class="inputclass"
-                  v-model.number="value[propName]"
-                  type="number"
-                  single-line
-                  outline
-                ></v-text-field>
-              </div>
-            </div>
+            <ec-number
+              v-else-if="property.type === 'number'"
+              v-model.number="value[propName]"
+              v-bind:property="property"
+            ></ec-number>
 
             <!-- Boolean -->
-            <div v-else-if="property.type === 'boolean'">
-              <div v-if="!editMode || property.readOnly">
-                <div class="outputclass">{{ value[propName] === true ? 'true' : 'false' }}</div>
-              </div>
-              <div v-else>
-                <v-checkbox value="value[propName]"></v-checkbox>
-              </div>
-            </div>
+            <ec-boolean
+              v-else-if="property.type === 'boolean'"
+              v-model.number="value[propName]"
+              v-bind:property="property"
+            ></ec-boolean>
 
             <!-- Array -->
             <div v-else-if="property.type === 'array'">
               <div class="outputclass">
                 <div v-if="property.items.type === 'object'">
                   <div v-for="(childData, idx) in value[propName]" v-bind:key="idx">
-					  	<!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
+                    <!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
 						<br>
-						<div class="monoSpaced">{{ JSON.stringify(property.items.properties, replacer, 2) }}></div> -->
+                    <div class="monoSpaced">{{ JSON.stringify(property.items.properties, replacer, 2) }}></div>-->
                     <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
                       v-model="value[propName][idx]"
                       v-bind:properties="property.items.properties"
-      					v-bind:definitions="definitions"
+                      v-bind:definitions="definitions"
                     ></ec-sub-form>
-                    <br>
+                    <br />
                   </div>
                 </div>
                 <div v-else>
@@ -166,24 +125,22 @@
                     v-bind:editMode="editMode"
                     v-model="value[propName]"
                     v-bind:properties="property.properties"
-      				v-bind:definitions="definitions"
+                    v-bind:definitions="definitions"
                   ></ec-sub-form>
                 </div>
                 <div v-else-if="property.additionalProperties">
-                  <div
-                    v-for="(childData, subPropName) in value[propName]"
-                    v-bind:key="subPropName">
+                  <div v-for="(childData, subPropName) in value[propName]" v-bind:key="subPropName">
                     <div class="outputclass">{{ subPropName }}</div>
-					<!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
+                    <!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
                     <!-- {{value[propName][subPropName]}} -->
-					<ec-sub-form
+                    <ec-sub-form
                       class="outputclass"
                       v-bind:editMode="editMode"
                       v-model="value[propName][subPropName]"
                       v-bind:properties="definitions.additionalProperties"
-      					v-bind:definitions="definitions"
+                      v-bind:definitions="definitions"
                     ></ec-sub-form>
-                    <br>
+                    <br />
                   </div>
                 </div>
                 <div v-else>
@@ -195,9 +152,9 @@
             <div v-else>
               <div>
                 Unknown property: {{ propName }}
-                <br>
+                <br />
                 <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
-                <br>
+                <br />
               </div>
             </div>
           </v-flex>
@@ -207,8 +164,22 @@
   </div>
 </template>
 <script>
+import EcString from '../../formControles/EcString.vue'
+import EcQuerySelect from '../../formControles/EcQuerySelect.vue'
+import EcSelect from '../../formControles/EcSelect.vue'
+import EcNumber from '../../formControles/EcNumber.vue'
+import EcBoolean from '../../formControles/EcBoolean.vue'
+import EcDate from '../../formControles/EcDate.vue'
+
 export default {
-  name: 'subForm',
+  name: "subForm",
+  components: {
+	EcString,
+	EcQuerySelect,
+	EcSelect,
+	EcNumber,
+	EcDate
+  },
   props: {
     editMode: Boolean,
     properties: Object,
@@ -217,28 +188,36 @@ export default {
     value: Object
   },
   methods: {
-    replacer (name, val) {
+    replacer(name, val) {
       // we do this because icons are very long
-      if (name === 'icon') return 'base64 icon string'
-      else return val
+      if (name === "icon") return "base64 icon string";
+      else return val;
     }
   }
-}
+};
 </script>
+<style>
+	.label {
+		padding: 10px;
+		font-size: 16px;
+		line-height: 42px;
+	}
+	.outputclass {
+		background-color: #ffffff0d;
+		padding: 10px;
+		font-size: 16px;
+		line-height: 42px;
+		border-radius: 5px;
+		margin: 4px;
+	}
+	.updatable {
+		border-style: solid;
+		border-color: blue;
+		border-width: 1px;
+	}
+</style>
 <style scoped>
-.label {
-  padding: 10px;
-  font-size: 16px;
-  line-height: 42px;
-}
-.outputclass {
-  background-color: #ffffff0d;
-  padding: 10px;
-  font-size: 16px;
-  line-height: 42px;
-  border-radius: 5px;
-  margin: 4px;
-}
+
 
 .v-input__slot {
   background-color: green !important;

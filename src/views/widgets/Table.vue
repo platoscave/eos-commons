@@ -1,7 +1,7 @@
 <template>
   <div v-if="viewObj && headers && dataArr">
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
-    <v-data-table :headers="headers" :items="dataArr">
+    <v-data-table :headers="headers" :items="dataArr" v-model="selected">
       <template slot="items" slot-scope="myprops">
         <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
           <!-- {{ myprops.item[propName] }} -->
@@ -44,6 +44,12 @@
               v-bind:readonly="true"
             ></ec-select>
           </div>
+
+          <ec-string 
+		  		v-else-if="property.type === 'string'"       
+              v-model.trim="myprops.item[propName]"
+              v-bind:property="property" >
+          </ec-string>
 
           <!--String-->
           <div v-else-if="property.type === 'string'">
@@ -99,7 +105,8 @@ export default {
     return {
       dataArr: [],
       headers: [],
-      viewObj: {}
+	  viewObj: {},
+	  selected: []
     };
   },
   created: async function() {
@@ -129,6 +136,21 @@ export default {
 
     // this.dataArr = Object.assign({}, resultsArr) // Force reactive update
     this.dataArr = resultsArr;
+  },
+  methods: {
+	itemClick (node) {
+      if (node.model.Xdata.pageId) {
+        this.$store.commit('SET_PAGE_STATE2', {
+          level: this.level + 1,
+          pageId: node.model.Xdata.pageId,
+          selectedObjId: node.model.key
+        })
+      }
+    }
+
+  },
+	watch: {
+    	selected: 'itemClick'
   }
 };
 </script>

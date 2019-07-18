@@ -34,6 +34,7 @@
                   <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
+					<!-- https://stackoverflow.com/questions/54793997/export-indexeddb-object-store-to-csv -->
                   <v-btn
                     color="blue darken-1"
                     @click="onDownFromIndexeddb()"
