@@ -18,9 +18,8 @@ import HTMLPage from './views/widgets/HTMLPage.vue'
 import BalanceSheet from './views/widgets/BalanceSheet.vue'
 import Tree from './views/widgets/Tree.vue'
 import Table from './views/widgets/Table.vue'
+import BsItems from './views/widgets/recursive/BsItems.vue'
 import SubForm from './views/widgets/recursive/SubForm.vue'
-import Select from './views/widgets/recursive/Select.vue'
-import BalanceSheetItems from './views/widgets/recursive/BalanceSheetItems.vue'
 import Paragraph from './views/widgets/recursive/Paragraph.vue'
 import { sync } from 'vuex-router-sync'
 import wysiwyg from 'vue-wysiwyg'
@@ -30,8 +29,8 @@ Vue.component('multipane', Multipane)
 Vue.component('multipane-resizer', MultipaneResizer)
 Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
-Vue.component('ec-select', Select)
 Vue.component('ec-form', Form)
+Vue.component('ec-bs-items', BsItems)
 Vue.component('ec-sub-form', SubForm)
 Vue.component('ec-class-model', ClassModel)
 Vue.component('ec-process-model', ProcessModel)
@@ -42,7 +41,6 @@ Vue.component('ec-paragraph', Paragraph)
 Vue.component('ec-balance-sheet', BalanceSheet)
 Vue.component('ec-tree', Tree)
 Vue.component('ec-table', Table)
-Vue.component('ec-bsitems', BalanceSheetItems)
 
 global.THREE = require('../node_modules/three/three.js')
 global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')

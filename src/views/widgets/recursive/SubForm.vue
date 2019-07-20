@@ -15,28 +15,20 @@
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
           <v-flex xs12 md10 v-if="editMode || value[propName]">
+
             <!-- Richtext -->
-            <div v-if="property.media && property.media.mediaType === 'text/html' ">
-              <div
-                class="outputclass"
-                v-if="!editMode || property.readOnly"
-                v-html="value[propName] ? value[propName] : property.default"
-              ></div>
-              <div v-else>
-                <wysiwyg class="outputclass" v-model="value[propName]" />
-              </div>
-            </div>
+            <ec-rich-text
+              v-if="property.media && property.media.mediaType === 'text/html' "
+              v-model.trim="value[propName]"
+              v-bind:property="property"
+            ></ec-rich-text>
 
             <!-- Base64 -->
-            <div v-else-if="property.media && property.media.type === 'image/png' ">
-              <div class="outputclass" v-if="!editMode || property.readOnly">
-                <!--{{value[propName]}}-->
-                <img class="outputclass" v-bind:src="value[propName]" />
-              </div>
-              <div v-else>
-                <img v-bind:src="value[propName]" width="24px" height="24px" />
-              </div>
-            </div>
+            <ec-base64
+              v-else-if="property.media && property.media.type === 'image/png' "
+              v-model.trim="value[propName]"
+              v-bind:property="property"
+            ></ec-base64>
 
             <!-- Date -->
             <ec-date
@@ -46,14 +38,11 @@
             ></ec-date>
 
             <!-- Uri -->
-            <div v-else-if="property.media && property.media.format === 'uri' ">
-              <div v-if="!editMode || property.readOnly">
-                <a class="outputclass" uri="value[propName]"></a>
-              </div>
-              <div v-else>
-                <a uri="value[propName]"></a>
-              </div>
-            </div>
+            <ec-uri
+              v-else-if="property.media && property.media.format === 'uri' "
+              v-model.trim="value[propName]"
+              v-bind:property="property"
+            ></ec-uri>
 
             <!-- Enum -->
 			<ec-select
@@ -154,8 +143,8 @@
                 Unknown property: {{ propName }}
                 <br />
                 <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
-                <br />
               </div>
+
             </div>
           </v-flex>
         </v-layout>
@@ -164,21 +153,29 @@
   </div>
 </template>
 <script>
-import EcString from '../../formControles/EcString.vue'
-import EcQuerySelect from '../../formControles/EcQuerySelect.vue'
-import EcSelect from '../../formControles/EcSelect.vue'
-import EcNumber from '../../formControles/EcNumber.vue'
-import EcBoolean from '../../formControles/EcBoolean.vue'
-import EcDate from '../../formControles/EcDate.vue'
+import EcString from '../../formControls/EcString.vue'
+import EcQuerySelect from '../../formControls/EcQuerySelect.vue'
+import EcSelect from '../../formControls/EcSelect.vue'
+import EcNumber from '../../formControls/EcNumber.vue'
+import EcBoolean from '../../formControls/EcBoolean.vue'
+import EcDate from '../../formControls/EcDate.vue'
+import EcRichText from '../../formControls/EcRichText.vue'
+import EcBase64 from '../../formControls/EcBase64.vue'
+import EcUri from '../../formControls/EcUri.vue'
+import SubForm from "./SubForm.vue"
 
 export default {
-  name: "subForm",
+  name: "ec-sub-form",
   components: {
 	EcString,
 	EcQuerySelect,
 	EcSelect,
 	EcNumber,
-	EcDate
+	EcDate,
+	EcRichText,
+	EcBase64,
+    EcUri,
+    SubForm
   },
   props: {
     editMode: Boolean,
@@ -207,6 +204,7 @@ export default {
 		padding: 10px;
 		font-size: 16px;
 		line-height: 42px;
+		min-height: 64px;
 		border-radius: 5px;
 		margin: 4px;
 	}

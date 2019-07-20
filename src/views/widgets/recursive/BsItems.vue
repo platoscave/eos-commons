@@ -15,7 +15,7 @@
         <v-layout v-for="(bsItem, idx) in bsItemArr" v-bind:key="idx">
           <v-flex class="outputclass">
             <div class="largerX"> {{bsItem.title}}</div>
-            <ec-bsitems v-bind:parent-id="bsItem.key"></ec-bsitems>
+            <ec-bs-items v-bind:parent-id="bsItem.key"></ec-bs-items>
             <v-layout row class="largerX">
               <v-flex xs9>Total {{bsItem.title}}</v-flex>
               <v-flex xs3 class="value sumTotal">{{bsItem.value.toLocaleString()}}</v-flex>
@@ -27,8 +27,11 @@
   </div>
 </template>
 <script>
+// Recursive componets must be defined globally
+// import BsItems from './BsItems.vue'
+
 export default {
-  name: 'bsItems',
+  name: 'ec-bs-items',
   props: {
     parentId: String
   },

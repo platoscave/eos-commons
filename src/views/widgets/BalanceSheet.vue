@@ -4,7 +4,7 @@
       <v-layout row>
         <v-flex class="outputclass largest">
           {{bsItemArr[0].title}}
-          <ec-bsitems v-bind:parent-id="bsItemArr[0].key"></ec-bsitems>
+          <ec-bs-items v-bind:parent-id="bsItemArr[0].key"></ec-bs-items>
           <v-layout row>
             <v-flex xs9>Total {{bsItemArr[0].title}}</v-flex>
             <v-flex xs3 class="sumTotal value">{{bsItemArr[0].value.toLocaleString()}}</v-flex>
@@ -12,7 +12,7 @@
         </v-flex>
         <v-flex class="outputclass largest">
           {{bsItemArr[1].title}}
-          <ec-bsitems v-bind:parent-id="bsItemArr[1].key"></ec-bsitems>
+          <ec-bs-items v-bind:parent-id="bsItemArr[1].key"></ec-bs-items>
           <v-layout row>
             <v-flex xs9>Total {{bsItemArr[1].title}}</v-flex>
             <v-flex xs3 class="sumTotal value">{{bsItemArr[1].value.toLocaleString()}}</v-flex>
@@ -23,7 +23,13 @@
   </div>
 </template>
 <script>
+import BsItems from './recursive/BsItems'
+
 export default {
+  name: 'ec-balance-sheet',
+  components: {
+	BsItems,
+  },
   props: {
     level: Number
   },

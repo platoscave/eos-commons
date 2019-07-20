@@ -1,84 +1,134 @@
 <template>
   <div v-if="viewObj && headers && dataArr">
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
-    <v-data-table :headers="headers" :items="dataArr" v-model="selected">
+    <v-data-table :headers="headers" :items="dataArr" hide-actions>
       <template slot="items" slot-scope="myprops">
-        <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
+        <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName" v-on:click="(itemClick())">
           <!-- {{ myprops.item[propName] }} -->
-          <!-- Richtext -->
-          <div
-            v-if="property.media && property.media.mediaType === 'text/html' "
-            v-html="myprops.item[propName] ? myprops.item[propName] : property.default"
-          ></div>
 
-          <!-- WbbGl -->
-          <div v-else-if="property.media && property.media.mediaType === 'image/webgl' ">
-            <img src="myprops.item[propName]" width="500px" height="500px" />
-          </div>
+          <!-- Richtext -->
+          <ec-rich-text
+            v-if="property.media && property.media.mediaType === 'text/html' "
+            v-model.trim="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-rich-text>
 
           <!-- Base64 -->
-          <div v-else-if="property.media && property.media.type === 'image/png' ">
-            <img v-bind:src="myprops.item[propName]" width="24px" height="24px" />
-          </div>
+          <ec-base64
+            v-else-if="property.media && property.media.type === 'image/png' "
+            v-model.trim="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-base64>
 
           <!-- Date -->
-          <div v-else-if="property && property.format === 'date-time' ">
-            <div>{{ new Date(Date.parse(myprops.item[propName])).toLocaleDateString() }}</div>
-          </div>
+          <ec-date
+            v-else-if="property.type === 'date'"
+            v-model.number="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-date>
 
           <!-- Uri -->
-          <div v-else-if="property.media && property.media.format === 'uri' ">
-            <a uri="myprops.item[propName]"></a>
-          </div>
+          <ec-uri
+            v-else-if="property.media && property.media.format === 'uri' "
+            v-model.trim="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-uri>
 
           <!-- Enum -->
-          <div v-else-if="property.enum">
-            <div v-if="!editMode || property.readOnly">{{ myprops.item[propName] }}</div>
-          </div>
+          <ec-select
+            v-else-if="property.enum"
+            v-model="myprops.item[propName]"
+            v-bind:property="property"
+            v-bind:items="property.enum"
+          ></ec-select>
 
           <!-- Select from Query Results -->
-          <div v-else-if="property.query">
-            <ec-select
-              v-model="myprops.item[propName]"
-              v-bind:query="property.query"
-              v-bind:readonly="true"
-            ></ec-select>
-          </div>
-
-          <ec-string 
-		  		v-else-if="property.type === 'string'"       
-              v-model.trim="myprops.item[propName]"
-              v-bind:property="property" >
-          </ec-string>
+          <ec-query-select
+            v-else-if="property.query"
+            v-model.trim="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-query-select>
 
           <!--String-->
-          <div v-else-if="property.type === 'string'">
-            <div v-if="!editMode || property.readOnly">{{ myprops.item[propName] }}</div>
-          </div>
+          <ec-string
+            v-else-if="property.type === 'string'"
+            v-model.trim="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-string>
 
           <!--Number-->
-          <div v-else-if="property.type === 'number'">
-            <div
-              class="outputclass"
-              v-if="!editMode || property.readOnly"
-            >{{ myprops.item[propName].toLocaleString() }}</div>
-          </div>
+          <ec-number
+            v-else-if="property.type === 'number'"
+            v-model.number="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-number>
 
           <!-- Boolean -->
-          <div v-else-if="property.type === 'boolean'">
-            <div class="outputclass">{{ myprops.item[propName] === true ? 'true' : 'false' }}</div>
-          </div>
+          <ec-boolean
+            v-else-if="property.type === 'boolean'"
+            v-model.number="myprops.item[propName]"
+            v-bind:property="property"
+          ></ec-boolean>
 
           <!-- Array -->
           <div v-else-if="property.type === 'array'">
-            <div v-for="(childData, idx) in myprops.item[propName]" v-bind:key="idx">
-              <div class="outputclass">{{ childData }}</div>
+            <div class="outputclass">
+              <div v-if="property.items.type === 'object'">
+                <div v-for="(childData, idx) in myprops.item[propName]" v-bind:key="idx">
+                  <!-- <div class="monoSpaced">{{ JSON.stringify(properties, replacer, 2) }}></div>
+						<br>
+                  <div class="monoSpaced">{{ JSON.stringify(property.items.properties, replacer, 2) }}></div>-->
+                  <ec-sub-form
+                    class="outputclass"
+                    v-bind:editMode="editMode"
+                    v-model="myprops.item[propName][idx]"
+                    v-bind:properties="property.items.properties"
+                    v-bind:definitions="definitions"
+                  ></ec-sub-form>
+                  <br />
+                </div>
+              </div>
+              <div v-else>
+                <div v-for="(childData, idx) in myprops.item[propName]" v-bind:key="idx">
+                  <div class="outputclass">{{ childData }}</div>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Object -->
           <div v-else-if="property.type === 'object'">
-            <div class="monoSpaced">{{ JSON.stringify(myprops.item[propName], replacer, 2) }}></div>
+            <div class="outputclass">
+              <div v-if="property.properties">
+                <ec-sub-form
+                  v-bind:editMode="editMode"
+                  v-model="myprops.item[propName]"
+                  v-bind:properties="property.properties"
+                  v-bind:definitions="definitions"
+                ></ec-sub-form>
+              </div>
+              <div v-else-if="property.additionalProperties">
+                <div
+                  v-for="(childData, subPropName) in myprops.item[propName]"
+                  v-bind:key="subPropName"
+                >
+                  <div class="outputclass">{{ subPropName }}</div>
+                  <!-- We're cheating here, We assume additionProperties can be found in definitions, instead of resolving $ref -->
+                  <!-- {{myprops.item[propName][subPropName]}} -->
+                  <ec-sub-form
+                    class="outputclass"
+                    v-bind:editMode="editMode"
+                    v-model="myprops.item[propName][subPropName]"
+                    v-bind:properties="definitions.additionalProperties"
+                    v-bind:definitions="definitions"
+                  ></ec-sub-form>
+                  <br />
+                </div>
+              </div>
+              <div v-else>
+                <div class="monoSpaced">{{ JSON.stringify(myprops.item[propName], replacer, 2) }}></div>
+              </div>
+            </div>
           </div>
 
           <div v-else>
@@ -86,7 +136,6 @@
               Unknown property: {{ propName }}
               <br />
               <div class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
-              <br />
             </div>
           </div>
         </td>
@@ -95,7 +144,29 @@
   </div>
 </template>
 <script>
+import EcString from "../formControls/EcString.vue";
+import EcQuerySelect from "../formControls/EcQuerySelect.vue";
+import EcSelect from "../formControls/EcSelect.vue";
+import EcNumber from "../formControls/EcNumber.vue";
+import EcBoolean from "../formControls/EcBoolean.vue";
+import EcDate from "../formControls/EcDate.vue";
+import EcRichText from "../formControls/EcRichText.vue";
+import EcBase64 from "../formControls/EcBase64.vue";
+import EcUri from "../formControls/EcUri.vue";
+import SubForm from "./recursive/SubForm.vue";
 export default {
+  name: "ec-table",
+  components: {
+    EcString,
+    EcQuerySelect,
+    EcSelect,
+    EcNumber,
+    EcDate,
+    EcRichText,
+    EcBase64,
+    EcUri,
+    SubForm
+  },
   props: {
     level: Number,
     viewId: String,
@@ -105,8 +176,8 @@ export default {
     return {
       dataArr: [],
       headers: [],
-	  viewObj: {},
-	  selected: []
+      viewObj: {},
+      selected: []
     };
   },
   created: async function() {
@@ -138,21 +209,24 @@ export default {
     this.dataArr = resultsArr;
   },
   methods: {
-	itemClick (node) {
+    itemClick(node) {
       if (node.model.Xdata.pageId) {
-        this.$store.commit('SET_PAGE_STATE2', {
+        this.$store.commit("SET_PAGE_STATE2", {
           level: this.level + 1,
           pageId: node.model.Xdata.pageId,
           selectedObjId: node.model.key
-        })
+        });
       }
     }
-
-  },
-	watch: {
-    	selected: 'itemClick'
   }
 };
 </script>
 <style >
+td {
+        vertical-align: top;
+        padding: 0 !important;
+}
+table {
+    background-color: transparent !important;
+}
 </style>

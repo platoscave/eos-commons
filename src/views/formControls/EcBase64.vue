@@ -1,18 +1,22 @@
 <template>
-  <div class="outputclass" :class="!property.readOnly ? 'updatable' :  ''">
-    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ value }}</div>
+  <div
+    class="outputclass"
+    :class="!property.readOnly ? 'updatable' :  ''"
+    v-on:click="editMode = true"
+  >
+    <img v-on:click="editMode = true" v-bind:src="value"/>
     <v-text-field
-      v-else
+      v-if="!property.readOnly && editMode" 
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
-      v-on:blur="editMode = !editMode"
+      v-on:focusout="editMode = false"
       single-line
     ></v-text-field>
   </div>
 </template>
 <script>
 export default {
-  name: "ec-string",
+  name: "ec-base64",
   props: {
     value: String,
     property: Object

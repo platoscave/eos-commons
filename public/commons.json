@@ -2025,7 +2025,7 @@
 				"readOnly": true
 			},
 			"name": {
-				"readOnly": true
+				"readOnly": false
 			},
 			"description": {
 				"readOnly": true

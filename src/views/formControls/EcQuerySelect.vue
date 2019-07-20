@@ -3,17 +3,16 @@
     v-if="items.length && value"
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
+    v-on:click="editMode = true"
+
   >
-    <div
-      v-if="property.readOnly || !editMode || items.length < 2"
-      v-on:click="editMode = !editMode"
-    >{{ selectedText }}</div>
+    <div v-if="property.readOnly || !editMode || items.length < 2">{{ selectedText }}</div>
     <v-select
       v-else
-	  v-on:blur="editMode = !editMode" 
       class="custom"
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
+      v-on:focusout="editMode = false"
       :items="items"
       single-line
     ></v-select>
