@@ -1,5 +1,6 @@
 <template>
   <div v-if="viewObj && headers && dataArr">
+      <div v-if="viewObj.toolbarProperties">Hi</div>
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
     <v-data-table :headers="headers" :items="dataArr" hide-actions>
       <template template slot="items" slot-scope="row">
@@ -14,12 +15,12 @@
               v-bind:property="property"
             ></ec-rich-text>
 
-            <!-- Base64 -->
-            <ec-base64
+            <!-- Image -->
+            <ec-image
               v-else-if="property.media && property.media.type === 'image/png' "
               v-model.trim="row.item[propName]"
               v-bind:property="property"
-            ></ec-base64>
+            ></ec-image>
 
             <!-- Date -->
             <ec-date
@@ -132,6 +133,13 @@
               </div>
             </div>
 
+            <!-- Boolean -->
+            <ec-button
+              v-else-if="property.type === 'button'"
+              v-model.number="row.item[propName]"
+              v-bind:property="property"
+            ></ec-button>
+
             <div v-else>
               <div>
                 Unknown property: {{ propName }}
@@ -155,8 +163,9 @@ import EcNumber from "../formControls/EcNumber.vue";
 import EcBoolean from "../formControls/EcBoolean.vue";
 import EcDate from "../formControls/EcDate.vue";
 import EcRichText from "../formControls/EcRichText.vue";
-import EcBase64 from "../formControls/EcBase64.vue";
+import EcImage from "../formControls/EcImage.vue";
 import EcUri from "../formControls/EcUri.vue";
+import EcButton from "../formControls/EcButton.vue";
 import SubForm from "./recursive/SubForm.vue";
 export default {
   name: "ec-table",
@@ -167,8 +176,9 @@ export default {
     EcNumber,
     EcDate,
     EcRichText,
-    EcBase64,
+    EcImage,
     EcUri,
+    EcButton,
     SubForm
   },
   props: {

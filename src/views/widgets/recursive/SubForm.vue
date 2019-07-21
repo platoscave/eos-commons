@@ -5,7 +5,7 @@
 		<br>
       <div class="monoSpaced">{{ JSON.stringify(value, replacer, 2) }}></div>-->
       <!-- For each of the properties in schema -->
-      <div v-for="(property, propName) in properties" v-bind:key="propName">
+      <div class="rowPadding" v-for="(property, propName) in properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
@@ -23,12 +23,12 @@
               v-bind:property="property"
             ></ec-rich-text>
 
-            <!-- Base64 -->
-            <ec-base64
+            <!-- image -->
+            <ec-image
               v-else-if="property.media && property.media.type === 'image/png' "
               v-model.trim="value[propName]"
               v-bind:property="property"
-            ></ec-base64>
+            ></ec-image>
 
             <!-- Date -->
             <ec-date
@@ -160,7 +160,7 @@ import EcNumber from '../../formControls/EcNumber.vue'
 import EcBoolean from '../../formControls/EcBoolean.vue'
 import EcDate from '../../formControls/EcDate.vue'
 import EcRichText from '../../formControls/EcRichText.vue'
-import EcBase64 from '../../formControls/EcBase64.vue'
+import EcImage from '../../formControls/EcImage.vue'
 import EcUri from '../../formControls/EcUri.vue'
 import SubForm from "./SubForm.vue"
 
@@ -173,7 +173,7 @@ export default {
 	EcNumber,
 	EcDate,
 	EcRichText,
-	EcBase64,
+	EcImage,
     EcUri,
     SubForm
   },
@@ -196,49 +196,45 @@ export default {
 <style>
 	.label {
 		padding: 10px;
-		font-size: 16px;
-		line-height: 42px;
+        font-size: 16px;
+        margin-top: 4px;        
 	}
 	.outputclass {
 		background-color: #ffffff0d;
 		padding: 10px;
 		font-size: 16px;
-		line-height: 42px;
-		min-height: 64px;
-		border-radius: 5px;
-		margin: 4px;
+		/* line-height: 42px; */
+		min-height: 46px;
+        border-radius: 5px;
 	}
 	.updatable {
 		border-style: solid;
 		border-color: blue;
 		border-width: 1px;
-	}
+    }
 </style>
 <style scoped>
+.rowPadding {
+    padding-bottom: 16px;
+}
+.monoSpaced {
+  font-family: monospace, monospace;
+  white-space: pre;
+}
+
+
 
 
 .v-input__slot {
   background-color: green !important;
   min-height: 24px;
 }
-
 input:read-only {
   background-color: blue;
 }
-
-.p {
-  margin-bottom: 0;
-}
-
 .description {
   color: lightseagreen;
 }
-
-.monoSpaced {
-  font-family: monospace, monospace;
-  white-space: pre;
-}
-
 .input-alpha input {
   border: solid 1px #e6e6ea;
   /* height: 48px; */

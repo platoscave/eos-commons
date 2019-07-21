@@ -4,7 +4,7 @@
     :class="!property.readOnly ? 'updatable' :  ''"
     v-on:click="editMode = true"
   >
-    <div v-if="property.readOnly || !editMode" v-html="value"></div>
+    <div class="nomargin" v-if="property.readOnly || !editMode" v-html="value"></div>
     <wysiwyg
       v-else
       v-bind:value="value"
@@ -29,3 +29,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+/* why doent this work? */
+    .nomargin p {
+        margin-bottom: 0 !important;
+    }
+</style>

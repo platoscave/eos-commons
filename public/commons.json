@@ -267,7 +267,7 @@
 		"description": "<p>Balance sheet owned by users/organizations</p>",
 		"parentId": "ync5iiwvtsf3",
 		"properties": {
-			"name": {
+			"value": {
 				"title": "Value",
 				"type": "number"
 			},
@@ -820,7 +820,15 @@
 			"imageUrl": {
 				"format": "uri",
 				"title": "Image",
-				"type": "string"
+                "type": "string",
+                "media": {
+                    "type": "image/png"
+                }
+			},
+			"purchaseButton": {
+				"title": "Buy",
+                "type": "button",
+                "action": "Create Agreement"
 			}
 		},
 		"type": "object"
@@ -1456,7 +1464,7 @@
 		"key": "bicycleshop1",
 		"docType": "object",
 		"name": "ACME Bicycle Shop",
-		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: green; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Bicycle Shop</h1><p><i>Enjoy the fresh air.</i></p><h2>For Rent Sale or Repair</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
+		"description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: green; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Bicycle Shop</h1><p><i>Enjoy the fresh air.</i></p><h2>For Rent Sale or Repair</h2></div><div class=\"flex xs6\"><img src=\"bicycle-788733_960_720.jpg\" height=\"500\"></div></div>",
 		"classId": "zx5ffzoa5euy",
 		"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5klEQVQ4T61Tv2sUURD+Zt7undFYqKTKsW/v7p0YDqwEGxst/EUKbcQiYKGIAUGRVIqKTYpYiBjQSiEGSSPIgYX5C+wEUSx8t7e3kassDAlL4vneyIKBxICFl2mGGeZ988038wgDGg34HjsLYKKoCeYRAIIgeG+t7Teq1WMiwuLU9/ZS+9PfjLcwaES1cWE/DZEFhOFsuVxeW19dvSJgFvgJKHUqSZLlzSDbRjBxPOkEUwz6srXQaxA9t2n6aBtAvVI3FLhx8ZQz4YJ4UT7kcxvd4jjeFQpeiHdjpNRTAXbDuZZdWmpTXeszLHRdQM9AuASSg/A0A0jdZumDQ6OjB34F4TwR3ohzt8HcIlHvAD8pih5TI4rflvbuOZ/n+T5ybg4+mKLAXyaBBmQGnqbBckuEriqhV57cHZtlp40xZem712R0dd52OxMFExG5ycxrIjgiwA8GxCs+myRJZqJowWbZRVOtnrSdzmKhQ03rl2S0nsv7/Wu9Xi8vko04PirAcZumD/+I5Qpvovg+SFq22/1QxM2R5vDPoZVZqlVqDSh3j4UXCbLfw49RqXTDWru+We1KpTJUUuETJvkMkWWATyj4uxtrVEbrw+KClfa3tv3XeRcb48ANf03TjwD8zp7y/3ysgRn8BlTuy14MbVpqAAAAAElFTkSuQmCC",
 		"pageId": "2kjjzqr2i5o5",
@@ -1532,9 +1540,9 @@
 		"description": "<p>Material confined likewise it humanity raillery an unpacked as he. Three chief merit no if. Now how her edward engage not horses. Oh resolution he dissimilar precaution to comparison an. Matters engaged between he of pursuit manners we moments. Merit gay end sight front. Manor equal it on again ye folly by match. In so melancholy as an sentiments simplicity connection. Far supply depart branch agreed old get our.</p>",
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
-		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
+		"imageUrl": "green-bike-19463282.jpg",
 		"ownerId": "bicycleshop1",
-		"value": 150
+		"value": 150.23
 	},
 	{
 		"key": "4htc3ykicyzj",
@@ -1543,9 +1551,9 @@
 		"description": "<p>To sure calm much most long me mean. Able rent long in do we. Uncommonly no it announcing melancholy an in. Mirth learn it he given. Secure shy favour length all twenty denote. He felicity no an at packages answered opinions juvenile.</p>",
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
-		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
+		"imageUrl": "green-bike-19463282.jpg",
 		"ownerId": "bicycleshop1",
-		"value": 160
+		"value": 160.50
 	},
 	{
 		"key": "pwyzd1adoyzu",
@@ -1554,9 +1562,9 @@
 		"description": "<p>Are sentiments apartments decisively the especially alteration. Thrown shy denote ten ladies though ask saw. Or by to he going think order event music. Incommode so intention defective at convinced. Led income months itself and houses you. After nor you leave might share court balls.</p>",
 		"classId": "nlmgc3dmrwxs",
 		"currency": "EUR",
-		"imageUrl": "app/resources/img/Neuralquest/green-bike-19463282.jpg",
+		"imageUrl": "green-bike-19463282.jpg",
 		"ownerId": "bicycleshop1",
-		"value": 155
+		"value": 155.80
 	},
 	{
 		"key": "u5tqb1rd2gkr",
@@ -1564,7 +1572,7 @@
 		"classId": "zob5kwxrv2y4",
 		"currency": "EUR",
 		"ownerId": "bicycleshop1",
-		"value": 465
+		"value": 465.65
 	},
 	{
 		"key": "icfdprzi442m",
@@ -1998,16 +2006,21 @@
 		"baseClassId": "nlmgc3dmrwxs",
 		"properties": {
 			"key": {
-				"readOnly": true
+                "readOnly": true
 			},
 			"name": {
-				"readOnly": false
+                "readOnly": true
 			},
-			"description": {
-				"readOnly": false
+			"value": {
+                "readOnly": true
 			},
 			"imageUrl": {
-				"readOnly": true
+                "readOnly": true
+			},
+			"description": {
+                "readOnly": true
+			},
+			"purchaseButton": {
 			}
 		},
 		"queryId": "kl2fe4hvhhtg",
@@ -2016,7 +2029,7 @@
 	{
 		"key": "5p3j1unpm2pq",
 		"docType": "object",
-		"name": "Agreement Form View",
+		"name": "Agreement Table View",
 		"classId": "pylvseoljret",
 		"ownerId": "eoscommonsio",
 		"baseClassId": "i1gjptcb2skq",
@@ -2025,10 +2038,35 @@
 				"readOnly": true
 			},
 			"name": {
-				"readOnly": false
+				"readOnly": true
 			},
 			"description": {
 				"readOnly": true
+			}
+		},
+		"toolbarProperties": {
+			"state": {
+				"pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+				"query": {
+					"from": "pejdgrwd5qso",
+					"sortBy": "name"
+				},
+				"title": "State",
+				"type": "string"
+			},
+			"buyerId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+				"query": {
+					"from": "pejdgrwd5qso",
+					"sortBy": "name"
+				},
+				"title": "Buyer",
+				"type": "string"
+			},
+			"addButton": {
+				"title": "Add Service Request",
+                "type": "button",
+                "action": "Add Agreement"
 			}
 		},
 		"queryId": "vu2j5khcsdrv",
@@ -2573,7 +2611,6 @@
 		"name": "Purchase Assest Table Page",
 		"accordionOrTab": "Tabs",
 		"classId": "pejdgrwd5qso",
-		"divider": "Vertical",
 		"ownerId": "bicycleshop1",
 		"tabs": [
 			{

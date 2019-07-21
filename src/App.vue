@@ -52,6 +52,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- <v-select class="left" single-line v-bind:items="networks" v-model="network" label="Network"></v-select> -->
       <div class="left">{{network}}</div>
       <div class="left">{{account}}</div>
       <div class="right">eos-commons.io</div>

@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: "ec-base64",
+  name: "ec-image",
   props: {
     value: String,
     property: Object
