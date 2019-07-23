@@ -30,8 +30,8 @@ export default {
 };
 </script>
 <style scoped>
-/* why doent this work? */
-    .nomargin p {
-        margin-bottom: 0 !important;
+    .nomargin >>> p {
+        margin-bottom: 0;
+        text-align: justify;
     }
 </style>

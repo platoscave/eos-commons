@@ -4,7 +4,7 @@
     :class="!property.readOnly ? 'updatable' :  ''"
     v-on:click="editMode = true"
   >
-    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ value.toLocaleDateString() }}</div>
+    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ localeDateString }}</div>
     <v-date-picker
       v-else
       v-bind:value="value"
@@ -18,10 +18,19 @@
 export default {
   name: "ec-date",
   props: {
-    value: Date,
+    value: String,
     property: Object
   },
-
+  computed: {
+    localeDateString: {
+      get () {
+        return new Date(this.value).toLocaleDateString()
+      },
+      set (value) {
+         
+      }
+    }
+  },
   data() {
     return {
       editMode: false

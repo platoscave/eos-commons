@@ -1,7 +1,10 @@
 <template>
   <div v-if="viewObj && headers && dataArr">
-      <div v-if="viewObj.toolbarProperties">Hi</div>
+        <div v-if="viewObj.toolbarProperties">
+            <v-btn color="blue darken-1" @click="takeAction('addObject')">Add Service Request</v-btn>
+        </div>
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
+    <!-- https://codepen.io/fontzter/pen/qywQjK filter in toolbar -->
     <v-data-table :headers="headers" :items="dataArr" hide-actions>
       <template template slot="items" slot-scope="row">
         <tr v-on:click="itemClick(row.item)">
@@ -133,7 +136,7 @@
               </div>
             </div>
 
-            <!-- Boolean -->
+            <!-- button -->
             <ec-button
               v-else-if="property.type === 'button'"
               v-model.number="row.item[propName]"
@@ -226,6 +229,7 @@ export default {
   },
   methods: {
     itemClick: async function(node) {
+        //TODO move this to store, remove from tree
         // Recusivly get the default icon, from the first ancestor class that has one
         const getIconFromClassById = async classId => {
             let classObj = await ApiService.getCommonByKey(classId)
@@ -242,6 +246,22 @@ export default {
             pageId: pageId,
             selectedObjId: node.key
         });
+      }
+    },
+    takeAction: async function (action, parentNode, valuePath) {
+	  // console.log("action", action, subIdsName);
+
+      if (action === 'addObject') {
+        const classId = _.get(
+          parentNode,
+          'Xdata.queryArrObj.currentObj.key'
+        )
+        let newObject = {
+          classId: classId,
+          name: '[new object]',
+          docType: 'object'
+        }
+        let key = await this.$store.dispatch('upsertCommon', newObject)
       }
     }
   }
