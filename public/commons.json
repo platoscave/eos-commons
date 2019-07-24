@@ -1513,10 +1513,10 @@
         "key": "lmxjrogzeld1",
         "docType": "object",
         "name": "Purchase Agreement",
-        "decription": "Buy a bike",
+        "description": "Buy a bike",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "zmk4fuodo25t",
+        "stateId": "yefagaab4ua2",
         "amount": 150.22,
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser1111",
@@ -2160,9 +2160,6 @@
             "assetId": {
                 "readOnly": true
             },
-            "imageUrl": {
-                "readOnly": true
-            },
             "amount": {
                 "readOnly": true
             },
@@ -2179,7 +2176,7 @@
                 "readOnly": true
             },
             "sellerProcessId": {
-                "readOnly": false
+                "readOnly": true
             }
         },
         "baseClassId": "i1gjptcb2skq",
@@ -2310,9 +2307,9 @@
         "description": "<p>Suppose end get boy warrant general natural. Delightful met sufficient projection ask. Decisively everything principles if preference do impression of. Preserved oh so difficult repulsive on in household. In what do miss time be. Valley as be appear cannot so by. Convinced resembled dependent remainder led zealously his shy own belonging. Always length letter adieus add number moment she. Promise few compass six several old offices removal parties fat. Concluded rapturous it intention perfectly daughters is as.</p>",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "ttjye1pjj2ly",
+        "stateId": "bavb2g1inh2t",
         "assetId": "pwyzd1adoyzu",
-        "buyerId": "vgvj4zbapslj",
+        "buyerId": "testuser2222",
         "classId": "w3mzeetidb5n",
         "offeringId": "58322160425310133a49f115",
         "sellerId": "testuser1111"
@@ -2324,12 +2321,12 @@
         "description": "<p>Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.</p>",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "ttjye1pjj2ly",
+        "stateId": "pvk5ngmorf4z",
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser1111",
         "classId": "w3mzeetidb5n",
         "offeringId": "583221c9425310133a49f117",
-        "sellerId": "vgvj4zbapslj"
+        "sellerId": "testuser2222"
     },
     {
         "key": "bavb2g1inh2t",
