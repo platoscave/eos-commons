@@ -5,7 +5,7 @@
     </div>-->
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
     <!-- https://codepen.io/fontzter/pen/qywQjK filter in toolbar -->
-    <v-data-table :headers="headers" :items="dataArr" hide-actions>
+    <v-data-table :headers="headers" :items="filteredDesserts" hide-actions>
       <template slot="headers" slot-scope="props">
         <tr>
           <th
@@ -18,21 +18,24 @@
             {{ header.text }}
           </th>
         </tr>
-        <tr >
+        <tr>
           <th v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
-            <v-text-field v-if="propName === 'name' || propName === 'description' "> 
-
-            </v-text-field>
-              <v-select
+            <v-text-field
+              v-if="propName === 'name' || propName === 'description' "
+              v-model="filters[propName]"
+              clearable
+              flat
+            ></v-text-field>
+            <v-select
               v-else
-                flat
-                hide-details
-                small
-                multiple
-                clearable
-                :items="columnValueList(propName)"
-                v-model="filters[propName]"
-              ></v-select>
+              flat
+              hide-details
+              small
+              multiple
+              clearable
+              :items="columnValueList(propName)"
+              v-model="filters[propName]"
+            ></v-select>
           </th>
         </tr>
       </template>
@@ -93,7 +96,8 @@ export default {
       filters: {
         stateId: [],
         startDate: [],
-        iron: []
+        name: [],
+        description: []
       }
     };
   },
@@ -145,6 +149,13 @@ export default {
         );
         return addView.properties;
       } else return {};
+    },
+    filteredDesserts() {
+      return this.dataArr.filter(d => {
+        return Object.keys(this.filters).every(f => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
     }
   },
   methods: {
@@ -191,16 +202,16 @@ export default {
       let resultsArr = await this.$store.dispatch("query", queryObj);
       this.dataArr = Object.assign([], resultsArr); // Force reactive update
     },
-    changeSort (column) {
+    changeSort(column) {
       if (this.pagination.sortBy === column) {
-        this.pagination.descending = !this.pagination.descending
+        this.pagination.descending = !this.pagination.descending;
       } else {
-        this.pagination.sortBy = column
-        this.pagination.descending = false
+        this.pagination.sortBy = column;
+        this.pagination.descending = false;
       }
     },
     columnValueList(val) {
-      return this.dataArr.map(d => d[val])
+      return this.dataArr.map(d => d[val]);
     }
   }
 };
