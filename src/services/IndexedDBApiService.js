@@ -70,6 +70,38 @@ class IndexedDBApiService {
     })
   }
 
+  static async transact (indexName, keyValue) {
+    try {
+      const rpc = new JsonRpc(HTTPENDPOINT)
+      const result = await api.transact({
+        actions: [{
+          account: 'eosio',
+          name: 'delegatebw',
+          authorization: [{
+            actor: 'useraaaaaaaa',
+            permission: 'active',
+          }],
+          data: {
+            from: 'useraaaaaaaa',
+            receiver: 'useraaaaaaaa',
+            stake_net_quantity: '1.0000 SYS',
+            stake_cpu_quantity: '1.0000 SYS',
+            transfer: false,
+          }
+        }]
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30,
+      })
+      return result.rows.map(row => {
+        return JSON.parse(row.common)
+      })
+    } catch (err) {
+      console.error(err)
+      return []
+    }
+  }
+
   static async ImportFromIndexedDB () {
     return new Promise((resolve, reject) => {
       const openRequest = indexedDB.open('commonsDB', 1)

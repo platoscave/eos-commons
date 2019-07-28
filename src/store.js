@@ -123,6 +123,9 @@ const store = new Vuex.Store({
     eraseCommon: async function (store, key) {
       return ApiService.eraseCommon(key)
     },
+    transact: async function (store, key) {
+      return ApiService.transact(key)
+    },
 
     query: async function (store, queryObj) {
       // Recursivly get an array of subclass keys

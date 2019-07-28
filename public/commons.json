@@ -1554,6 +1554,19 @@
         "ownerId": "bicycleshop1"
     },
     {
+        "key": "cie1pllxq5mu",
+        "docType": "object",
+        "name": "Service Request Process",
+        "description": "<p>Service Request Process</p>",
+        "classId": "dwl1kwhalwj4",
+        "returnActions": [
+            "happy",
+            "unhappy"
+        ],
+        "substateId": "oltp4kpj4fvi",
+        "ownerId": "bicycleshop1"
+    },
+    {
         "key": "vvcx4zgoogxv",
         "docType": "object",
         "name": "Red Bicycle",
@@ -2066,32 +2079,42 @@
                 "readOnly": true
             }
         },
-        "toolbarProperties": {
-            "stateId": {
-                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                "query": {
-                    "from": "pejdgrwd5qso",
-                    "sortBy": "name"
-                },
-                "title": "State",
-                "type": "string"
+        "addProperties": {
+            "name": {
+                "readOnly": false
             },
-            "buyerId": {
-                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                "query": {
-                    "from": "pejdgrwd5qso",
-                    "sortBy": "name"
-                },
-                "title": "Buyer",
-                "type": "string"
+            "description": {
+                "readOnly": false
             },
             "addButton": {
                 "title": "Add Service Request",
                 "type": "button",
-                "action": "Add Agreement"
+                "action": "Add Service Request"
             }
         },
         "queryId": "vu2j5khcsdrv",
+        "type": "object"
+    },
+    {
+        "key": "3ebxsw5pbk3r",
+        "docType": "object",
+        "name": "Add an Agreeement",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "baseClassId": "i1gjptcb2skq",
+        "properties": {
+            "name": {
+                "readOnly": false
+            },
+            "description": {
+                "readOnly": false
+            },
+            "addButton": {
+                "title": "Add Service Request",
+                "type": "button",
+                "action": "Add Service Request"
+            }
+        },
         "type": "object"
     },
     {
@@ -2368,6 +2391,39 @@
         "docType": "object",
         "name": "Expedite",
         "description": "<p>Expedite</p>",
+        "classId": "cq4bjkzqc2qp",
+        "nextStateIds": [
+            {
+                "action": "happy"
+            },
+            {
+                "action": "unhappy"
+            }
+        ],
+        "ownerId": "jwzwfaehsqks"
+    },
+    {
+        "key": "oltp4kpj4fvi",
+        "docType": "object",
+        "name": "Classify",
+        "description": "<p>Classify</p>",
+        "classId": "cq4bjkzqc2qp",
+        "nextStateIds": [
+            {
+                "action": "happy",
+                "stateId": "tfkyaytuac1g"
+            },
+            {
+                "action": "unhappy"
+            }
+        ],
+        "ownerId": "jwzwfaehsqks"
+    },
+    {
+        "key": "tfkyaytuac1g",
+        "docType": "object",
+        "name": "Answer",
+        "description": "<p>Answer</p>",
         "classId": "cq4bjkzqc2qp",
         "nextStateIds": [
             {
@@ -3264,6 +3320,7 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "pageId": "n1dvzgi132ap",
-        "from": "i1gjptcb2skq"
+        "from": "i1gjptcb2skq",
+        "addDialogViewId": "3ebxsw5pbk3r"
     }
 ]

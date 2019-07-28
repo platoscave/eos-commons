@@ -1,7 +1,7 @@
 <template>
   <!-- Wait for dataObj and viewObj to arrive -->
   <div v-if="viewObj && dataObj">
-    <div>{{viewId}}</div>
+    <div>{{viewId}} {{viewObj.name}}</div>
     <ec-sub-form
       v-bind:editMode="editMode"
       v-model="dataObj"
@@ -65,84 +65,24 @@ export default {
   }
 }
 </script>
-<style scoped>
-.label {
-  padding: 10px;
-  font-size: 16px;
-  line-height: 42px;
-}
-.readonlyoutput {
-  background-color: #ffffff0d;
-  padding: 10px;
-  font-size: 16px;
-  line-height: 42px;
-  border-radius: 5px;
-  margin: 4px;
-}
-
-.v-input__slot {
-  background-color: green !important;
-  min-height: 24px;
-}
-
-input:read-only {
-  background-color: blue;
-}
-
-.p {
-  margin-bottom: 0;
-}
-
-.description {
-  color: lightseagreen;
-}
-
-.monoSpaced {
-  font-family: monospace, monospace;
-  white-space: pre;
-}
-
-.input-alpha input {
-  border: solid 1px #e6e6ea;
-  /* height: 48px; */
-  width: 100%;
-  padding: 16px;
-  border-radius: 2px;
-  box-shadow: inset 0px 0px 0px 0px #f00;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  font-size: 14px;
-  transition: all 0.1s ease-in-out;
-}
-
-.input-alpha input:focus {
-  outline: 0;
-  border: 1px solid #00f;
-}
-
-.input-alpha input:focus + label {
-  color: blue;
-}
-
-.input-alpha input:valid,
-.input-alpha input:-webkit-autofill {
-  padding: 26px 32px 10px 16px;
-}
-
-.input-alpha input:valid + label,
-.input-alpha input:-webkit-autofill + label {
-  top: 7px;
-  transform: scale(0.8);
-}
-.input-alpha > .v-input__control {
-  min-height: 24px;
-}
-.v-input__slot {
-  border-width: 1px;
-  border-color: darkblue;
-}
-.theme--dark .v-text-field--outline > .v-input__control > .v-input__slot {
-  border-width: 1px;
-  border-color: red;
-}
+/* Global form styles */
+<style>
+	.label {
+		padding: 10px;
+        font-size: 16px;
+        margin-top: 4px;        
+	}
+	.outputclass {
+		background-color: #ffffff0d;
+		padding: 10px;
+		font-size: 16px;
+		/* line-height: 42px; */
+		min-height: 46px;
+        border-radius: 5px;
+	}
+	.updatable {
+		border-style: solid;
+		border-color: blue;
+		border-width: 1px;
+    }
 </style>

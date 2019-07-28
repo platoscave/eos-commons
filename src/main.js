@@ -20,6 +20,8 @@ import Tree from './views/widgets/Tree.vue'
 import Table from './views/widgets/Table.vue'
 import BsItems from './views/widgets/recursive/BsItems.vue'
 import SubForm from './views/widgets/recursive/SubForm.vue'
+import EcSelectControl from './views/formControls/EcSelectControl.vue'
+
 import Paragraph from './views/widgets/recursive/Paragraph.vue'
 import { sync } from 'vuex-router-sync'
 import wysiwyg from 'vue-wysiwyg'
@@ -32,6 +34,8 @@ Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)
 Vue.component('ec-bs-items', BsItems)
 Vue.component('ec-sub-form', SubForm)
+Vue.component('ec-select-control', EcSelectControl)
+
 Vue.component('ec-class-model', ClassModel)
 Vue.component('ec-process-model', ProcessModel)
 Vue.component('ec-workflow-model', WorkflowModel)
