@@ -22,7 +22,7 @@
                 "type": "string"
             },
             "description": {
-                "default": "<p>[no text]</p>",
+                "placholder": "Add a description",
                 "maxLength": 10000,
                 "media": {
                     "mediaType": "text/html"
@@ -49,7 +49,7 @@
                 "type": "string"
             },
             "name": {
-                "default": "[unnamed]",
+                "placeholder": "Provide a name",
                 "maxLength": 1000,
                 "minLength": 0,
                 "title": "Name",
@@ -165,7 +165,7 @@
                     "additionalProperties": false,
                     "properties": {
                         "description": {
-                            "default": "<p>no text</p>",
+                            "placholder": "Add a description",
                             "maxLength": 10000,
                             "media": {
                                 "mediaType": "text/html"
@@ -179,7 +179,7 @@
                             "type": "boolean"
                         },
                         "name": {
-                            "default": "[unnamed]",
+                            "placeholder": "Provide a name",
                             "maxLength": 1000,
                             "readOnly": false,
                             "title": "Tab Name",
@@ -199,7 +199,7 @@
                                 "additionalProperties": false,
                                 "properties": {
                                     "description": {
-                                        "default": "<p>[no text]</p>",
+                                        "placholder": "Add a description",
                                         "maxLength": 10000,
                                         "media": {
                                             "mediaType": "text/html"
@@ -216,13 +216,15 @@
                                             "3D Class Model",
                                             "Process Model",
                                             "Form",
-                                            "HomePage"
+                                            "HTML Page",
+                                            "Balance Sheet",
+                                            "Workflow Model"
                                         ],
                                         "title": "Display Type",
                                         "type": "string"
                                     },
                                     "name": {
-                                        "default": "[unnamed]",
+                                        "placeholder": "Provide a name",
                                         "maxLength": 1000,
                                         "title": "Name",
                                         "type": "string"
@@ -478,7 +480,7 @@
                 },
                 "description": {
                     "title": "Description",
-                    "default": "<p>[no text]</p>",
+                    "placholder": "Add a description",
                     "maxLength": 10000,
                     "media": {
                         "mediaType": "text/html"
@@ -492,6 +494,10 @@
                 },
                 "default": {
                     "title": "Default",
+                    "type": "string"
+                },
+                "placeholder": {
+                    "title": "Placeholder",
                     "type": "string"
                 },
                 "pattern": {
@@ -624,10 +630,10 @@
         "properties": {
             "description": {
                 "title": "What",
-                "default": "<p>[What do you do that is different?]</p>"
+                "placeholder": "<p>[What do you do that is different?]</p>"
             },
             "how": {
-                "default": "<p>[How do you achive your goal?]</p>",
+                "placeholder": "<p>[How do you achive your goal?]</p>",
                 "maxLength": 10000,
                 "media": {
                     "mediaType": "text/html"
@@ -637,7 +643,7 @@
                 "type": "string"
             },
             "why": {
-                "default": "<p>[Vision]</p>",
+                "placeholder": "<p>[Vision]</p>",
                 "maxLength": 10000,
                 "media": {
                     "mediaType": "text/html"
@@ -845,7 +851,7 @@
             "purchaseButton": {
                 "title": "Buy",
                 "type": "button",
-                "action": "Create Agreement"
+                "action": "addAgreement"
             }
         },
         "type": "object"
@@ -1369,8 +1375,15 @@
                 "title": "key",
                 "type": "string"
             },
+            "name": {
+                "placeholder": "Provide a name",
+                "maxLength": 100000,
+                "readOnly": false,
+                "title": "Name",
+                "type": "string"
+            },
             "description": {
-                "default": "<p>no text</p>",
+                "placholder": "Add a description",
                 "maxLength": 100000,
                 "media": {
                     "mediaType": "text/html"
@@ -1389,13 +1402,6 @@
             },
             "icon": {
                 "title": "Icon",
-                "type": "string"
-            },
-            "name": {
-                "default": "[unnamed]",
-                "maxLength": 100000,
-                "readOnly": false,
-                "title": "Name",
                 "type": "string"
             }
         },
@@ -2079,19 +2085,6 @@
                 "readOnly": true
             }
         },
-        "addProperties": {
-            "name": {
-                "readOnly": false
-            },
-            "description": {
-                "readOnly": false
-            },
-            "addButton": {
-                "title": "Add Service Request",
-                "type": "button",
-                "action": "Add Service Request"
-            }
-        },
         "queryId": "vu2j5khcsdrv",
         "type": "object"
     },
@@ -2104,7 +2097,8 @@
         "baseClassId": "i1gjptcb2skq",
         "properties": {
             "name": {
-                "readOnly": false
+                "readOnly": false,
+                "placeholder": "Agreement name"
             },
             "description": {
                 "readOnly": false
@@ -2112,7 +2106,7 @@
             "addButton": {
                 "title": "Add Service Request",
                 "type": "button",
-                "action": "Add Service Request"
+                "action": "addAgreement"
             }
         },
         "type": "object"
@@ -2521,7 +2515,7 @@
                 "type": "string"
             },
             "description": {
-                "default": "<p>[no text]</p>",
+                "placholder": "Add a description",
                 "maxLength": 10000,
                 "media": {
                     "mediaType": "text/html"
@@ -2568,7 +2562,7 @@
                 "type": "array"
             },
             "title": {
-                "default": "[unnamed]",
+                "placeholder": "Provide a name",
                 "maxLength": 1000,
                 "minLength": 0,
                 "title": "Name",
@@ -2611,7 +2605,7 @@
                 "name": "What",
                 "widgets": [
                     {
-                        "displayType": "HTMLPage",
+                        "displayType": "HTML Page",
                         "name": "What Form"
                     }
                 ]
@@ -2648,7 +2642,7 @@
                 "name": "ACME Bicycle Shop",
                 "widgets": [
                     {
-                        "displayType": "HTMLPage",
+                        "displayType": "HTML Page",
                         "name": "What Form"
                     }
                 ]
@@ -2717,7 +2711,7 @@
                 "name": "ACME Health Care Clinic ",
                 "widgets": [
                     {
-                        "displayType": "HTMLPage",
+                        "displayType": "HTML Page",
                         "name": "What Form"
                     }
                 ]

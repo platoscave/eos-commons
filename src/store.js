@@ -30,6 +30,9 @@ const store = new Vuex.Store({
   state: {
     account: '[not selected]',
     network: '[not selected]',
+    snackbar: false,
+    text: '',
+    color: '',
     levelIdsArr: [],
     pageStates: {},
     isOpened: {}
@@ -41,6 +44,11 @@ const store = new Vuex.Store({
     },
     SET_NETWORK (state, payload) {
       state.network = payload
+    },
+    SET_SNACKBAR (state, payload) {
+        state.text = payload.text
+        state.color = payload.color
+        state.snackbar = payload.snackbar
     },
 
     SET_PAGE_STATE2 (state, payload) {
@@ -123,8 +131,8 @@ const store = new Vuex.Store({
     eraseCommon: async function (store, key) {
       return ApiService.eraseCommon(key)
     },
-    transact: async function (store, key) {
-      return ApiService.transact(key)
+    transact: async function (store, newObj) {
+      return ApiService.transact(newObj, store)
     },
 
     query: async function (store, queryObj) {

@@ -70,7 +70,7 @@ class IndexedDBApiService {
     })
   }
 
-  static async transact (indexName, keyValue) {
+  static async transact (newObj, store) {
     try {
       const rpc = new JsonRpc(HTTPENDPOINT)
       const result = await api.transact({
@@ -102,7 +102,7 @@ class IndexedDBApiService {
     }
   }
 
-  static async ImportFromIndexedDB () {
+  static async ImportFromStatic (store) {
     return new Promise((resolve, reject) => {
       const openRequest = indexedDB.open('commonsDB', 1)
 
@@ -134,11 +134,21 @@ class IndexedDBApiService {
           response.data.forEach(obj => {
             commonsStore.put(obj)
           })
+          store.commit("SET_SNACKBAR", {
+            snackbar: true,
+            text: "Import from static succes",
+            color: "succes"
+        });
           resolve(true)
         })
       }
 
       openRequest.onerror = e => {
+        store.commit("SET_SNACKBAR", {
+            snackbar: true,
+            text: "Import from static file failed",
+            color: "error"
+        });
         console.error(e.error)
         reject(e.error)
       }

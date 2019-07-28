@@ -12,7 +12,10 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       autofocus
+      flat
+      hide-details
       single-line
+      v-bind:placeholder="property.placeholder"
     ></v-text-field>
   </div>
 </template>
@@ -27,7 +30,7 @@ export default {
     return {
       editMode: false
     };
-  }/* ,
+  } /* ,
   mounted () {
     this.$el.addEventListener("focusout", (e) => {
         this.editMode = false

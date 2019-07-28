@@ -6,6 +6,37 @@
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
     <!-- https://codepen.io/fontzter/pen/qywQjK filter in toolbar -->
     <v-data-table :headers="headers" :items="dataArr" hide-actions>
+      <template slot="headers" slot-scope="props">
+        <tr>
+          <th
+            v-for="header in props.headers"
+            :key="header.text"
+            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+            @click="changeSort(header.value)"
+          >
+            <v-icon small>arrow_upward</v-icon>
+            {{ header.text }}
+          </th>
+        </tr>
+        <tr >
+          <th v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
+            <v-text-field v-if="propName === 'name' || propName === 'description' "> 
+
+            </v-text-field>
+              <v-select
+              v-else
+                flat
+                hide-details
+                small
+                multiple
+                clearable
+                :items="columnValueList(propName)"
+                v-model="filters[propName]"
+              ></v-select>
+          </th>
+        </tr>
+      </template>
+
       <template template slot="items" slot-scope="row">
         <tr v-on:click="itemClick(row.item)">
           <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
@@ -23,7 +54,11 @@
       </template>
       <v-card v-on:button-click="takeAction">
         <v-card-title>{{this.addDialogViewObj.name}}</v-card-title>
-        <ec-sub-form v-bind:editMode="true" v-model="newObj" v-bind:properties="addDialogViewObj.properties"></ec-sub-form>
+        <ec-sub-form
+          v-bind:editMode="true"
+          v-model="newObj"
+          v-bind:properties="addDialogViewObj.properties"
+        ></ec-sub-form>
       </v-card>
     </v-dialog>
   </div>
@@ -50,8 +85,16 @@ export default {
       viewObj: {},
       selected: [],
       dialog: false,
-      newObj: { name: 'TRY ME'},
-      addDialogViewObj: {}
+      newObj: {},
+      addDialogViewObj: {},
+      pagination: {
+        sortBy: "name"
+      },
+      filters: {
+        stateId: [],
+        startDate: [],
+        iron: []
+      }
     };
   },
   created: async function() {
@@ -101,13 +144,6 @@ export default {
           this.query.addViewId
         );
         return addView.properties;
-        /* let addPropertiesObj = {};
-        Object.keys(this.viewObj.addProperties).forEach(key => {
-          var value = this.viewObj.properties[key];
-          if (value) addPropertiesObj[key] = value;
-          else addPropertiesObj[key] = this.viewObj.addProperties[key];
-        });
-        return addPropertiesObj; */
       } else return {};
     }
   },
@@ -136,28 +172,35 @@ export default {
     },
     takeAction: async function(action) {
       console.log("action", action);
-      debugger;
-      const name = "[new Agreemnt]";
-      const date = new Date();
-      let newObject = {
-        docType: "object",
-        name: name,
-        startDate: date.toLocaleDateString(),
-        //'stateId': 'yefagaab4ua2',
-        //'assetId': 'pwyzd1adoyzu',
-        buyerId: "testuser1111",
-        classId: this.query.from,
-        processId: "cie1pllxq5mu",
-        // 'sellerProcessId': 'cie1pllxq5mu',
-        sellerId: this.$store.state.levelIdsArr[this.level].selectedObjId
-      };
-      let key = await this.$store.dispatch("upsertCommon", newObject);
+      if (action === "addAgreement") {
+        this.newObj.docType = "object";
+        const date = new Date();
+        this.newObj.startDate = date.toLocaleDateString();
+        this.newObj.sellerId = this.$store.state.levelIdsArr[
+          this.level
+        ].selectedObjId;
+        this.newObj.buyerId = "testuser1111";
+        this.newObj.classId = this.query.from;
+        this.newObj.processId = "cie1pllxq5mu";
+      }
+      let key = await this.$store.dispatch("transact", this.newObj);
 
       const queryObj = {
         query: this.query
       };
       let resultsArr = await this.$store.dispatch("query", queryObj);
       this.dataArr = Object.assign([], resultsArr); // Force reactive update
+    },
+    changeSort (column) {
+      if (this.pagination.sortBy === column) {
+        this.pagination.descending = !this.pagination.descending
+      } else {
+        this.pagination.sortBy = column
+        this.pagination.descending = false
+      }
+    },
+    columnValueList(val) {
+      return this.dataArr.map(d => d[val])
     }
   }
 };

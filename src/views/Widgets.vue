@@ -9,7 +9,7 @@
                 </div>
 
                 <!-- HTML Page-->
-                <div class="full-height" v-if="widget.displayType === 'HTMLPage'">
+                <div class="full-height" v-if="widget.displayType === 'HTML Page'">
                     <ec-html-page class="ec-container" v-bind:level="level"></ec-html-page>
                 </div>
 
