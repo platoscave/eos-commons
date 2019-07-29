@@ -28,7 +28,7 @@ import BsItems from './recursive/BsItems'
 export default {
   name: 'ec-balance-sheet',
   components: {
-	BsItems,
+    BsItems
   },
   props: {
     level: Number

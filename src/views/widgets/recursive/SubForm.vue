@@ -28,7 +28,7 @@
 /* import EcSelectControl from '../../formControls/EcSelectControl.vue' */
 
 export default {
-  name: "ec-sub-form",
+  name: 'ec-sub-form',
   props: {
     editMode: Boolean,
     properties: Object,
@@ -36,7 +36,7 @@ export default {
     required: Array,
     value: Object
   }
-};
+}
 </script>
 <style scoped>
 .rowPadding {

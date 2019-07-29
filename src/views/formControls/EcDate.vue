@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: "ec-date",
+  name: 'ec-date',
   props: {
     value: String,
     property: Object
@@ -27,14 +27,14 @@ export default {
         return new Date(this.value).toLocaleDateString()
       },
       set (value) {
-         
+
       }
     }
   },
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }
-};
+}
 </script>

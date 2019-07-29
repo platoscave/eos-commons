@@ -21,20 +21,20 @@
 </template>
 <script>
 export default {
-  name: "ec-string",
+  name: 'ec-string',
   props: {
     value: String,
     property: Object
   },
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   } /* ,
   mounted () {
     this.$el.addEventListener("focusout", (e) => {
         this.editMode = false
     }, true);
   } */
-};
+}
 </script>

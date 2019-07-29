@@ -17,16 +17,16 @@
 </template>
 <script>
 export default {
-  name: "ec-number",
+  name: 'ec-number',
   props: {
     value: Number,
     property: Object
   },
 
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }
-};
+}
 </script>

@@ -18,24 +18,24 @@
 </template>
 <script>
 export default {
-  name: "ec-json",
+  name: 'ec-json',
   props: {
     value: String,
     property: Object
   },
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   },
   methods: {
-    replacer(name, val) {
+    replacer (name, val) {
       // we do this because icons are very long
-      if (name === "icon") return "base64 icon string";
-      else return val;
+      if (name === 'icon') return 'base64 icon string'
+      else return val
     }
   }
-};
+}
 </script>
 <style>
 .monoSpaced {

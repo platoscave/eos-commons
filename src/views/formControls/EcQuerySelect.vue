@@ -20,53 +20,53 @@
 </template>
 <script>
 export default {
-  name: "ec-query-select",
+  name: 'ec-query-select',
   props: {
     value: String,
     property: Object
   },
-  data() {
+  data () {
     return {
-		editMode: false,
+      editMode: false,
       	items: [],
       	selectedText: ''
-    };
+    }
   },
-  mounted: async function() {
-    const results = await this.$store.dispatch("query", {
+  mounted: async function () {
+    const results = await this.$store.dispatch('query', {
       query: this.property.query
-    });
+    })
     this.items = results.map(item => {
       let obj = {
         value: item.key,
         text: item.title ? item.title : item.name
-      };
-      return obj;
-    });
+      }
+      return obj
+    })
     this.items.push({
-      value: "[not selected]",
-      text: "[not selected]"
-    });
+      value: '[not selected]',
+      text: '[not selected]'
+    })
     // How do we return [not selected] ?
     // Should remove property!
     // if(!this.value) this.value = '[not selected]'
-    this.updateSelectedText();
+    this.updateSelectedText()
   },
   methods: {
     // Update the selected text in case of readonly output
-    updateSelectedText() {
+    updateSelectedText () {
       // console.log('this.value', this.value)
       const selectedObj = this.items.find(item => {
-        return item.value === this.value;
-      });
-      if (selectedObj) this.selectedText = selectedObj.text;
-      else this.selectedText = "[Selected item not found: " + this.value + "]";
+        return item.value === this.value
+      })
+      if (selectedObj) this.selectedText = selectedObj.text
+      else this.selectedText = '[Selected item not found: ' + this.value + ']'
     }
   },
   watch: {
-    value: "updateSelectedText"
+    value: 'updateSelectedText'
   }
-};
+}
 </script>
 <style>
 .custom.v-text-field > .v-input__control > .v-input__slot:before {

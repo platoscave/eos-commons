@@ -139,19 +139,19 @@ class EosApiService {
           name: 'delegatebw',
           authorization: [{
             actor: 'useraaaaaaaa',
-            permission: 'active',
+            permission: 'active'
           }],
           data: {
             from: 'useraaaaaaaa',
             receiver: 'useraaaaaaaa',
             stake_net_quantity: '1.0000 SYS',
             stake_cpu_quantity: '1.0000 SYS',
-            transfer: false,
+            transfer: false
           }
         }]
       }, {
         blocksBehind: 3,
-        expireSeconds: 30,
+        expireSeconds: 30
       })
       return result.rows.map(row => {
         return JSON.parse(row.common)

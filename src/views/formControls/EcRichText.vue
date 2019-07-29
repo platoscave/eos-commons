@@ -16,18 +16,18 @@
 </template>
 <script>
 export default {
-  name: "ec-rich-text",
+  name: 'ec-rich-text',
   props: {
     value: String,
     property: Object
   },
 
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }
-};
+}
 </script>
 <style scoped>
     .nomargin >>> p {

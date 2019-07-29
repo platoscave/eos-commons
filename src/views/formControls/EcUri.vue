@@ -16,16 +16,16 @@
 </template>
 <script>
 export default {
-  name: "ec-uri",
+  name: 'ec-uri',
   props: {
     value: String,
     property: Object
   },
 
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }
-};
+}
 </script>

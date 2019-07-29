@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <div v-if="!loading" class="content-pane">
       <ec-layout v-bind:level="0"></ec-layout>
     </div>
@@ -65,97 +65,97 @@
 </template>
 
 <script>
-import IndexedDBApiService from "./services/IndexedDBApiService";
-import EosApiService from "./services/EosApiService";
-import testAccounts from "./config/testaccounts.js";
-import networks from "./config/networks.js";
+import IndexedDBApiService from './services/IndexedDBApiService'
+import EosApiService from './services/EosApiService'
+import testAccounts from './config/testaccounts.js'
+import networks from './config/networks.js'
 
 export default {
-  name: "App",
-  data() {
+  name: 'App',
+  data () {
     return {
       loading: true,
       dialog: false
-    };
+    }
   },
   computed: {
     network: {
-      get() {
-        return this.$store.state.network;
+      get () {
+        return this.$store.state.network
       },
-      set(value) {
-        this.$store.commit("SET_NETWORK", value);
+      set (value) {
+        this.$store.commit('SET_NETWORK', value)
       }
     },
     account: {
-      get() {
-        return this.$store.state.account;
+      get () {
+        return this.$store.state.account
       },
-      set(value) {
-        this.$store.commit("SET_ACCOUNT", value);
+      set (value) {
+        this.$store.commit('SET_ACCOUNT', value)
       }
     },
-    accounts: function() {
-      return Object.keys(testAccounts);
+    accounts: function () {
+      return Object.keys(testAccounts)
     },
-    networks: function() {
-      return Object.keys(networks);
+    networks: function () {
+      return Object.keys(networks)
     },
-    randomKey: function() {
-      var characters = "abcdefghijklmnopqrstuvwxyz12345";
-      var randomKey = "";
+    randomKey: function () {
+      var characters = 'abcdefghijklmnopqrstuvwxyz12345'
+      var randomKey = ''
       for (var i = 0; i < 12; i++) {
         randomKey += characters.charAt(
           Math.floor(Math.random() * characters.length)
-        );
+        )
       }
-      return randomKey;
+      return randomKey
     },
     snackbar: {
-        get () {
-            return this.$store.state.snackbar;
-        },
-        set (value) {
-            this.$store.commit('SET_SNACKBAR', {
-                snackbar: value,
-                text: '',
-                color: ''
-            })
-        }
+      get () {
+        return this.$store.state.snackbar
+      },
+      set (value) {
+        this.$store.commit('SET_SNACKBAR', {
+          snackbar: value,
+          text: '',
+          color: ''
+        })
+      }
     },
-    text: function() {
-      return this.$store.state.text;
+    text: function () {
+      return this.$store.state.text
     },
-    color: function() {
-      return this.$store.state.color;
+    color: function () {
+      return this.$store.state.color
     }
   },
   methods: {
-    onImportFromStatic() {
+    onImportFromStatic () {
       IndexedDBApiService.ImportFromStatic()
     },
-    onImportFromEos() {
+    onImportFromEos () {
       EosApiService.ImportFromEos()
     },
-    onSaveDirtyToEos() {
+    onSaveDirtyToEos () {
       EosApiService.SaveDirtyToEos()
     },
-    onEraseAllEos() {
+    onEraseAllEos () {
 
     },
-    onDownFromIndexeddb() {
+    onDownFromIndexeddb () {
 
     }
   },
-  created() {
+  created () {
     IndexedDBApiService.ImportFromStatic(this.$store).then(res => {
-      this.$store.commit("SET_NETWORK", "localhost");
-      this.$store.commit("SET_ACCOUNT", "platoscave11");
-      if (!window.location.hash) window.location.hash = "#/.kmghbh3qovtq"; // Demo Page
-      this.loading = false;
-    });
+      this.$store.commit('SET_NETWORK', 'localhost')
+      this.$store.commit('SET_ACCOUNT', 'platoscave11')
+      if (!window.location.hash) window.location.hash = '#/.kmghbh3qovtq' // Demo Page
+      this.loading = false
+    })
   }
-};
+}
 </script>
 <style scoped>
 .content-pane {

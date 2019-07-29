@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import Vue from 'vue'
-import './plugins/vuetify'
+import vuetify from '@/plugins/vuetify' // path to vuetify export
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -57,6 +57,7 @@ Vue.config.productionTip = false
 sync(store, router)
 
 new Vue({
+    vuetify,
   router,
   store,
   render: h => h(App)

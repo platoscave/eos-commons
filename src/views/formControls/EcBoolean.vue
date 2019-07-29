@@ -16,16 +16,16 @@
 </template>
 <script>
 export default {
-  name: "ec-boolean",
+  name: 'ec-boolean',
   props: {
     value: Boolean,
     property: Object
   },
 
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }
-};
+}
 </script>

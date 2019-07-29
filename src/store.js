@@ -46,9 +46,9 @@ const store = new Vuex.Store({
       state.network = payload
     },
     SET_SNACKBAR (state, payload) {
-        state.text = payload.text
-        state.color = payload.color
-        state.snackbar = payload.snackbar
+      state.text = payload.text
+      state.color = payload.color
+      state.snackbar = payload.snackbar
     },
 
     SET_PAGE_STATE2 (state, payload) {

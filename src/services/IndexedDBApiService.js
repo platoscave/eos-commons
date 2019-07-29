@@ -79,19 +79,19 @@ class IndexedDBApiService {
           name: 'delegatebw',
           authorization: [{
             actor: 'useraaaaaaaa',
-            permission: 'active',
+            permission: 'active'
           }],
           data: {
             from: 'useraaaaaaaa',
             receiver: 'useraaaaaaaa',
             stake_net_quantity: '1.0000 SYS',
             stake_cpu_quantity: '1.0000 SYS',
-            transfer: false,
+            transfer: false
           }
         }]
       }, {
         blocksBehind: 3,
-        expireSeconds: 30,
+        expireSeconds: 30
       })
       return result.rows.map(row => {
         return JSON.parse(row.common)
@@ -134,21 +134,21 @@ class IndexedDBApiService {
           response.data.forEach(obj => {
             commonsStore.put(obj)
           })
-          store.commit("SET_SNACKBAR", {
+          store.commit('SET_SNACKBAR', {
             snackbar: true,
-            text: "Import from static succes",
-            color: "succes"
-        });
+            text: 'Import from static succes',
+            color: 'succes'
+          })
           resolve(true)
         })
       }
 
       openRequest.onerror = e => {
-        store.commit("SET_SNACKBAR", {
-            snackbar: true,
-            text: "Import from static file failed",
-            color: "error"
-        });
+        store.commit('SET_SNACKBAR', {
+          snackbar: true,
+          text: 'Import from static file failed',
+          color: 'error'
+        })
         console.error(e.error)
         reject(e.error)
       }

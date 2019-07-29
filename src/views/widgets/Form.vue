@@ -70,7 +70,7 @@ export default {
 	.label {
 		padding: 10px;
         font-size: 16px;
-        margin-top: 4px;        
+        margin-top: 4px;
 	}
 	.outputclass {
 		background-color: #ffffff0d;
@@ -84,5 +84,8 @@ export default {
 		border-style: solid;
 		border-color: blue;
 		border-width: 1px;
+    }
+    tabs-items {
+        background-color: transparent
     }
 </style>

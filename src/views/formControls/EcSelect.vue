@@ -32,16 +32,16 @@
 </template>
 <script>
 export default {
-  name: "ec-select",
+  name: 'ec-select',
   props: {
     value: String,
     property: Object,
     items: Array
   },
-  data() {
+  data () {
     return {
       editMode: false
-    };
+    }
   }/* ,
   mounted() {
       //let element = document.body.getElementById('focusoutNode')
@@ -54,5 +54,5 @@ export default {
       });
     });
   } */
-};
+}
 </script>

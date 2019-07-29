@@ -5,7 +5,7 @@
     </div>-->
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
     <!-- https://codepen.io/fontzter/pen/qywQjK filter in toolbar -->
-    <v-data-table :headers="headers" :items="filteredDesserts" hide-actions>
+    <v-data-table :headers="headers" :items="filteredDesserts" hide-default-footer>
       <template slot="headers" slot-scope="props">
         <tr>
           <th
@@ -69,11 +69,11 @@
   </div>
 </template>
 <script>
-import ApiService from "../../services/IndexedDBApiService";
-import EcSelectControl from "../formControls/EcSelectControl.vue";
-import SubForm from "./recursive/SubForm.vue";
+import ApiService from '../../services/IndexedDBApiService'
+import EcSelectControl from '../formControls/EcSelectControl.vue'
+import SubForm from './recursive/SubForm.vue'
 export default {
-  name: "ec-table",
+  name: 'ec-table',
   components: {
     EcSelectControl,
     SubForm
@@ -83,7 +83,7 @@ export default {
     viewId: String,
     editMode: Boolean
   },
-  data() {
+  data () {
     return {
       dataArr: [],
       headers: [],
@@ -93,7 +93,7 @@ export default {
       newObj: {},
       addDialogViewObj: {},
       pagination: {
-        sortBy: "startDate",
+        sortBy: 'startDate',
         descending: true
       },
       filters: {
@@ -102,9 +102,9 @@ export default {
         name: '',
         description: ''
       }
-    };
+    }
   },
-  created: async function() {
+  created: async function () {
     /* this.$store.watch( state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
         if (!selectedObjId) return
         this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
@@ -115,119 +115,117 @@ export default {
       { immediate: true }
     ) */
 
-    this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
+    this.viewObj = await this.$store.dispatch('materializedView', this.viewId)
     // console.log('view', this.viewObj)
 
     this.headers = Object.keys(this.viewObj.properties).map(key => ({
       text: this.viewObj.properties[key].title,
       value: key
-    }));
+    }))
 
     this.query = await this.$store.dispatch(
-      "getCommonByKey",
+      'getCommonByKey',
       this.viewObj.queryId
-    );
+    )
 
     if (this.query.addDialogViewId) {
       this.addDialogViewObj = await this.$store.dispatch(
-        "materializedView",
+        'materializedView',
         this.query.addDialogViewId
-      );
+      )
     }
     const queryObj = {
       query: this.query
-    };
-    let resultsArr = await this.$store.dispatch("query", queryObj);
-    console.log("newData", resultsArr);
+    }
+    let resultsArr = await this.$store.dispatch('query', queryObj)
+    console.log('newData', resultsArr)
 
     // this.dataArr = Object.assign({}, resultsArr) // Force reactive update
-    this.dataArr = resultsArr;
+    this.dataArr = resultsArr
   },
   computed: {
-    addProperties: async function() {
+    addProperties: async function () {
       if (this.query.addViewId) {
         const addView = await this.$store.dispatch(
-          "materializedView",
+          'materializedView',
           this.query.addViewId
-        );
-        return addView.properties;
-      } else return {};
+        )
+        return addView.properties
+      } else return {}
     },
-    filteredDesserts() {
+    filteredDesserts () {
       return this.dataArr.filter(dataObj => {
         // for each of the props in the filters obj
         return Object.keys(this.filters).every(filterProp => {
-          console.log(filterProp, dataObj);
+          console.log(filterProp, dataObj)
           // if the data obj [filterProp] value matches a value in filters[filterProp] array
           return (
             this.filters[filterProp].length < 1 ||
             this.filters[filterProp].includes(dataObj[filterProp])
-          );
-        });
-      });
+          )
+        })
+      })
     }
   },
   methods: {
-    itemClick: async function(node) {
-      //TODO move this to store, remove from tree
+    itemClick: async function (node) {
+      // TODO move this to store, remove from tree
       // Recusivly get the default pageId, from the first ancestor class that has one
       const getIconFromClassById = async classId => {
-        let classObj = await ApiService.getCommonByKey(classId);
-        if (classObj.icon) return classObj.icon;
-        else if (classObj.parentId)
-          return await getIconFromClassById(classObj.parentId);
-        return ""; // set to default icon
-      };
+        let classObj = await ApiService.getCommonByKey(classId)
+        if (classObj.icon) return classObj.icon
+        else if (classObj.parentId) { return await getIconFromClassById(classObj.parentId) }
+        return '' // set to default icon
+      }
 
-      let pageId = this.query.pageId ? this.query.pageId : item.pageId;
-      if (!pageId && node.classId)
-        pageId = await getPageIdFromClassById(node.classId);
+      let pageId = this.query.pageId ? this.query.pageId : item.pageId
+      if (!pageId && node.classId) { pageId = await getPageIdFromClassById(node.classId) }
       if (pageId) {
-        this.$store.commit("SET_PAGE_STATE2", {
+        this.$store.commit('SET_PAGE_STATE2', {
           level: this.level + 1,
           pageId: pageId,
           selectedObjId: node.key
-        });
+        })
       }
     },
-    takeAction: async function(action) {
-      console.log("action", action);
-      if (action === "addAgreement") {
-        this.newObj.docType = "object";
-        const date = new Date();
-        this.newObj.startDate = date.toLocaleDateString();
+    takeAction: async function (action) {
+      console.log('action', action)
+      if (action === 'addAgreement') {
+        this.newObj.docType = 'object'
+        const date = new Date()
+        this.newObj.startDate = date.toLocaleDateString()
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
-        ].selectedObjId;
-        this.newObj.buyerId = "testuser1111";
-        this.newObj.classId = this.query.from;
-        this.newObj.processId = "cie1pllxq5mu";
+        ].selectedObjId
+        this.newObj.buyerId = 'testuser1111'
+        this.newObj.classId = this.query.from
+        this.newObj.processId = 'cie1pllxq5mu'
       }
-      let key = await this.$store.dispatch("transact", this.newObj);
+      let key = await this.$store.dispatch('transact', this.newObj)
 
       const queryObj = {
         query: this.query
-      };
-      let resultsArr = await this.$store.dispatch("query", queryObj);
-      this.dataArr = Object.assign([], resultsArr); // Force reactive update
+      }
+      let resultsArr = await this.$store.dispatch('query', queryObj)
+      this.dataArr = Object.assign([], resultsArr) // Force reactive update
     },
-    changeSort(column) {
+    changeSort (column) {
       if (this.pagination.sortBy === column) {
-          Vue.set(this.pagination, 'descending', !this.pagination.descending)
+        Vue.set(this.pagination, 'descending', !this.pagination.descending)
         // this.pagination.descending = !this.pagination.descending;
       } else {
-          Vue.set(this.pagination, 'sortBy', column)
-          Vue.set(this.pagination, 'descending', false)
+        Vue.set(this.pagination, 'sortBy', column)
+        Vue.set(this.pagination, 'descending', false)
 
         // this.pagination.sortBy = column;
         // this.pagination.descending = false;
       }
     },
-    columnValueList(val) {
-      return this.dataArr.map(d => d[val]);
+    columnValueList (val) {
+      return this.dataArr.map(d => d[val])
     }
   }
-};
+}
 </script>
 <style >
 td {
