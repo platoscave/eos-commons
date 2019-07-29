@@ -10,9 +10,11 @@
         <tr>
           <th
             v-for="header in props.headers"
-            :key="header.text"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            @click="changeSort(header.value)"
+            v-bind:key="header.text"
+            v-bind:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+            v-bind:pagination.sync="pagination"
+            v-on:click="changeSort(header.value)"
+            itemKey="key"
           >
             <v-icon small>arrow_upward</v-icon>
             {{ header.text }}
@@ -91,13 +93,14 @@ export default {
       newObj: {},
       addDialogViewObj: {},
       pagination: {
-        sortBy: "name"
+        sortBy: "startDate",
+        descending: true
       },
       filters: {
         stateId: [],
         startDate: [],
-        name: [],
-        description: []
+        name: '',
+        description: ''
       }
     };
   },
@@ -151,9 +154,15 @@ export default {
       } else return {};
     },
     filteredDesserts() {
-      return this.dataArr.filter(d => {
-        return Object.keys(this.filters).every(f => {
-          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+      return this.dataArr.filter(dataObj => {
+        // for each of the props in the filters obj
+        return Object.keys(this.filters).every(filterProp => {
+          console.log(filterProp, dataObj);
+          // if the data obj [filterProp] value matches a value in filters[filterProp] array
+          return (
+            this.filters[filterProp].length < 1 ||
+            this.filters[filterProp].includes(dataObj[filterProp])
+          );
         });
       });
     }
@@ -204,10 +213,14 @@ export default {
     },
     changeSort(column) {
       if (this.pagination.sortBy === column) {
-        this.pagination.descending = !this.pagination.descending;
+          Vue.set(this.pagination, 'descending', !this.pagination.descending)
+        // this.pagination.descending = !this.pagination.descending;
       } else {
-        this.pagination.sortBy = column;
-        this.pagination.descending = false;
+          Vue.set(this.pagination, 'sortBy', column)
+          Vue.set(this.pagination, 'descending', false)
+
+        // this.pagination.sortBy = column;
+        // this.pagination.descending = false;
       }
     },
     columnValueList(val) {
