@@ -15,6 +15,7 @@
       v-on:focusout="editMode = false"
       :items="items"
       single-line
+      menu-props="auto"
     ></v-select>
   </div>
 </template>

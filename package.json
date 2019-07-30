@@ -28,6 +28,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@mdi/font": "^3.8.95",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-eslint": "^3.9.0",
     "@vue/cli-service": "^3.9.0",

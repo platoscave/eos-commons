@@ -85,7 +85,7 @@ export default {
 		border-color: blue;
 		border-width: 1px;
     }
-    tabs-items {
-        background-color: transparent
+    .v-tabs-items {
+        background-color: transparent !important
     }
 </style>
