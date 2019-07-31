@@ -16,9 +16,12 @@
     <v-data-table
       :headers="headers"
       :items="filteredDesserts"
+      hide-default-header
       hide-default-footer
+      fixed-header
       :search="search"
-      multi-sort
+      :sortBy="sortBy"
+      :sortDesc="sortDesc"
     >
       <template v-slot:header="{ props: { headers } }">
         <thead>
@@ -26,27 +29,36 @@
             <th
               v-for="header in headers"
               v-bind:key="header.text"
-              v-bind:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-              v-bind:pagination.sync="pagination"
+              v-bind:class="['column sortable', sortDesc ? 'desc' : 'asc', header.value === sortBy ? 'active' : '']"
               v-on:click="changeSort(header.value)"
               itemKey="key"
             >
-              <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+                <!-- The filter menu-->
+              <v-menu
+                v-if="header.value !== 'name' && header.value !== 'description' "
+                v-model="menu"
+                :close-on-content-click="false"
+                :nudge-width="200"
+                offset-x
+              >
                 <template v-slot:activator="{ on }">
                   <v-icon small v-on="on">filter</v-icon>
                 </template>
-                <v-card v-on:button-click="takeAction">
-                  <v-select
-                    flat
-                    hide-details
-                    small
-                    multiple
-                    clearable
-                    autofocus
-                    :items="columnValueList(header.value)"
-                    v-model="filters[header.value]"
-                  ></v-select>
-                </v-card>
+                <v-list>
+                  <v-list-item-group v-model="filters[header.value]" multiple active-class>
+                    <v-list-item
+                      v-for="(name, propName)  in columnValueList(header.value)"
+                      v-bind:key="propName"
+                    >
+                      <template v-slot:default="{ active }">
+                        <v-list-item-action>
+                          <v-checkbox v-model="active"></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-content>{{name}}</v-list-item-content>
+                      </template>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
               </v-menu>
               {{ header.text }}
               <v-icon small>arrow_upward</v-icon>
@@ -54,45 +66,10 @@
           </tr>
         </thead>
       </template>
-      <!-- <template slot="headers" slot-scope="props">
-        <tr>
-          <th
-            v-for="header in props.headers"
-            v-bind:key="header.text"
-            v-bind:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            v-bind:pagination.sync="pagination"
-            v-on:click="changeSort(header.value)"
-            itemKey="key"
-          >
-            <v-icon small>arrow_upward</v-icon>
-            {{ header.text }}
-          </th>
-        </tr>
-        <tr>
-          <th v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
-            <v-text-field
-              v-if="propName === 'name' || propName === 'description' "
-              v-model="filters[propName]"
-              clearable
-              flat
-            ></v-text-field>
-            <v-select
-              v-else
-              flat
-              hide-details
-              small
-              multiple
-              clearable
-              :items="columnValueList(propName)"
-              v-model="filters[propName]"
-            ></v-select>
-          </th>
-        </tr>
-      </template>-->
 
       <template v-slot:body="{ items }">
         <tbody>
-          <tr v-for="item in items" :key="item.name" v-on:click="itemClick(items.item)">
+          <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(items.item)">
             <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
               <ec-select-control v-model="item[propName]" v-bind:property="property"></ec-select-control>
             </td>
@@ -140,13 +117,11 @@ export default {
       viewObj: {},
       search: "",
       dialog: false,
-      filterDialog: false,
+      menu: false,
       newObj: {},
       addDialogViewObj: {},
-      pagination: {
-        sortBy: "startDate",
-        descending: true
-      },
+      sortBy: "startDate",
+      sortDesc: true,
       filters: {
         stateId: [],
         startDate: [],
@@ -265,15 +240,15 @@ export default {
       this.dataArr = Object.assign([], resultsArr); // Force reactive update
     },
     changeSort(column) {
-      if (this.pagination.sortBy === column) {
-        Vue.set(this.pagination, "descending", !this.pagination.descending);
-        // this.pagination.descending = !this.pagination.descending;
+      if (this.sortBy === column) {
+        // Vue.set(this.pagination, "descending", !this.pagination.descending);
+        this.sortDesc = !this.sortDesc;
       } else {
-        Vue.set(this.pagination, "sortBy", column);
-        Vue.set(this.pagination, "descending", false);
+        // Vue.set(this.pagination, "sortBy", column);
+        // Vue.set(this.pagination, "descending", false);
 
-        // this.pagination.sortBy = column;
-        // this.pagination.descending = false;
+        this.sortBy = column;
+        this.sortDesc = false;
       }
     },
     columnValueList(val) {

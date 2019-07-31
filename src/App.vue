@@ -59,7 +59,7 @@
     </div>
     <v-snackbar v-model="snackbar" :color="color" :timeout="3000">
       {{ text }}
-      <v-btn dark flat @click="snackbar = false">Close</v-btn>
+      <v-btn dark text @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </v-app>
 </template>
