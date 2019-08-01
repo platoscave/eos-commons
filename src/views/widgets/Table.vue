@@ -197,7 +197,6 @@ export default {
   },
   methods: {
     itemClick: async function(item) {
-        debugger
       // TODO move this to store, remove from tree
       // Recusivly get the default pageId, from the first ancestor class that has one
       const getPageIdFromClassById = async classId => {
@@ -265,11 +264,11 @@ td {
   vertical-align: top;
   padding: 0 !important;
 }
-table {
-  background-color: transparent !important;
+.v-data-table {
+    background-color: transparent !important;
 }
-table.body.tr:hover {
-  background-color: #4242426e !important;
+.v-data-table tr:hover {
+  background-color: #424242 !important;
 }
 </style>
 <style scoped>
