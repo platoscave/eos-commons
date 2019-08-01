@@ -24,6 +24,7 @@
       :sortDesc="sortDesc"
     >
       <template v-slot:header="{ props: { headers } }">
+        <!-- The header-->
         <thead>
           <tr>
             <th
@@ -68,8 +69,9 @@
       </template>
 
       <template v-slot:body="{ items }">
+        <!-- The body-->
         <tbody>
-          <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(items.item)">
+          <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(item)">
             <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
               <ec-select-control v-model="item[propName]" v-bind:property="property"></ec-select-control>
             </td>
@@ -194,16 +196,17 @@ export default {
     }
   },
   methods: {
-    itemClick: async function(node) {
+    itemClick: async function(item) {
+        debugger
       // TODO move this to store, remove from tree
       // Recusivly get the default pageId, from the first ancestor class that has one
-      const getIconFromClassById = async classId => {
+      const getPageIdFromClassById = async classId => {
         let classObj = await ApiService.getCommonByKey(classId);
-        if (classObj.icon) return classObj.icon;
+        if (classObj.pageId) return classObj.pageId;
         else if (classObj.parentId) {
-          return await getIconFromClassById(classObj.parentId);
+          return await getPageIdFromClassById(classObj.parentId);
         }
-        return ""; // set to default icon
+        return ""; // set to default pageId
       };
 
       let pageId = this.query.pageId ? this.query.pageId : item.pageId;
@@ -214,7 +217,7 @@ export default {
         this.$store.commit("SET_PAGE_STATE2", {
           level: this.level + 1,
           pageId: pageId,
-          selectedObjId: node.key
+          selectedObjId: item.key
         });
       }
     },
@@ -265,7 +268,7 @@ td {
 table {
   background-color: transparent !important;
 }
-tr:hover {
+table.body.tr:hover {
   background-color: #4242426e !important;
 }
 </style>
