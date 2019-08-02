@@ -30,7 +30,6 @@
             <th
               v-for="header in headers"
               v-bind:key="header.text"
-              v-bind:class="['column sortable', sortDesc ? 'desc' : 'asc', header.value === sortBy ? 'active' : '']"
               v-on:click="changeSort(header.value)"
               itemKey="key"
             >
@@ -62,7 +61,7 @@
                 </v-list>
               </v-menu>
               {{ header.text }}
-              <v-icon small>arrow_upward</v-icon>
+              <i v-bind:class="['mdi', header.value === sortBy ? sortDesc ?  'mdi-arrow-down' : 'mdi-arrow-up' : '']"></i>
             </th>
           </tr>
         </thead>
@@ -243,12 +242,8 @@ export default {
     },
     changeSort(column) {
       if (this.sortBy === column) {
-        // Vue.set(this.pagination, "descending", !this.pagination.descending);
         this.sortDesc = !this.sortDesc;
       } else {
-        // Vue.set(this.pagination, "sortBy", column);
-        // Vue.set(this.pagination, "descending", false);
-
         this.sortBy = column;
         this.sortDesc = false;
       }
