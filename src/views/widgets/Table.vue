@@ -42,7 +42,7 @@
               >
                 <!-- The filter icon -->
                 <template v-slot:activator="{ on }">
-                  <v-icon small v-on="on">filter</v-icon>
+                  <v-icon small v-on="on" :color="filters[header.value].length > 0 ? 'yellow' : ''">filter</v-icon>
                 </template>
                 <!-- The filter list -->
                 <v-list>
