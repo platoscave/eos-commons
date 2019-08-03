@@ -23,8 +23,8 @@
       :sortBy="sortBy"
       :sortDesc="sortDesc"
     >
-      <template v-slot:header="{ props: { headers } }">
         <!-- The header-->
+      <template v-slot:header="{ props: { headers } }">
         <thead>
           <tr>
             <th
@@ -33,42 +33,51 @@
               v-on:click="changeSort(header.value)"
               itemKey="key"
             >
-                <!-- The filter menu-->
+              <!-- The filter menu-->
               <v-menu
                 v-if="header.value !== 'name' && header.value !== 'description' "
-                v-model="menu"
                 :close-on-content-click="false"
                 :nudge-width="200"
                 offset-x
               >
+                <!-- The filter icon -->
                 <template v-slot:activator="{ on }">
                   <v-icon small v-on="on">filter</v-icon>
                 </template>
+                <!-- The filter list -->
                 <v-list>
                   <v-list-item-group v-model="filters[header.value]" multiple active-class>
-                    <v-list-item
-                      v-for="(name, propName)  in columnValueList(header.value)"
-                      v-bind:key="propName"
-                    >
-                      <template v-slot:default="{ active }">
-                        <v-list-item-action>
-                          <v-checkbox v-model="active"></v-checkbox>
-                        </v-list-item-action>
-                        <v-list-item-content>{{name}}</v-list-item-content>
-                      </template>
-                    </v-list-item>
+                    <template v-for="(itemValue)  in columnValueList(header.value)">
+                      <v-list-item v-bind:key="itemValue" v-bind:value="itemValue">
+                        <template v-slot:default="{ active, toggle  }">
+                          <v-list-item-action>
+                            <v-checkbox
+                              :input-value="active"
+                              :true-value="itemValue"
+                              color="deep-purple accent-4"
+                              @click="toggle"
+                            ></v-checkbox>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                              <ec-select-control v-bind:value="itemValue" v-bind:property="viewObj.properties[header.value]"></ec-select-control>
+                            </v-list-item-content>
+                        </template>
+                      </v-list-item>
+                    </template>
                   </v-list-item-group>
                 </v-list>
               </v-menu>
               {{ header.text }}
-              <i v-bind:class="['mdi', header.value === sortBy ? sortDesc ?  'mdi-arrow-down' : 'mdi-arrow-up' : '']"></i>
+              <i
+                v-bind:class="['mdi', header.value === sortBy ? sortDesc ?  'mdi-arrow-down' : 'mdi-arrow-up' : '']"
+              ></i>
             </th>
           </tr>
         </thead>
       </template>
 
-      <template v-slot:body="{ items }">
         <!-- The body-->
+      <template v-slot:body="{ items }">
         <tbody>
           <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(item)">
             <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
@@ -248,8 +257,12 @@ export default {
         this.sortDesc = false;
       }
     },
-    columnValueList(val) {
-      return this.dataArr.map(d => d[val]);
+    columnValueList(propName) {
+        const valueArr = this.dataArr.map(item => {
+            return item[propName]
+        })
+        // make distict
+        return [ ...new Set(valueArr) ]
     }
   }
 };
@@ -260,7 +273,7 @@ td {
   padding: 0 !important;
 }
 .v-data-table {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 .v-data-table tr:hover {
   background-color: #424242 !important;
