@@ -6,7 +6,7 @@
           <v-flex>
             <v-layout row>
               <v-flex xs9 offset-xs1>{{bsItem.title}}</v-flex>
-              <v-flex xs3 class="value">{{bsItem.value.toLocaleString()}}</v-flex>
+              <v-flex xs2 class="value">{{bsItem.value.toLocaleString()}}</v-flex>
             </v-layout>
           </v-flex>
         </v-layout>
@@ -14,9 +14,9 @@
       <div v-else>
         <v-layout v-for="(bsItem, idx) in bsItemArr" v-bind:key="idx">
           <v-flex class="outputclass">
-            <div class="largerX"> {{bsItem.title}}</div>
+            <div class="larger"> {{bsItem.title}}</div>
             <ec-bs-items v-bind:parent-id="bsItem.key"></ec-bs-items>
-            <v-layout row class="largerX">
+            <v-layout row class="larger">
               <v-flex xs9>Total {{bsItem.title}}</v-flex>
               <v-flex xs3 class="value sumTotal">{{bsItem.value.toLocaleString()}}</v-flex>
             </v-layout>

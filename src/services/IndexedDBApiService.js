@@ -137,7 +137,7 @@ class IndexedDBApiService {
           store.commit('SET_SNACKBAR', {
             snackbar: true,
             text: 'Import from static succes',
-            color: 'succes'
+            color: 'green'
           })
           resolve(true)
         })

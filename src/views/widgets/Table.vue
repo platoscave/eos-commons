@@ -174,7 +174,7 @@ export default {
       query: this.query
     };
     let resultsArr = await this.$store.dispatch("query", queryObj);
-    console.log("newData", resultsArr);
+    // console.log("newData", resultsArr);
 
     // this.dataArr = Object.assign({}, resultsArr) // Force reactive update
     this.dataArr = resultsArr;
@@ -193,7 +193,7 @@ export default {
       return this.dataArr.filter(dataObj => {
         // for each of the props in the filters obj
         return Object.keys(this.filters).every(filterProp => {
-          console.log(filterProp, dataObj);
+          // console.log(filterProp, dataObj);
           // if the data obj [filterProp] value matches a value in filters[filterProp] array
           return (
             this.filters[filterProp].length < 1 ||
@@ -233,15 +233,16 @@ export default {
       if (action === "addAgreement") {
         this.newObj.docType = "object";
         const date = new Date();
-        this.newObj.startDate = date.toLocaleDateString();
+        this.newObj.startDate = date.toISOString();
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
         ].selectedObjId;
-        this.newObj.buyerId = "testuser1111";
-        this.newObj.classId = this.query.from;
-        this.newObj.processId = "cie1pllxq5mu";
+        this.newObj.buyerId = this.$store.state.account
+        this.newObj.classId = "w3mzeetidb5n"; // Service request
+        this.newObj.processId = "w3mzeetidb5n"; // Service request
       }
-      let key = await this.$store.dispatch("transact", this.newObj);
+      let key = await this.$store.dispatch("upsertCommon", this.newObj);
+      // let key = await this.$store.dispatch("transact", this.newObj);
 
       const queryObj = {
         query: this.query

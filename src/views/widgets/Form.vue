@@ -88,4 +88,8 @@ export default {
     .v-tabs-items {
         background-color: transparent !important
     }
+    .v-text-field {
+        padding-top: 0px;
+        margin-top: 0px;
+    }
 </style>

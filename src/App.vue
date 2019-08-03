@@ -52,9 +52,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-select class="left" single-line v-bind:items="networks" v-model="network" label="Network"></v-select>
-      <div class="left">{{network}}</div>
-      <div class="left">{{account}}</div>
+      <v-select class="left toolbar-dropdown" single-line v-bind:items="networks" v-model="network" label="Network"></v-select>
+      <v-select class="left toolbar-dropdown" single-line v-bind:items="accounts" v-model="account" label="Account"></v-select>
       <div class="right">eos-commons.io</div>
     </div>
     <v-snackbar v-model="snackbar" :color="color" :timeout="3000">
@@ -175,6 +174,15 @@ export default {
 .right {
   float: right;
   padding-right: 20px;
+}
+.toolbar-dropdown {
+    width: 120px;
+}
+.toolbar-dropdown >>> .v-text-field__details {
+    display: none;
+}
+.toolbar-dropdown >>> .v-input__slot:before {
+    display: none;
 }
 </style>
 <style>
