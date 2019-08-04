@@ -193,7 +193,7 @@ const store = new Vuex.Store({
         if (valuePath) {
           let currentObj = queryObj.currentObj
           // If currentObj is a string, assume it's a key
-          if (typeof currentObj === 'string') query = await ApiService.getCommonByKey(currentObj)
+          if (typeof currentObj === 'string') currentObj = await ApiService.getCommonByKey(currentObj)
           value = Vue._.get(currentObj, valuePath)
         }
 

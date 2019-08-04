@@ -8,14 +8,14 @@
     <v-text-field
       v-model="search"
       append-icon="search"
-      label="Search"
+      placeholder="Search"
       single-line
       hide-details
       clearable
     ></v-text-field>
     <v-data-table
       :headers="headers"
-      :items="filteredDesserts"
+      :items="filteredDataArr"
       hide-default-header
       hide-default-footer
       fixed-header
@@ -23,7 +23,7 @@
       :sortBy="sortBy"
       :sortDesc="sortDesc"
     >
-        <!-- The header-->
+      <!-- The header-->
       <template v-slot:header="{ props: { headers } }">
         <thead>
           <tr>
@@ -35,14 +35,18 @@
             >
               <!-- The filter menu-->
               <v-menu
-                v-if="header.value !== 'name' && header.value !== 'description' "
+                v-if="header.value !== 'name' && header.value !== 'description' && columnValueList(header.value).length > 1"
                 :close-on-content-click="false"
                 :nudge-width="200"
                 offset-x
               >
                 <!-- The filter icon -->
                 <template v-slot:activator="{ on }">
-                  <v-icon small v-on="on" :color="filters[header.value].length > 0 ? 'yellow' : ''">filter</v-icon>
+                  <v-icon
+                    small
+                    v-on="on"
+                    :color="filters[header.value].length > 0 ? 'yellow' : ''"
+                  >filter</v-icon>
                 </template>
                 <!-- The filter list -->
                 <v-list>
@@ -59,8 +63,11 @@
                             ></v-checkbox>
                           </v-list-item-action>
                           <v-list-item-content>
-                              <ec-select-control v-bind:value="itemValue" v-bind:property="viewObj.properties[header.value]"></ec-select-control>
-                            </v-list-item-content>
+                            <ec-select-control
+                              v-bind:value="itemValue"
+                              v-bind:property="viewObj.properties[header.value]"
+                            ></ec-select-control>
+                          </v-list-item-content>
                         </template>
                       </v-list-item>
                     </template>
@@ -76,7 +83,7 @@
         </thead>
       </template>
 
-        <!-- The body-->
+      <!-- The body-->
       <template v-slot:body="{ items }">
         <tbody>
           <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(item)">
@@ -135,22 +142,11 @@ export default {
       filters: {
         stateId: [],
         startDate: [],
-        name: "",
-        description: ""
+        stateDate: [],
       }
     };
   },
   created: async function() {
-    /* this.$store.watch( state => state.levelIdsArr[this.level].selectedObjId, selectedObjId => {
-        if (!selectedObjId) return
-        this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
-          // console.log('dataObj', newData)
-          this.dataObj = Object.assign({}, newData) // Force reactive update
-        })
-      },
-      { immediate: true }
-    ) */
-
     this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
     // console.log('view', this.viewObj)
 
@@ -163,33 +159,43 @@ export default {
       "getCommonByKey",
       this.viewObj.queryId
     );
+    this.$store.watch( state => state.levelIdsArr[this.level].selectedObjId, async selectedObjId => {
+        console.log('selectedObjId', selectedObjId)
+        debugger
+        if (!selectedObjId) return
 
-    if (this.query.addDialogViewId) {
+        const queryObj = {
+            query: this.query,
+            currentObj: selectedObjId
+        };
+        let resultsArr = await this.$store.dispatch("query", queryObj);
+        // console.log("newData", resultsArr);
+
+        this.dataArr = Object.assign([], resultsArr) // Force reactive update
+      },
+      { immediate: true }
+    )
+
+
+
+    /* if (this.query.addDialogViewId) {
       this.addDialogViewObj = await this.$store.dispatch(
         "materializedView",
         this.query.addDialogViewId
       );
     }
     const queryObj = {
-      query: this.query
+      query: this.query,
+      currentObj: this.$store.state.levelIdsArr[this.level].selectedObjId
     };
     let resultsArr = await this.$store.dispatch("query", queryObj);
-    // console.log("newData", resultsArr);
+    // console.log("newData", resultsArr); */
 
     // this.dataArr = Object.assign({}, resultsArr) // Force reactive update
-    this.dataArr = resultsArr;
+    // this.dataArr = resultsArr;
   },
   computed: {
-    addProperties: async function() {
-      if (this.query.addViewId) {
-        const addView = await this.$store.dispatch(
-          "materializedView",
-          this.query.addViewId
-        );
-        return addView.properties;
-      } else return {};
-    },
-    filteredDesserts() {
+    filteredDataArr() {
       return this.dataArr.filter(dataObj => {
         // for each of the props in the filters obj
         return Object.keys(this.filters).every(filterProp => {

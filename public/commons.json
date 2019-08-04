@@ -732,6 +732,55 @@
                 },
                 "title": "Seller Process",
                 "type": "string"
+            },
+            "sellerEpicId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "dwl1kwhalwj4",
+                    "sortBy": "name"
+                },
+                "title": "Seller Epic",
+                "type": "string"
+            },
+            "agreementHistoryIds": {
+                "items": {
+                    "properties": {
+                        "agreementHistoryId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "from": "re1ihrfyl3zf"
+                            },
+                            "title": "State History",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Agreement History",
+                "type": "array"
+            }
+        },
+        "type": "object"
+    },
+    {
+        "key": "re1ihrfyl3zf",
+        "docType": "class",
+        "title": "Agreements History",
+        "description": "<p>Contracts between accounts about resources</p>",
+        "parentId": "gzthjuyjca4s",
+        "properties": {
+            "stateDate": {
+                "title": "State Date",
+                "type": "date"
+            },
+            "stateId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "dlpwvptczyeb",
+                    "sortBy": "name"
+                },
+                "title": "State",
+                "type": "string"
             }
         },
         "type": "object"
@@ -788,9 +837,30 @@
     {
         "key": "w3mzeetidb5n",
         "docType": "class",
-        "title": "Service",
+        "title": "Service Request",
         "description": "<p>Service Agreements between owners</p>",
         "parentId": "i1gjptcb2skq",
+        "properties": {
+            "classification": {
+                "enum": [
+                    "Question",
+                    "Defect",
+                    "Enhancement"
+                ],
+                "readOnly": true,
+                "title": "Classification",
+                "type": "string"
+            },
+            "sellerEpicId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "dwl1kwhalwj4",
+                    "sortBy": "name"
+                },
+                "title": "Seller Epic",
+                "type": "string"
+            }
+        },
         "type": "object"
     },
     {
@@ -1988,7 +2058,22 @@
         "ownerId": "eoscommonsio",
         "tabs": [
             {
-                "name": "Agreements",
+                "name": "States",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "State Form",
+                        "viewId": "ya3cuhahscpv"
+                    },
+                    {
+                        "displayType": "Table",
+                        "name": "State Form",
+                        "viewId": "13kxw4cyvpmb"
+                    }
+                ]
+            },
+            {
+                "name": "Details",
                 "widgets": [
                     {
                         "displayType": "Form",
@@ -2080,9 +2165,6 @@
             },
             "name": {
                 "readOnly": true
-            },
-            "description": {
-                "readOnly": true
             }
         },
         "queryId": "vu2j5khcsdrv",
@@ -2162,8 +2244,12 @@
             "name": {
                 "readOnly": true
             },
-            "description": {
+            "classification": {
                 "readOnly": true
+            },
+            "description": {
+                "readOnly": true,
+                "title": "Recardian Contract"
             },
             "startDate": {
                 "readOnly": true
@@ -2194,9 +2280,64 @@
             },
             "sellerProcessId": {
                 "readOnly": true
+            },
+            "sellerEpicId": {
+                "readOnly": true
+            },
+            "agreementHistoryIds": {
+                "items": {
+                    "properties": {
+                        "agreementHistoryId": {
+                            "readOnly": false
+                        }
+                    }
+                }
             }
         },
         "baseClassId": "i1gjptcb2skq",
+        "type": "object"
+    },
+    {
+        "key": "ya3cuhahscpv",
+        "docType": "object",
+        "name": "Agreement State Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "buyerId": {
+                "title": "From",
+                "readOnly": true
+            },
+            "name": {
+                "readOnly": true
+            },
+            "stateId": {
+                "readOnly": true
+            }
+        },
+        "baseClassId": "i1gjptcb2skq",
+        "type": "object"
+    },
+    {
+        "key": "13kxw4cyvpmb",
+        "docType": "object",
+        "name": "Agreements History Table View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "stateId": {
+                "title": "From",
+                "readOnly": true
+            },
+            "stateDate": {
+                "readOnly": true
+            },
+            "description": {
+                "readOnly": true
+            }
+        },
+        "queryId": "eevccbk1napt",
+        "baseClassId": "re1ihrfyl3zf",
         "type": "object"
     },
     {
@@ -2328,22 +2469,38 @@
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser2222",
         "classId": "w3mzeetidb5n",
-        "offeringId": "58322160425310133a49f115",
         "sellerId": "testuser1111"
     },
     {
         "key": "twviawzlgofz",
         "docType": "object",
         "name": "Request for comment",
-        "description": "<p>Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.</p>",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "pvk5ngmorf4z",
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser1111",
         "classId": "w3mzeetidb5n",
-        "offeringId": "583221c9425310133a49f117",
-        "sellerId": "testuser2222"
+        "sellerId": "testuser2222",
+        "agreementHistoryIds": [
+            "3a1qf1ogj1an",
+            "vwpi4s1zvyit"
+        ]
+    },
+    {
+        "key": "3a1qf1ogj1an",
+        "docType": "object",
+        "description": "<p>Is at purse tried jokes china ready decay an. Small its shy way had woody downs power. To denoting admitted speaking learning my exercise so in. Procured shutters mr it feelings. To or three offer house begin taken am at. As dissuade cheerful overcame so of friendly he indulged unpacked. Alteration connection to so as collecting me. Difficult in delivered extensive at direction allowance. Alteration put use diminution can considered sentiments interested discretion. An seeing feebly stairs am branch income me unable.</p>",
+        "stateDate": "2019-07-10",
+        "stateId": "pvk5ngmorf4z",
+        "classId": "re1ihrfyl3zf"
+    },
+    {
+        "key": "vwpi4s1zvyit",
+        "docType": "object",
+        "description": "<p>Suppose end get boy warrant general natural. Delightful met sufficient projection ask. Decisively everything principles if preference do impression of. Preserved oh so difficult repulsive on in household. In what do miss time be. Valley as be appear cannot so by. Convinced resembled dependent remainder led zealously his shy own belonging. Always length letter adieus add number moment she. Promise few compass six several old offices removal parties fat. Concluded rapturous it intention perfectly daughters is as.</p>",
+        "stateDate": "2019-07-07",
+        "stateId": "pvk5ngmorf4z",
+        "classId": "re1ihrfyl3zf"
     },
     {
         "key": "bavb2g1inh2t",
@@ -2514,6 +2671,13 @@
                 "title": "key",
                 "type": "string"
             },
+            "title": {
+                "placeholder": "Provide a name",
+                "maxLength": 1000,
+                "minLength": 0,
+                "title": "Name",
+                "type": "string"
+            },
             "description": {
                 "placholder": "Add a description",
                 "maxLength": 10000,
@@ -2560,13 +2724,6 @@
                 },
                 "title": "Required",
                 "type": "array"
-            },
-            "title": {
-                "placeholder": "Provide a name",
-                "maxLength": 1000,
-                "minLength": 0,
-                "title": "Name",
-                "type": "string"
             }
         },
         "query": "classes",
@@ -3316,5 +3473,18 @@
         "pageId": "n1dvzgi132ap",
         "from": "i1gjptcb2skq",
         "addDialogViewId": "3ebxsw5pbk3r"
+    },
+    {
+        "key": "eevccbk1napt",
+        "docType": "object",
+        "name": "Agreements History Table Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "from": "re1ihrfyl3zf",
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "valuePath": "agreementHistoryIds"
+        }
     }
 ]
