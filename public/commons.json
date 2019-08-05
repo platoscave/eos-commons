@@ -8,9 +8,9 @@
             "key": {
                 "description": "<p>Base32 identifier.</p>",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                "readOnly": true,
                 "title": "key",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "classId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -19,7 +19,8 @@
                     "sortBy": "title"
                 },
                 "title": "Class",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "description": {
                 "placholder": "Add a description",
@@ -29,7 +30,8 @@
                 },
                 "minLength": 0,
                 "title": "Description",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "docType": {
                 "enum": [
@@ -46,18 +48,20 @@
                 },
                 "minLength": 0,
                 "title": "Icon",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "name": {
                 "placeholder": "Provide a name",
                 "maxLength": 1000,
                 "minLength": 0,
                 "title": "Name",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "required": [
-            "_id",
+            "key",
             "docType",
             "classId"
         ],
@@ -77,7 +81,8 @@
                     "sortBy": "name"
                 },
                 "title": "Page",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "subParagraphIds": {
                 "title": "First Paragraph",
@@ -86,7 +91,8 @@
                     "from": "siutzqsj5dgc",
                     "sortBy": "name"
                 },
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "subUnitIds": {
                 "items": {
@@ -98,7 +104,8 @@
                                 "sortBy": "name"
                             },
                             "title": "Team",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "type": "object"
@@ -123,7 +130,8 @@
                     "sortBy": "name"
                 },
                 "title": "Owner",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "required": [
@@ -147,7 +155,8 @@
                     "Tabs"
                 ],
                 "title": "Accordian or Tab",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "divider": {
                 "default": "None",
@@ -157,7 +166,8 @@
                     "Horizontal"
                 ],
                 "title": "Divider",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "tabs": {
                 "description": "",
@@ -170,20 +180,21 @@
                             "media": {
                                 "mediaType": "text/html"
                             },
-                            "readOnly": false,
                             "title": "Description",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "editMode": {
                             "title": "Initially Edit Mode",
-                            "type": "boolean"
+                            "type": "boolean",
+                            "readOnly": true
                         },
                         "name": {
                             "placeholder": "Provide a name",
                             "maxLength": 1000,
-                            "readOnly": false,
                             "title": "Tab Name",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "pageId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -192,7 +203,8 @@
                                 "sortBy": "name"
                             },
                             "title": "Page",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "widgets": {
                             "items": {
@@ -205,7 +217,8 @@
                                             "mediaType": "text/html"
                                         },
                                         "title": "Description",
-                                        "type": "string"
+                                        "type": "string",
+                                        "readOnly": true
                                     },
                                     "displayType": {
                                         "default": "Form",
@@ -221,13 +234,15 @@
                                             "Workflow Model"
                                         ],
                                         "title": "Display Type",
-                                        "type": "string"
+                                        "type": "string",
+                                        "readOnly": true
                                     },
                                     "name": {
                                         "placeholder": "Provide a name",
                                         "maxLength": 1000,
                                         "title": "Name",
-                                        "type": "string"
+                                        "type": "string",
+                                        "readOnly": true
                                     },
                                     "pageId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -236,7 +251,8 @@
                                             "sortBy": "name"
                                         },
                                         "title": "Page",
-                                        "type": "string"
+                                        "type": "string",
+                                        "readOnly": true
                                     },
                                     "viewId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -245,7 +261,8 @@
                                             "sortBy": "name"
                                         },
                                         "title": "View",
-                                        "type": "string"
+                                        "type": "string",
+                                        "readOnly": true
                                     }
                                 },
                                 "type": "object"
@@ -271,7 +288,8 @@
         "properties": {
             "value": {
                 "title": "Value",
-                "type": "number"
+                "type": "number",
+                "readOnly": true
             },
             "currency": {
                 "enum": [
@@ -279,7 +297,8 @@
                     "USD"
                 ],
                 "title": "Currency",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -307,7 +326,8 @@
                     "sortBy": "name"
                 },
                 "title": "From",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "icon": {
                 "maxLength": 2000,
@@ -317,7 +337,8 @@
                 },
                 "minLength": 0,
                 "title": "Icon",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "subQueryIds": {
                 "items": {
@@ -329,7 +350,8 @@
                                 "from": "q234ooehrk5v",
                                 "sortBy": "name"
                             },
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "type": "object"
@@ -344,7 +366,8 @@
                     "sortBy": "name"
                 },
                 "title": "Page",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "where": {
                 "additionalProperties": false,
@@ -353,7 +376,8 @@
                         "maxLength": 1000,
                         "minLength": 0,
                         "title": "Document Property",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "operator": {
                         "enum": [
@@ -361,25 +385,29 @@
                             "in"
                         ],
                         "title": "Operator",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "value": {
                         "maxLength": 1000,
                         "minLength": 0,
                         "title": "Value",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "valuePath": {
                         "maxLength": 1000,
                         "minLength": 0,
                         "title": "Value Path",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "mapValue": {
                         "maxLength": 1000,
                         "minLength": 0,
                         "title": "Map Value",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     }
                 },
                 "title": "Where",
@@ -405,13 +433,15 @@
                                 "sortBy": "name"
                             },
                             "title": "Sub Ducument",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "type": "object"
                 },
                 "title": "Sub Paragraph",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             }
         },
         "pageId": "nnksb2zyphob",
@@ -430,7 +460,8 @@
                 "type": "object",
                 "additionalProperties": {
                     "$ref": "#/definitions/additionalProperties"
-                }
+                },
+                "readOnly": true
             },
             "subQueryIds": {
                 "title": "Initial Query",
@@ -439,7 +470,8 @@
                     "from": "q234ooehrk5v",
                     "sortBy": "name"
                 },
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "baseClassId": {
                 "title": "Base Class",
@@ -448,14 +480,16 @@
                     "from": "classes",
                     "sortBy": "title"
                 },
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "required": {
                 "items": {
                     "type": "string"
                 },
                 "title": "Required",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             }
         },
         "definitions": {
@@ -464,7 +498,8 @@
                     "title": "Title",
                     "type": "string",
                     "maxLength": 100,
-                    "minLength": 1
+                    "minLength": 1,
+                    "readOnly": true
                 },
                 "type": {
                     "title": "Type",
@@ -476,7 +511,8 @@
                         "object",
                         "date"
                     ],
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "description": {
                     "title": "Description",
@@ -486,41 +522,50 @@
                         "mediaType": "text/html"
                     },
                     "minLength": 0,
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "readOnly": {
                     "title": "Read Only",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "readOnly": true
                 },
                 "default": {
                     "title": "Default",
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "placeholder": {
                     "title": "Placeholder",
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "pattern": {
                     "title": "Pattern",
                     "maxLength": 100,
                     "minLength": 0,
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "maximum": {
                     "title": "Maximum",
-                    "type": "number"
+                    "type": "number",
+                    "readOnly": true
                 },
                 "minimum": {
                     "title": "Minimum",
-                    "type": "number"
+                    "type": "number",
+                    "readOnly": true
                 },
                 "maxLength": {
                     "title": "Max Length",
-                    "type": "number"
+                    "type": "number",
+                    "readOnly": true
                 },
                 "minLength": {
                     "title": "Min Length",
-                    "type": "number"
+                    "type": "number",
+                    "readOnly": true
                 },
                 "media": {
                     "title": "Media",
@@ -530,30 +575,36 @@
                             "title": "Media Type",
                             "enum": [
                                 "text/html"
-                            ]
+                            ],
+                            "readOnly": true
                         },
                         "binaryEncoding": {
                             "title": "Binary Encoding",
                             "enum": [
                                 "base64"
-                            ]
+                            ],
+                            "readOnly": true
                         },
                         "type": {
                             "title": "Type",
                             "enum": [
                                 "image/png"
                             ]
-                        }
-                    }
+                        },
+                        "readOnly": true
+                    },
+                    "readOnly": true
                 },
                 "enum": {
                     "title": "Enum",
                     "type": "array",
                     "items": {
                         "properties": {
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
-                    }
+                    },
+                    "readOnly": true
                 },
                 "query": {
                     "title": "Query",
@@ -561,11 +612,13 @@
                     "properties": {
                         "from": {
                             "title": "From",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "sortBy": {
                             "title": "Sort By",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     }
                 },
@@ -574,14 +627,16 @@
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "#/definitions/additionalProperties"
-                    }
+                    },
+                    "readOnly": true
                 },
                 "items": {
                     "title": "Items",
                     "type": "object",
                     "additionalProperties": {
                         "$ref": "#/definitions/additionalProperties"
-                    }
+                    },
+                    "readOnly": true
                 }
             }
         },
@@ -630,7 +685,8 @@
         "properties": {
             "description": {
                 "title": "What",
-                "placeholder": "<p>[What do you do that is different?]</p>"
+                "placeholder": "<p>[What do you do that is different?]</p>",
+                "readOnly": true
             },
             "how": {
                 "placeholder": "<p>[How do you achive your goal?]</p>",
@@ -640,7 +696,8 @@
                 },
                 "minLength": 0,
                 "title": "How",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "why": {
                 "placeholder": "<p>[Vision]</p>",
@@ -650,7 +707,8 @@
                 },
                 "minLength": 0,
                 "title": "Why",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object",
@@ -665,19 +723,23 @@
         "properties": {
             "startDate": {
                 "title": "Request Date",
-                "type": "date"
+                "type": "date",
+                "readOnly": true
             },
             "expirationDate": {
                 "title": "Expiration Date",
-                "type": "date"
+                "type": "date",
+                "readOnly": true
             },
             "amount": {
                 "title": "Amount",
-                "type": "number"
+                "type": "number",
+                "readOnly": true
             },
             "currency": {
                 "title": "Currency",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -686,7 +748,8 @@
                     "sortBy": "name"
                 },
                 "title": "State",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "buyerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -695,7 +758,8 @@
                     "sortBy": "name"
                 },
                 "title": "Buyer",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "sellerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -704,7 +768,8 @@
                     "sortBy": "name"
                 },
                 "title": "Seller",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "assetId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -713,7 +778,8 @@
                     "sortBy": "name"
                 },
                 "title": "Asset",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "processId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -722,7 +788,8 @@
                     "sortBy": "name"
                 },
                 "title": "Process",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "sellerProcessId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -731,7 +798,8 @@
                     "sortBy": "name"
                 },
                 "title": "Seller Process",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "sellerEpicId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -740,7 +808,8 @@
                     "sortBy": "name"
                 },
                 "title": "Seller Epic",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "agreementHistoryIds": {
                 "items": {
@@ -751,13 +820,15 @@
                                 "from": "re1ihrfyl3zf"
                             },
                             "title": "State History",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "type": "object"
                 },
                 "title": "Agreement History",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -771,7 +842,8 @@
         "properties": {
             "stateDate": {
                 "title": "State Date",
-                "type": "date"
+                "type": "date",
+                "readOnly": true
             },
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -780,7 +852,8 @@
                     "sortBy": "name"
                 },
                 "title": "State",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -847,9 +920,9 @@
                     "Defect",
                     "Enhancement"
                 ],
-                "readOnly": true,
                 "title": "Classification",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "sellerEpicId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -858,7 +931,8 @@
                     "sortBy": "name"
                 },
                 "title": "Seller Epic",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -916,12 +990,14 @@
                 "type": "string",
                 "media": {
                     "type": "image/png"
-                }
+                },
+                "readOnly": true
             },
             "purchaseButton": {
                 "title": "Buy",
                 "type": "button",
-                "action": "addAgreement"
+                "action": "addAgreement",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -1165,7 +1241,8 @@
                         "action": {
                             "maxLength": 100,
                             "title": "Action",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "stateId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1174,7 +1251,8 @@
                                 "sortBy": "name"
                             },
                             "title": "State",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "required": [
@@ -1184,7 +1262,8 @@
                     "type": "object"
                 },
                 "title": "Next States",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             },
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1193,14 +1272,16 @@
                     "sortBy": "name"
                 },
                 "title": "Substate",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "execute": {
                 "items": {
                     "type": "string"
                 },
                 "title": "Execute",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -1219,7 +1300,8 @@
                         "action": {
                             "maxLength": 100,
                             "title": "Action",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         },
                         "stateId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1228,7 +1310,8 @@
                                 "sortBy": "name"
                             },
                             "title": "State",
-                            "type": "string"
+                            "type": "string",
+                            "readOnly": true
                         }
                     },
                     "required": [
@@ -1238,7 +1321,8 @@
                     "type": "object"
                 },
                 "title": "Next States",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             },
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1247,7 +1331,8 @@
                     "sortBy": "name"
                 },
                 "title": "Substate",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -1266,7 +1351,8 @@
                 "items": {
                     "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             },
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1275,7 +1361,8 @@
                     "sortBy": "name"
                 },
                 "title": "Substate",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -1293,7 +1380,8 @@
                     "type": "string"
                 },
                 "title": "Execute",
-                "type": "array"
+                "type": "array",
+                "readOnly": true
             }
         },
         "type": "object"
@@ -2325,15 +2413,15 @@
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
-            "stateId": {
-                "title": "From",
-                "readOnly": true
-            },
             "stateDate": {
                 "readOnly": true
             },
+            "stateId": {
+                "title": "From",
+                "readOnly": false
+            },
             "description": {
-                "readOnly": true
+                "readOnly": false
             }
         },
         "queryId": "eevccbk1napt",

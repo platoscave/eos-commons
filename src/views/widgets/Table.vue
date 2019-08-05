@@ -139,60 +139,52 @@ export default {
       addDialogViewObj: {},
       sortBy: "startDate",
       sortDesc: true,
-      filters: {
-        stateId: [],
-        startDate: [],
-        stateDate: [],
-      }
+      filters: {}
     };
   },
   created: async function() {
     this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
-    // console.log('view', this.viewObj)
 
+    // initialize the filter arrays
+    Object.keys(this.viewObj.properties).forEach(key => {
+      this.filters[key] = []
+    });
+
+    // create the header
     this.headers = Object.keys(this.viewObj.properties).map(key => ({
       text: this.viewObj.properties[key].title,
       value: key
     }));
 
+    // get the query for this view
     this.query = await this.$store.dispatch(
       "getCommonByKey",
       this.viewObj.queryId
     );
+
+    // watch the selected obj change
     this.$store.watch( state => state.levelIdsArr[this.level].selectedObjId, async selectedObjId => {
-        console.log('selectedObjId', selectedObjId)
-        debugger
         if (!selectedObjId) return
 
         const queryObj = {
             query: this.query,
             currentObj: selectedObjId
         };
+        // get the data
         let resultsArr = await this.$store.dispatch("query", queryObj);
-        // console.log("newData", resultsArr);
 
+        // add empty response
+        const date = new Date();
+        const newAgreementHistory = {
+            description: "",
+            state: '',
+            stateDate: date.toISOString()
+        }
+        resultsArr.push(newAgreementHistory)
         this.dataArr = Object.assign([], resultsArr) // Force reactive update
       },
       { immediate: true }
     )
-
-
-
-    /* if (this.query.addDialogViewId) {
-      this.addDialogViewObj = await this.$store.dispatch(
-        "materializedView",
-        this.query.addDialogViewId
-      );
-    }
-    const queryObj = {
-      query: this.query,
-      currentObj: this.$store.state.levelIdsArr[this.level].selectedObjId
-    };
-    let resultsArr = await this.$store.dispatch("query", queryObj);
-    // console.log("newData", resultsArr); */
-
-    // this.dataArr = Object.assign({}, resultsArr) // Force reactive update
-    // this.dataArr = resultsArr;
   },
   computed: {
     filteredDataArr() {
