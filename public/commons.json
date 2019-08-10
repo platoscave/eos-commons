@@ -2,7 +2,7 @@
     {
         "key": "gzthjuyjca4s",
         "docType": "class",
-        "title": "The Standard Model",
+        "title": "Standard Model",
         "description": "<p>The root of all classes and objects</p>",
         "properties": {
             "key": {
@@ -68,11 +68,339 @@
         "type": "object"
     },
     {
+        "key": "kld5empithii",
+        "docType": "object",
+        "name": "EOS Accounts",
+        "parentId": "gzthjuyjca4s",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "account_name": {
+                "maxLength": 12,
+                "minLength": 12,
+                "title": "Account Name",
+                "type": "string",
+                "readOnly": true
+            },
+            "head_block_num": {
+                "title": "Head Block Number",
+                "type": "number",
+                "readOnly": true
+            },
+            "head_block_time": {
+                "format": "date-time",
+                "title": "Head Block Time",
+                "type": "date",
+                "readOnly": true
+            },
+            "privileged": {
+                "title": "Privileged",
+                "type": "boolean",
+                "readOnly": true
+            },
+            "last_code_update": {
+                "format": "date-time",
+                "title": "Last Code Update",
+                "type": "date",
+                "readOnly": true
+            },
+            "created": {
+                "format": "date-time",
+                "title": "Created",
+                "type": "date",
+                "readOnly": true
+            },
+            "ram_quota": {
+                "title": "Ram Quota",
+                "type": "number",
+                "readOnly": true
+            },
+            "net_weight": {
+                "title": "Net Weight",
+                "type": "number",
+                "readOnly": true
+            },
+            "cpu_weight": {
+                "title": "Cpu Weight",
+                "type": "number",
+                "readOnly": true
+            },
+            "net_limit": {
+                "properties": {
+                    "used": {
+                        "title": "Used",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "available": {
+                        "title": "Available",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "max": {
+                        "title": "Maximum",
+                        "type": "number",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "cpu_limit": {
+                "properties": {
+                    "used": {
+                        "title": "Used",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "available": {
+                        "title": "Available",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "max": {
+                        "title": "Maximum",
+                        "type": "number",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "ram_usage": {
+                "title": "Ram Usage",
+                "type": "number",
+                "readOnly": true
+            },
+            "permissions": {
+                "items": {
+                    "properties": {
+                        "perm_name": {
+                            "maxLength": 12,
+                            "minLength": 1,
+                            "title": "Permission Name",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "parent": {
+                            "maxLength": 12,
+                            "minLength": 1,
+                            "title": "Parent Permission",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "required_auth": {
+                            "properties": {
+                                "threshold": {
+                                    "title": "Threshold",
+                                    "type": "number",
+                                    "readOnly": true
+                                },
+                                "keys": {
+                                    "items": {
+                                        "properties": {
+                                            "key": {
+                                                "maxLength": 44,
+                                                "minLength": 0,
+                                                "title": "Key",
+                                                "type": "string",
+                                                "readOnly": true
+                                            },
+                                            "weight": {
+                                                "title": "Weight",
+                                                "type": "number",
+                                                "readOnly": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "title": "Keys",
+                                    "type": "array"
+                                },
+                                "accounts": {
+                                    "items": {
+                                        "properties": {
+                                            "permission": {
+                                                "properties": {
+                                                    "actor": {
+                                                        "maxLength": 12,
+                                                        "minLength": 0,
+                                                        "title": "Actor",
+                                                        "type": "string",
+                                                        "readOnly": true
+                                                    },
+                                                    "permission": {
+                                                        "maxLength": 12,
+                                                        "minLength": 0,
+                                                        "title": "Permission",
+                                                        "type": "string",
+                                                        "readOnly": true
+                                                    }
+                                                },
+                                                "title": "Permission",
+                                                "type": "object"
+                                            },
+                                            "weight": {
+                                                "title": "Weight",
+                                                "type": "number",
+                                                "readOnly": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "title": "Accounts",
+                                    "type": "array"
+                                },
+                                "waits": {
+                                    "items": {
+                                        "properties": {
+                                            "wait_sec": {
+                                                "title": "Wait Seconds",
+                                                "type": "string",
+                                                "readOnly": true
+                                            },
+                                            "weight": {
+                                                "title": "Weight",
+                                                "type": "number",
+                                                "readOnly": true
+                                            }},
+                                        "type": "object"
+                                    },
+                                    "title": "Waits",
+                                    "type": "array",
+                                    "readOnly": true
+                                }
+                            },
+                            "title": "Required Authorization",
+                            "additionalProperties": false,
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Permissions",
+                "type": "array"
+            },
+            "total_resources": {
+                "properties": {
+                    "owner": {
+                        "title": "Owner",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "net_weigh": {
+                        "title": "Net Weight",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "cpu_weight": {
+                        "title": "CPU Weight",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "ram_bytes": {
+                        "title": "Ram Bytes",
+                        "type": "number",
+                        "readOnly": true
+                    }
+                },
+                "title": "Total Resources",
+                "type": "object"
+            },
+            "self_delegated_bandwidth": {
+                "properties": {
+                    "from": {
+                        "title": "From",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "to": {
+                        "title": "To",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "cpu_weight": {
+                        "title": "CPU Weight",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "cpu_weigh": {
+                        "title": "CPU Weight",
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "title": "Self Delegated Bandwidth",
+                "type": "object"
+            },
+            "refund_request": {
+                "title": "Refund Request",
+                "type": "string",
+                "readOnly": true
+            },
+            "voter_info": {
+                "title": "Voter Info",
+                "properties": {
+                    "owner": {
+                        "title": "Owner",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "proxy": {
+                        "title": "Proxy",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "producer": {
+                        "title": "Producer",
+                        "type": "Array",
+                        "readOnly": true
+                    },
+                    "staked": {
+                        "title": "Staked",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "last_vote_weight": {
+                        "title": "Last Vote Weight",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "proxied_vote_weight": {
+                        "title": "Proxied Vote Weight",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "is_proxy": {
+                        "title": "Is Proxy",
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "flags1": {
+                        "title": "Flags 1",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "reserved2": {
+                        "title": "Reserved 2",
+                        "type": "number",
+                        "readOnly": true
+                    },
+                    "reserved3": {
+                        "title": "Reserved 3",
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "query": "get_account_info",
+        "type": "object"
+    },
+    {
         "key": "ikjyhlqewxs3",
         "docType": "class",
-        "title": "Accounts",
+        "title": "EC Accounts",
         "description": "<p>These are the users/organizations that own resources and want execute processes</p>",
-        "parentId": "gzthjuyjca4s",
+        "parentId": "kld5empithii",
         "properties": {
             "pageId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -674,6 +1002,7 @@
         "description": "<p>Users own resourses</p>",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTI0OTU2Mjc1NDE0MTFFMUIxRUJDMTA5NzgzMTIzMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTI0OTU2Mjg1NDE0MTFFMUIxRUJDMTA5NzgzMTIzMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5MjQ5NTYyNTU0MTQxMUUxQjFFQkMxMDk3ODMxMjMyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5MjQ5NTYyNjU0MTQxMUUxQjFFQkMxMDk3ODMxMjMyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuG7TDUAAAHRSURBVHjafFJNaBNREP7e/iUSNiQSLHrReC54yK0ieMq1B68etMSDCEJAFPSQmIM9KC1GjUiDiFfvgrZYC60imEvwJP60FyMSQ1LT/G2y09nNJm6STT4Yvpl5M+/NzxNEhAG27wXJ7CHBrrwQeMF8iXmJ+TlzQpKRP3fnn3DnwDIGspXRqbKuE5V0enOLucl8s29XNnSyzsdzJLhgmkD4FCtNQvw6Gw0T8SRzy0Q42gN6BsahuA27MuIEsgI7jhNDlk3MvkBYUcLA3u95vPp8BR3DhyO+OiLBMkq1KPxzNazlatc49InnDDbTAaLvoAePn5IbK9mHQz2be0RTZ+CUYb9sqzx6C7KqDnUM2MHkBdyFpnSG1cEZy6e7wE5GwJT8f0fec+/0fVqn8xcN/KmexMuPSRhcid/fxuWFVYSO/8CHZ12cTeEM5xS9t2DVTwqOHd3FjQtX0e5GoO6X8WVLw0/SYMqqtePi7BZsl8a1BeALNSAFAwid0NBqyHwkz17j/8YEXt8XUPhB1WcNEag26e3icv325MxcK3mX4m/7leUbyy+WA502U/b3jbGc9spRvLZgS7cvzowLmALJ00tjMgMja+TPEpsSVxhve4BDAQYA4h0NK1GHkjIAAAAASUVORK5CYII=",
         "parentId": "ikjyhlqewxs3",
+        "pageId": "z1wmobr423zh",
         "type": "object"
     },
     {
@@ -881,6 +1210,7 @@
         "description": "<p>Organizational units owned by organizations</p>",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODBDQUY3RkM2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODBDQUY3RkQ2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MENBRjdGQTY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4MENBRjdGQjY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pj6+XOUAAAGRSURBVHjafFK/T8JAFH7XHtFECg0xwZ3EOLnILOpWaqJ/gLOLf4B/ibuDm4NiKN1EnHFxk4RRogugwcHSu/PelcPSUl7ycnfvu/vej/uIEAIIIaDt4ublfhryE8YFJM00COSo0bg62zudB5EgbufXXfEtg4NAiPeY4xnjiMfv02QWxjn8BABvw1QBsFOK8JUEqioDwF7H6gCwOUyJXWI8aSkC0zTBklFSjAg0AxLkSYSvJBBs+nh52zvSQ1SZxf8QEY/fJ8lfkFaRbuvD7nal+9rrV2P4WHo/k+Bgv6YSCsHBMAzpJnDOpHN5z1AdPT13SGYLG5YFntesQoa57nE31cJDszmSqyobs2ptUEo/XcfZ8nz/IwzDcjQToqqZ7ceqAsaY7dbr8MtC/WmwZlJo+b56FARBue44KdxrtWyq1chDBl/DkcZhs1SaZ8J1GY7v5jMwcxQsKw96qHhe0EcGTnVfOUqhWCgsPNK/swpXBJPJpHPXaNR4TOc4TBlvz/C2xA+X4B2tgwXxLBFNJv4nwABEa91VFnwXcgAAAABJRU5ErkJggg==",
         "parentId": "ikjyhlqewxs3",
+        "pageId": "t2grmjaab5fn",
         "type": "object"
     },
     {
@@ -1536,9 +1866,9 @@
             "name": {
                 "placeholder": "Provide a name",
                 "maxLength": 100000,
-                "readOnly": false,
                 "title": "Name",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "description": {
                 "placholder": "Add a description",
@@ -1546,21 +1876,22 @@
                 "media": {
                     "mediaType": "text/html"
                 },
-                "readOnly": false,
                 "title": "Description",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "docType": {
                 "enum": [
                     "object"
                 ],
-                "readOnly": true,
                 "title": "Doument Type",
-                "type": "string"
+                "type": "string",
+                "readOnly": true
             },
             "icon": {
                 "title": "Icon",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             }
         },
         "subQueryIds": "tllcmvjazmz2",
@@ -1617,10 +1948,7 @@
         "docType": "object",
         "name": "test user 1111",
         "classId": "hdt3hmnsaghk",
-        "email": "",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAALwSURBVDhPLY3dbxRVGMbPrSEkvRBDwpUQYwQlKGAMJIYLjDd6p3+ABPy405gI7uzH7HycM2dmzp6Zc87Mzux2u+3ObLvdFtay1FbImkYkEBTiR0ADwS9CZNsIFNpKU2AYom+eqzfP7/eAhZp7uy4W63ypIe43+GrEHo7ypO0nLe/RmEjG/QdNlj5XI7HcEPdGPNCv8FtD3mJd3B3iy3V3LfLWGiwZ85KJIJkIk1H/QeTdHxb/DvtpZ6HKwI2A3QxFP3RuVflSTawOi4exnxwtJxc6yTftdGqtIVaG2GKNz1fcvwMXXBXsGmfXPfdmmf8T8HtV91EcriycTf67bjPV3wndvu/c8Nlv3AEXKf2ROpcoveo6f3HaF3R5UKz2L/4PTI/frbK+cP9gzhXGLzMOThNyjtDzNvmJur9Q53eX9l2yUvOSXjfptJZCMS9Y2v6ZkNR73qZg1oBf29acaZ61S08wQn8t0esunxd8wRN/us4lm1yw7HMmOW3Zc3YJfGEYU8g4YaCvTPMUxnPYPmPa31mlH6wn8Pc2+dYwU90pbM5gPI0xGNNhGxptiDvImNJhVzdOqKiHSQ+aPYhPGngGoeMQdXQ0qcMJhEAEzRgakQobijZp03d373lr67YDe/e1ZaWj6B0FxlKhpcHUm3aaCINKUQ8KMPPeobdf3bN/67Zdz2x4Y8uzO9av2zUw8OaW5156ah06+GFTRXUFDmmophrg9e0v79uxc+/zL+zctKmqFlnmSDmf8TOfvfPabj9z2M9K5Vw2kGWWywpZcXIF8MrmzS9u3PA0AFUtP6hmB1WprkktS63LUgSVMPd5TSuEWt6TpfxH70sfHAIDAIwQWEPZuKS2HFhTDrdLaqQeOYblNLGaGbeKMc7HtjxaUpqkCCqwMGzrTaq1HO2YQONEmSDKyaA0y9AUKYbSJ02zEFuyyH48gnMpBmaq5HiAJ5nei/xUUEeSl/s0nfqyQjtUmQ1wl8OjVOuWrdkqma5YjwEfCcrTn7ebgwAAAABJRU5ErkJggg==",
-        "isActive": true,
-        "pageId": "koufnboaimfz",
         "password": "$2a$10$WIx8rGcMeuPigotQqQi.b.HUhpgqd0bEaLQ1Eerq6Q9WA/Y6v/y92"
     },
     {
@@ -1630,7 +1958,40 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Server</div></div><p>The Neuralquest server</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
-        "pageId": "34dgfl43da2i"
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "eoscommons11",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "dxswilixshnq",
@@ -1638,8 +1999,7 @@
         "name": "Client",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Client</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "eoscommonsio",
-        "pageId": "34dgfl43da2i"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "bicycleshop1",
@@ -1668,10 +2028,99 @@
         "docType": "object",
         "name": "platoscave",
         "classId": "hdt3hmnsaghk",
-        "email": "",
-        "isActive": true,
-        "pageId": "koufnboaimfz",
-        "password": "$2a$10$WIx8rGcMeuPigotQqQi.b.HUhpgqd0bEaLQ1Eerq6Q9WA/Y6v/y92"
+        "account_name": "platoscave11",
+        "head_block_num": 73306938,
+        "head_block_time": "2019-08-10T14:49:54.500",
+        "privileged": false,
+        "last_code_update": "1970-01-01T00:00:00.000",
+        "created": "2018-06-17T11:58:51.500",
+        "core_liquid_balance": "1.9920 EOS",
+        "ram_quota": 5378,
+        "net_weight": 21000,
+        "cpu_weight": 21000,
+        "net_limit": {
+            "used": 145,
+            "available": 1888827,
+            "max": 1888972
+        },
+        "cpu_limit": {
+            "used": 275,
+            "available": 337191,
+            "max": 337466
+        },
+        "ram_usage": 3822,
+        "permissions": [
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "keys": [
+                        {
+                            "key": "EOS54DNgfqCZifsFGKY6J2UGL8Yxyie8XLh2jSW96bgUK3fDyRpsK",
+                            "weight": 1
+                        }
+                    ],
+                    "accounts": [],
+                    "waits": []
+                }
+            },
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "keys": [
+                        {
+                            "key": "EOS54DNgfqCZifsFGKY6J2UGL8Yxyie8XLh2jSW96bgUK3fDyRpsK",
+                            "weight": 1
+                        }
+                    ],
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "eoscafeblock",
+                                "permission": "claimrewards"
+                            },
+                            "weight": 1
+                        }
+                    ],
+                    "waits": [
+                        {
+                            "wait_sec": "3600",
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ],
+        "total_resources": {
+            "owner": "platoscave11",
+            "net_weight": "2.1000 EOS",
+            "cpu_weight": "2.1000 EOS",
+            "ram_bytes": 3978
+        },
+        "self_delegated_bandwidth": {
+            "from": "platoscave11",
+            "to": "platoscave11",
+            "net_weight": "2.0000 EOS",
+            "cpu_weight": "2.0000 EOS"
+        },
+        "refund_request": null,
+        "voter_info": {
+            "owner": "platoscave11",
+            "proxy": "",
+            "producers": [
+                "cypherglasss"
+            ],
+            "staked": 40000,
+            "last_vote_weight": "27745957383.52319717407226562",
+            "proxied_vote_weight": "0.00000000000000000",
+            "is_proxy": 0,
+            "flags1": 0,
+            "reserved2": 0,
+            "reserved3": "0 "
+        }
     },
     {
         "key": "lmxjrogzeld1",
@@ -1855,7 +2304,6 @@
         "ownerId": "eoscommonsio",
         "properties": {
             "key": {
-                "readOnly": true,
                 "title": "key",
                 "type": "string"
             },
@@ -1913,7 +2361,6 @@
         "ownerId": "eoscommonsio",
         "properties": {
             "key": {
-                "readOnly": true,
                 "title": "key",
                 "type": "string"
             },
@@ -1947,7 +2394,6 @@
         "ownerId": "eoscommonsio",
         "properties": {
             "key": {
-                "readOnly": true,
                 "title": "key",
                 "type": "string"
             },
@@ -2004,8 +2450,7 @@
         "name": "Front Desk",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Front Desk</div></div>",
         "classId": "dasprps1lrwf",
-        "ownerId": "bicycleshop1",
-        "pageId": "34dgfl43da2i"
+        "ownerId": "bicycleshop1"
     },
     {
         "key": "zmk4fuodo25t",
@@ -2013,8 +2458,7 @@
         "name": "Workshop",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Workshop</div></div><p>ACME Workshop</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "bicycleshop1",
-        "pageId": "34dgfl43da2i"
+        "ownerId": "bicycleshop1"
     },
     {
         "key": "3r5kgovlor1o",
@@ -2188,9 +2632,7 @@
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
-            "key": {
-                "readOnly": true
-            },
+            "key": {},
             "name": {
                 "readOnly": false
             },
@@ -2217,21 +2659,11 @@
         "ownerId": "eoscommonsio",
         "baseClassId": "nlmgc3dmrwxs",
         "properties": {
-            "key": {
-                "readOnly": true
-            },
-            "name": {
-                "readOnly": true
-            },
-            "value": {
-                "readOnly": true
-            },
-            "imageUrl": {
-                "readOnly": true
-            },
-            "description": {
-                "readOnly": true
-            },
+            "key": {},
+            "name": {},
+            "value": {},
+            "imageUrl": {},
+            "description": {},
             "purchaseButton": {}
         },
         "queryId": "kl2fe4hvhhtg",
@@ -2246,14 +2678,11 @@
         "baseClassId": "i1gjptcb2skq",
         "properties": {
             "startDate": {
-                "readOnly": true
+                "sort": "desc",
+                "title": "Date"
             },
-            "stateId": {
-                "readOnly": true
-            },
-            "name": {
-                "readOnly": true
-            }
+            "stateId": {},
+            "name": {}
         },
         "queryId": "vu2j5khcsdrv",
         "type": "object"
@@ -2288,9 +2717,7 @@
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
-            "key": {
-                "readOnly": true
-            },
+            "key": {},
             "name": {
                 "readOnly": false
             },
@@ -2326,52 +2753,23 @@
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
-            "key": {
-                "readOnly": true
-            },
-            "name": {
-                "readOnly": true
-            },
-            "classification": {
-                "readOnly": true
-            },
+            "key": {},
+            "name": {},
+            "classification": {},
             "description": {
-                "readOnly": true,
                 "title": "Recardian Contract"
             },
-            "startDate": {
-                "readOnly": true
-            },
-            "expirationDate": {
-                "readOnly": true
-            },
-            "stateId": {
-                "readOnly": true
-            },
-            "assetId": {
-                "readOnly": true
-            },
-            "amount": {
-                "readOnly": true
-            },
-            "currency": {
-                "readOnly": true
-            },
-            "buyerId": {
-                "readOnly": true
-            },
-            "sellerId": {
-                "readOnly": true
-            },
-            "processId": {
-                "readOnly": true
-            },
-            "sellerProcessId": {
-                "readOnly": true
-            },
-            "sellerEpicId": {
-                "readOnly": true
-            },
+            "startDate": {},
+            "expirationDate": {},
+            "stateId": {},
+            "assetId": {},
+            "amount": {},
+            "currency": {},
+            "buyerId": {},
+            "sellerId": {},
+            "processId": {},
+            "sellerProcessId": {},
+            "sellerEpicId": {},
             "agreementHistoryIds": {
                 "items": {
                     "properties": {
@@ -2393,15 +2791,10 @@
         "ownerId": "eoscommonsio",
         "properties": {
             "buyerId": {
-                "title": "From",
-                "readOnly": true
+                "title": "From"
             },
-            "name": {
-                "readOnly": true
-            },
-            "stateId": {
-                "readOnly": true
-            }
+            "name": {},
+            "stateId": {}
         },
         "baseClassId": "i1gjptcb2skq",
         "type": "object"
@@ -2414,7 +2807,8 @@
         "ownerId": "eoscommonsio",
         "properties": {
             "stateDate": {
-                "readOnly": true
+                "sort": "desc",
+                "title": "Date"
             },
             "stateId": {
                 "title": "From",
@@ -2723,8 +3117,7 @@
         "name": "Standard Model",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "eoscommonsio",
-        "pageId": "kvicynpfgzwz"
+        "ownerId": "eoscommonsio"
     },
     {
         "key": "4lk3hxyyfac3",
@@ -2764,7 +3157,8 @@
                 "maxLength": 1000,
                 "minLength": 0,
                 "title": "Name",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "description": {
                 "placholder": "Add a description",
@@ -2774,14 +3168,16 @@
                 },
                 "minLength": 0,
                 "title": "Description",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "docType": {
                 "enum": [
                     "class"
                 ],
                 "title": "Doc Type",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "icon": {
                 "maxLength": 2000,
@@ -2791,7 +3187,8 @@
                 },
                 "minLength": 0,
                 "title": "Icon",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "parentId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -2800,18 +3197,21 @@
                     "sortBy": "name"
                 },
                 "title": "Super Class",
-                "type": "string"
+                "type": "string",
+                "readOnly": false
             },
             "properties": {
                 "title": "Properties",
-                "type": "object"
+                "type": "object",
+                "readOnly": false
             },
             "required": {
                 "items": {
                     "type": "string"
                 },
                 "title": "Required",
-                "type": "array"
+                "type": "array",
+                "readOnly": false
             }
         },
         "query": "classes",
@@ -2822,9 +3222,6 @@
         "docType": "object",
         "name": "test user 2222",
         "classId": "hdt3hmnsaghk",
-        "email": "u@u.com",
-        "isActive": true,
-        "pageId": "koufnboaimfz",
         "password": "$2a$10$2Wqx6HoNhxD7eTqck.oV8eeE3Vuzjg9iZt3iCJdwueBorOqGGM1PG"
     },
     {
@@ -2832,9 +3229,6 @@
         "docType": "object",
         "name": "test user 3333",
         "classId": "hdt3hmnsaghk",
-        "email": "u@u.com",
-        "isActive": true,
-        "pageId": "koufnboaimfz",
         "password": "$2a$10$pSbeb7qPuqUn.1wHeprOhOSxCo2f5mc7D8BcSKXGvRR/0KA84lfOm"
     },
     {
@@ -2986,8 +3380,14 @@
         "ownerId": "eoscommonsio",
         "tabs": [
             {
-                "name": "Account Details",
-                "pageId": "41rnxkv1bsve"
+                "name": "Details",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Details",
+                        "viewId": "mairnfr3iilv"
+                    }
+                ]
             },
             {
                 "name": "Teams",
@@ -3013,9 +3413,9 @@
         ]
     },
     {
-        "key": "41rnxkv1bsve",
+        "key": "t2grmjaab5fn",
         "docType": "object",
-        "name": "Account Details Page",
+        "name": "Organizational Unit Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
         "divider": "None",
@@ -3032,24 +3432,41 @@
                 ]
             },
             {
-                "name": "Account Info",
+                "name": "Docs",
+                "pageId": "kmghbh3qovtq"
+            },
+            {
+                "name": "Backlog",
+                "pageId": "1us2bjzz2i3h"
+            }
+        ]
+    },
+    {
+        "key": "z1wmobr423zh",
+        "docType": "object",
+        "name": "User Page",
+        "accordionOrTab": "Tabs",
+        "classId": "pejdgrwd5qso",
+        "divider": "None",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "Home",
                 "widgets": [
                     {
                         "displayType": "Form",
-                        "name": "Account Info",
-                        "viewId": "houaanpf35nu"
+                        "name": "Details",
+                        "viewId": "mairnfr3iilv"
                     }
                 ]
             },
             {
-                "name": "Manifest",
-                "widgets": [
-                    {
-                        "displayType": "Form",
-                        "name": "Manifest",
-                        "viewId": ""
-                    }
-                ]
+                "name": "Album",
+                "pageId": "kmghbh3qovtq"
+            },
+            {
+                "name": "Backlog",
+                "pageId": "1us2bjzz2i3h"
             }
         ]
     },
@@ -3060,9 +3477,7 @@
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
-            "key": {
-                "readOnly": true
-            },
+            "key": {},
             "name": {
                 "readOnly": false
             },
@@ -3081,238 +3496,26 @@
             "subParagraphIds": {
                 "readOnly": false
             },
-            "subUnitIds": {
-                "items": {
-                    "properties": {
-                        "unitId": {
-                            "readOnly": false
-                        }
-                    }
-                }
-            }
+            "subUnitIds": {},
+            "account_name": {},
+            "head_block_num": {},
+            "head_block_time": {},
+            "privileged": {},
+            "last_code_update": {},
+            "created": {},
+            "ram_quota": {},
+            "net_weight": {},
+            "cpu_weight": {},
+            "net_limit": {},
+            "cpu_limit": {},
+            "ram_usage": {},
+            "permissions": {},
+            "total_resources": {},
+            "self_delegated_bandwidth": {},
+            "refund_request": {},
+            "voter_info": {}
         },
         "baseClassId": "pae2bfbrab5n",
-        "type": "object"
-    },
-    {
-        "key": "houaanpf35nu",
-        "docType": "object",
-        "name": "Account Info View",
-        "classId": "pylvseoljret",
-        "ownerId": "eoscommonsio",
-        "properties": {
-            "account_name": {
-                "maxLength": 12,
-                "minLength": 1,
-                "title": "Account Name",
-                "type": "string",
-                "readOnly": true
-            },
-            "head_block_num": {
-                "title": "Head Block Number",
-                "type": "number",
-                "readOnly": true
-            },
-            "head_block_time": {
-                "format": "date-time",
-                "title": "Head Block Time",
-                "type": "string",
-                "readOnly": true
-            },
-            "privileged": {
-                "title": "Privileged",
-                "type": "boolean",
-                "readOnly": true
-            },
-            "last_code_update": {
-                "format": "date-time",
-                "title": "Last Code Update",
-                "type": "string",
-                "readOnly": true
-            },
-            "created": {
-                "format": "date-time",
-                "title": "Created",
-                "type": "string",
-                "readOnly": true
-            },
-            "ram_quota": {
-                "title": "Ram Quota",
-                "type": "number",
-                "readOnly": true
-            },
-            "net_weight": {
-                "title": "Net Weight",
-                "type": "number",
-                "readOnly": true
-            },
-            "cpu_weight": {
-                "title": "Cpu Weight",
-                "type": "number",
-                "readOnly": true
-            },
-            "net_limit": {
-                "properties": {
-                    "used": {
-                        "title": "Used",
-                        "type": "number",
-                        "readOnly": true
-                    },
-                    "available": {
-                        "title": "Available",
-                        "type": "number",
-                        "readOnly": true
-                    },
-                    "max": {
-                        "title": "Maximum",
-                        "type": "number",
-                        "readOnly": true
-                    }
-                },
-                "type": "object"
-            },
-            "cpu_limit": {
-                "properties": {
-                    "used": {
-                        "title": "Used",
-                        "type": "number",
-                        "readOnly": true
-                    },
-                    "available": {
-                        "title": "Available",
-                        "type": "number",
-                        "readOnly": true
-                    },
-                    "max": {
-                        "title": "Maximum",
-                        "type": "number",
-                        "readOnly": true
-                    }
-                },
-                "type": "object"
-            },
-            "ram_usage": {
-                "title": "Ram Usage",
-                "type": "number",
-                "readOnly": true
-            },
-            "permissions": {
-                "items": {
-                    "properties": {
-                        "perm_name": {
-                            "maxLength": 12,
-                            "minLength": 1,
-                            "title": "Permission Name",
-                            "type": "string",
-                            "readOnly": true
-                        },
-                        "parent": {
-                            "maxLength": 12,
-                            "minLength": 1,
-                            "title": "Parent Permission",
-                            "type": "string",
-                            "readOnly": true
-                        },
-                        "required_auth": {
-                            "properties": {
-                                "threshold": {
-                                    "title": "Threshold",
-                                    "type": "number",
-                                    "readOnly": true
-                                },
-                                "keys": {
-                                    "items": {
-                                        "properties": {
-                                            "key": {
-                                                "maxLength": 44,
-                                                "minLength": 0,
-                                                "title": "Key",
-                                                "type": "string",
-                                                "readOnly": true
-                                            },
-                                            "weight": {
-                                                "title": "Weight",
-                                                "type": "number",
-                                                "readOnly": true
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "title": "Keys",
-                                    "type": "array"
-                                },
-                                "accounts": {
-                                    "items": {
-                                        "properties": {
-                                            "properties": {
-                                                "actor": {
-                                                    "maxLength": 12,
-                                                    "minLength": 0,
-                                                    "title": "Actor",
-                                                    "type": "string",
-                                                    "readOnly": true
-                                                },
-                                                "permission": {
-                                                    "maxLength": 12,
-                                                    "minLength": 0,
-                                                    "title": "Permission",
-                                                    "type": "string",
-                                                    "readOnly": true
-                                                }
-                                            },
-                                            "type": "object",
-                                            "weight": {
-                                                "title": "Weight",
-                                                "type": "number",
-                                                "readOnly": true
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "title": "Accounts",
-                                    "type": "array"
-                                },
-                                "waits": {
-                                    "items": {
-                                        "properties": {},
-                                        "type": "object"
-                                    },
-                                    "title": "Waits",
-                                    "type": "array"
-                                }
-                            },
-                            "title": "Required Authorization",
-                            "additionalProperties": false,
-                            "type": "object"
-                        }
-                    },
-                    "type": "object"
-                },
-                "title": "Permissions",
-                "type": "array"
-            },
-            "total_resources": {
-                "title": "Ram Usage",
-                "type": "string",
-                "readOnly": true
-            },
-            "self_delegated_bandwidth": {
-                "title": "Ram Usage",
-                "type": "string",
-                "readOnly": true
-            },
-            "refund_request": {
-                "title": "Ram Usage",
-                "type": "string",
-                "readOnly": true
-            },
-            "voter_info": {
-                "title": "Ram Usage",
-                "type": "string",
-                "readOnly": true
-            }
-        },
-        "query": "get_account_info",
         "type": "object"
     },
     {

@@ -87,7 +87,7 @@ export default {
         bottom: 10px;
         right: 30px;
     }
-    .Xec-container {
+    .ec-container {
         position: absolute;
         height: 100%;
         width: 100%;

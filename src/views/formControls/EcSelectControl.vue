@@ -172,6 +172,7 @@ export default {
     EcQuerySelect,
     EcSelect,
     EcNumber,
+    EcBoolean,
     EcDate,
     EcRichText,
     EcImage,
@@ -181,7 +182,7 @@ export default {
     SubForm
   },
   props: {
-    value: [Number, String, Array],
+    value: [Number, String, Array, Object],
     property: Object,
     editMode: Boolean,
     definitions: Object,

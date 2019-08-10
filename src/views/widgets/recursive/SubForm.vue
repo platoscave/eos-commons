@@ -42,4 +42,7 @@ export default {
 .rowPadding {
   padding-bottom: 16px;
 }
+.container {
+    padding: 12px
+}
 </style>

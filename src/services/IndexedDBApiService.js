@@ -112,8 +112,9 @@ class IndexedDBApiService {
         store.createIndex('parentId', 'parentId')
         store.createIndex('classId', 'classId')
         store.createIndex('ownerId', 'ownerId')
+        store.createIndex('parentStateId', 'parentStateId')
+        store.createIndex('parentOrgId', 'parentOrgId')
         store.createIndex('isDirty', 'isDirty')
-        store.createIndex('cid', 'cid')
       }
 
       openRequest.onsuccess = e => {

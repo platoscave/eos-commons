@@ -4,7 +4,7 @@
     :class="!property.readOnly ? 'updatable' :  ''"
     v-on:click="editMode = true"
   >
-    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ value.toLocaleString() }}</div>
+    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ value ? value.toLocaleString() : 'null' }}</div>
     <v-text-field
       v-else
       v-bind:value="value"

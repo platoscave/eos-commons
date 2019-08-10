@@ -1,0 +1,82 @@
+{
+    "account_name": "platoscave11",
+    "head_block_num": 73306938,
+    "head_block_time": "2019-08-10T14:49:54.500",
+    "privileged": false,
+    "last_code_update": "1970-01-01T00:00:00.000",
+    "created": "2018-06-17T11:58:51.500",
+    "core_liquid_balance": "1.9920 EOS",
+    "ram_quota": 5378,
+    "net_weight": 21000,
+    "cpu_weight": 21000,
+    "net_limit": {
+        "used": 145,
+        "available": 1888827,
+        "max": 1888972
+    },
+    "cpu_limit": {
+        "used": 275,
+        "available": 337191,
+        "max": 337466
+    },
+    "ram_usage": 3822,
+    "permissions": [
+        {
+            "perm_name": "active",
+            "parent": "owner",
+            "required_auth": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS54DNgfqCZifsFGKY6J2UGL8Yxyie8XLh2jSW96bgUK3fDyRpsK",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        },
+        {
+            "perm_name": "owner",
+            "parent": "",
+            "required_auth": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS54DNgfqCZifsFGKY6J2UGL8Yxyie8XLh2jSW96bgUK3fDyRpsK",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    ],
+    "total_resources": {
+        "owner": "platoscave11",
+        "net_weight": "2.1000 EOS",
+        "cpu_weight": "2.1000 EOS",
+        "ram_bytes": 3978
+    },
+    "self_delegated_bandwidth": {
+        "from": "platoscave11",
+        "to": "platoscave11",
+        "net_weight": "2.0000 EOS",
+        "cpu_weight": "2.0000 EOS"
+    },
+    "refund_request": null,
+    "voter_info": {
+        "owner": "platoscave11",
+        "proxy": "",
+        "producers": [
+            "cypherglasss"
+        ],
+        "staked": 40000,
+        "last_vote_weight": "27745957383.52319717407226562",
+        "proxied_vote_weight": "0.00000000000000000",
+        "is_proxy": 0,
+        "flags1": 0,
+        "reserved2": 0,
+        "reserved3": "0 "
+    }
+}

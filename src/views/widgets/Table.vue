@@ -145,9 +145,14 @@ export default {
   created: async function() {
     this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
 
-    // initialize the filter arrays
+    // initialize the filter arrays, and sort
     Object.keys(this.viewObj.properties).forEach(key => {
       this.filters[key] = []
+      if(this.viewObj.properties[key].sort) {
+          console.log(this.viewObj.properties[key])
+          this.sortBy = key
+          this.sortDec = (this.viewObj.properties[key].sort === 'desc')
+      }
     });
 
     // create the header
