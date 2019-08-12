@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <!-- For each of the properties in schema -->
-      <div class="rowPadding" v-for="(property, propName) in properties" v-bind:key="propName">
+      <div v-for="(property, propName) in properties" v-bind:key="propName">
         <!-- Start owr layout. v-flex must be immidiate child-->
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
@@ -12,7 +12,7 @@
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
           <v-flex xs12 md10 v-if="editMode || value[propName]">
-            <ec-select-control
+            <ec-select-control  class="rowPadding"
               v-model="value[propName]"
               v-bind:property="property"
               v-on:button-click="$parent.$emit('button-click', $event)"

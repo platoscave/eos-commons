@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 // import ApiService from './services/EosApiService'
 import ApiService from './services/IndexedDBApiService'
 import IpfsApiService from './services/IpfsApiService'
+import { tmpdir } from 'os';
 
 Vue.use(Vuex)
 
@@ -169,43 +170,9 @@ const store = new Vuex.Store({
             const where = query.where
             const from = query.from
 
-            /* if (query.get_controlled_accounts) {
-                let actor = query.get_controlled_accounts.actor
-                let saughtPermission = query.get_controlled_accounts.permission
-                if (actor === '$fk') actor = queryObj.currentObj.key
-
-                // First, get an array of all subclasses
-                let subClassArr = await getSubclasses('ikjyhlqewxs3') // EC Accounts
-
-                // Collect all of the objects for these subclasses
-                let promisses = subClassArr.map(classObj => {
-                    return ApiService.queryByIndex('classId', classObj.key)
-                })
-                let subClassObjectsArr = await Promise.all(promisses)
-                // Flatten array of arrays.
-                let fullResultsArr = Vue._.flatten(subClassObjectsArr)
-
-                // Find controled accounts
-                fullResultsArr.forEach(accountObj => {
-                    if (accountObj.permissions) {
-                        accountObj.permissions.forEach(permission => {
-                            if (permission.required_auth.accounts) {
-                                permission.required_auth.accounts.forEach(account => {
-                                    if (account.permission.actor === actor && account.permission.permission === saughtPermission) resultsArr.push(accountObj)
-                                })
-                            }
-                        })
-                    }
-                })
-                console.log('resultsArr', resultsArr)
-            } */
-
-
-
-
             // TODO right now the where and from clauses are treated sepparatly. The where clause takes precedence
             // They should be combined
-            else if (where) {
+            if (where) {
                 const docProp = where.docProp
                 const operator = where.operator
                 const mapValue = where.mapValue
@@ -270,21 +237,27 @@ const store = new Vuex.Store({
                 }
             }
 
+            // Filter by controled accounts
+            if (query.get_controlled_accounts) {
+                let actor = query.get_controlled_accounts.actor
+                let saughtPermission = query.get_controlled_accounts.permission
+                if (actor === '$fk') actor = queryObj.currentObj.key
+                let tempArr = []
 
-                // Filter controled accounts
-                if(query.get_controlled_accounts)
-                resultsArr = resultsArr.forEach(accountObj => {
+                resultsArr.forEach(accountObj => {
                     if (accountObj.permissions) {
                         accountObj.permissions.forEach(permission => {
                             if (permission.required_auth.accounts) {
                                 permission.required_auth.accounts.forEach(account => {
-                                    if (account.permission.actor === actor && account.permission.permission === saughtPermission) return true
+                                    if (account.permission.actor === actor && account.permission.permission === saughtPermission) tempArr.push(accountObj)
                                 })
                             }
                         })
                     }
                     return false
                 })
+                resultsArr = tempArr
+            }
 
             // Sort the result, if needed
             if (query.sortBy) {
