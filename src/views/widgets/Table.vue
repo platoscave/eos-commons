@@ -149,7 +149,7 @@ export default {
     Object.keys(this.viewObj.properties).forEach(key => {
       this.filters[key] = []
       if(this.viewObj.properties[key].sort) {
-          console.log(this.viewObj.properties[key])
+          // console.log(this.viewObj.properties[key])
           this.sortBy = key
           this.sortDec = (this.viewObj.properties[key].sort === 'desc')
       }

@@ -421,25 +421,6 @@
                 },
                 "type": "string",
                 "readOnly": true
-            },
-            "subUnitIds": {
-                "items": {
-                    "properties": {
-                        "unitId": {
-                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                            "query": {
-                                "from": "dasprps1lrwf",
-                                "sortBy": "name"
-                            },
-                            "title": "Team",
-                            "type": "string",
-                            "readOnly": true
-                        }
-                    },
-                    "type": "object"
-                },
-                "title": "Teams",
-                "type": "array"
             }
         },
         "type": "object"
@@ -1967,8 +1948,8 @@
                     "accounts": [
                         {
                             "permission": {
-                                "actor": "eoscommons11",
-                                "permission": "active"
+                                "actor": "eoscommonsio",
+                                "permission": "owner"
                             },
                             "weight": 1
                         }
@@ -1999,7 +1980,41 @@
         "name": "Client",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Client</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "eoscommonsio"
+        "ownerId": "eoscommonsio",
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "eoscommonsio",
+                                "permission": "owner"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "bicycleshop1",
@@ -2450,7 +2465,41 @@
         "name": "Front Desk",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Front Desk</div></div>",
         "classId": "dasprps1lrwf",
-        "ownerId": "bicycleshop1"
+        "ownerId": "bicycleshop1",
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "bicycleshop1",
+                                "permission": "owner"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "zmk4fuodo25t",
@@ -2458,7 +2507,41 @@
         "name": "Workshop",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Workshop</div></div><p>ACME Workshop</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "bicycleshop1"
+        "ownerId": "bicycleshop1",
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "bicycleshop1",
+                                "permission": "owner"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "3r5kgovlor1o",
@@ -3114,10 +3197,44 @@
     {
         "key": "jotcvffqbzfp",
         "docType": "object",
-        "name": "Standard Model",
+        "name": "Service Desk",
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
-        "ownerId": "eoscommonsio"
+        "ownerId": "eoscommonsio",
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "eoscommonsio",
+                                "permission": "owner"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "4lk3hxyyfac3",
@@ -3572,13 +3689,26 @@
             "2vwvbhvflpp1",
             "5fcag1lt11gj",
             "itypb41mkq2v",
-            "itypb41mkq2v"
+            "itypb41mkq2v",
+            "ndpfqsf454tl"
         ],
         "where": {
             "docProp": "classId",
             "operator": "eq",
             "value": "$fk"
         }
+    },
+    {
+        "key": "ndpfqsf454tl",
+        "docType": "object",
+        "name": "Organizational Units Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "get_controlled_accounts": {
+            "actor": "$fk",
+            "permission": "owner"
+        },
+        "sortBy": "name"
     },
     {
         "key": "itypb41mkq2v",
