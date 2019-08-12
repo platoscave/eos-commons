@@ -3704,6 +3704,7 @@
         "name": "Organizational Units Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
+        "from": "ikjyhlqewxs3",
         "get_controlled_accounts": {
             "actor": "$fk",
             "permission": "owner"

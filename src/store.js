@@ -169,7 +169,7 @@ const store = new Vuex.Store({
             const where = query.where
             const from = query.from
 
-            if (query.get_controlled_accounts) {
+            /* if (query.get_controlled_accounts) {
                 let actor = query.get_controlled_accounts.actor
                 let saughtPermission = query.get_controlled_accounts.permission
                 if (actor === '$fk') actor = queryObj.currentObj.key
@@ -198,7 +198,7 @@ const store = new Vuex.Store({
                     }
                 })
                 console.log('resultsArr', resultsArr)
-            }
+            } */
 
 
 
@@ -269,6 +269,22 @@ const store = new Vuex.Store({
                     resultsArr = Vue._.flatten(subClassObjectsArr)
                 }
             }
+
+
+                // Filter controled accounts
+                if(query.get_controlled_accounts)
+                resultsArr = resultsArr.forEach(accountObj => {
+                    if (accountObj.permissions) {
+                        accountObj.permissions.forEach(permission => {
+                            if (permission.required_auth.accounts) {
+                                permission.required_auth.accounts.forEach(account => {
+                                    if (account.permission.actor === actor && account.permission.permission === saughtPermission) return true
+                                })
+                            }
+                        })
+                    }
+                    return false
+                })
 
             // Sort the result, if needed
             if (query.sortBy) {
