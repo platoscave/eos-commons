@@ -1,8 +1,7 @@
 <template>
-    <div class="full-height">
-        <!--<v-container fluid>-->
+    <div class="full-height 111">
             <!--<v-layout flex column>-->
-        <div  class="full-height" v-for="(widget, key) in widgets " v-bind:key="key"  >
+        <div  class="full-height 222" v-for="(widget, key) in widgets " v-bind:key="key"  >
                 <!-- Document-->
                 <div class="full-height" v-if="widget.displayType === 'Document'">
                     <ec-document class="ec-container" v-bind:level="level"></ec-document>
@@ -44,7 +43,7 @@
                 </div>
 
                 <!-- Form-->
-                <div class="full-height" v-if="widget.displayType === 'Form'">
+                <div class="XXXfull-height" v-if="widget.displayType === 'Form'">
                     <ec-form class="ec-container" v-bind:level="level" v-bind:viewId="widget.viewId" v-bind:editMode="editMode"></ec-form>
                     <v-btn class="button-bottom" absolute dark fab bottom right color="pink" @click="editMode = !editMode">
                         <v-icon v-if="editMode">done</v-icon>
@@ -58,7 +57,6 @@
                 </div>
         </div>
             <!--</v-layout>-->
-        <!--</v-container>-->
     </div>
 </template>
 
@@ -81,13 +79,17 @@ export default {
 </script>
 <style scoped>
     .full-height {
-        width: 100%;
+        height: 100%;
     }
     .button-bottom {
         bottom: 10px;
         right: 30px;
     }
     .ec-container {
+        height: 100%;
+        overflow: auto;
+    }
+    .Xec-container {
         position: absolute;
         height: 100%;
         width: 100%;

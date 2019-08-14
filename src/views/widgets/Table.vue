@@ -6,6 +6,7 @@
     <!-- https://stackoverflow.com/questions/49607082/dynamically-building-a-table-using-vuetifyjs-data-table -->
     <!-- https://codepen.io/fontzter/pen/qywQjK filter in toolbar -->
     <v-text-field
+      class="searchRextField"
       v-model="search"
       append-icon="search"
       placeholder="Search"
@@ -18,7 +19,6 @@
       :items="filteredDataArr"
       hide-default-header
       hide-default-footer
-      fixed-header
       :search="search"
       :sortBy="sortBy"
       :sortDesc="sortDesc"
@@ -147,11 +147,11 @@ export default {
 
     // initialize the filter arrays, and sort
     Object.keys(this.viewObj.properties).forEach(key => {
-      this.filters[key] = []
-      if(this.viewObj.properties[key].sort) {
-          // console.log(this.viewObj.properties[key])
-          this.sortBy = key
-          this.sortDec = (this.viewObj.properties[key].sort === 'desc')
+      this.filters[key] = [];
+      if (this.viewObj.properties[key].sort) {
+        // console.log(this.viewObj.properties[key])
+        this.sortBy = key;
+        this.sortDec = this.viewObj.properties[key].sort === "desc";
       }
     });
 
@@ -168,12 +168,14 @@ export default {
     );
 
     // watch the selected obj change
-    this.$store.watch( state => state.levelIdsArr[this.level].selectedObjId, async selectedObjId => {
-        if (!selectedObjId) return
+    this.$store.watch(
+      state => state.levelIdsArr[this.level].selectedObjId,
+      async selectedObjId => {
+        if (!selectedObjId) return;
 
         const queryObj = {
-            query: this.query,
-            currentObj: selectedObjId
+          query: this.query,
+          currentObj: selectedObjId
         };
         // get the data
         let resultsArr = await this.$store.dispatch("query", queryObj);
@@ -181,15 +183,15 @@ export default {
         // add empty response
         const date = new Date();
         const newAgreementHistory = {
-            description: "",
-            state: '',
-            stateDate: date.toISOString()
-        }
-        resultsArr.push(newAgreementHistory)
-        this.dataArr = Object.assign([], resultsArr) // Force reactive update
+          description: "",
+          state: "",
+          stateDate: date.toISOString()
+        };
+        resultsArr.push(newAgreementHistory);
+        this.dataArr = Object.assign([], resultsArr); // Force reactive update
       },
       { immediate: true }
-    )
+    );
   },
   computed: {
     filteredDataArr() {
@@ -240,7 +242,7 @@ export default {
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
         ].selectedObjId;
-        this.newObj.buyerId = this.$store.state.account
+        this.newObj.buyerId = this.$store.state.account;
         this.newObj.classId = "w3mzeetidb5n"; // Service request
         this.newObj.processId = "w3mzeetidb5n"; // Service request
       }
@@ -262,11 +264,11 @@ export default {
       }
     },
     columnValueList(propName) {
-        const valueArr = this.dataArr.map(item => {
-            return item[propName]
-        })
-        // make distict
-        return [ ...new Set(valueArr) ]
+      const valueArr = this.dataArr.map(item => {
+        return item[propName];
+      });
+      // make distict
+      return [...new Set(valueArr)];
     }
   }
 };
@@ -287,5 +289,10 @@ td {
 .button-bottom {
   bottom: 10px;
   right: 30px;
+}
+.searchRextField {
+  height: 32px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 </style>

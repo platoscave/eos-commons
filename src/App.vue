@@ -189,4 +189,7 @@ export default {
 html {
   overflow-y: auto;
 }
+  .full-height {
+    height: 100%;
+  }
 </style>

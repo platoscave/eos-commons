@@ -3,7 +3,7 @@
     <v-container>
       <!-- For each of the properties in schema -->
       <div v-for="(property, propName) in properties" v-bind:key="propName">
-        <!-- Start owr layout. v-flex must be immidiate child-->
+        <!-- Start owr layout. v-flex must be immidiate child! Why doen't anyone tell you these things?-->
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
           <v-flex class="label" xs12 md2 v-if="editMode || value[propName]">

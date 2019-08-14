@@ -1797,11 +1797,7 @@
         "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: navy; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div><div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: blue; height: 300px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div>",
         "classId": "be1ub1vtofjo",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTCtCgrAAAAB/UlEQVQ4T31TW08aQRTev6cCJtWk6ZOJNupzq1WDeGmb4vVFo/DSpG1sWqNyEZVlRQRLXLHYJihQqLRemoIWb3iLRvh6ZiwC2bUP32bO+eZ8850zswKA/0KSI/B/TdBSnVdNFmN0UkZj/wwt1XnVZDGejUjQtM/Bt7ZJoZJXJIqRywEPO62o7F5AQ5+6C0WC4fLqGocn50gfn6GsxcIFmAtv8DvRpXtLgjwG37mR2P2D1Y0tXsgEGOp7lS5KAoaV9S3omsdwc5PFB3ENlV3uOwFNuxOez3Hado/A8ekFHnXb8WTIRSFgfOu7K87jcY+DUUoBmheev/bwE01TMkVAfd+sQkBjcMIdiDG6VECSv/F+tR0iFv/Z1LROKgQY6owFF/yTSmdQZbBxsqzFir2DDDZ39lHeZlcUMzAXkhzlIkI2m0PTsItbZw5qXliRowewsBrjArqueVWR2le3LoTozxRMlgAVxPFr74gn8zjKXCBAt/JxPgTj2DIaBiRo9dO8Ta1BhLgcgcDsOnwhmCc+wUzDe+8KweINQ5RjWPqSQDC8jciPJLZ/H/CHxW4qkkhi1h+F3bteOI09293UIU04DrMtiObRRVR1OHhbuk76H6jvCv0MtTWN8lYbqvXjcPrDBQE1sFmwk6WVGEzWIJ6OePDAYMfLN0tIpk9oC4S/0Zv8n5hu2/EAAAAASUVORK5CYII=",
-        "subParagraphIds": "xqxkmto5njxi",
-        "subUnitIds": [
-            "hoepfeztcyk1",
-            "dxswilixshnq"
-        ]
+        "subParagraphIds": "xqxkmto5njxi"
     },
     {
         "key": "xqxkmto5njxi",

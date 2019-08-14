@@ -126,7 +126,11 @@
           </div>
         </div>
         <div v-else>
-          <div class="monoSpaced">{{ JSON.stringify(value, replacer, 2) }}></div>
+          <ec-json
+            v-bind:value="value"
+            v-on:input="$emit('input', $event)"
+            v-bind:property="property"
+          ></ec-json>
         </div>
       </div>
     </div>
@@ -153,20 +157,20 @@
   </div>
 </template>
 <script>
-import EcString from './EcString.vue'
-import EcQuerySelect from './EcQuerySelect.vue'
-import EcSelect from './EcSelect.vue'
-import EcNumber from './EcNumber.vue'
-import EcBoolean from './EcBoolean.vue'
-import EcDate from './EcDate.vue'
-import EcRichText from './EcRichText.vue'
-import EcImage from './EcImage.vue'
-import EcUri from './EcUri.vue'
-import EcJson from './EcJson.vue'
-import EcButton from './EcButton.vue'
-import SubForm from '../widgets/recursive/SubForm.vue'
+import EcString from "./EcString.vue";
+import EcQuerySelect from "./EcQuerySelect.vue";
+import EcSelect from "./EcSelect.vue";
+import EcNumber from "./EcNumber.vue";
+import EcBoolean from "./EcBoolean.vue";
+import EcDate from "./EcDate.vue";
+import EcRichText from "./EcRichText.vue";
+import EcImage from "./EcImage.vue";
+import EcUri from "./EcUri.vue";
+import EcJson from "./EcJson.vue";
+import EcButton from "./EcButton.vue";
+import SubForm from "../widgets/recursive/SubForm.vue";
 export default {
-  name: 'ec-select-control',
+  name: "ec-select-control",
   components: {
     EcString,
     EcQuerySelect,
@@ -188,5 +192,5 @@ export default {
     definitions: Object,
     required: Array
   }
-}
+};
 </script>
