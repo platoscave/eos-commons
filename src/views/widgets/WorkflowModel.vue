@@ -178,5 +178,6 @@ export default {
     }
     .no-overflow {
         overflow: hidden;
+        height: 100%;
     }
 </style>
