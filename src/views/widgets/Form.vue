@@ -3,7 +3,7 @@
   <div v-if="viewObj && dataObj">
     <div>{{viewId}} {{viewObj.name}}</div>
     <ec-sub-form
-      v-bind:editMode="editMode"
+      v-bind:showAllFields="true"
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
       v-bind:definitions="viewObj.definitions"
@@ -17,7 +17,7 @@ export default {
   props: {
     level: Number,
     viewId: String,
-    editMode: Boolean
+    showAllFields: Boolean
   },
   data () {
     return {
@@ -28,7 +28,7 @@ export default {
   methods: {
     storeData (newData) {
       // if(_.isEqual(a, b)) return // returns false if different
-      if (!this.editMode) return
+      if (!this.showAllFields) return
       console.log('Data Change: ', newData)
       this.$store.dispatch('upsertCommon', newData)
     }
@@ -85,11 +85,39 @@ export default {
 		border-color: blue;
 		border-width: 1px;
     }
+    /* for some reason tab items got a background color in veutify 2.0 */
     .v-tabs-items {
-        background-color: transparent !important
+        background-color: transparent !important;
     }
     .v-text-field {
         padding-top: 0px;
         margin-top: 0px;
     }
+    /* keep the menu from taking upspace when its not active */
+    .v-menu--inline {
+        display: none;
+    }
+    .v-input__slot {
+        margin-bottom: 0 !important;
+    }
+    /* get rid of message under input fields */
+.v-messages {
+    display: none;
+}
+/* for the radio buttons */
+.v-input--selection-controls{
+    margin-top: 0;
+    padding-top: 0;
+}
+/* remove padding from text fields */
+.v-text-field {
+    padding: 0;
+}
+/*  */
+.v-text-field>.v-input__control>.v-input__slot:before {
+    border-style: none;
+}
+.v-text-field>.v-input__control>.v-input__slot:after {
+    border-style: none;
+}
 </style>

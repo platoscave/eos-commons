@@ -2,14 +2,14 @@
   <div
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
+    v-on:click="isEditing = true"
   >
-    <div v-if="property.readOnly || !editMode">{{ value }}</div>
+    <div v-if="property.readOnly || !isEditing">{{ value }}</div>
     <v-text-field
       v-else
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
-      v-on:focusout="editMode = false"
+      v-on:focusout="isEditing = false"
       single-line
     ></v-text-field>
   </div>
@@ -24,7 +24,7 @@ export default {
 
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   }
 }

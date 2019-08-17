@@ -2,14 +2,14 @@
   <div
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
+    @mouseover="isEditing = true"
+    @mouseleave="isEditing = false"
   >
-    <div class="nomargin" v-if="property.readOnly || !editMode" v-html="value"></div>
+    <div class="nomargin" v-if="property.readOnly || !isEditing" v-html="value"></div>
     <wysiwyg
       v-else
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
-      v-on:focusout="editMode = false"
       single-line
     ></wysiwyg>
   </div>
@@ -24,7 +24,7 @@ export default {
 
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   }
 }

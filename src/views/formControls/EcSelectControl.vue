@@ -80,7 +80,6 @@
           <div v-for="(childData, idx) in value" v-bind:key="idx">
             <ec-sub-form
               class="outputclass"
-              v-bind:editMode="editMode"
               v-bind:value="value[idx]"
               v-on:input="$emit('input', $event)"
               v-bind:properties="property.items.properties"
@@ -102,7 +101,6 @@
       <div class="outputclass">
         <div v-if="property.properties">
           <ec-sub-form
-            v-bind:editMode="editMode"
             v-bind:value="value"
             v-on:input="$emit('input', $event)"
             v-bind:properties="property.properties"
@@ -116,7 +114,6 @@
             <!-- {{value[subPropName]}} -->
             <ec-sub-form
               class="outputclass"
-              v-bind:editMode="editMode"
               v-bind:value="value[subPropName]"
               v-on:input="$emit('input', $event)"
               v-bind:properties="definitions.additionalProperties"
@@ -145,7 +142,7 @@
     <!--Json-->
     <div v-else>
       <div>
-        Unknown property: {{ propName }}
+        Unknown property: {{ property.title }}
         <br />
         <ec-json
           v-bind:value="value"
@@ -188,7 +185,7 @@ export default {
   props: {
     value: [Number, String, Array, Object],
     property: Object,
-    editMode: Boolean,
+      showAllFields: Boolean,
     definitions: Object,
     required: Array
   }

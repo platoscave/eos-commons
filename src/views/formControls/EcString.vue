@@ -3,10 +3,10 @@
     id="outputClass"
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
-    v-on:focusout="editMode = false"
+    @mouseover="isEditing = true"
+    @mouseleave="isEditing = false"
   >
-    <div v-if="property.readOnly || !editMode">{{ value }}</div>
+    <div v-if="property.readOnly || !isEditing">{{ value }}</div>
     <v-text-field
       v-else
       v-bind:value="value"
@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   } /* ,
   mounted () {

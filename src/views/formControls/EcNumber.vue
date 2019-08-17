@@ -2,14 +2,14 @@
   <div
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
+    @mouseover="isEditing = true"
+    @mouseleave="isEditing = false"
   >
-    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ value ? value.toLocaleString() : '' }}</div>
+    <div v-if="property.readOnly || !isEditing" v-on:click="isEditing = !isEditing">{{ value ? value.toLocaleString() : '' }}</div>
     <v-text-field
       v-else
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
-      v-on:focusout="editMode = false"
       type="number"
       single-line
     ></v-text-field>
@@ -25,7 +25,7 @@ export default {
 
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   }
 }

@@ -16,7 +16,7 @@ export default {
 
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   }
 }

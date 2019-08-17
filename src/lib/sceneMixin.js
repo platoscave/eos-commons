@@ -175,6 +175,8 @@ export default {
     },
     moveCameraToPos (key) {
       let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
+      if(!selectedModelObj) return
+      if(!this.scene) return
       // console.log('selectedModelObj', selectedModelObj)
       this.scene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()

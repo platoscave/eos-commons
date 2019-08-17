@@ -493,11 +493,7 @@
                             "type": "string",
                             "readOnly": true
                         },
-                        "editMode": {
-                            "title": "Initially Edit Mode",
-                            "type": "boolean",
-                            "readOnly": true
-                        },
+ 
                         "name": {
                             "placeholder": "Provide a name",
                             "maxLength": 1000,

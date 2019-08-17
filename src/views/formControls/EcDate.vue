@@ -2,14 +2,14 @@
   <div
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
+    @mouseover="isEditing = true"
+    @mouseleave="isEditing = false"
   >
-    <div v-if="property.readOnly || !editMode" v-on:click="editMode = !editMode">{{ localeDateString }}</div>
+    <div v-if="property.readOnly || !isEditing" v-on:click="isEditing = !isEditing">{{ localeDateString }}</div>
     <v-date-picker
       v-else
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
-      v-on:focusout="editMode = false"
       single-line
     ></v-date-picker>
   </div>
@@ -33,7 +33,7 @@ export default {
   },
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   }
 }

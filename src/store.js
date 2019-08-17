@@ -382,7 +382,7 @@ const store = new Vuex.Store({
                 let classObj = await ApiService.getCommonByKey(classId)
                 if (classObj.parentId) {
                     let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
-                    return Vue._.merge(parentClassObj, classObj, (a, b) => {
+                    return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
                         if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                     })
                 } else return classObj
@@ -394,16 +394,17 @@ const store = new Vuex.Store({
                     Object.keys(viewObj.properties).forEach(propName => {
                         const classProp = classObj.properties[propName]
                         if (classProp) {
-                            const viewProp = viewObj.properties[propName]
-                            Vue._.merge(viewProp, classProp, (a, b) => {
+                            let viewProp = viewObj.properties[propName]
+                            viewObj.properties[propName] = Vue._.mergeWith(classProp, viewProp, (a, b) => {
                                 if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                                 /*
-                                                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
-                                                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
-                                                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
-                                                if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
-                                                */
+                                if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength
+                                if (viewProp.minLength && viewProp.minLength < classProp.minLength) viewProp.minLength = classProp.minLength
+                                if (viewProp.max && viewProp.max > classProp.max) viewProp.max = classProp.max
+                                if (viewProp.min && viewProp.min < classProp.min) viewProp.min = classProp.min
+                                */
                             })
+
                         }
                     })
                 }
@@ -418,10 +419,10 @@ const store = new Vuex.Store({
             let classId = viewObj.baseClassId
             if (!classId) return viewObj
             const mergedAncestorClasses = await getMergeAncestorClasses(classId)
-            // console.log('mergedAncestorClasses', mergedAncestorClasses)
+            //console.log('mergedAncestorClasses', mergedAncestorClasses)
+            //if(viewId === '3ebxsw5pbk3r') debugger
             smartMerge(viewObj, mergedAncestorClasses)
-            // console.log('smartMerge', viewObj)
-            // if(viewId === 'sudhaobvgvq3') debugger
+            //console.log('smartMerge', viewObj)
             return viewObj
         }
     }

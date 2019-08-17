@@ -3,7 +3,7 @@
     <!--if there is just one widget then that widget gets the full height.
             If there is more than one widget, then they are placed underneath each other 
             and takeup whatever space they need. If you have a widget that needs the full height,
-            make sure it's the only only one. Either way, this div get overflow auto-->
+            make sure it's the only only one. Either way, this div gets overflow auto-->
     <div
       v-bind:class="['overflow-auto', widgets.length === 1 ? 'full-height' : '']"
       v-for="(widget, key) in widgets "

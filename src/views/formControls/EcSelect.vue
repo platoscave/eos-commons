@@ -2,47 +2,59 @@
   <div
     id="outputClass"
     class="outputclass"
-    :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
-    v-on:focusout="editMode = false"
+    :class="!property.readOnly && items.length > 1 ? 'updatable' :  ''"
+    @mouseover="isEditing = true"
+    @Xmouseleave="isEditing = false"
   >
-    <div v-if="property.readOnly || !editMode || items.length < 2">{{ value }}</div>
-    <div ref="focusoutNode" v-else>
-      <v-radio-group
-        row
-        v-if="items.length < 4"
-        v-bind:value="value"
-        v-on:input="$emit('input', $event)"
-    v-on:focusout="$emit('focusout', $event)"
-        autofocus
-      >
-        <div v-for="(item, idx) in items" v-bind:key="idx">
-          <v-radio :label="item" :value="item" v-on:focusout="$emit('focusout', $event)"></v-radio>
-        </div>
-      </v-radio-group>
-      <v-select
-        v-else
-        v-bind:value="value"
-        v-bind:items="items"
-        v-on:input="$emit('input', $event)"
-        autofocus
-      ></v-select>
-    </div>
+    <!-- Read only-->
+    <div v-if="property.readOnly || !isEditing || items.length < 2">{{ value }}</div>
+  <div v-else>
+
+    <!-- Less than 4, radio buttons-->
+    <v-radio-group
+      v-if="items.length < 4"
+      v-bind:value="value"
+      v-on:input="$emit('input', $event)"
+      autofocus
+      row
+    >
+      <div v-for="(item, idx) in items" v-bind:key="idx">
+        <v-radio :label="item" :value="item"></v-radio>
+      </div>
+    </v-radio-group>
+
+    <!-- Otherwise, popup menu-->
+    <v-menu v-else closeOnClick closeOnContentClick open-on-hover>
+      <template v-slot:activator="{ on }">
+        <div v-on="on">{{ value }}</div>
+      </template>
+      <v-list dense>
+        <v-list-item-group v-on:update="$emit('input', $event)" v-bind:value="value">
+          <v-list-item v-for="(value, i) in items" v-bind:key="i">
+            <v-list-item-content @click="$emit('input', value)">
+              <v-list-item-title v-html="value"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-menu>
+
+  </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'ec-select',
+  name: "ec-select",
   props: {
     value: String,
     property: Object,
     items: Array
   },
-  data () {
+  data() {
     return {
-      editMode: false
-    }
-  }/* ,
+      isEditing: false
+    };
+  } /* ,
   mounted() {
       //let element = document.body.getElementById('focusoutNode')
       console.log(this.$refs.focusoutNode);
@@ -54,5 +66,5 @@ export default {
       });
     });
   } */
-}
+};
 </script>

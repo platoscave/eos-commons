@@ -3,10 +3,10 @@
     id="outputClass"
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
-    v-on:click="editMode = true"
-    v-on:focusout="editMode = false"
+    v-on:click="isEditing = true"
+    v-on:focusout="isEditing = false"
   >
-  <div v-if="property.readOnly || !editMode" class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
+  <div v-if="property.readOnly || !isEditing" class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
     <v-text-field
       v-else
       v-bind:value="value"
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      editMode: false
+      isEditing: false
     }
   },
   methods: {

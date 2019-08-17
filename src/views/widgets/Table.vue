@@ -30,7 +30,7 @@
             <th
               v-for="header in headers"
               v-bind:key="header.text"
-              v-on:click="changeSort(header.value)"
+              v-on:click.stop="changeSort(header.value)"
               itemKey="key"
             >
               <!-- The filter menu-->
@@ -49,7 +49,7 @@
                   >filter</v-icon>
                 </template>
                 <!-- The filter list -->
-                <v-list>
+                <v-list dense>
                   <v-list-item-group v-model="filters[header.value]" multiple active-class>
                     <template v-for="(itemValue)  in columnValueList(header.value)">
                       <v-list-item v-bind:key="itemValue" v-bind:value="itemValue">
@@ -59,7 +59,7 @@
                               :input-value="active"
                               :true-value="itemValue"
                               color="deep-purple accent-4"
-                              @click="toggle"
+                              @click.stop="toggle"
                             ></v-checkbox>
                           </v-list-item-action>
                           <v-list-item-content>
@@ -95,6 +95,7 @@
       </template>
     </v-data-table>
 
+    <!-- Dialog to add new record -->
     <v-dialog v-if="addDialogViewObj" v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
         <v-btn class="button-bottom" absolute dark fab bottom right color="pink" v-on="on">
@@ -104,18 +105,21 @@
       <v-card v-on:button-click="takeAction">
         <v-card-title>{{this.addDialogViewObj.name}}</v-card-title>
         <ec-sub-form
-          v-bind:editMode="true"
+          v-bind:showAllFields="true"
           v-model="newObj"
           v-bind:properties="addDialogViewObj.properties"
         ></ec-sub-form>
       </v-card>
     </v-dialog>
+
   </div>
 </template>
 <script>
 import ApiService from "../../services/IndexedDBApiService";
 import EcSelectControl from "../formControls/EcSelectControl.vue";
 import SubForm from "./recursive/SubForm.vue";
+import Vue from "vue";
+
 export default {
   name: "ec-table",
   components: {
@@ -147,7 +151,7 @@ export default {
 
     // initialize the filter arrays, and sort
     Object.keys(this.viewObj.properties).forEach(key => {
-      this.filters[key] = [];
+      Vue.set(this.filters, key, []); // must be set reactivly
       if (this.viewObj.properties[key].sort) {
         // console.log(this.viewObj.properties[key])
         this.sortBy = key;
@@ -167,6 +171,13 @@ export default {
       this.viewObj.queryId
     );
 
+    if (this.query.addDialogViewId) {
+      this.addDialogViewObj = await this.$store.dispatch(
+        "materializedView",
+        this.query.addDialogViewId
+      );
+    }
+
     // watch the selected obj change
     this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
@@ -181,13 +192,13 @@ export default {
         let resultsArr = await this.$store.dispatch("query", queryObj);
 
         // add empty response
-        const date = new Date();
+        /* const date = new Date();
         const newAgreementHistory = {
           description: "",
           state: "",
           stateDate: date.toISOString()
         };
-        resultsArr.push(newAgreementHistory);
+        resultsArr.push(newAgreementHistory); */
         this.dataArr = Object.assign([], resultsArr); // Force reactive update
       },
       { immediate: true }
@@ -287,8 +298,7 @@ td {
 </style>
 <style scoped>
 .button-bottom {
-  bottom: 10px;
-  right: 30px;
+  bottom: 20px !important;
 }
 .searchRextField {
   height: 32px;
