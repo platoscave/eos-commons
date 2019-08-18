@@ -6,6 +6,7 @@
     @mouseleave="isEditing = false"
   >
     <div class="nomargin" v-if="property.readOnly || !isEditing" v-html="value"></div>
+    <!-- https://github.com/iliyaZelenko/tiptap-vuetify#events -->
     <wysiwyg
       v-else
       v-bind:value="value"

@@ -1,9 +1,10 @@
 <template>
   <div class="full-height">
     <!--if there is just one widget then that widget gets the full height.
-            If there is more than one widget, then they are placed underneath each other 
+            If there is more than one widget, then they are placed underneath each other
             and takeup whatever space they need. If you have a widget that needs the full height,
-            make sure it's the only only one. Either way, this div gets overflow auto-->
+            make sure it's the only only one. Either way, this div gets overflow auto.
+            If we remove full-height here, the underlaying full-heights loose there effect-->
     <div
       v-bind:class="['overflow-auto', widgets.length === 1 ? 'full-height' : '']"
       v-for="(widget, key) in widgets "
@@ -54,7 +55,7 @@
         <ec-form
           v-bind:level="level"
           v-bind:viewId="widget.viewId"
-          v-bind:editMode="editMode"
+          v-bind:showAllFields="showAllFields"
         ></ec-form>
         <v-btn
           class="button-bottom"
@@ -64,19 +65,14 @@
           bottom
           right
           color="pink"
-          @click="editMode = !editMode"
+          @click="showAllFields = !showAllFields"
         >
-          <v-icon v-if="editMode">done</v-icon>
+          <v-icon v-if="showAllFields">done</v-icon>
           <v-icon v-else>edit</v-icon>
         </v-btn>
       </div>
 
-      <!-- HomePage-->
-      <div v-if="widget.displayType === 'HomePage'">
-        <div>Widget {{ widget.displayType }}</div>
-      </div>
     </div>
-    <!--</v-layout>-->
   </div>
 </template>
 
@@ -91,7 +87,7 @@ export default {
   },
   data() {
     return {
-      editMode: false
+      showAllFields: false
     };
   }
 };

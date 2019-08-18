@@ -1756,7 +1756,7 @@
     {
         "key": "xsaq3l5hncb2",
         "docType": "class",
-        "title": "Buyer",
+        "title": "Buyer States",
         "description": "<p>Buyer</p>",
         "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMGNjMDAiIGlkPSJzdmdfMSIgZD0ibTE1LjM3NSw3bC01LjM3NSwtNC40NmMtMC4zMDUsLTAuMjUzIC0wLjUzOSwtMC41NCAtMSwtMC41NGMtMC42MjUsMCAtMSwwLjUxNiAtMSwxbDAsM2wtNywwYy0wLjU1LDAgLTEsMC40NSAtMSwxbDAsMmMwLDAuNTUgMC40NSwxIDEsMWw3LDBsMCwzYzAsMC40ODQgMC4zNzUsMSAxLDFjMC40NjEsMCAwLjY5NSwtMC4yODcgMSwtMC41NGw1LjM3NSwtNC40NmMwLjM4MywtMC4zMTIgMC42MjUsLTAuNTU1IDAuNjI1LC0xcy0wLjI0MiwtMC42ODcgLTAuNjI1LC0xeiIvPgogPC9nPgo8L3N2Zz4=",
         "parentId": "ahp433id2bo3",
@@ -1765,7 +1765,7 @@
     {
         "key": "cq4bjkzqc2qp",
         "docType": "class",
-        "title": "Seller",
+        "title": "Seller States",
         "description": "<p>Seller</p>",
         "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGZpbGw9IiM2NDk1ZWQiIGlkPSJzdmdfMSIgZD0ibTE1LjM3NSw3bC01LjM3NSwtNC40NmMtMC4zMDUsLTAuMjUzIC0wLjUzOSwtMC41NCAtMSwtMC41NGMtMC42MjUsMCAtMSwwLjUxNiAtMSwxbDAsM2wtNywwYy0wLjU1LDAgLTEsMC40NSAtMSwxbDAsMmMwLDAuNTUgMC40NSwxIDEsMWw3LDBsMCwzYzAsMC40ODQgMC4zNzUsMSAxLDFjMC40NjEsMCAwLjY5NSwtMC4yODcgMSwtMC41NGw1LjM3NSwtNC40NmMwLjM4MywtMC4zMTIgMC42MjUsLTAuNTU1IDAuNjI1LC0xcy0wLjI0MiwtMC42ODcgLTAuNjI1LC0xeiIvPgogPC9nPgo8L3N2Zz4=",
         "parentId": "ahp433id2bo3",
@@ -2022,7 +2022,7 @@
                     "accounts": [
                         {
                             "permission": {
-                                "actor": "testuser1111",
+                                "actor": "platoscave11",
                                 "permission": "active"
                             },
                             "weight": 1
@@ -2877,6 +2877,30 @@
         "type": "object"
     },
     {
+        "key": "jjeqqtkmf5qo",
+        "docType": "object",
+        "name": "Add History Record View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "baseClassId": "re1ihrfyl3zf",
+        "properties": {
+            "stateId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "from": "dlpwvptczyeb",
+                    "sortBy": "name"
+                },
+                "title": "Next State",
+                "type": "string",
+                "readOnly": false
+            },
+            "description": {
+                "readOnly": false
+            }
+        },
+        "type": "object"
+    },
+    {
         "key": "wfejmbcgmmpm",
         "docType": "object",
         "name": "State Form View",
@@ -2977,7 +3001,7 @@
                 "title": "Date"
             },
             "stateId": {
-                "title": "From",
+                "title": "State",
                 "readOnly": false
             },
             "description": {
@@ -3114,7 +3138,6 @@
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
         "stateId": "bavb2g1inh2t",
-        "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser2222",
         "classId": "w3mzeetidb5n",
         "sellerId": "testuser1111"
@@ -3125,10 +3148,10 @@
         "name": "Request for comment",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "assetId": "pwyzd1adoyzu",
+        "stateId": "oltp4kpj4fvi",
         "buyerId": "testuser1111",
         "classId": "w3mzeetidb5n",
-        "sellerId": "testuser2222",
+        "sellerId": "eoscommonsio",
         "agreementHistoryIds": [
             "3a1qf1ogj1an",
             "vwpi4s1zvyit"
@@ -3978,6 +4001,7 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "re1ihrfyl3zf",
+        "addDialogViewId": "jjeqqtkmf5qo",
         "where": {
             "docProp": "key",
             "operator": "in",

@@ -96,7 +96,7 @@
     </v-data-table>
 
     <!-- Dialog to add new record -->
-    <v-dialog v-if="addDialogViewObj" v-model="dialog" width="500">
+    <v-dialog v-if="addDialogViewObj && addRecordAllowed" v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
         <v-btn class="button-bottom" absolute dark fab bottom right color="pink" v-on="on">
           <v-icon>add</v-icon>
@@ -111,7 +111,6 @@
         ></ec-sub-form>
       </v-card>
     </v-dialog>
-
   </div>
 </template>
 <script>
@@ -140,14 +139,19 @@ export default {
       dialog: false,
       menu: false,
       newObj: {},
+      addRecordAllowed: false,
       addDialogViewObj: {},
       sortBy: "startDate",
       sortDesc: true,
-      filters: {}
+      filters: {},
+      query: {}
     };
   },
   created: async function() {
-    this.viewObj = await this.$store.dispatch("materializedView", this.viewId);
+    this.viewObj = await this.$store.dispatch(
+      "getMaterializedView",
+      this.viewId
+    );
 
     // initialize the filter arrays, and sort
     Object.keys(this.viewObj.properties).forEach(key => {
@@ -173,7 +177,7 @@ export default {
 
     if (this.query.addDialogViewId) {
       this.addDialogViewObj = await this.$store.dispatch(
-        "materializedView",
+        "getMaterializedView",
         this.query.addDialogViewId
       );
     }
@@ -200,6 +204,17 @@ export default {
         };
         resultsArr.push(newAgreementHistory); */
         this.dataArr = Object.assign([], resultsArr); // Force reactive update
+      },
+      { immediate: true }
+    );
+    
+    // watch the current user
+    this.$store.watch(
+      state => state.currentUserId, async currentUserId => {
+        if (!currentUserId) return;
+        const orgId = this.$store.state.levelIdsArr[this.level].selectedObjId
+        const addRecordAllowed = await this.$store.dispatch("userMayAddHistory", orgId);
+        this.addRecordAllowed = addRecordAllowed
       },
       { immediate: true }
     );
@@ -253,7 +268,7 @@ export default {
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
         ].selectedObjId;
-        this.newObj.buyerId = this.$store.state.account;
+        this.newObj.buyerId = this.$store.state.currentUserId;
         this.newObj.classId = "w3mzeetidb5n"; // Service request
         this.newObj.processId = "w3mzeetidb5n"; // Service request
       }

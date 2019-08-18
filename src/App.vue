@@ -19,7 +19,7 @@
                   <v-select v-bind:items="networks" v-model="network" label="Network"></v-select>
                 </v-flex>
                 <v-flex xs12>
-                  <v-select v-bind:items="accounts" v-model="account" label="Account*"></v-select>
+                  <v-select v-bind:items="accounts" v-model="currentUserId" label="Account*"></v-select>
                 </v-flex>
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
@@ -53,7 +53,7 @@
         </v-card>
       </v-dialog>
       <v-select class="left toolbar-dropdown" single-line v-bind:items="networks" v-model="network" label="Network"></v-select>
-      <v-select class="left toolbar-dropdown" single-line v-bind:items="accounts" v-model="account" label="Account"></v-select>
+      <v-select class="left toolbar-dropdown" single-line v-bind:items="accounts" v-model="currentUserId" label="Account"></v-select>
       <div class="right">eos-commons.io</div>
     </div>
     <v-snackbar v-model="snackbar" :color="color" :timeout="3000">
@@ -86,9 +86,9 @@ export default {
         this.$store.commit('SET_NETWORK', value)
       }
     },
-    account: {
+    currentUserId: {
       get () {
-        return this.$store.state.account
+        return this.$store.state.currentUserId
       },
       set (value) {
         this.$store.commit('SET_ACCOUNT', value)

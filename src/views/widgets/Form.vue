@@ -40,7 +40,7 @@ export default {
         this.$store.dispatch('getCommonByKey', selectedObjId).then(newData => {
           // console.log('dataObj', newData)
           if (newData.classId === 'pylvseoljret') {
-            this.$store.dispatch('materializedView', selectedObjId).then(materializedView => {
+            this.$store.dispatch('getMaterializedView', selectedObjId).then(materializedView => {
               this.dataObj = Object.assign({}, materializedView) // Force reactive update
             })
           } else this.dataObj = Object.assign({}, newData) // Force reactive update
@@ -49,7 +49,7 @@ export default {
       { immediate: true }
     )
 
-    this.viewObj = await this.$store.dispatch('materializedView', this.viewId)
+    this.viewObj = await this.$store.dispatch('getMaterializedView', this.viewId)
     // console.log('view', this.viewObj)
     if (this.viewObj.rpc) {
       EosApiService.getAccountInfo('eoscommonsio').then(info => {

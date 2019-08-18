@@ -29,7 +29,7 @@ const store = new Vuex.Store({
     plugins: [createPersistedState()],
 
     state: {
-        account: '[not selected]',
+        currentUserId: '[not selected]',
         network: '[not selected]',
         snackbar: false,
         text: '',
@@ -41,7 +41,8 @@ const store = new Vuex.Store({
 
     mutations: {
         SET_ACCOUNT(state, payload) {
-            state.account = payload
+            // state.currentUserId = payload
+            Vue.set(state, 'currentUserId', payload); // must be set reactivly
         },
         SET_NETWORK(state, payload) {
             state.network = payload
@@ -135,6 +136,9 @@ const store = new Vuex.Store({
         transact: async function (store, newObj) {
             return ApiService.transact(newObj, store)
         },
+        userMayAddHistory: async function (store, agreementId) {
+            return ApiService.userMayAddHistory(store, agreementId)
+        },
 
         query: async function (store, queryObj) {
 
@@ -165,7 +169,8 @@ const store = new Vuex.Store({
             if (queryObj.queryId) query = await ApiService.getCommonByKey(queryObj.queryId)
 
             // If currentObj is a string, assume it's a key
-            if (typeof currentObj === 'string') currentObj = await ApiService.getCommonByKey(currentObj)
+            let currentObj = queryObj.currentObj
+            if (currentObj && typeof currentObj === 'string') currentObj = await ApiService.getCommonByKey(currentObj)
 
             const where = query.where
             const from = query.from
@@ -185,9 +190,7 @@ const store = new Vuex.Store({
 
                 // Replace value with currentObj.valuePath
                 if (valuePath) {
-                    let currentObj = queryObj.currentObj
                     value = Vue._.get(currentObj, valuePath)
-                    // console.log(value, valuePath, currentObj)
                 }
 
                 if (mapValue && Array.isArray(value)) {
@@ -376,8 +379,8 @@ const store = new Vuex.Store({
             return Vue._.union.apply(null, resultsArrArr)
         },
 
-        materializedView: async function (store, viewId) {
-            
+        getMaterializedView: async function (store, viewId) {
+
             // Recusivly merge all the ancestor classes, starting with the root. Sub class properties take precedence over parent class
             const getMergeAncestorClasses = async classId => {
                 let classObj = await ApiService.getCommonByKey(classId)
@@ -393,6 +396,7 @@ const store = new Vuex.Store({
                 if (viewObj.properties) {
                     // The the order of viewObj properties is leading
                     Object.keys(viewObj.properties).forEach(propName => {
+                        if(propName === 'nextStateIds') debugger
                         const classProp = classObj.properties[propName]
                         if (classProp) {
                             let viewProp = viewObj.properties[propName]

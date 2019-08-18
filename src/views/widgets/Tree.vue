@@ -325,7 +325,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('materializedView', this.viewId).then(view => {
+    this.$store.dispatch('getMaterializedView', this.viewId).then(view => {
       this.view = view
     })
   }
