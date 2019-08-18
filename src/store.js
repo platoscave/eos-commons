@@ -377,6 +377,7 @@ const store = new Vuex.Store({
         },
 
         materializedView: async function (store, viewId) {
+            
             // Recusivly merge all the ancestor classes, starting with the root. Sub class properties take precedence over parent class
             const getMergeAncestorClasses = async classId => {
                 let classObj = await ApiService.getCommonByKey(classId)

@@ -1015,6 +1015,26 @@
                 "title": "Why",
                 "type": "string",
                 "readOnly": true
+            },
+            "exposedToProcessesIds": {
+                "items": {
+                    "properties": {
+                        "processId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "from": "dwl1kwhalwj4",
+                                "sortBy": "name"
+                            },
+                            "title": "Exposed to Process",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Exposed to Processes",
+                "type": "array",
+                "readOnly": true
             }
         },
         "type": "object",
@@ -1188,6 +1208,28 @@
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODBDQUY3RkM2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODBDQUY3RkQ2OUEzMTFFM0ExRDBGQzcyRDA1NTZFMEYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MENBRjdGQTY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4MENBRjdGQjY5QTMxMUUzQTFEMEZDNzJEMDU1NkUwRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pj6+XOUAAAGRSURBVHjafFK/T8JAFH7XHtFECg0xwZ3EOLnILOpWaqJ/gLOLf4B/ibuDm4NiKN1EnHFxk4RRogugwcHSu/PelcPSUl7ycnfvu/vej/uIEAIIIaDt4ublfhryE8YFJM00COSo0bg62zudB5EgbufXXfEtg4NAiPeY4xnjiMfv02QWxjn8BABvw1QBsFOK8JUEqioDwF7H6gCwOUyJXWI8aSkC0zTBklFSjAg0AxLkSYSvJBBs+nh52zvSQ1SZxf8QEY/fJ8lfkFaRbuvD7nal+9rrV2P4WHo/k+Bgv6YSCsHBMAzpJnDOpHN5z1AdPT13SGYLG5YFntesQoa57nE31cJDszmSqyobs2ptUEo/XcfZ8nz/IwzDcjQToqqZ7ceqAsaY7dbr8MtC/WmwZlJo+b56FARBue44KdxrtWyq1chDBl/DkcZhs1SaZ8J1GY7v5jMwcxQsKw96qHhe0EcGTnVfOUqhWCgsPNK/swpXBJPJpHPXaNR4TOc4TBlvz/C2xA+X4B2tgwXxLBFNJv4nwABEa91VFnwXcgAAAABJRU5ErkJggg==",
         "parentId": "ikjyhlqewxs3",
         "pageId": "t2grmjaab5fn",
+        "properties": {
+            "authorizedForStateIds": {
+                "items": {
+                    "properties": {
+                        "processId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "from": "dlpwvptczyeb",
+                                "sortBy": "name"
+                            },
+                            "title": "Authorized for State",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Authorized for States",
+                "type": "array",
+                "readOnly": true
+            }
+        },
         "type": "object"
     },
     {
@@ -1787,13 +1829,44 @@
         ]
     },
     {
+        "key": "bicycleshop1",
+        "docType": "object",
+        "name": "ACME Bicycle Shop",
+        "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: green; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Bicycle Shop</h1><p><i>Enjoy the fresh air.</i></p><h2>For Rent Sale or Repair</h2></div><div class=\"flex xs6\"><img src=\"bicycle-788733_960_720.jpg\" height=\"500\"></div></div>",
+        "classId": "zx5ffzoa5euy",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5klEQVQ4T61Tv2sUURD+Zt7undFYqKTKsW/v7p0YDqwEGxst/EUKbcQiYKGIAUGRVIqKTYpYiBjQSiEGSSPIgYX5C+wEUSx8t7e3kassDAlL4vneyIKBxICFl2mGGeZ988038wgDGg34HjsLYKKoCeYRAIIgeG+t7Teq1WMiwuLU9/ZS+9PfjLcwaES1cWE/DZEFhOFsuVxeW19dvSJgFvgJKHUqSZLlzSDbRjBxPOkEUwz6srXQaxA9t2n6aBtAvVI3FLhx8ZQz4YJ4UT7kcxvd4jjeFQpeiHdjpNRTAXbDuZZdWmpTXeszLHRdQM9AuASSg/A0A0jdZumDQ6OjB34F4TwR3ohzt8HcIlHvAD8pih5TI4rflvbuOZ/n+T5ybg4+mKLAXyaBBmQGnqbBckuEriqhV57cHZtlp40xZem712R0dd52OxMFExG5ycxrIjgiwA8GxCs+myRJZqJowWbZRVOtnrSdzmKhQ03rl2S0nsv7/Wu9Xi8vko04PirAcZumD/+I5Qpvovg+SFq22/1QxM2R5vDPoZVZqlVqDSh3j4UXCbLfw49RqXTDWru+We1KpTJUUuETJvkMkWWATyj4uxtrVEbrw+KClfa3tv3XeRcb48ANf03TjwD8zp7y/3ysgRn8BlTuy14MbVpqAAAAAElFTkSuQmCC",
+        "pageId": "2kjjzqr2i5o5",
+        "subUnitIds": [
+            "ttjye1pjj2ly",
+            "zmk4fuodo25t"
+        ],
+        "exposedToProcessesIds": [
+            "ynaxakdc423e"
+        ]
+    },
+    {
+        "key": "healthcare11",
+        "docType": "object",
+        "name": "ACME Health Care Clinic",
+        "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: #76448A; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Health Care Clinic</h1><p><i>Stay fit, live long.</i></p><h2>Call for an appointment</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
+        "classId": "be1ub1vtofjo",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC",
+        "pageId": "4devwsepaig1",
+        "exposedToProcessesIds": [
+            "cie1pllxq5mu"
+        ]
+    },
+    {
         "key": "eoscommonsio",
         "docType": "object",
         "name": "eos-commons.io",
         "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: navy; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div><div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: blue; height: 300px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>eos-commons.io</h1><p><i>...bringing process modeling to the blockchain.</i></p><p>Writing smart contracts that meet your organizations needs is hard.</p><p>eos-commons.io makes it alot easier by providing template organizations that you can copy and process modeling facilities. These include an exstsible class model, layout/page design, 3D process model and much more.</p></div><div class=\"flex xs3\"><h1>eos-commons.io</h1><p>Bringing process modeling to the blockchain</p></div></div>",
         "classId": "be1ub1vtofjo",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTCtCgrAAAAB/UlEQVQ4T31TW08aQRTev6cCJtWk6ZOJNupzq1WDeGmb4vVFo/DSpG1sWqNyEZVlRQRLXLHYJihQqLRemoIWb3iLRvh6ZiwC2bUP32bO+eZ8850zswKA/0KSI/B/TdBSnVdNFmN0UkZj/wwt1XnVZDGejUjQtM/Bt7ZJoZJXJIqRywEPO62o7F5AQ5+6C0WC4fLqGocn50gfn6GsxcIFmAtv8DvRpXtLgjwG37mR2P2D1Y0tXsgEGOp7lS5KAoaV9S3omsdwc5PFB3ENlV3uOwFNuxOez3Hado/A8ekFHnXb8WTIRSFgfOu7K87jcY+DUUoBmheev/bwE01TMkVAfd+sQkBjcMIdiDG6VECSv/F+tR0iFv/Z1LROKgQY6owFF/yTSmdQZbBxsqzFir2DDDZ39lHeZlcUMzAXkhzlIkI2m0PTsItbZw5qXliRowewsBrjArqueVWR2le3LoTozxRMlgAVxPFr74gn8zjKXCBAt/JxPgTj2DIaBiRo9dO8Ta1BhLgcgcDsOnwhmCc+wUzDe+8KweINQ5RjWPqSQDC8jciPJLZ/H/CHxW4qkkhi1h+F3bteOI09293UIU04DrMtiObRRVR1OHhbuk76H6jvCv0MtTWN8lYbqvXjcPrDBQE1sFmwk6WVGEzWIJ6OePDAYMfLN0tIpk9oC4S/0Zv8n5hu2/EAAAAASUVORK5CYII=",
-        "subParagraphIds": "xqxkmto5njxi"
+        "subParagraphIds": "xqxkmto5njxi",
+        "exposedToProcessesIds": [
+            "cie1pllxq5mu"
+        ]
     },
     {
         "key": "xqxkmto5njxi",
@@ -1917,12 +1990,47 @@
         "type": "object"
     },
     {
-        "key": "testuser1111",
+        "key": "jotcvffqbzfp",
         "docType": "object",
-        "name": "test user 1111",
-        "classId": "hdt3hmnsaghk",
-        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAALwSURBVDhPLY3dbxRVGMbPrSEkvRBDwpUQYwQlKGAMJIYLjDd6p3+ABPy405gI7uzH7HycM2dmzp6Zc87Mzux2u+3ObLvdFtay1FbImkYkEBTiR0ADwS9CZNsIFNpKU2AYom+eqzfP7/eAhZp7uy4W63ypIe43+GrEHo7ypO0nLe/RmEjG/QdNlj5XI7HcEPdGPNCv8FtD3mJd3B3iy3V3LfLWGiwZ85KJIJkIk1H/QeTdHxb/DvtpZ6HKwI2A3QxFP3RuVflSTawOi4exnxwtJxc6yTftdGqtIVaG2GKNz1fcvwMXXBXsGmfXPfdmmf8T8HtV91EcriycTf67bjPV3wndvu/c8Nlv3AEXKf2ROpcoveo6f3HaF3R5UKz2L/4PTI/frbK+cP9gzhXGLzMOThNyjtDzNvmJur9Q53eX9l2yUvOSXjfptJZCMS9Y2v6ZkNR73qZg1oBf29acaZ61S08wQn8t0esunxd8wRN/us4lm1yw7HMmOW3Zc3YJfGEYU8g4YaCvTPMUxnPYPmPa31mlH6wn8Pc2+dYwU90pbM5gPI0xGNNhGxptiDvImNJhVzdOqKiHSQ+aPYhPGngGoeMQdXQ0qcMJhEAEzRgakQobijZp03d373lr67YDe/e1ZaWj6B0FxlKhpcHUm3aaCINKUQ8KMPPeobdf3bN/67Zdz2x4Y8uzO9av2zUw8OaW5156ah06+GFTRXUFDmmophrg9e0v79uxc+/zL+zctKmqFlnmSDmf8TOfvfPabj9z2M9K5Vw2kGWWywpZcXIF8MrmzS9u3PA0AFUtP6hmB1WprkktS63LUgSVMPd5TSuEWt6TpfxH70sfHAIDAIwQWEPZuKS2HFhTDrdLaqQeOYblNLGaGbeKMc7HtjxaUpqkCCqwMGzrTaq1HO2YQONEmSDKyaA0y9AUKYbSJ02zEFuyyH48gnMpBmaq5HiAJ5nei/xUUEeSl/s0nfqyQjtUmQ1wl8OjVOuWrdkqma5YjwEfCcrTn7ebgwAAAABJRU5ErkJggg==",
-        "password": "$2a$10$WIx8rGcMeuPigotQqQi.b.HUhpgqd0bEaLQ1Eerq6Q9WA/Y6v/y92"
+        "name": "Service Desk",
+        "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
+        "classId": "dasprps1lrwf",
+        "ownerId": "eoscommonsio",
+        "authorizedForStateIds": ["oltp4kpj4fvi"],
+        "permissions": [
+            {
+                "perm_name": "owner",
+                "parent": "",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "eoscommonsio",
+                                "permission": "owner"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            },
+            {
+                "perm_name": "active",
+                "parent": "owner",
+                "required_auth": {
+                    "threshold": 1,
+                    "accounts": [
+                        {
+                            "permission": {
+                                "actor": "testuser1111",
+                                "permission": "active"
+                            },
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
     },
     {
         "key": "hoepfeztcyk1",
@@ -1931,6 +2039,8 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Server</div></div><p>The Neuralquest server</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
+        "authorizedForStateIds": ["tfkyaytuac1g"],
+
         "permissions": [
             {
                 "perm_name": "owner",
@@ -1973,6 +2083,7 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Client</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
+        "authorizedForStateIds": ["tfkyaytuac1g"],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -1998,7 +2109,7 @@
                     "accounts": [
                         {
                             "permission": {
-                                "actor": "testuser1111",
+                                "actor": "testuser2222",
                                 "permission": "active"
                             },
                             "weight": 1
@@ -2007,28 +2118,6 @@
                 }
             }
         ]
-    },
-    {
-        "key": "bicycleshop1",
-        "docType": "object",
-        "name": "ACME Bicycle Shop",
-        "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: green; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Bicycle Shop</h1><p><i>Enjoy the fresh air.</i></p><h2>For Rent Sale or Repair</h2></div><div class=\"flex xs6\"><img src=\"bicycle-788733_960_720.jpg\" height=\"500\"></div></div>",
-        "classId": "zx5ffzoa5euy",
-        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5klEQVQ4T61Tv2sUURD+Zt7undFYqKTKsW/v7p0YDqwEGxst/EUKbcQiYKGIAUGRVIqKTYpYiBjQSiEGSSPIgYX5C+wEUSx8t7e3kassDAlL4vneyIKBxICFl2mGGeZ988038wgDGg34HjsLYKKoCeYRAIIgeG+t7Teq1WMiwuLU9/ZS+9PfjLcwaES1cWE/DZEFhOFsuVxeW19dvSJgFvgJKHUqSZLlzSDbRjBxPOkEUwz6srXQaxA9t2n6aBtAvVI3FLhx8ZQz4YJ4UT7kcxvd4jjeFQpeiHdjpNRTAXbDuZZdWmpTXeszLHRdQM9AuASSg/A0A0jdZumDQ6OjB34F4TwR3ohzt8HcIlHvAD8pih5TI4rflvbuOZ/n+T5ybg4+mKLAXyaBBmQGnqbBckuEriqhV57cHZtlp40xZem712R0dd52OxMFExG5ycxrIjgiwA8GxCs+myRJZqJowWbZRVOtnrSdzmKhQ03rl2S0nsv7/Wu9Xi8vko04PirAcZumD/+I5Qpvovg+SFq22/1QxM2R5vDPoZVZqlVqDSh3j4UXCbLfw49RqXTDWru+We1KpTJUUuETJvkMkWWATyj4uxtrVEbrw+KClfa3tv3XeRcb48ANf03TjwD8zp7y/3ysgRn8BlTuy14MbVpqAAAAAElFTkSuQmCC",
-        "pageId": "2kjjzqr2i5o5",
-        "subUnitIds": [
-            "ttjye1pjj2ly",
-            "zmk4fuodo25t"
-        ]
-    },
-    {
-        "key": "healthcare11",
-        "docType": "object",
-        "name": "ACME Health Care Clinic",
-        "description": "<div class=\"layout align-center justify-space-around fill-height wrap\" style=\"background-color: #76448A; height: 500px; color: white; font-size: 16px\"><div class=\"flex xs3\"><h1>ACME Health Care Clinic</h1><p><i>Stay fit, live long.</i></p><h2>Call for an appointment</h2></div><div class=\"flex xs3\"><h1>Image</h1></div></div>",
-        "classId": "be1ub1vtofjo",
-        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABtklEQVQ4T5WSsUtbURTGz3dfiFEzFKFL1Xtv8p4g2sFOFdql0E5tQTJlkHZ16FQo/gOdnBw6dA4dhKKTdHDKIJKpUy2heUneTYKLIBLakERzT3liIAlJSO50z3e+8zv3XA6o57hSPgPECRHN9eo99wYTvyoac9bV0AdQiQ+wt5/Icd4RUV/uzmdthuHsFU35y2gA8Y5vgsfDXuAp/YsJX/sArtb7zIiHBYJ5jUCrlnA0DCCIU8SUt8DvMO+QbcBT+goCW50O7Ii5R8qC7Xckla6VTLA06Fp/uB5vRVsPQn2mPXN9fnn+d9DjSpkfCfBU4hsRxe6Lmr4pb08FcJf1Yaw5/z4sasf+ZQrVIDURwNP6hBltEDtLRr/NUpY9KQ+JRRQC0YIpv+yCho7gqcSpb8rPB7tprWORTifnV6sbYwFJpXIA9pm5XjLmR2heUeo1s1iwxB9LleDJWICr1AuwWCTY3cbNzdPQPBuJ/AQ5n0lwzQ+C7FhAN+lJecBCHIQxrE37lUp6ok/smlZk8g2BN+9iRq5QKR0PBbhKXxRN8GjaLQz9ntZ/kJSyTkBTWJ5ulZlAjoj/B4u9x9M8LUgYAAAAAElFTkSuQmCC",
-        "pageId": "4devwsepaig1"
     },
     {
         "key": "platoscave11",
@@ -2458,6 +2547,7 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Front Desk</div></div>",
         "classId": "dasprps1lrwf",
         "ownerId": "bicycleshop1",
+        "authorizedForStateIds": ["yefagaab4ua2"],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2500,6 +2590,7 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Workshop</div></div><p>ACME Workshop</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "bicycleshop1",
+        "authorizedForStateIds": ["pvk5ngmorf4z"],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2525,7 +2616,7 @@
                     "accounts": [
                         {
                             "permission": {
-                                "actor": "testuser1111",
+                                "actor": "testuser2222",
                                 "permission": "active"
                             },
                             "weight": 1
@@ -3113,8 +3204,8 @@
     {
         "key": "oltp4kpj4fvi",
         "docType": "object",
-        "name": "Classify",
-        "description": "<p>Classify</p>",
+        "name": "Intake",
+        "description": "<p>Intake</p>",
         "classId": "cq4bjkzqc2qp",
         "nextStateIds": [
             {
@@ -3185,48 +3276,6 @@
             "transfer payment"
         ],
         "ownerId": "jwzwfaehsqks"
-    },
-    {
-        "key": "jotcvffqbzfp",
-        "docType": "object",
-        "name": "Service Desk",
-        "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
-        "classId": "dasprps1lrwf",
-        "ownerId": "eoscommonsio",
-        "permissions": [
-            {
-                "perm_name": "owner",
-                "parent": "",
-                "required_auth": {
-                    "threshold": 1,
-                    "accounts": [
-                        {
-                            "permission": {
-                                "actor": "eoscommonsio",
-                                "permission": "owner"
-                            },
-                            "weight": 1
-                        }
-                    ]
-                }
-            },
-            {
-                "perm_name": "active",
-                "parent": "owner",
-                "required_auth": {
-                    "threshold": 1,
-                    "accounts": [
-                        {
-                            "permission": {
-                                "actor": "testuser1111",
-                                "permission": "active"
-                            },
-                            "weight": 1
-                        }
-                    ]
-                }
-            }
-        ]
     },
     {
         "key": "4lk3hxyyfac3",
@@ -3327,18 +3376,22 @@
         "type": "object"
     },
     {
+        "key": "testuser1111",
+        "docType": "object",
+        "name": "test user 1111",
+        "classId": "hdt3hmnsaghk"
+    },
+    {
         "key": "testuser2222",
         "docType": "object",
         "name": "test user 2222",
-        "classId": "hdt3hmnsaghk",
-        "password": "$2a$10$2Wqx6HoNhxD7eTqck.oV8eeE3Vuzjg9iZt3iCJdwueBorOqGGM1PG"
+        "classId": "hdt3hmnsaghk"
     },
     {
         "key": "testuser3333",
         "docType": "object",
         "name": "test user 3333",
-        "classId": "hdt3hmnsaghk",
-        "password": "$2a$10$pSbeb7qPuqUn.1wHeprOhOSxCo2f5mc7D8BcSKXGvRR/0KA84lfOm"
+        "classId": "hdt3hmnsaghk"
     },
     {
         "key": "44yiclbxugop",
@@ -3599,6 +3652,9 @@
             "why": {
                 "readOnly": false
             },
+            "exposedToProcessesIds": {
+                "readOnly": false
+            },
             "pageId": {
                 "readOnly": false
             },
@@ -3681,8 +3737,8 @@
             "2vwvbhvflpp1",
             "5fcag1lt11gj",
             "itypb41mkq2v",
-            "itypb41mkq2v",
-            "ndpfqsf454tl"
+            "ndpfqsf454tl",
+            "wxqc53yr1d2f"
         ],
         "where": {
             "docProp": "classId",
@@ -3697,11 +3753,38 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "ikjyhlqewxs3",
+        "subQueryIds": [
+            "jla5kldghbxi"
+        ],
         "get_controlled_accounts": {
             "actor": "$fk",
             "permission": "owner"
         },
         "sortBy": "name"
+    },
+    {
+        "key": "wxqc53yr1d2f",
+        "docType": "object",
+        "name": "Exposed to Processes Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "valuePath": "exposedToProcessesIds"
+        }
+    },
+    {
+        "key": "jla5kldghbxi",
+        "docType": "object",
+        "name": "Authorized for State Query",
+        "classId": "q234ooehrk5v",
+        "ownerId": "eoscommonsio",
+        "where": {
+            "docProp": "key",
+            "operator": "in",
+            "valuePath": "authorizedForStateIds"
+        }
     },
     {
         "key": "itypb41mkq2v",

@@ -70,32 +70,24 @@ class IndexedDBApiService {
     })
   }
 
-  static async get_controlled_accounts (accountId, store) {
+  static async userCanAdd (agrrementId, store) {
+      /* 
+        if agreement buyerId = current user
+        and
+        agreement stateId = typeOf(buyerState)
+            allow add history record
+
+        or
+
+        get seller orgunit accounts = controled accounts by sellerId  
+        get buyer  orgunit accounts = controled accounts by current user 
+        if there is a match
+            find the states that these accounts are authorized for
+            if one of those sates is the current state
+                allow add history record
+      */
     try {
-      const rpc = new JsonRpc(HTTPENDPOINT)
-      const result = await api.transact({
-        actions: [{
-          account: 'eosio',
-          name: 'delegatebw',
-          authorization: [{
-            actor: 'useraaaaaaaa',
-            permission: 'active'
-          }],
-          data: {
-            from: 'useraaaaaaaa',
-            receiver: 'useraaaaaaaa',
-            stake_net_quantity: '1.0000 SYS',
-            stake_cpu_quantity: '1.0000 SYS',
-            transfer: false
-          }
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30
-      })
-      return result.rows.map(row => {
-        return JSON.parse(row.common)
-      })
+
     } catch (err) {
       console.error(err)
       return []
