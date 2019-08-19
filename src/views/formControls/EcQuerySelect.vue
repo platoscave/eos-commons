@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="items.length && value"
+    v-if="items.length"
     class="outputclass"
     :class="!property.readOnly ? 'updatable' :  ''"
     @mouseover="isEditing = true"
@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      isEditing: true,
+      isEditing: false,
       	items: [],
       	selectedText: ''
     }
@@ -45,7 +45,7 @@ export default {
       return obj
     })
     this.items.push({
-      value: '[not selected]',
+      value: undefined,
       text: '[not selected]'
     })
     // How do we return [not selected] ?
