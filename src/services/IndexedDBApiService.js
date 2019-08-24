@@ -1,6 +1,9 @@
 
 import axios from 'axios'
 import Vue from 'vue'
+const eosjs = require('eosjs');
+import BigNumber from 'bignumber.js/bignumber'
+
 
 class IndexedDBApiService {
     static upsertCommon(common) {
@@ -213,6 +216,16 @@ class IndexedDBApiService {
     }
 
     static async ImportFromStatic(store) {
+
+        /* let sb = new eosjs.Serialize.SerialBuffer();                                                  
+        sb.pushName('testacc');                                                                                                                                     
+        let res = eosjs.Numeric.binaryToDecimal(sb.getUint8Array(8));
+        const lowerBoundBigNumber = new BigNumber(res)
+        const upperBoundBigNumber = lowerBoundBigNumber.plus(1).toString()
+        let res2 = eosjs.Numeric.SerialBuffer(12, upperBoundBigNumber);
+
+        debugger */
+
         return new Promise((resolve, reject) => {
             const openRequest = indexedDB.open('commonsDB', 1)
 

@@ -9,7 +9,7 @@
     <!-- https://github.com/iliyaZelenko/tiptap-vuetify#events -->
     <wysiwyg
       v-else
-      v-bind:value="value"
+      v-model="value"
       v-on:input="$emit('input', $event)"
       single-line
     ></wysiwyg>

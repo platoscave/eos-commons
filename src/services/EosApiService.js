@@ -98,6 +98,9 @@ class EosApiService {
 
   static async queryByIndex (indexName, keyValue) {
     try {
+        sb = new eosjs.Serialize.SerialBuffer();                                                  
+        sb.pushName('testacc');                                                                                                                                     
+        eosjs.Numeric.binaryToDecimal(sb.getUint8Array(8));
       // See https://github.com/EOSIO/eosjs/issues/154
       const lowerBoundBigNumber = new BigNumber(encodeName(keyValue, false))
       const upperBound = decodeName(lowerBoundBigNumber.plus(1).toString(), false)

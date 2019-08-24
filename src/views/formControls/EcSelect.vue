@@ -1,29 +1,23 @@
 <template>
   <div
-    id="outputClass"
     class="outputclass"
     :class="!property.readOnly && items.length > 1 ? 'updatable' :  ''"
-    @mouseover="isEditing = true"
-    @Xmouseleave="isEditing = false"
+    @mouseenter="isEditing = true"
+    @mouseleave="mouseLeave"
   >
     <!-- Read only-->
     <div v-if="property.readOnly || !isEditing || items.length < 2">{{ value }}</div>
-  <div v-else>
 
-    <!-- Less than 4, radio buttons-->
-    <v-radio-group
-      v-if="items.length < 4"
-      v-bind:value="value"
-      v-on:input="$emit('input', $event)"
-      autofocus
-      row
-    >
-      <div v-for="(item, idx) in items" v-bind:key="idx">
-        <v-radio :label="item" :value="item"></v-radio>
-      </div>
-    </v-radio-group>
+    <!-- Less than 4: radio buttons-->
+    <div v-else-if="items.length < 4">
+      <v-radio-group v-bind:value="value" v-on:input="$emit('input', $event)" autofocus row>
+        <div v-for="(item, idx) in items" v-bind:key="idx">
+          <v-radio :label="item" :value="item" @click="$emit('input', item)"></v-radio>
+        </div>
+      </v-radio-group>
+    </div>
 
-    <!-- Otherwise, popup menu-->
+    <!-- Otherwise: popup menu-->
     <v-menu v-else closeOnClick closeOnContentClick open-on-hover>
       <template v-slot:activator="{ on }">
         <div v-on="on">{{ value }}</div>
@@ -40,7 +34,6 @@
     </v-menu>
 
   </div>
-  </div>
 </template>
 <script>
 export default {
@@ -54,17 +47,12 @@ export default {
     return {
       isEditing: false
     };
-  } /* ,
-  mounted() {
-      //let element = document.body.getElementById('focusoutNode')
-      console.log(this.$refs.focusoutNode);
-
-    this.$nextTick( () => {
-      console.log(this.$refs.focusoutNode);
-      this.$el.addEventListener("focusout", e => {
-        this.editMode = false;
-      });
-    });
-  } */
+  },
+  methods: {
+    mouseLeave: function(e) {
+        // The popup menu does it's own mouseLeave. We must not interfere.
+        if (this.property.readOnly || !this.isEditing || this.items.length < 4) this.isEditing = false;
+    }
+  }
 };
 </script>

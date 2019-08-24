@@ -1,23 +1,40 @@
 <template>
   <div
-    v-if="items.length"
     class="outputclass"
-    :class="!property.readOnly ? 'updatable' :  ''"
-    @mouseover="isEditing = true"
-    @mouseleave="isEditing = false"
-
+    :class="!property.readOnly && items.length > 1 ? 'updatable' :  ''"
+    @mouseenter="isEditing = true"
+    @mouseleave="mouseLeave"
   >
+    <!-- Read only-->
     <div v-if="property.readOnly || !isEditing || items.length < 2">{{ selectedText }}</div>
-    <v-select
-      v-else
-      class="custom"
-      v-bind:value="value"
-      v-on:input="$emit('input', $event)"
-      :items="items"
-      single-line
-      menu-props="auto"
-    ></v-select>
+
+    <!-- Less than 4: radio buttons-->
+    <div v-else-if="items.length < 4">
+      <v-radio-group v-bind:value="value" v-on:input="$emit('input', $event)" autofocus row>
+        <div v-for="(item, idx) in items" v-bind:key="idx">
+          <v-radio :label="item.text" :value="item.value" @click="$emit('input', item.value)"></v-radio>
+        </div>
+      </v-radio-group>
+    </div>
+
+    <!-- Otherwise: popup menu-->
+    <v-menu v-else closeOnClick closeOnContentClick open-on-hover>
+      <template v-slot:activator="{ on }">
+        <div v-on="on">{{ selectedText }}</div>
+      </template>
+      <v-list dense>
+        <v-list-item-group v-on:update="$emit('input', $event)" v-bind:value="value">
+          <v-list-item v-for="(item, i) in items" v-bind:key="i">
+            <v-list-item-content @click="$emit('input', item.value)">
+              <v-list-item-title v-html="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-menu>
+
   </div>
+
 </template>
 <script>
 export default {
@@ -62,6 +79,11 @@ export default {
       })
       if (selectedObj) this.selectedText = selectedObj.text
       else this.selectedText = '[Selected item not found: ' + this.value + ']'
+    },
+    
+    mouseLeave: function(e) {
+        // The popup menu does it's own mouseLeave. We must not interfere.
+        if (this.property.readOnly || !this.isEditing || this.items.length < 4) this.isEditing = false;
     }
   },
   watch: {
