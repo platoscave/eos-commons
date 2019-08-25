@@ -260,7 +260,8 @@
                                                 "title": "Weight",
                                                 "type": "number",
                                                 "readOnly": true
-                                            }},
+                                            }
+                                        },
                                         "type": "object"
                                     },
                                     "title": "Waits",
@@ -493,7 +494,6 @@
                             "type": "string",
                             "readOnly": true
                         },
- 
                         "name": {
                             "placeholder": "Provide a name",
                             "maxLength": 1000,
@@ -675,48 +675,53 @@
                 "readOnly": true
             },
             "where": {
-                "additionalProperties": false,
-                "properties": {
-                    "docProp": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Document Property",
-                        "type": "string",
-                        "readOnly": true
+                "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "docProp": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Document Property",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "operator": {
+                            "enum": [
+                                "eq",
+                                "in",
+                                "inst"
+                            ],
+                            "title": "Operator",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "value": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Value",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "valuePath": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Value Path",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "mapValue": {
+                            "maxLength": 1000,
+                            "minLength": 0,
+                            "title": "Map Value",
+                            "type": "string",
+                            "readOnly": true
+                        }
                     },
-                    "operator": {
-                        "enum": [
-                            "eq",
-                            "in"
-                        ],
-                        "title": "Operator",
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "value": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Value",
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "valuePath": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Value Path",
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "mapValue": {
-                        "maxLength": 1000,
-                        "minLength": 0,
-                        "title": "Map Value",
-                        "type": "string",
-                        "readOnly": true
-                    }
+                    "title": "Where",
+                    "type": "object"
                 },
-                "title": "Where",
-                "type": "object"
+                "title": "And Array",
+                "type": "array"
             }
         },
         "type": "object"
@@ -1996,7 +2001,9 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>The Standard Model</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
-        "authorizedForStateIds": ["oltp4kpj4fvi"],
+        "authorizedForStateIds": [
+            "oltp4kpj4fvi"
+        ],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2039,8 +2046,9 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Server</div></div><p>The Neuralquest server</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
-        "authorizedForStateIds": ["tfkyaytuac1g"],
-
+        "authorizedForStateIds": [
+            "tfkyaytuac1g"
+        ],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2083,7 +2091,9 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/lefkasHome1.png' width='100%' height='100px'><div class='headline'>Client</div></div><p>The Neuralquest client</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "eoscommonsio",
-        "authorizedForStateIds": ["tfkyaytuac1g"],
+        "authorizedForStateIds": [
+            "tfkyaytuac1g"
+        ],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2509,21 +2519,23 @@
                 "readOnly": false
             },
             "where": {
-                "properties": {
-                    "docProp": {
-                        "readOnly": false
-                    },
-                    "operator": {
-                        "readOnly": false
-                    },
-                    "value": {
-                        "readOnly": false
-                    },
-                    "valuePath": {
-                        "readOnly": false
-                    },
-                    "mapValue": {
-                        "readOnly": false
+                "items": {
+                    "properties": {
+                        "docProp": {
+                            "readOnly": false
+                        },
+                        "operator": {
+                            "readOnly": false
+                        },
+                        "value": {
+                            "readOnly": false
+                        },
+                        "valuePath": {
+                            "readOnly": false
+                        },
+                        "mapValue": {
+                            "readOnly": false
+                        }
                     }
                 }
             },
@@ -2547,7 +2559,9 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Front Desk</div></div>",
         "classId": "dasprps1lrwf",
         "ownerId": "bicycleshop1",
-        "authorizedForStateIds": ["yefagaab4ua2"],
+        "authorizedForStateIds": [
+            "yefagaab4ua2"
+        ],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -2590,7 +2604,9 @@
         "description": "<div class='nqSpanColumn' style='position: relative;'><img src='app/resources/img/Neuralquest/ACMEBicyleShop.png' width='100%' height='100px'><div class='headline'>Workshop</div></div><p>ACME Workshop</p>",
         "classId": "dasprps1lrwf",
         "ownerId": "bicycleshop1",
-        "authorizedForStateIds": ["pvk5ngmorf4z"],
+        "authorizedForStateIds": [
+            "pvk5ngmorf4z"
+        ],
         "permissions": [
             {
                 "perm_name": "owner",
@@ -3721,11 +3737,13 @@
         "pageId": "24cnex2sayeh",
         "queryName": "standardModel",
         "select": "title",
-        "where": {
-            "docProp": "key",
-            "operator": "eq",
-            "value": "gzthjuyjca4s"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "eq",
+                "value": "gzthjuyjca4s"
+            }
+        ]
     },
     {
         "key": "2jfs4is4icct",
@@ -3741,11 +3759,13 @@
         ],
         "pageId": "24cnex2sayeh",
         "sortBy": "title",
-        "where": {
-            "docProp": "parentId",
-            "operator": "eq",
-            "value": "$fk"
-        }
+        "where": [
+            {
+                "docProp": "parentId",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        ]
     },
     {
         "key": "x1lrv2xdq2tu",
@@ -3763,11 +3783,13 @@
             "ndpfqsf454tl",
             "wxqc53yr1d2f"
         ],
-        "where": {
-            "docProp": "classId",
-            "operator": "eq",
-            "value": "$fk"
-        }
+        "where": [
+            {
+                "docProp": "classId",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        ]
     },
     {
         "key": "ndpfqsf454tl",
@@ -3791,11 +3813,13 @@
         "name": "Exposed to Processes Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "exposedToProcessesIds"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "exposedToProcessesIds"
+            }
+        ]
     },
     {
         "key": "jla5kldghbxi",
@@ -3803,11 +3827,13 @@
         "name": "Authorized for State Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "authorizedForStateIds"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "authorizedForStateIds"
+            }
+        ]
     },
     {
         "key": "itypb41mkq2v",
@@ -3820,11 +3846,13 @@
         "subQueryIds": [
             "itypb41mkq2v"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "subQueryIds"
-        },
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "subQueryIds"
+            }
+        ],
         "sortBy": "name"
     },
     {
@@ -3839,11 +3867,13 @@
         "subQueryIds": [
             "mhi13xo2io4q"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "value": "ikjyhlqewxs3"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "value": "ikjyhlqewxs3"
+            }
+        ]
     },
     {
         "key": "mhi13xo2io4q",
@@ -3859,11 +3889,13 @@
         ],
         "pageId": "24cnex2sayeh",
         "sortBy": "title",
-        "where": {
-            "docProp": "parentId",
-            "operator": "eq",
-            "value": "$fk"
-        }
+        "where": [
+            {
+                "docProp": "parentId",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        ]
     },
     {
         "key": "4gnvq2ctvtiw",
@@ -3874,11 +3906,13 @@
         "from": "gzthjuyjca4s",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
         "sortBy": "name",
-        "where": {
-            "docProp": "classId",
-            "operator": "eq",
-            "value": "$fk"
-        }
+        "where": [
+            {
+                "docProp": "classId",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        ]
     },
     {
         "key": "znn3osz1igvm",
@@ -3893,11 +3927,13 @@
             "2jfs4is4icct",
             "x1lrv2xdq2tu"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "value": "nrioirgelhpi"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "value": "nrioirgelhpi"
+            }
+        ]
     },
     {
         "key": "ydwhxijs4nrw",
@@ -3911,12 +3947,14 @@
         "subQueryIds": [
             "ydwhxijs4nrw"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "nextStateIds",
-            "mapValue": "stateId"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "nextStateIds",
+                "mapValue": "stateId"
+            }
+        ]
     },
     {
         "key": "5fcag1lt11gj",
@@ -3931,11 +3969,13 @@
             "5fcag1lt11gj",
             "ydwhxijs4nrw"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "substateId"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "substateId"
+            }
+        ]
     },
     {
         "key": "sd5zsuvlxdgf",
@@ -3948,11 +3988,13 @@
         "subQueryIds": [
             "2vwvbhvflpp1"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "eq",
-            "value": "xqxkmto5njxi"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "eq",
+                "value": "xqxkmto5njxi"
+            }
+        ]
     },
     {
         "key": "2vwvbhvflpp1",
@@ -3965,11 +4007,13 @@
         "subQueryIds": [
             "2vwvbhvflpp1"
         ],
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "subParagraphIds"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "subParagraphIds"
+            }
+        ]
     },
     {
         "key": "kl2fe4hvhhtg",
@@ -3978,20 +4022,34 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "nlmgc3dmrwxs",
-        "where": {
-            "docProp": "classId",
-            "operator": "eq",
-            "value": "nlmgc3dmrwxs"
-        }
+        "where": [
+            {
+                "docProp": "classId",
+                "operator": "eq",
+                "value": "nlmgc3dmrwxs"
+            }
+        ]
     },
     {
         "key": "vu2j5khcsdrv",
         "docType": "object",
-        "name": "Agreements Query",
+        "name": "Agreements Table Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "pageId": "n1dvzgi132ap",
         "from": "i1gjptcb2skq",
+        "where": [
+            {
+                "docProp": "classId",
+                "operator": "inst",
+                "value": "i1gjptcb2skq"
+            },
+            {
+                "docProp": "sellerId",
+                "operator": "eq",
+                "value": "$fk"
+            }
+        ],
         "addDialogViewId": "3ebxsw5pbk3r"
     },
     {
@@ -4001,11 +4059,13 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "from": "re1ihrfyl3zf",
-        "addDialogViewId": "jjeqqtkmf5qo",
-        "where": {
-            "docProp": "key",
-            "operator": "in",
-            "valuePath": "agreementHistoryIds"
-        }
+        "where": [
+            {
+                "docProp": "key",
+                "operator": "in",
+                "valuePath": "agreementHistoryIds"
+            }
+        ],
+        "addDialogViewId": "jjeqqtkmf5qo"
     }
 ]

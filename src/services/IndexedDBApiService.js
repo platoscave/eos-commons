@@ -35,7 +35,7 @@ class IndexedDBApiService {
         })
     }
 
-    static async getCommonByKey(key) {
+    static async getCommonByKey(store, key) {
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
 
@@ -46,7 +46,7 @@ class IndexedDBApiService {
                 } else {
                     store.commit('SET_SNACKBAR', {
                         snackbar: true,
-                        text: 'queryByIndex failed',
+                        text: 'getCommonByKey failed',
                         color: 'error'
                     })
                     reject('error')
@@ -55,12 +55,17 @@ class IndexedDBApiService {
         })
     }
 
-    static async queryByIndex(indexName, key) {
+    static async queryByIndex(store, indexName, key) {
         // Wrap indexedDB transaction in a promise
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
             if (!commonsStore.indexNames.contains(indexName)) {
                 console.error('Add index: ', indexName)
+                store.commit('SET_SNACKBAR', {
+                    snackbar: true,
+                    text: 'Add index: ' + indexName,
+                    color: 'error'
+                })
                 resolve([])
                 return
             }
@@ -183,7 +188,7 @@ class IndexedDBApiService {
         })
         return authorizedForState
     }
-    static async transact(newObj, store) {
+    static async transact(store, newObj) {
         try {
             const rpc = new JsonRpc(HTTPENDPOINT)
             const result = await api.transact({
