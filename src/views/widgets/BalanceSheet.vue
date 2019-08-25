@@ -42,11 +42,11 @@ export default {
     let queryObj = {
       query: {
         sortBy: 'title',
-        where: {
+        where: [{
           docProp: 'parentId',
           operator: 'eq',
           value: '5jdnjqxsqmgn'
-        }
+        }]
       }
     }
     return this.$store.dispatch('query', queryObj).then(resultsArr => {

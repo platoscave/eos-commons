@@ -224,45 +224,45 @@ const store = new Vuex.Store({
                 }
             }
 
-            if (Array.isArray(queryObj.query.where)) {
-                // queryId takes precidence over query
-                if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
+            // queryId takes precidence over query
+            if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
 
-                // If currentObj is a string, assume it's a key
-                if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
+            // If currentObj is a string, assume it's a key
+            if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 
-                const whereArr = queryObj.query.where
+            const whereArr = queryObj.query.where
 
-                // The first where is executed againt the DB
-                resolveWhereClause(queryObj, whereArr[0])
-                let resultsArr = await executeQuery(whereArr[0])
-                console.log('resultsArr', resultsArr)
+            // The first where is executed againt the DB
+            resolveWhereClause(queryObj, whereArr[0])
+            let resultsArr = await executeQuery(whereArr[0])
 
-                // Subsequent wheres are used as filters
-                for (let idx = 1; idx < whereArr.length; idx++) {
-                    resolveWhereClause(queryObj, whereArr[idx])
-                    resultsArr = resultsArr.filter(item => {
-                        return item[whereArr[idx].docProp] === whereArr[idx].value
-                    })
-                }
+            // Subsequent wheres are used as filters
+            for (let idx = 1; idx < whereArr.length; idx++) {
+                resolveWhereClause(queryObj, whereArr[idx])
+                resultsArr = resultsArr.filter(item => {
+                    return item[whereArr[idx].docProp] === whereArr[idx].value
+                })
+            }
 
-                // Sort the result, if needed
-                const sortBy = queryObj.query.sortBy
-                if (sortBy) {
-                    resultsArr.sort((a, b) => {
-                        if (a[sortBy] && b[sortBy]) {
-                            let aa = a[sortBy].toUpperCase()
-                            let bb = b[sortBy].toUpperCase()
-                            if (aa > bb) return 1
-                            if (aa < bb) return -1
-                        }
-                        return 0
-                    })
-                }
+            // Sort the result, if needed
+            const sortBy = queryObj.query.sortBy
+            if (sortBy) {
+                resultsArr.sort((a, b) => {
+                    if (a[sortBy] && b[sortBy]) {
+                        let aa = a[sortBy].toUpperCase()
+                        let bb = b[sortBy].toUpperCase()
+                        if (aa > bb) return 1
+                        if (aa < bb) return -1
+                    }
+                    return 0
+                })
+            }
 
-                return resultsArr
+            return resultsArr
+            /* if (Array.isArray(queryObj.query.where)) {
+
             } else {
-
+                debugger
                 let resultsArr = []
                 let query = queryObj.query
                 // queryId takes precidence over query
@@ -375,7 +375,7 @@ const store = new Vuex.Store({
                 }
 
                 return resultsArr
-            }
+            } */
 
         },
 

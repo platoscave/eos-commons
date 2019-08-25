@@ -28,11 +28,11 @@ export default {
     this.addLoadingText()
     let queryObj = {
       query: {
-        where: {
+        where: [{
           docProp: 'classId',
           operator: 'eq',
           value: 'dwl1kwhalwj4'
-        }
+        }]
       }
     }
     // Get an array of interface states from the store

@@ -67,11 +67,11 @@ export default {
       let queryObj = {
         query: {
           sortBy: 'title',
-          where: {
+          where: [{
             docProp: 'parentId',
             operator: 'eq',
             value: classObj.key
-          }
+          }]
         }
       }
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {
@@ -91,11 +91,11 @@ export default {
       let queryObj = {
         query: {
           sortBy: 'name',
-          where: {
+          where: [{
             docProp: 'classId',
             operator: 'eq',
             value: classObj3d.key
-          }
+          }]
         }
       }
       return this.$store.dispatch('query', queryObj).then((resultsArr) => {

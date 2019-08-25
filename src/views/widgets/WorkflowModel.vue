@@ -28,11 +28,11 @@ export default {
     this.addLoadingText()
     let queryObj = {
       query: {
-        where: {
+        where: [{
           docProp: 'classId',
           operator: 'eq',
           value: 'hhg2u2zptnfo'
-        }
+        }]
       }
     }
     // Get an array of agreements from the store

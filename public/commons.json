@@ -15,7 +15,13 @@
             "classId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "sub",
+                            "value": "gzthjuyjca4s"
+                        }
+                    ],
                     "sortBy": "title"
                 },
                 "title": "Class",
@@ -406,7 +412,13 @@
             "pageId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "pejdgrwd5qso",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "pejdgrwd5qso"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Page",
@@ -417,7 +429,13 @@
                 "title": "First Paragraph",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "siutzqsj5dgc",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "siutzqsj5dgc"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "type": "string",
@@ -436,7 +454,13 @@
             "ownerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "ikjyhlqewxs3",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "ikjyhlqewxs3"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Owner",
@@ -504,7 +528,13 @@
                         "pageId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "pejdgrwd5qso",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "pejdgrwd5qso"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "Page",
@@ -552,7 +582,13 @@
                                     "pageId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                                         "query": {
-                                            "from": "pejdgrwd5qso",
+                                            "where": [
+                                                {
+                                                    "docProp": "classId",
+                                                    "operator": "inst",
+                                                    "value": "pejdgrwd5qso"
+                                                }
+                                            ],
                                             "sortBy": "name"
                                         },
                                         "title": "Page",
@@ -562,7 +598,13 @@
                                     "viewId": {
                                         "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                                         "query": {
-                                            "from": "pylvseoljret",
+                                            "where": [
+                                                {
+                                                    "docProp": "classId",
+                                                    "operator": "inst",
+                                                    "value": "pylvseoljret"
+                                                }
+                                            ],
                                             "sortBy": "name"
                                         },
                                         "title": "View",
@@ -624,16 +666,6 @@
         "parentId": "nrioirgelhpi",
         "pageId": "qcd1eefe432r",
         "properties": {
-            "from": {
-                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                "query": {
-                    "from": "classes",
-                    "sortBy": "name"
-                },
-                "title": "From",
-                "type": "string",
-                "readOnly": true
-            },
             "icon": {
                 "maxLength": 2000,
                 "media": {
@@ -652,7 +684,13 @@
                             "title": "Subquery",
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "q234ooehrk5v",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "q234ooehrk5v"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "type": "string",
@@ -667,7 +705,13 @@
             "pageId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "pejdgrwd5qso",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "pejdgrwd5qso"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Page",
@@ -689,7 +733,8 @@
                             "enum": [
                                 "eq",
                                 "in",
-                                "inst"
+                                "inst",
+                                "sub"
                             ],
                             "title": "Operator",
                             "type": "string",
@@ -739,7 +784,13 @@
                         "documentId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "siutzqsj5dgc",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "siutzqsj5dgc"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "Sub Ducument",
@@ -777,7 +828,13 @@
                 "title": "Initial Query",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "q234ooehrk5v",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "q234ooehrk5v"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "type": "string",
@@ -787,7 +844,14 @@
                 "title": "Base Class",
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes",
+                    "where": [
+                        {
+
+                            "docProp": "classId",
+                            "operator": "sub",
+                            "value": "gzthjuyjca4s"
+                        }
+                    ],
                     "sortBy": "title"
                 },
                 "type": "string",
@@ -920,10 +984,55 @@
                     "title": "Query",
                     "type": "object",
                     "properties": {
-                        "from": {
-                            "title": "From",
-                            "type": "string",
-                            "readOnly": true
+                        "where": {
+                            "items": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "docProp": {
+                                        "maxLength": 1000,
+                                        "minLength": 0,
+                                        "title": "Document Property",
+                                        "type": "string",
+                                        "readOnly": true
+                                    },
+                                    "operator": {
+                                        "enum": [
+                                            "eq",
+                                            "in",
+                                            "inst",
+                                            "sub"
+                                        ],
+                                        "title": "Operator",
+                                        "type": "string",
+                                        "readOnly": true
+                                    },
+                                    "value": {
+                                        "maxLength": 1000,
+                                        "minLength": 0,
+                                        "title": "Value",
+                                        "type": "string",
+                                        "readOnly": true
+                                    },
+                                    "valuePath": {
+                                        "maxLength": 1000,
+                                        "minLength": 0,
+                                        "title": "Value Path",
+                                        "type": "string",
+                                        "readOnly": true
+                                    },
+                                    "mapValue": {
+                                        "maxLength": 1000,
+                                        "minLength": 0,
+                                        "title": "Map Value",
+                                        "type": "string",
+                                        "readOnly": true
+                                    }
+                                },
+                                "title": "Where",
+                                "type": "object"
+                            },
+                            "title": "And Array",
+                            "type": "array"
                         },
                         "sortBy": {
                             "title": "Sort By",
@@ -1027,7 +1136,13 @@
                         "processId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "dwl1kwhalwj4",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "dwl1kwhalwj4"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "Exposed to Process",
@@ -1075,7 +1190,13 @@
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dlpwvptczyeb",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dlpwvptczyeb"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "State",
@@ -1085,7 +1206,13 @@
             "buyerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "ikjyhlqewxs3",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "ikjyhlqewxs3"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Buyer",
@@ -1095,7 +1222,13 @@
             "sellerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "ikjyhlqewxs3",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "ikjyhlqewxs3"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Seller",
@@ -1105,7 +1238,13 @@
             "assetId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "3ihg3mjdbqzv",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "3ihg3mjdbqzv"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Asset",
@@ -1115,7 +1254,13 @@
             "processId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dwl1kwhalwj4",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dwl1kwhalwj4"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Process",
@@ -1125,7 +1270,13 @@
             "sellerProcessId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dwl1kwhalwj4",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dwl1kwhalwj4"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Seller Process",
@@ -1135,7 +1286,13 @@
             "sellerEpicId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dwl1kwhalwj4",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dwl1kwhalwj4"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Seller Epic",
@@ -1148,7 +1305,14 @@
                         "agreementHistoryId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "re1ihrfyl3zf"
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "re1ihrfyl3zf"
+                                    }
+                                ],
+                                "sortBy": "name"
                             },
                             "title": "State History",
                             "type": "string",
@@ -1179,7 +1343,13 @@
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dlpwvptczyeb",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dlpwvptczyeb"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "State",
@@ -1220,7 +1390,13 @@
                         "processId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "dlpwvptczyeb",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "dlpwvptczyeb"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "Authorized for State",
@@ -1281,7 +1457,13 @@
             "sellerEpicId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dwl1kwhalwj4",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dwl1kwhalwj4"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Seller Epic",
@@ -1601,7 +1783,13 @@
                         "stateId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "dlpwvptczyeb",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "dlpwvptczyeb"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "State",
@@ -1622,7 +1810,13 @@
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "1jrqyjoabx1a",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "1jrqyjoabx1a"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Substate",
@@ -1660,7 +1854,13 @@
                         "stateId": {
                             "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                             "query": {
-                                "from": "dlpwvptczyeb",
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "inst",
+                                        "value": "dlpwvptczyeb"
+                                    }
+                                ],
                                 "sortBy": "name"
                             },
                             "title": "State",
@@ -1681,7 +1881,13 @@
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "1jrqyjoabx1a",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "1jrqyjoabx1a"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Substate",
@@ -1711,7 +1917,13 @@
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "1jrqyjoabx1a",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "1jrqyjoabx1a"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Substate",
@@ -2512,9 +2724,6 @@
             "icon": {
                 "readOnly": false
             },
-            "from": {
-                "readOnly": false
-            },
             "pageId": {
                 "readOnly": false
             },
@@ -2903,7 +3112,13 @@
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "dlpwvptczyeb",
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "inst",
+                            "value": "dlpwvptczyeb"
+                        }
+                    ],
                     "sortBy": "name"
                 },
                 "title": "Next State",
@@ -3390,8 +3605,14 @@
             "parentId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
-                    "from": "classes",
-                    "sortBy": "name"
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "sub",
+                            "value": "gzthjuyjca4s"
+                        }
+                    ],
+                    "sortBy": "title"
                 },
                 "title": "Super Class",
                 "type": "string",
@@ -3728,7 +3949,6 @@
         "name": "Root Class Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
         "subQueryIds": [
             "2jfs4is4icct",
@@ -3751,7 +3971,6 @@
         "name": "Subclasses Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
         "subQueryIds": [
             "2jfs4is4icct",
@@ -3773,7 +3992,6 @@
         "name": "Object Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "gzthjuyjca4s",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
         "sortBy": "name",
         "subQueryIds": [
@@ -3797,7 +4015,6 @@
         "name": "Organizational Units Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "ikjyhlqewxs3",
         "subQueryIds": [
             "jla5kldghbxi"
         ],
@@ -3841,7 +4058,6 @@
         "name": "Queries Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "pylvseoljret",
         "pageId": "qcd1eefe432r",
         "subQueryIds": [
             "itypb41mkq2v"
@@ -3861,7 +4077,6 @@
         "name": "Accounts Class Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "pageId": "qwhjia43h1s4",
         "subQueryIds": [
@@ -3881,7 +4096,6 @@
         "name": "Accounts Subclasses Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "subQueryIds": [
             "mhi13xo2io4q",
@@ -3903,7 +4117,6 @@
         "name": "Account Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "gzthjuyjca4s",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABvSURBVDhPY/j//z9FeNiD/4pAjwIxyQCq0ecYAxgTbxCaRnSM2yACGtExqkEkaETHEEOGgQGDAgBzVTYQewKxGhBLALEIEDMBMSMSBvFVgVgXiEuBOBmmnQmImYGYEQmzQzEHFMPkQepBGMr+zwUAa2Uzpn+czq8AAAAASUVORK5CYII=",
         "sortBy": "name",
         "where": [
@@ -3920,7 +4133,6 @@
         "name": "OB Resources Class Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABTSURBVDhPYxjm4D/Dnf8gDOUSD2AaNzH8B2OiDULXiI5xGkRIIzpGMYgUjegYxRBSDIKpB2tGBoQMwqkRHaAbRLRGdEC2RvoCkA8pwVgFicf/GQD/KjucAgshDwAAAABJRU5ErkJggg==",
         "pageId": "qwhjia43h1s4",
         "subQueryIds": [
@@ -3941,7 +4153,6 @@
         "name": "Next States Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "pageId": "2vnljdsieyjw",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "subQueryIds": [
@@ -3962,7 +4173,6 @@
         "name": "Sub State Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "classes",
         "pageId": "2vnljdsieyjw",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "subQueryIds": [
@@ -3983,7 +4193,6 @@
         "name": "Document Root Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "siutzqsj5dgc",
         "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUuMDAwMDAwMDAwMDAwMDAyIiBoZWlnaHQ9IjE1LjAwMDAwMDAwMDAwMDAwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjQwMiIgd2lkdGg9IjU4MiIgeT0iLTEiIHg9Ii0xIi8+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggZmlsbD0iI2NjY2NjYyIgaWQ9InN2Z18xIiBkPSJtNy41LDRjLTEuOTMsMCAtMy41LDEuNTcgLTMuNSwzLjVzMS41NywzLjUgMy41LDMuNXMzLjUsLTEuNTcgMy41LC0zLjVzLTEuNTcsLTMuNSAtMy41LC0zLjV6bTAsNmMtMS4zNzgsMCAtMi41LC0xLjEyMiAtMi41LC0yLjVzMS4xMjIsLTIuNSAyLjUsLTIuNXMyLjUsMS4xMjIgMi41LDIuNXMtMS4xMjIsMi41IC0yLjUsMi41eiIvPgogIDxwYXRoIGZpbGw9IiNjY2NjY2MiIGlkPSJzdmdfMiIgZD0ibTE1LDlsMCwtM2wtMi4yMDgsMGMtMC4xMTcsLTAuNDA5IC0wLjI4MSwtMC44MDMgLTAuNDkyLC0xLjE3OWwxLjU2MywtMS41NjRsLTIuMTIxLC0yLjEyMWwtMS41NjMsMS41NjRjLTAuMzc2LC0wLjIxMSAtMC43NywtMC4zNzUgLTEuMTc5LC0wLjQ5MmwwLC0yLjIwOGwtMywwbDAsMi4yMDhjLTAuNDA5LDAuMTE3IC0wLjgwMywwLjI4MSAtMS4xNzksMC40OTJsLTEuNTY0LC0xLjU2NGwtMi4xMjEsMi4xMjFsMS41NjQsMS41NjRjLTAuMjExLDAuMzc2IC0wLjM3NSwwLjc3IC0wLjQ5MiwxLjE3OWwtMi4yMDgsMGwwLDNsMi4yMDgsMGMwLjExNywwLjQwOSAwLjI4MSwwLjgwMyAwLjQ5MiwxLjE3OWwtMS41NjMsMS41NjRsMi4xMjEsMi4xMjFsMS41NjMsLTEuNTY0YzAuMzc1LDAuMjExIDAuNzcsMC4zNzUgMS4xNzksMC40OTJsMCwyLjIwOGwzLDBsMCwtMi4yMDhjMC40MDksLTAuMTE3IDAuODAzLC0wLjI4MSAxLjE3OSwtMC40OTJsMS41NjQsMS41NjNsMi4xMjEsLTIuMTIxbC0xLjU2NCwtMS41NjNjMC4yMTEsLTAuMzc1IDAuMzc1LC0wLjc3IDAuNDkyLC0xLjE3OWwyLjIwOCwwem0tMi41NSwyLjc0M2wtMC43MDcsMC43MDdsLTEuNDIzLC0xLjQyM2wtMC4zNDEsMC4yMjVjLTAuNDg5LDAuMzIyIC0xLjAyLDAuNTQ0IC0xLjU3OSwwLjY1OGwtMC40LDAuMDgxbDAsMi4wMDlsLTEsMGwwLC0yLjAwOWwtMC40LC0wLjA4MWMtMC41NTksLTAuMTE0IC0xLjA5LC0wLjMzNSAtMS41NzgsLTAuNjU4bC0wLjM0MSwtMC4yMjVsLTEuNDI0LDEuNDIzbC0wLjcwNywtMC43MDdsMS40MjMsLTEuNDIzbC0wLjIyNCwtMC4zNDFjLTAuMzIzLC0wLjQ4OSAtMC41NDUsLTEuMDIgLTAuNjU5LC0xLjU3OWwtMC4wODEsLTAuNGwtMi4wMDksMGwwLC0xbDIuMDA5LDBsMC4wODEsLTAuNGMwLjExNCwtMC41NTkgMC4zMzUsLTEuMDkgMC42NTgsLTEuNTc4bDAuMjI1LC0wLjM0MWwtMS40MjMsLTEuNDI0bDAuNzA3LC0wLjcwN2wxLjQyMywxLjQyM2wwLjM0MSwtMC4yMjVjMC40ODksLTAuMzIyIDEuMDIsLTAuNTQ0IDEuNTc5LC0wLjY1OGwwLjQsLTAuMDgxbDAsLTIuMDA5bDEsMGwwLDIuMDA5bDAuNCwwLjA4MWMwLjU1OSwwLjExNCAxLjA5LDAuMzM1IDEuNTc4LDAuNjU4bDAuMzQxLDAuMjI1bDEuNDIzLC0xLjQyM2wwLjcwNywwLjcwN2wtMS40MjMsMS40MjNsMC4yMjUsMC4zNDFjMC4zMjMsMC40ODkgMC41NDUsMS4wMiAwLjY1OSwxLjU3OWwwLjA4MSwwLjRsMi4wMDksMGwwLDFsLTIuMDA5LDBsLTAuMDgxLDAuNGMtMC4xMTQsMC41NTkgLTAuMzM1LDEuMDkgLTAuNjU4LDEuNTc4bC0wLjIyNSwwLjM0MWwxLjQyMywxLjQyNHoiLz4KIDwvZz4KPC9zdmc+",
         "subQueryIds": [
             "2vwvbhvflpp1"
@@ -4002,7 +4211,6 @@
         "name": "Document Sub Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "siutzqsj5dgc",
         "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADxSURBVDhPY/j//z9FmLrgzEyT/yB8eobx/5PTDP+fmGpAvBUgjahgFxgf6tcibAhI8+3thUAchAUX/t/bpfp/V7vS/+0t8v+3Nsn+39wo/X9DnQTCYJCTSQVrqkQQBoD8+///TCCeQySe+X95KT/CgONT9MGCpODFhdwIA45O0oVI/JhMHAaqXZDHgTAAFNJgA953EoeBauflsCEMONCrATHgST1xGKh2ThYLwgBQNIENuF1KHAaqnZXBhDAAFMdgA67kE4eBamemMyIMAAHkBLKuRuz/6krh/yvKBP4vLeYFhzgo0ED+BjkdQ/MAAgYGAKPFDB0e1bt2AAAAAElFTkSuQmCC",
         "subQueryIds": [
             "2vwvbhvflpp1"
@@ -4021,7 +4229,6 @@
         "name": "Assests Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "nlmgc3dmrwxs",
         "where": [
             {
                 "docProp": "classId",
@@ -4037,7 +4244,6 @@
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
         "pageId": "n1dvzgi132ap",
-        "from": "i1gjptcb2skq",
         "where": [
             {
                 "docProp": "classId",
@@ -4058,7 +4264,6 @@
         "name": "Agreements History Table Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
-        "from": "re1ihrfyl3zf",
         "where": [
             {
                 "docProp": "key",
