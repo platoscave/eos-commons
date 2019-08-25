@@ -86,12 +86,12 @@ class IndexedDBApiService {
         })
     }
 
-    static async getControlledAccounts(actor, saughtPermission) {
+    static async getControlledAccounts(store, actor, saughtPermission) {
 
         // Recursivly get an array of subclasses
         const getSubclasses = async (classKey) => {
             const subclasses = async (parentClassKey) => {
-                let classArr = await this.queryByIndex('parentId', parentClassKey)
+                let classArr = await this.queryByIndex(store, 'parentId', parentClassKey)
                 let promisses = classArr.map(classObj => {
                     return subclasses(classObj.key)
                 })
@@ -103,7 +103,7 @@ class IndexedDBApiService {
                 return classArr
             }
             let subClassesArr = await subclasses(classKey)
-            let classObj = await this.getCommonByKey(classKey)
+            let classObj = await this.getCommonByKey(store, classKey)
             subClassesArr.push(classObj)
             // console.log('subClassesArr', subClassesArr)
             return subClassesArr // include the class we started out with
@@ -115,7 +115,7 @@ class IndexedDBApiService {
 
         // Collect all of the objects for these subclasses
         let promisses = subClassArr.map(classObj => {
-            return this.queryByIndex('classId', classObj.key)
+            return this.queryByIndex(store, 'classId', classObj.key)
         })
         let subClassObjectsArr = await Promise.all(promisses)
         // Flatten array of arrays.
@@ -146,7 +146,7 @@ class IndexedDBApiService {
             const superclassId = obj.classId
 
             const testSuperClass = async superclassId => {
-                const superclass = await this.getCommonByKey(superclassId)
+                const superclass = await this.getCommonByKey(store, superclassId)
                 if (!superclass.parentId) return false // we are at the root
                 if (superclass.parentId === classId) return true
                 return testSuperClass(superclass.parentId)
@@ -168,14 +168,14 @@ class IndexedDBApiService {
                   allow add history record
         */
         const currentUserId = store.state.currentUserId
-        const agreementObj = await this.getCommonByKey(agreementId)
+        const agreementObj = await this.getCommonByKey(store, agreementId)
 
         if (agreementObj.buyerId === currentUserId) {
             const isABuyerState = await isA(agreementObj.stateId, 'xsaq3l5hncb2') // Buyer States
             if (isABuyerState) return true
         }
-        const sellerOrgunitAccounts = await this.getControlledAccounts(agreementObj.sellerId, 'owner')
-        const currentUserOrgunitAccounts = await this.getControlledAccounts(currentUserId, 'active')
+        const sellerOrgunitAccounts = await this.getControlledAccounts(store, agreementObj.sellerId, 'owner')
+        const currentUserOrgunitAccounts = await this.getControlledAccounts(store, currentUserId, 'active')
         const authorizedForAccountArr = Vue._.intersectionWith(sellerOrgunitAccounts, currentUserOrgunitAccounts, (objA, objB) => {
             return objA.key === objB.key
         })

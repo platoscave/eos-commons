@@ -207,14 +207,23 @@ export default {
       },
       { immediate: true }
     );
-    
+
     // watch the current user
     this.$store.watch(
-      state => state.currentUserId, async currentUserId => {
+      state => state.currentUserId,
+      async currentUserId => {
         if (!currentUserId) return;
-        const orgId = this.$store.state.levelIdsArr[this.level].selectedObjId
-        const addRecordAllowed = await this.$store.dispatch("userMayAddHistory", orgId);
-        this.addRecordAllowed = addRecordAllowed
+        if (this.viewObj.baseClassId === "i1gjptcb2skq") {
+          // Agreements
+          this.addRecordAllowed = true;
+        } else {
+          const orgId = this.$store.state.levelIdsArr[this.level].selectedObjId;
+          const addRecordAllowed = await this.$store.dispatch(
+            "userMayAddHistory",
+            orgId
+          );
+          this.addRecordAllowed = addRecordAllowed;
+        }
       },
       { immediate: true }
     );
@@ -260,20 +269,25 @@ export default {
       }
     },
     takeAction: async function(action) {
+        this.dialog = false
       console.log("action", action);
       if (action === "addAgreement") {
+          const processObj = await this.$store.dispatch("getCommonByKey", 'cie1pllxq5mu'); // Service Request Process
+
         this.newObj.docType = "object";
+        this.newObj.stateId = processObj.substateId
         const date = new Date();
         this.newObj.startDate = date.toISOString();
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
         ].selectedObjId;
         this.newObj.buyerId = this.$store.state.currentUserId;
-        this.newObj.classId = "w3mzeetidb5n"; // Service request
-        this.newObj.processId = "w3mzeetidb5n"; // Service request
+        this.newObj.classId = "w3mzeetidb5n"; // Service Request
+        this.newObj.processId = "cie1pllxq5mu"; // Service Request Process
+
+        const key = await this.$store.dispatch("upsertCommon", this.newObj);
+        // let key = await this.$store.dispatch("transact", this.newObj);
       }
-      let key = await this.$store.dispatch("upsertCommon", this.newObj);
-      // let key = await this.$store.dispatch("transact", this.newObj);
 
       const queryObj = {
         query: this.query

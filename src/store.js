@@ -219,6 +219,8 @@ const store = new Vuex.Store({
                     return Vue._.flatten(subClassObjectsArr)
                 } else if (operator === 'sub') {
                     return await getSubclasses(value)
+                } else if (operator === 'get_controlled_accounts') {
+                    return ApiService.getControlledAccounts(store, value, 'owner')
                 } else {
                     throw new Error('Cannot query with ' + operator + ' operator yet')
                 }
@@ -231,7 +233,7 @@ const store = new Vuex.Store({
             if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 
             const whereArr = queryObj.query.where
-
+if(!whereArr) debugger
             // The first where is executed againt the DB
             resolveWhereClause(queryObj, whereArr[0])
             let resultsArr = await executeQuery(whereArr[0])
