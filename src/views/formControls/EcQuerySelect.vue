@@ -51,9 +51,13 @@ export default {
     }
   },
   mounted: async function () {
+
+
     const results = await this.$store.dispatch('query', {
+        currentObj: 'oltp4kpj4fvi',
       query: this.property.query
     })
+
     this.items = results.map(item => {
       let obj = {
         value: item.key,

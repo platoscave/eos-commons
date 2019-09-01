@@ -846,7 +846,6 @@
                 "query": {
                     "where": [
                         {
-
                             "docProp": "classId",
                             "operator": "sub",
                             "value": "gzthjuyjca4s"
@@ -3109,19 +3108,20 @@
         "ownerId": "eoscommonsio",
         "baseClassId": "re1ihrfyl3zf",
         "properties": {
-            "stateId": {
+            "action": {
                 "query": {
                     "where": [
                         {
+                            "stop": true,
                             "docProp": "key",
-                            "operator": "in",
+                            "operator": "litteral",
                             "valuePath": "nextStateIds",
-                            "mapValue": "stateId"
+                            "mapValue": "action"
                         }
                     ],
                     "sortBy": "name"
                 },
-                "title": "Next State",
+                "title": "Action",
                 "type": "string",
                 "readOnly": false
             },
@@ -3238,11 +3238,9 @@
                 "title": "Date"
             },
             "stateId": {
-                "title": "State",
-                "readOnly": false
+                "title": "State"
             },
             "description": {
-                "readOnly": false
             }
         },
         "queryId": "eevccbk1napt",
@@ -3474,7 +3472,8 @@
                 "stateId": "tfkyaytuac1g"
             },
             {
-                "action": "unhappy"
+                "action": "unhappy",
+                "XstateId": "cie1pllxq5mu"
             }
         ],
         "ownerId": "jwzwfaehsqks"
@@ -3487,10 +3486,12 @@
         "classId": "cq4bjkzqc2qp",
         "nextStateIds": [
             {
-                "action": "happy"
+                "action": "happy",
+                "XstateId": "cie1pllxq5mu"
             },
             {
-                "action": "unhappy"
+                "action": "unhappy",
+                "XstateId": "cie1pllxq5mu"
             }
         ],
         "ownerId": "jwzwfaehsqks"

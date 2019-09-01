@@ -46,10 +46,10 @@ class IndexedDBApiService {
                 } else {
                     store.commit('SET_SNACKBAR', {
                         snackbar: true,
-                        text: 'getCommonByKey failed',
+                        text: 'getCommonByKey failed: '+ key,
                         color: 'error'
                     })
-                    reject('error')
+                    reject('Cant find: '+ key)
                 }
             }
         })
@@ -187,6 +187,29 @@ class IndexedDBApiService {
             })
         })
         return authorizedForState
+    }
+    static async takeAction(store, newObj) {
+        console.log("takeAction", newObj);
+
+        const agreementObj = await this.getCommonByKey(store, newObj.agreementId);
+        const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
+
+
+        newObj.docType = "object";
+        newObj.classId = "re1ihrfyl3zf"; // Agreements History
+        newObj.processId = "cie1pllxq5mu"; // Service Request Process
+
+        const date = new Date();
+        newObj.stateDate = date.toISOString();
+        newObj.updaterId = store.state.currentUserId;
+
+        newObj.sellerId = store.state.levelIdsArr[
+          this.level
+        ].selectedObjId;
+        newObj.stateId = processObj.substateId
+
+        const key = await this.$store.dispatch("upsertCommon", this.newObj);
+        // let key = await this.$store.dispatch("transact", this.newObj);
     }
     static async transact(store, newObj) {
         try {

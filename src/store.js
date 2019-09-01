@@ -133,8 +133,8 @@ const store = new Vuex.Store({
         eraseCommon: async function (store, key) {
             return ApiService.eraseCommon(key)
         },
-        transact: async function (store, newObj) {
-            return ApiService.transact(store, newObj)
+        takeAction: async function (store, newObj) {
+            return ApiService.takeAction(store, newObj)
         },
         userMayAddHistory: async function (store, agreementId) {
             return ApiService.userMayAddHistory(store, agreementId)
@@ -174,8 +174,10 @@ const store = new Vuex.Store({
                     where.value = Vue._.get(queryObj.currentObj, where.valuePath)
                 }
 
+                // If the value is an array of objects, we can use mapValue to pick one of the properies 
+                // in the object and use those to populate the value array
                 if (where.mapValue && Array.isArray(where.value)) {
-                    where.value = value.map(valueObj => {
+                    where.value = where.value.map(valueObj => {
                         return valueObj[where.mapValue]
                     })
                 }
@@ -204,6 +206,10 @@ const store = new Vuex.Store({
                     })
                     return await Promise.all(prommisesArr)
 
+                } else if (operator === 'litteral') {
+                    return value.map( item => {
+                        return { name: item, key: item }
+                    })
                 } else if (operator === 'inst') {
                     // The from clause always refers to a class.
                     // We need to get objects from classId class, and all of its subclasses
@@ -226,6 +232,25 @@ const store = new Vuex.Store({
                 }
             }
 
+            // Filter results
+            const filterResults = (resultsArr, where) => {
+                const docProp = where.docProp
+                const operator = where.operator
+                let value = where.value
+
+                if (operator === 'eq') {
+                    return resultsArr.filter(item => {
+                        return item[where.docProp] === where.value
+                    })
+                } else if (operator === 'in') {
+                    if (!Array.isArray(value)) value = [value]
+                    return resultsArr.filter(item => {
+                        // Is the key in the value array?
+                        return where.value.includes(item[where.docProp])
+                    })
+                } 
+            }
+
             // queryId takes precidence over query
             if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
 
@@ -233,17 +258,19 @@ const store = new Vuex.Store({
             if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 
             const whereArr = queryObj.query.where
-if(!whereArr) debugger
+
             // The first where is executed againt the DB
+            if(whereArr[0].stop) console.log('before', whereArr[0])
             resolveWhereClause(queryObj, whereArr[0])
             let resultsArr = await executeQuery(whereArr[0])
+            if(whereArr[0].stop) console.log('after', whereArr[0])
 
             // Subsequent wheres are used as filters
             for (let idx = 1; idx < whereArr.length; idx++) {
+                if(whereArr[idx].stop) console.log('before', whereArr[idx])
                 resolveWhereClause(queryObj, whereArr[idx])
-                resultsArr = resultsArr.filter(item => {
-                    return item[whereArr[idx].docProp] === whereArr[idx].value
-                })
+                if(whereArr[idx].stop) console.log('after', whereArr[idx])
+                resultsArr = filterResults(resultsArr, whereArr[idx])
             }
 
             // Sort the result, if needed
@@ -490,7 +517,7 @@ if(!whereArr) debugger
                 if (classObj.parentId) {
                     let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
                     return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
-                        if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
+                        // if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                     })
                 } else return classObj
             }
