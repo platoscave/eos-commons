@@ -10,7 +10,7 @@
 
     <!-- Less than 4: radio buttons-->
     <div v-else-if="items.length < 4">
-      <v-radio-group v-bind:value="value" v-on:input="$emit('input', $event)" autofocus row>
+      <v-radio-group v-bind:value="value" v-on:change="$emit('input', $event)" autofocus row>
         <div v-for="(item, idx) in items" v-bind:key="idx">
           <v-radio :label="item.text" :value="item.value" @click="$emit('input', item.value)"></v-radio>
         </div>

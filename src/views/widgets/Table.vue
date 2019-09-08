@@ -280,6 +280,7 @@ export default {
         this.newObj.sellerId = this.$store.state.levelIdsArr[
           this.level
         ].selectedObjId;
+        this.newObj.agreementHistoryIds = [];
         this.newObj.buyerId = this.$store.state.currentUserId;
         this.newObj.classId = "w3mzeetidb5n"; // Service Request
         this.newObj.processId = "cie1pllxq5mu"; // Service Request Process
