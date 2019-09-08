@@ -141,7 +141,7 @@ class IndexedDBApiService {
 
         // Recursivly findout if obj is a classId
         const isA = async (objId, classId) => {
-            const obj = await this.getCommonByKey(objId)
+            const obj = await this.getCommonByKey(store, objId)
             if (obj.classId === classId) return true
             const superclassId = obj.classId
 
