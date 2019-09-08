@@ -188,28 +188,48 @@ class IndexedDBApiService {
         })
         return authorizedForState
     }
-    static async takeAction(store, newObj) {
-        console.log("takeAction", newObj);
+    static async takeAction(store, actionObj) {
+        console.log("takeAction", actionObj);
+        // Send action to contract
+        // Is user authorized for action?
+        //    does userId have enough active permission?
+        // Get next stateId from current stateId -> state.action
+        // Execute transaction: set agreement current stateId
+        // Read tracaction into stateHistory
 
-        const agreementObj = await this.getCommonByKey(store, newObj.agreementId);
-        const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
-
-
-        newObj.docType = "object";
-        newObj.classId = "re1ihrfyl3zf"; // Agreements History
-        newObj.processId = "cie1pllxq5mu"; // Service Request Process
 
         const date = new Date();
-        newObj.stateDate = date.toISOString();
-        newObj.updaterId = store.state.currentUserId;
+        // Get the agreement
+        let agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
+        // Get its state
+        const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
+        // Find the next state that corresponds with the action
+        const nextStateObj = currentStateObj.nextStateIds.find( obj => {
+            return obj.action === actionObj.action
+        })
+        // TODO if there is no stateId then return
+        // Set agreement state to it
+        agreementObj.stateId = nextStateObj.stateId
+        agreementObj.stateDate = date.toISOString()
 
-        newObj.sellerId = store.state.levelIdsArr[
-          this.level
-        ].selectedObjId;
-        newObj.stateId = processObj.substateId
 
-        const key = await this.$store.dispatch("upsertCommon", this.newObj);
-        // let key = await this.$store.dispatch("transact", this.newObj);
+        // Add history record (get transaction from eos)
+        const stateHistoryObj = {
+            docType: 'object',
+            classId: 're1ihrfyl3zf', // Agreements History
+            processId: 'cie1pllxq5mu', // Service Request Process
+            stateId: nextStateObj.stateId,
+            stateDate: date.toISOString(),
+            updaterId: store.state.currentUserId,
+            description: actionObj.description
+        }
+
+        const key = await this.upsertCommon(stateHistoryObj)
+
+        agreementObj.agreementHistoryIds.push(key)
+        const agreementKey = await this.upsertCommon(agreementObj)
+
+        return agreementKey
     }
     static async transact(store, newObj) {
         try {

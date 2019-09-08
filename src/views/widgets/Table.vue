@@ -144,7 +144,7 @@ export default {
       sortBy: "startDate",
       sortDesc: true,
       filters: {},
-      query: {}
+      queryObj: {}
     };
   },
   created: async function() {
@@ -170,15 +170,15 @@ export default {
     }));
 
     // get the query for this view
-    this.query = await this.$store.dispatch(
+    this.queryObj.query = await this.$store.dispatch(
       "getCommonByKey",
       this.viewObj.queryId
     );
 
-    if (this.query.addDialogViewId) {
+    if (this.queryObj.query.addDialogViewId) {
       this.addDialogViewObj = await this.$store.dispatch(
         "getMaterializedView",
-        this.query.addDialogViewId
+        this.queryObj.query.addDialogViewId
       );
     }
 
@@ -188,12 +188,9 @@ export default {
       async selectedObjId => {
         if (!selectedObjId) return;
 
-        const queryObj = {
-          query: this.query,
-          currentObj: selectedObjId
-        };
+        this.queryObj.currentObj = selectedObjId
         // get the data
-        let resultsArr = await this.$store.dispatch("query", queryObj);
+        let resultsArr = await this.$store.dispatch("query", this.queryObj);
 
         // add empty response
         /* const date = new Date();
@@ -256,7 +253,7 @@ export default {
         return ""; // set to default pageId
       };
 
-      let pageId = this.query.pageId ? this.query.pageId : item.pageId;
+      let pageId = this.queryObj.query.pageId ? this.queryObj.query.pageId : item.pageId;
       if (!pageId && node.classId) {
         pageId = await getPageIdFromClassById(node.classId);
       }
@@ -296,10 +293,8 @@ export default {
         const key = await this.$store.dispatch("takeAction", this.newObj);
       }
 
-      const queryObj = {
-        query: this.query
-      };
-      let resultsArr = await this.$store.dispatch("query", queryObj);
+        this.queryObj.currentObj = this.$store.state.levelIdsArr[this.level].selectedObjId // we have reteive currentObj again, so we pass it id
+      let resultsArr = await this.$store.dispatch("query", this.queryObj);
       this.dataArr = Object.assign([], resultsArr); // Force reactive update
     },
     changeSort(column) {
