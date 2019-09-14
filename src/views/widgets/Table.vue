@@ -188,7 +188,7 @@ export default {
       async selectedObjId => {
         if (!selectedObjId) return;
 
-        this.queryObj.currentObj = selectedObjId
+        this.queryObj.currentObj = selectedObjId;
         // get the data
         let resultsArr = await this.$store.dispatch("query", this.queryObj);
 
@@ -253,7 +253,9 @@ export default {
         return ""; // set to default pageId
       };
 
-      let pageId = this.queryObj.query.pageId ? this.queryObj.query.pageId : item.pageId;
+      let pageId = this.queryObj.query.pageId
+        ? this.queryObj.query.pageId
+        : item.pageId;
       if (!pageId && node.classId) {
         pageId = await getPageIdFromClassById(node.classId);
       }
@@ -268,33 +270,22 @@ export default {
     takeAction: async function(action) {
       this.dialog = false;
       if (action === "addAgreement") {
-        const processObj = await this.$store.dispatch(
-          "getCommonByKey",
-          "cie1pllxq5mu"
-        ); // Service Request Process
 
-        this.newObj.docType = "object";
-        this.newObj.stateId = processObj.substateId;
-        const date = new Date();
-        this.newObj.startDate = date.toISOString();
-        this.newObj.sellerId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId;
+        this.newObj.sellerId = this.$store.state.levelIdsArr[this.level].selectedObjId;
         this.newObj.agreementHistoryIds = [];
         this.newObj.buyerId = this.$store.state.currentUserId;
-        this.newObj.classId = "w3mzeetidb5n"; // Service Request
-        this.newObj.processId = "cie1pllxq5mu"; // Service Request Process
 
-        const key = await this.$store.dispatch("upsertCommon", this.newObj);
-        // let key = await this.$store.dispatch("transact", this.newObj);
+        const key = await this.$store.dispatch("addAgreement", this.newObj);
       } else if (action === "addHistory") {
-        this.newObj.agreementId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId;
+
+        this.newObj.agreementId = this.$store.state.levelIdsArr[this.level].selectedObjId;
+
         const key = await this.$store.dispatch("takeAction", this.newObj);
       }
 
-        this.queryObj.currentObj = this.$store.state.levelIdsArr[this.level].selectedObjId // we have reteive currentObj again, so we pass it id
+      this.queryObj.currentObj = this.$store.state.levelIdsArr[
+        this.level
+      ].selectedObjId; // we have reteive currentObj again, so we pass it id
       let resultsArr = await this.$store.dispatch("query", this.queryObj);
       this.dataArr = Object.assign([], resultsArr); // Force reactive update
     },

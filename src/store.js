@@ -133,8 +133,11 @@ const store = new Vuex.Store({
         eraseCommon: async function (store, key) {
             return ApiService.eraseCommon(key)
         },
-        takeAction: async function (store, newObj) {
-            return ApiService.takeAction(store, newObj)
+        addAgreement: async function (store, agreementObj) {
+            return ApiService.addAgreement(store, agreementObj)
+        },
+        takeAction: async function (store, actionObj) {
+            return ApiService.takeAction(store, actionObj)
         },
         userMayAddHistory: async function (store, agreementId) {
             return ApiService.userMayAddHistory(store, agreementId)

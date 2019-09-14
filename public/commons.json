@@ -1913,6 +1913,22 @@
                 "type": "array",
                 "readOnly": true
             },
+            "agreementClassId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "sub",
+                            "value": "i1gjptcb2skq"
+                        }
+                    ],
+                    "sortBy": "name"
+                },
+                "title": "Substate",
+                "type": "string",
+                "readOnly": true
+            },
             "substateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
@@ -2462,6 +2478,7 @@
         "name": "Purchase Process",
         "description": "<p>Purchase</p>",
         "classId": "dwl1kwhalwj4",
+        "agreementClassId": "w3mzeetidb5n",
         "returnActions": [
             "happy",
             "unhappy",
@@ -2476,6 +2493,7 @@
         "name": "Bicycle Shop Process",
         "description": "<p>Bicycle Shop Purchase Process</p>",
         "classId": "dwl1kwhalwj4",
+        "agreementClassId": "w3mzeetidb5n",
         "returnActions": [
             "happy",
             "unhappy"
@@ -2489,6 +2507,7 @@
         "name": "Service Request Process",
         "description": "<p>Service Request Process</p>",
         "classId": "dwl1kwhalwj4",
+        "agreementClassId": "w3mzeetidb5n",
         "returnActions": [
             "happy",
             "unhappy"
@@ -3029,6 +3048,9 @@
             "description": {
                 "readOnly": false
             },
+            "agreementClassId": {
+                "readOnly": false
+            },
             "returnActions": {
                 "items": {
                     "readOnly": false
@@ -3085,6 +3107,9 @@
         "ownerId": "eoscommonsio",
         "baseClassId": "i1gjptcb2skq",
         "properties": {
+            "processId": {
+                "readOnly": false
+            },
             "name": {
                 "readOnly": false,
                 "placeholder": "Agreement name"
@@ -3240,8 +3265,7 @@
             "stateId": {
                 "title": "State"
             },
-            "description": {
-            }
+            "description": {}
         },
         "queryId": "eevccbk1napt",
         "baseClassId": "re1ihrfyl3zf",

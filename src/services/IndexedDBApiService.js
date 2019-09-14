@@ -188,8 +188,25 @@ class IndexedDBApiService {
         })
         return authorizedForState
     }
+    static async addAgreement(store, agreementObj) {
+        console.log("addAgreement", agreementObj);
+
+        agreementObj.docType = "object";
+        let processObj = await this.getCommonByKey(store, agreementObj.processId);
+        agreementObj.stateId = processObj.substateId; // The initial state is the subState
+        agreementObj.startDate = new Date().toISOString();
+        agreementObj.agreementHistoryIds = [];
+        agreementObj.buyerId = store.state.currentUserId;
+        agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
+        // agreementObj.classId = "w3mzeetidb5n"; // Service Request Arreement class
+
+        const agreementKey = await this.upsertCommon(agreementObj)
+
+        return agreementKey
+    }
     static async takeAction(store, actionObj) {
         console.log("takeAction", actionObj);
+        // EOS:
         // Send action to contract
         // Is user authorized for action?
         //    does userId have enough active permission?
@@ -226,6 +243,7 @@ class IndexedDBApiService {
 
         const key = await this.upsertCommon(stateHistoryObj)
 
+        // TODO find a way to query trransactions from eos, tehn remove agreementHistoryId
         agreementObj.agreementHistoryIds.push(key)
         const agreementKey = await this.upsertCommon(agreementObj)
 
