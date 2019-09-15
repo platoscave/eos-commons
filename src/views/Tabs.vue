@@ -3,8 +3,8 @@
     <v-tabs class="full-height" v-model="selectedTab" show-arrows>
       <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name ? tab.name : '[no name]' }}</v-tab>
       <v-tab-item class="full-height" v-for="(tab, n) in tabs" :key="n">
-        <div class="full-height" v-if="selectedTab === n">
-          <div class="full-height" v-if="tab.widgets">
+<!--         <div class="full-height" v-if="selectedTab === n">
+ -->          <div class="full-height" v-if="tab.widgets">
             <!-- This tab has widgets -->
             <!-- https://vuejs.org/v2/guide/components-dynamic-async.html#keep-alive-with-Dynamic-Components -->
             <ec-widgets v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
@@ -13,8 +13,8 @@
             <!-- This tab has a sub-page -->
             <ec-layout v-bind:level="level+1"></ec-layout>
           </div>
-        </div>
-      </v-tab-item>
+<!--         </div>
+ -->      </v-tab-item>
     </v-tabs>
   </div>
   <div class="full-height" v-else-if="tabs.length > 0">

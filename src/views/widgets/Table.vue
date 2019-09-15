@@ -272,7 +272,6 @@ export default {
       if (action === "addAgreement") {
 
         this.newObj.sellerId = this.$store.state.levelIdsArr[this.level].selectedObjId;
-        this.newObj.agreementHistoryIds = [];
         this.newObj.buyerId = this.$store.state.currentUserId;
 
         const key = await this.$store.dispatch("addAgreement", this.newObj);

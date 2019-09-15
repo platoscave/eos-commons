@@ -2013,33 +2013,6 @@
         "type": "object"
     },
     {
-        "key": "dvbky1pjeabz",
-        "docType": "class",
-        "title": "Rejected",
-        "description": "<p>Rejected</p>",
-        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8cGF0aCBmaWxsPSIjY2MwMDAwIiBpZD0ic3ZnXzEiIGQ9Im0xNjcxLDU2NnEwLDQwIC0yOCw2OGwtNzI0LDcyNGwtMTM2LDEzNnEtMjgsMjggLTY4LDI4dC02OCwtMjhsLTEzNiwtMTM2bC0zNjIsLTM2MnEtMjgsLTI4IC0yOCwtNjh0MjgsLTY4bDEzNiwtMTM2cTI4LC0yOCA2OCwtMjh0NjgsMjhsMjk0LDI5NWw2NTYsLTY1N3EyOCwtMjggNjgsLTI4dDY4LDI4bDEzNiwxMzZxMjgsMjggMjgsNjh6Ii8+CiA8L2c+Cjwvc3ZnPg==",
-        "parentId": "s41na42wsxez",
-        "type": "object"
-    },
-    {
-        "key": "5xwbhxgihspd",
-        "docType": "class",
-        "title": "Fulfilled",
-        "description": "<p>Fulfilled</p>",
-        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8cGF0aCBmaWxsPSIjMDBiZjVmIiBpZD0ic3ZnXzEiIGQ9Im0xNjcxLDU2NnEwLDQwIC0yOCw2OGwtNzI0LDcyNGwtMTM2LDEzNnEtMjgsMjggLTY4LDI4dC02OCwtMjhsLTEzNiwtMTM2bC0zNjIsLTM2MnEtMjgsLTI4IC0yOCwtNjh0MjgsLTY4bDEzNiwtMTM2cTI4LC0yOCA2OCwtMjh0NjgsMjhsMjk0LDI5NWw2NTYsLTY1N3EyOCwtMjggNjgsLTI4dDY4LDI4bDEzNiwxMzZxMjgsMjggMjgsNjh6Ii8+CiA8L2c+Cjwvc3ZnPg==",
-        "parentId": "s41na42wsxez",
-        "type": "object"
-    },
-    {
-        "key": "ywst5nz1pfil",
-        "docType": "class",
-        "title": "Withdrawn",
-        "description": "<p>Withdrawn</p>",
-        "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc5MiIgaGVpZ2h0PSIxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8cGF0aCBmaWxsPSIjMDAwMGZmIiBpZD0ic3ZnXzEiIGQ9Im0xNjcxLDU2NnEwLDQwIC0yOCw2OGwtNzI0LDcyNGwtMTM2LDEzNnEtMjgsMjggLTY4LDI4dC02OCwtMjhsLTEzNiwtMTM2bC0zNjIsLTM2MnEtMjgsLTI4IC0yOCwtNjh0MjgsLTY4bDEzNiwtMTM2cTI4LC0yOCA2OCwtMjh0NjgsMjhsMjk0LDI5NWw2NTYsLTY1N3EyOCwtMjggNjgsLTI4dDY4LDI4bDEzNiwxMzZxMjgsMjggMjgsNjh6Ii8+CiA8L2c+Cjwvc3ZnPg==",
-        "parentId": "s41na42wsxez",
-        "type": "object"
-    },
-    {
         "key": "kmghbh3qovtq",
         "docType": "object",
         "name": "Navigation Page",
@@ -2910,9 +2883,17 @@
     {
         "key": "3hxkire2nn4v",
         "docType": "object",
-        "name": "Fulfilled",
-        "description": "<p>Fulfilled</p>",
-        "classId": "5xwbhxgihspd",
+        "name": "Sucess",
+        "description": "<p>Sucess</p>",
+        "classId": "s41na42wsxez",
+        "ownerId": "eoscommonsio"
+    },
+    {
+        "key": "gczvalloctae",
+        "docType": "object",
+        "name": "Initialize",
+        "description": "<p>Initialize</p>",
+        "classId": "1jrqyjoabx1a",
         "ownerId": "eoscommonsio"
     },
     {
@@ -3137,7 +3118,6 @@
                 "query": {
                     "where": [
                         {
-                            "stop": true,
                             "docProp": "key",
                             "operator": "litteral",
                             "valuePath": "nextStateIds",
@@ -3541,9 +3521,9 @@
     {
         "key": "zdwdoqpxks2s",
         "docType": "object",
-        "name": "Rejected",
-        "description": "<p>Rejected</p>",
-        "classId": "dvbky1pjeabz",
+        "name": "Failed",
+        "description": "<p>Failed</p>",
+        "classId": "s41na42wsxez",
         "ownerId": "jwzwfaehsqks"
     },
     {

@@ -192,20 +192,27 @@ class IndexedDBApiService {
         console.log("addAgreement", agreementObj);
 
         agreementObj.docType = "object";
+        agreementObj.agreementHistoryIds = [];
         let processObj = await this.getCommonByKey(store, agreementObj.processId);
-        agreementObj.stateId = processObj.substateId; // The initial state is the subState
+        agreementObj.stateId = 'gczvalloctae'; // The Initialize state
         agreementObj.startDate = new Date().toISOString();
         agreementObj.agreementHistoryIds = [];
         agreementObj.buyerId = store.state.currentUserId;
         agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
-        // agreementObj.classId = "w3mzeetidb5n"; // Service Request Arreement class
 
         const agreementKey = await this.upsertCommon(agreementObj)
+
+        const actionObj = {
+            agreementId: agreementKey,
+            action: 'happy'
+        }
+        const histKey = await this.takeAction(store, actionObj)
 
         return agreementKey
     }
     static async takeAction(store, actionObj) {
         console.log("takeAction", actionObj);
+
         // EOS:
         // Send action to contract
         // Is user authorized for action?
@@ -215,70 +222,77 @@ class IndexedDBApiService {
         // Read tracaction into stateHistory
 
 
-        const date = new Date();
         // Get the agreement
         let agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
-        // Get its state
-        const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
-        // Find the next state that corresponds with the action
-        const nextStateObj = currentStateObj.nextStateIds.find( obj => {
-            return obj.action === actionObj.action
-        })
-        // TODO if there is no stateId then return
-        // Set agreement state to it
-        agreementObj.stateId = nextStateObj.stateId
+        debugger
+        let newState = await this.addHistory(store, agreementObj, actionObj);
+        debugger
+        let newStateObj = await this.getCommonByKey(store, agreementObj.stateId);
+        debugger
+        if(newStateObj.classId === 'dqja423wlzrb' ){ //Execute class //TODO replace with isA
+            // For now, just skip
+            actionObj.action = 'happy'
+            let newState = await this.addHistory(store, agreementObj, actionObj);
+        }
+        
+        if(newStateObj.classId === 'jotxozcetpx2' ){ //Perform class //TODO replace with isA
+            // Get the seller process
+            let sellerProcessObj = await this.getCommonByKey(store, agreementObj.sellerProcessId);
+            actionObj.action = 'happy'
+            let newState = await this.addHistory(store, agreementObj, actionObj);
+        }
+
+ 
+    }
+    
+    static async addHistory(store, agreementObj, actionObj) {
+        const date = new Date();
         agreementObj.stateDate = date.toISOString()
 
+        // Determine next state
+        // If we are initializing, set the state to the process substateId
+        if(agreementObj.stateId === 'gczvalloctae') { // Initialize state
+            let processObj = await this.getCommonByKey(store, agreementObj.processId);
+            agreementObj.stateId = processObj.substateId
+        } else {
+            // Get agreement state
+            const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
 
+            if(currentStateObj.nextStateIds && currentStateObj.nextStateIds.length) {
+                // Find the next state that corresponds with the action
+                const nextStateObj = currentStateObj.nextStateIds.find( obj => {
+                    return obj.action === actionObj.action
+                })
+                if(nextStateObj.stateId) agreementObj.stateId = nextStateObj.stateId // Set agreement state to it
+                else if(actionObj.action === 'happy' ) agreementObj.stateId = '3hxkire2nn4v' // Sucess
+                else agreementObj.stateId = 'zdwdoqpxks2s' // Failed
+            } else {
+                // Are we in a sub process?
+                if(actionObj.action === 'happy' ) agreementObj.stateId = '3hxkire2nn4v' // Sucess
+                else agreementObj.stateId = 'zdwdoqpxks2s' // Failed
+                // return to parent process
+            }
+        }
+  
         // Add history record (get transaction from eos)
+        // TODO find a way to query trransactions from eos, tehn remove agreementHistoryId
         const stateHistoryObj = {
             docType: 'object',
             classId: 're1ihrfyl3zf', // Agreements History
-            processId: 'cie1pllxq5mu', // Service Request Process
-            stateId: nextStateObj.stateId,
+            processId: agreementObj.processId, // Service Request Process
+            stateId: agreementObj.stateId,
+            action: actionObj.action,
             stateDate: date.toISOString(),
             updaterId: store.state.currentUserId,
             description: actionObj.description
         }
-
         const key = await this.upsertCommon(stateHistoryObj)
 
-        // TODO find a way to query trransactions from eos, tehn remove agreementHistoryId
+        // Update agreementObj with new state 
         agreementObj.agreementHistoryIds.push(key)
         const agreementKey = await this.upsertCommon(agreementObj)
 
         return agreementKey
-    }
-    static async transact(store, newObj) {
-        try {
-            const rpc = new JsonRpc(HTTPENDPOINT)
-            const result = await api.transact({
-                actions: [{
-                    account: 'eosio',
-                    name: 'delegatebw',
-                    authorization: [{
-                        actor: 'useraaaaaaaa',
-                        permission: 'active'
-                    }],
-                    data: {
-                        from: 'useraaaaaaaa',
-                        receiver: 'useraaaaaaaa',
-                        stake_net_quantity: '1.0000 SYS',
-                        stake_cpu_quantity: '1.0000 SYS',
-                        transfer: false
-                    }
-                }]
-            }, {
-                    blocksBehind: 3,
-                    expireSeconds: 30
-                })
-            return result.rows.map(row => {
-                return JSON.parse(row.common)
-            })
-        } catch (err) {
-            console.error(err)
-            return []
-        }
     }
 
     static async ImportFromStatic(store) {
@@ -301,8 +315,6 @@ class IndexedDBApiService {
                 store.createIndex('parentId', 'parentId')
                 store.createIndex('classId', 'classId')
                 store.createIndex('ownerId', 'ownerId')
-                store.createIndex('parentStateId', 'parentStateId')
-                store.createIndex('parentOrgId', 'parentOrgId')
                 store.createIndex('isDirty', 'isDirty')
             }
 

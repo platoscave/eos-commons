@@ -62,7 +62,6 @@ export default {
     },
     loadScene () {
       // world
-      // if (this.scene) return
       this.scene = new THREE.Scene()
 
       let sceneObject3D = new THREE.Object3D()
