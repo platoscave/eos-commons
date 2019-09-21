@@ -11,12 +11,15 @@
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
+          <!-- ec-query-select needs currentObJ -->
           <v-flex xs12 md10 v-if="showAllFields || value[propName]">
             <ec-select-control  class="rowPadding"
               v-model="value[propName]"
               v-bind:editMode="editMode"
               v-bind:showAllFields="showAllFields"
               v-bind:property="property"
+              v-bind:definitions="definitions"
+              v-bind:currentObj="value"
               v-on:button-click="$parent.$emit('button-click', $event)"
             ></ec-select-control>
           </v-flex>

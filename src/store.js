@@ -169,11 +169,12 @@ const store = new Vuex.Store({
             // Resolve where clause
             const resolveWhereClause = (queryObj, where) => {
                 // if (value === '#nextstateIds') debugger
-                // Replace value with foreigne key
+                // Replace value with foreign key
                 if (where.value === '$fk') where.value = queryObj.currentObj.key
 
                 // Replace value with currentObj.valuePath
                 if (where.valuePath) {
+                    if(!queryObj.currentObj) console.error('no currentObj')
                     where.value = Vue._.get(queryObj.currentObj, where.valuePath)
                 }
 
@@ -213,7 +214,7 @@ const store = new Vuex.Store({
                     return value.map( item => {
                         return { name: item, key: item }
                     })
-                } else if (operator === 'inst') {
+                } else if (operator === 'instances') {
                     // The from clause always refers to a class.
                     // We need to get objects from classId class, and all of its subclasses
                     // First, get an array of all subclasses
@@ -226,7 +227,7 @@ const store = new Vuex.Store({
                     let subClassObjectsArr = await Promise.all(promisses)
                     // Flatten array of arrays.
                     return Vue._.flatten(subClassObjectsArr)
-                } else if (operator === 'sub') {
+                } else if (operator === 'subclasses') {
                     return await getSubclasses(value)
                 } else if (operator === 'get_controlled_accounts') {
                     return ApiService.getControlledAccounts(store, value, 'owner')
@@ -263,7 +264,10 @@ const store = new Vuex.Store({
             const whereArr = queryObj.query.where
 
             // The first where is executed againt the DB
-            if(whereArr[0].stop) console.log('before', whereArr[0])
+            if(whereArr[0].stop) {
+                debugger
+                console.log('before', whereArr[0])
+            }
             resolveWhereClause(queryObj, whereArr[0])
             let resultsArr = await executeQuery(whereArr[0])
             if(whereArr[0].stop) console.log('after', whereArr[0])
@@ -291,124 +295,6 @@ const store = new Vuex.Store({
             }
 
             return resultsArr
-            /* if (Array.isArray(queryObj.query.where)) {
-
-            } else {
-                debugger
-                let resultsArr = []
-                let query = queryObj.query
-                // queryId takes precidence over query
-                if (queryObj.queryId) query = await ApiService.getCommonByKey(queryObj.queryId)
-
-                // If currentObj is a string, assume it's a key
-                let currentObj = queryObj.currentObj
-                if (currentObj && typeof currentObj === 'string') currentObj = await ApiService.getCommonByKey(store, currentObj)
-
-                const where = query.where
-                const from = query.from
-
-                // TODO right now the where and from clauses are treated sepparatly. The where clause takes precedence
-                // They should be combined
-                if (where) {
-                    const docProp = where.docProp
-                    const operator = where.operator
-                    const mapValue = where.mapValue
-                    const valuePath = where.valuePath
-                    let value = where.value
-
-                    // if (value === '#nextstateIds') debugger
-                    // Replace value with foreigne key
-                    if (value === '$fk') value = currentObj.key
-
-                    // Replace value with currentObj.valuePath
-                    if (valuePath) {
-                        value = Vue._.get(currentObj, valuePath)
-                    }
-
-                    if (mapValue && Array.isArray(value)) {
-                        value = value.map(valueObj => {
-                            return valueObj[mapValue]
-                        })
-                    }
-
-                    if (!value) {
-                        // console.error('Invalid value in: ', queryObj)
-                        return []
-                    }
-
-                    if (operator === 'eq') {
-                        if (docProp === 'key') {
-                            // Get single value based on key
-                            let result = await ApiService.getCommonByKey(store, value)
-                            return [result]
-                        } else {
-                            resultsArr = await ApiService.queryByIndex(store, docProp, value)
-                        }
-                    } else if (operator === 'in') {
-                        let prommisesArr = []
-                        if (!Array.isArray(value)) value = [value]
-                        value.forEach(key => {
-                            if (key) prommisesArr.push(ApiService.getCommonByKey(store, key))
-                        })
-                        resultsArr = await Promise.all(prommisesArr)
-                    } else throw new Error('Cannot query with ' + operator + ' operator yet')
-                } else if (from) {
-                    if (from === 'classes') {
-                        const rootClassId = 'gzthjuyjca4s'
-                        resultsArr = await getSubclasses(rootClassId)
-                    } else {
-                        // The from clause always refers to a class.
-                        // We need to get objects from classId class, and all of its subclasses
-                        // First, get an array of all subclasses
-                        let subClassArr = await getSubclasses(from)
-
-                        // Collect all of the objects for these subclasses
-                        let promisses = subClassArr.map(classObj => {
-                            return ApiService.queryByIndex(store, 'classId', classObj.key)
-                        })
-                        let subClassObjectsArr = await Promise.all(promisses)
-                        // Flatten array of arrays.
-                        resultsArr = Vue._.flatten(subClassObjectsArr)
-                    }
-                }
-
-                // Filter by controled accounts
-                if (query.get_controlled_accounts) {
-                    let actor = query.get_controlled_accounts.actor
-                    let saughtPermission = query.get_controlled_accounts.permission
-                    if (actor === '$fk') actor = queryObj.currentObj.key
-                    let tempArr = []
-
-                    resultsArr.forEach(accountObj => {
-                        if (accountObj.permissions) {
-                            accountObj.permissions.forEach(permission => {
-                                if (permission.required_auth.accounts) {
-                                    permission.required_auth.accounts.forEach(account => {
-                                        if (account.permission.actor === actor && account.permission.permission === saughtPermission) tempArr.push(accountObj)
-                                    })
-                                }
-                            })
-                        }
-                        return false
-                    })
-                    resultsArr = tempArr
-                }
-                // Sort the result, if needed
-                if (query.sortBy) {
-                    resultsArr.sort((a, b) => {
-                        if (a[query.sortBy] && b[query.sortBy]) {
-                            let aa = a[query.sortBy].toUpperCase()
-                            let bb = b[query.sortBy].toUpperCase()
-                            if (aa > bb) return 1
-                            if (aa < bb) return -1
-                        }
-                        return 0
-                    })
-                }
-
-                return resultsArr
-            } */
-
         },
 
         getTreeNodes: async function (store, queryObj) {

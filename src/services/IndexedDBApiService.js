@@ -169,9 +169,11 @@ class IndexedDBApiService {
         */
         const currentUserId = store.state.currentUserId
         const agreementObj = await this.getCommonByKey(store, agreementId)
+        // Get the last process stack object
+        let processStackObj = agreementObj.processStack[agreementObj.processStack.length-1]
 
         if (agreementObj.buyerId === currentUserId) {
-            const isABuyerState = await isA(agreementObj.stateId, 'xsaq3l5hncb2') // Buyer States
+            const isABuyerState = await isA(processStackObj.stateId, 'xsaq3l5hncb2') // Buyer States
             if (isABuyerState) return true
         }
         const sellerOrgunitAccounts = await this.getControlledAccounts(store, agreementObj.sellerId, 'owner')
@@ -183,7 +185,7 @@ class IndexedDBApiService {
         let authorizedForState = false
         authorizedForAccountArr.forEach(authAccount => {
             authAccount.authorizedForStateIds.forEach(stateId => {
-                if (stateId === agreementObj.stateId) authorizedForState = true
+                if (stateId === processStackObj.stateId) authorizedForState = true
             })
         })
         return authorizedForState
@@ -192,21 +194,20 @@ class IndexedDBApiService {
         console.log("addAgreement", agreementObj);
 
         agreementObj.docType = "object";
-        agreementObj.agreementHistoryIds = [];
+        // process is mapped to an agreement type
         let processObj = await this.getCommonByKey(store, agreementObj.processId);
-        agreementObj.stateId = 'gczvalloctae'; // The Initialize state
+        agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
+        agreementObj.agreementHistoryIds = [];
+        agreementObj.processStack = [ {
+            processId: agreementObj.processId,
+            stateId: 'gczvalloctae' // The Initialize state
+        } ]
         agreementObj.startDate = new Date().toISOString();
         agreementObj.agreementHistoryIds = [];
         agreementObj.buyerId = store.state.currentUserId;
-        agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
 
         const agreementKey = await this.upsertCommon(agreementObj)
-
-        const actionObj = {
-            agreementId: agreementKey,
-            action: 'happy'
-        }
-        const histKey = await this.takeAction(store, actionObj)
+        await this.takeAction(store, {agreementId: agreementKey})
 
         return agreementKey
     }
@@ -224,54 +225,66 @@ class IndexedDBApiService {
 
         // Get the agreement
         let agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
-        debugger
-        let newState = await this.addHistory(store, agreementObj, actionObj);
-        debugger
-        let newStateObj = await this.getCommonByKey(store, agreementObj.stateId);
-        debugger
+        let nextStateId = await this.bumpState(store, agreementObj, actionObj);
+        // Get the newStateObj
+        let newStateObj = await this.getCommonByKey(store, nextStateId);
+
+        // See if we have to do anything, based on the new state
         if(newStateObj.classId === 'dqja423wlzrb' ){ //Execute class //TODO replace with isA
             // For now, just skip
             actionObj.action = 'happy'
-            let newState = await this.addHistory(store, agreementObj, actionObj);
+            await this.bumpState(store, agreementObj, actionObj);
         }
-        
         if(newStateObj.classId === 'jotxozcetpx2' ){ //Perform class //TODO replace with isA
-            // Get the seller process
-            let sellerProcessObj = await this.getCommonByKey(store, agreementObj.sellerProcessId);
-            actionObj.action = 'happy'
-            let newState = await this.addHistory(store, agreementObj, actionObj);
+            // Add the sub process to the call stack
+            agreementObj.processStack.push( {
+                processId: agreementObj.sellerProcessId, // TODO known sub poricess??
+                stateId: 'gczvalloctae' // The Initialize state
+            } )
+            let done = await this.takeAction(store, actionObj)
         }
 
  
     }
     
-    static async addHistory(store, agreementObj, actionObj) {
+    static async bumpState(store, agreementObj, actionObj) {
         const date = new Date();
         agreementObj.stateDate = date.toISOString()
-
+        
         // Determine next state
+        let nextStateId = null
+        // Get the last process stack object
+        let processStackObj = agreementObj.processStack[agreementObj.processStack.length-1]
         // If we are initializing, set the state to the process substateId
-        if(agreementObj.stateId === 'gczvalloctae') { // Initialize state
+        if(processStackObj.stateId === 'gczvalloctae') { // Initialize state
             let processObj = await this.getCommonByKey(store, agreementObj.processId);
-            agreementObj.stateId = processObj.substateId
+            processStackObj.stateId = processObj.substateId
         } else {
             // Get agreement state
-            const currentStateObj = await this.getCommonByKey(store, agreementObj.stateId);
+            const currentStateObj = await this.getCommonByKey(store, processStackObj.stateId);
 
             if(currentStateObj.nextStateIds && currentStateObj.nextStateIds.length) {
                 // Find the next state that corresponds with the action
                 const nextStateObj = currentStateObj.nextStateIds.find( obj => {
                     return obj.action === actionObj.action
                 })
-                if(nextStateObj.stateId) agreementObj.stateId = nextStateObj.stateId // Set agreement state to it
-                else if(actionObj.action === 'happy' ) agreementObj.stateId = '3hxkire2nn4v' // Sucess
-                else agreementObj.stateId = 'zdwdoqpxks2s' // Failed
-            } else {
-                // Are we in a sub process?
-                if(actionObj.action === 'happy' ) agreementObj.stateId = '3hxkire2nn4v' // Sucess
-                else agreementObj.stateId = 'zdwdoqpxks2s' // Failed
-                // return to parent process
+                // If the nextStateObj has a stateId, use it
+                if(nextStateObj && nextStateObj.stateId) nextStateId = nextStateObj.stateId // Set agreement state to it
             }
+            // We couldn't find a nextStateId, so we return
+            if(!nextStateId) {
+                // Are we in a sub process? If so, send action to super process
+                if(agreementObj.processStack.length > 1) {
+                    agreementObj.processStack.pop()
+                    // Set the nextStateId to the new last process stack object stateId
+                    nextStateId = agreementObj.processStack[agreementObj.processStack.length-1].stateId
+                } else {
+                    // Otherwize we are at the end
+                    if(actionObj.action === 'happy' ) nextStateId = '3hxkire2nn4v' // Sucess
+                    else nextStateId = 'zdwdoqpxks2s' // Failed
+                }
+            }
+            agreementObj.processStack[agreementObj.processStack.length-1].stateId = nextStateId
         }
   
         // Add history record (get transaction from eos)
@@ -280,7 +293,7 @@ class IndexedDBApiService {
             docType: 'object',
             classId: 're1ihrfyl3zf', // Agreements History
             processId: agreementObj.processId, // Service Request Process
-            stateId: agreementObj.stateId,
+            stateId: processStackObj.stateId,
             action: actionObj.action,
             stateDate: date.toISOString(),
             updaterId: store.state.currentUserId,
@@ -290,9 +303,9 @@ class IndexedDBApiService {
 
         // Update agreementObj with new state 
         agreementObj.agreementHistoryIds.push(key)
-        const agreementKey = await this.upsertCommon(agreementObj)
+        await this.upsertCommon(agreementObj)
 
-        return agreementKey
+        return nextStateId
     }
 
     static async ImportFromStatic(store) {

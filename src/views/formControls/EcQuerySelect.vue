@@ -41,7 +41,8 @@ export default {
   name: 'ec-query-select',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    currentObj: Object
   },
   data () {
     return {
@@ -54,7 +55,7 @@ export default {
 
 
     const results = await this.$store.dispatch('query', {
-        currentObj: 'oltp4kpj4fvi',
+        currentObj: this.currentObj,
       query: this.property.query
     })
 

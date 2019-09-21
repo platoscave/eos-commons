@@ -42,11 +42,13 @@
     ></ec-select>
 
     <!-- Select from Query Results -->
+    <!-- ec-query-select needs currentObJ -->
     <ec-query-select
       v-else-if="property.query"
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:currentObj="currentObj"  
     ></ec-query-select>
 
     <!--String-->
@@ -187,7 +189,8 @@ export default {
     property: Object,
       showAllFields: Boolean,
     definitions: Object,
-    required: Array
+    required: Array,
+    currentObj: Object
   }
 };
 </script>

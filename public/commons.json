@@ -18,7 +18,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "sub",
+                            "operator": "subclasses",
                             "value": "gzthjuyjca4s"
                         }
                     ],
@@ -415,7 +415,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "pejdgrwd5qso"
                         }
                     ],
@@ -432,11 +432,10 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "siutzqsj5dgc"
                         }
-                    ],
-                    "sortBy": "name"
+                    ]
                 },
                 "type": "string",
                 "readOnly": true
@@ -457,7 +456,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "ikjyhlqewxs3"
                         }
                     ],
@@ -531,7 +530,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "pejdgrwd5qso"
                                     }
                                 ],
@@ -585,7 +584,7 @@
                                             "where": [
                                                 {
                                                     "docProp": "classId",
-                                                    "operator": "inst",
+                                                    "operator": "instances",
                                                     "value": "pejdgrwd5qso"
                                                 }
                                             ],
@@ -601,7 +600,7 @@
                                             "where": [
                                                 {
                                                     "docProp": "classId",
-                                                    "operator": "inst",
+                                                    "operator": "instances",
                                                     "value": "pylvseoljret"
                                                 }
                                             ],
@@ -687,7 +686,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "q234ooehrk5v"
                                     }
                                 ],
@@ -708,7 +707,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "pejdgrwd5qso"
                         }
                     ],
@@ -733,8 +732,9 @@
                             "enum": [
                                 "eq",
                                 "in",
-                                "inst",
-                                "sub"
+                                "instances",
+                                "subclasses",
+                                "litteral"
                             ],
                             "title": "Operator",
                             "type": "string",
@@ -787,7 +787,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "siutzqsj5dgc"
                                     }
                                 ],
@@ -831,7 +831,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "q234ooehrk5v"
                         }
                     ],
@@ -847,7 +847,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "sub",
+                            "operator": "subclasses",
                             "value": "gzthjuyjca4s"
                         }
                     ],
@@ -998,8 +998,9 @@
                                         "enum": [
                                             "eq",
                                             "in",
-                                            "inst",
-                                            "sub"
+                                            "instances",
+                                            "subclasses",
+                                            "litteral"
                                         ],
                                         "title": "Operator",
                                         "type": "string",
@@ -1138,7 +1139,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "dwl1kwhalwj4"
                                     }
                                 ],
@@ -1186,29 +1187,13 @@
                 "type": "string",
                 "readOnly": true
             },
-            "stateId": {
-                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                "query": {
-                    "where": [
-                        {
-                            "docProp": "classId",
-                            "operator": "inst",
-                            "value": "dlpwvptczyeb"
-                        }
-                    ],
-                    "sortBy": "name"
-                },
-                "title": "State",
-                "type": "string",
-                "readOnly": true
-            },
             "buyerId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "ikjyhlqewxs3"
                         }
                     ],
@@ -1224,7 +1209,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "ikjyhlqewxs3"
                         }
                     ],
@@ -1240,7 +1225,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "3ihg3mjdbqzv"
                         }
                     ],
@@ -1256,7 +1241,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "dwl1kwhalwj4"
                         }
                     ],
@@ -1272,7 +1257,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "dwl1kwhalwj4"
                         }
                     ],
@@ -1288,7 +1273,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "dwl1kwhalwj4"
                         }
                     ],
@@ -1296,6 +1281,52 @@
                 },
                 "title": "Seller Epic",
                 "type": "string",
+                "readOnly": true
+            },
+            "processStack": {
+                "items": {
+                    "properties": {
+                        "processId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "instances",
+                                        "value": "dwl1kwhalwj4"
+                                    }
+                                ],
+                                "sortBy": "name"
+                            },
+                            "title": "Process",
+                            "type": "string",
+                            "readOnly": true
+                        },
+                        "stateId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "instances",
+                                        "value": "dlpwvptczyeb"
+                                    }
+                                ],
+                                "sortBy": "name"
+                            },
+                            "title": "State",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "stateId"
+                    ],
+                    "type": "object"
+                },
+                "title": "Process Stack",
+                "type": "array",
                 "readOnly": true
             },
             "agreementHistoryIds": {
@@ -1307,7 +1338,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "re1ihrfyl3zf"
                                     }
                                 ],
@@ -1330,7 +1361,7 @@
     {
         "key": "re1ihrfyl3zf",
         "docType": "class",
-        "title": "Agreements History",
+        "title": "Transactions",
         "description": "<p>Contracts between accounts about resources</p>",
         "parentId": "gzthjuyjca4s",
         "properties": {
@@ -1345,7 +1376,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "dlpwvptczyeb"
                         }
                     ],
@@ -1392,7 +1423,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "dlpwvptczyeb"
                                     }
                                 ],
@@ -1459,7 +1490,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "dwl1kwhalwj4"
                         }
                     ],
@@ -1785,7 +1816,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "dlpwvptczyeb"
                                     }
                                 ],
@@ -1797,8 +1828,7 @@
                         }
                     },
                     "required": [
-                        "action",
-                        "stateId"
+                        "action"
                     ],
                     "type": "object"
                 },
@@ -1812,7 +1842,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "1jrqyjoabx1a"
                         }
                     ],
@@ -1856,7 +1886,7 @@
                                 "where": [
                                     {
                                         "docProp": "classId",
-                                        "operator": "inst",
+                                        "operator": "instances",
                                         "value": "dlpwvptczyeb"
                                     }
                                 ],
@@ -1883,7 +1913,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "1jrqyjoabx1a"
                         }
                     ],
@@ -1919,7 +1949,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "sub",
+                            "operator": "subclasses",
                             "value": "i1gjptcb2skq"
                         }
                     ],
@@ -1935,7 +1965,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "inst",
+                            "operator": "instances",
                             "value": "1jrqyjoabx1a"
                         }
                     ],
@@ -2435,7 +2465,6 @@
         "description": "Buy a bike",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "yefagaab4ua2",
         "amount": 150.22,
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser1111",
@@ -2443,7 +2472,13 @@
         "currency": "EUR",
         "processId": "ynaxakdc423e",
         "sellerProcessId": "h3q1vchxahoh",
-        "sellerId": "bicycleshop1"
+        "sellerId": "bicycleshop1",
+        "processStack": [
+            {
+                "processId": "ynaxakdc423e",
+                "stateId": "yefagaab4ua2"
+            }
+        ]
     },
     {
         "key": "ynaxakdc423e",
@@ -3074,7 +3109,7 @@
                 "sort": "desc",
                 "title": "Date"
             },
-            "stateId": {},
+            "processStack": {},
             "name": {}
         },
         "queryId": "vu2j5khcsdrv",
@@ -3192,13 +3227,13 @@
             },
             "startDate": {},
             "expirationDate": {},
-            "stateId": {},
+            "processId": {},
             "assetId": {},
             "amount": {},
             "currency": {},
             "buyerId": {},
             "sellerId": {},
-            "processId": {},
+            "processStack": {},
             "sellerProcessId": {},
             "sellerEpicId": {},
             "agreementHistoryIds": {
@@ -3225,8 +3260,24 @@
                 "title": "From"
             },
             "name": {},
-            "stateId": {},
-            "description": {}
+            "description": {},
+            "state": {
+                "title": "Current State",
+                "query": {
+                    "where": [
+                        {
+                            "stop": true,
+                            "docProp": "key",
+                            "operator": "in",
+                            "valuePath": "processStack",
+                            "mapValue": "stateId"
+                        }
+                    ]
+                },
+                "type": "string",
+                "readOnly": true
+            },
+            "processStack": {}
         },
         "baseClassId": "i1gjptcb2skq",
         "type": "object"
@@ -3376,10 +3427,15 @@
         "description": "<p>Suppose end get boy warrant general natural. Delightful met sufficient projection ask. Decisively everything principles if preference do impression of. Preserved oh so difficult repulsive on in household. In what do miss time be. Valley as be appear cannot so by. Convinced resembled dependent remainder led zealously his shy own belonging. Always length letter adieus add number moment she. Promise few compass six several old offices removal parties fat. Concluded rapturous it intention perfectly daughters is as.</p>",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "bavb2g1inh2t",
         "buyerId": "testuser2222",
         "classId": "w3mzeetidb5n",
-        "sellerId": "testuser1111"
+        "sellerId": "testuser1111",
+        "processStack": [
+            {
+                "processId": "cie1pllxq5mu",
+                "stateId": "bavb2g1inh2t"
+            }
+        ]
     },
     {
         "key": "twviawzlgofz",
@@ -3388,10 +3444,15 @@
         "description": "<p>Suppose end get boy warrant general natural. Delightful met sufficient projection ask. Decisively everything principles if preference do impression of. Preserved oh so difficult repulsive on in household. In what do miss time be. Valley as be appear cannot so by. Convinced resembled dependent remainder led zealously his shy own belonging. Always length letter adieus add number moment she. Promise few compass six several old offices removal parties fat. Concluded rapturous it intention perfectly daughters is as.</p>",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "stateId": "oltp4kpj4fvi",
         "buyerId": "testuser1111",
         "classId": "w3mzeetidb5n",
         "sellerId": "eoscommonsio",
+        "processStack": [
+            {
+                "processId": "cie1pllxq5mu",
+                "stateId": "oltp4kpj4fvi"
+            }
+        ],
         "agreementHistoryIds": [
             "3a1qf1ogj1an",
             "vwpi4s1zvyit"
@@ -3620,7 +3681,7 @@
                     "where": [
                         {
                             "docProp": "classId",
-                            "operator": "sub",
+                            "operator": "subclasses",
                             "value": "gzthjuyjca4s"
                         }
                     ],
@@ -4262,7 +4323,7 @@
         "where": [
             {
                 "docProp": "classId",
-                "operator": "inst",
+                "operator": "instances",
                 "value": "i1gjptcb2skq"
             },
             {
