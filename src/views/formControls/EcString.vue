@@ -24,7 +24,8 @@ export default {
   name: 'ec-string',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
   data () {
     return {

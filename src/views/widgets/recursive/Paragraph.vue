@@ -8,8 +8,8 @@
       <h5 v-else-if="headerLevel === 5">{{ paragraphObj.name }}</h5>
       <h6 v-else>{{ paragraphObj.name }}</h6>
 
-      <div v-on:dblclick="editMode = true" v-if="!editMode" v-html="paragraphObj.description"></div>
-	  <wysiwyg v-on:dblclick="editMode = false" v-if="editMode" v-model="paragraphObj.description"/>
+      <div v-on:dblclick="isEditing = true" v-if="!isEditing" v-html="paragraphObj.description"></div>
+	  <wysiwyg v-on:dblclick="isEditing = false" v-if="isEditing" v-model="paragraphObj.description"/>
 
       <div v-for="(subParId, key) in paragraphObj.subParagraphIds" v-bind:key="key">
         <ec-paragraph v-bind:headerLevel="headerLevel + 1" v-bind:subParagraphId="subParId"></ec-paragraph>
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
 	  paragraphObj: {},
-	  editMode: false
+	  isEditing: false
     }
   },
   methods: {

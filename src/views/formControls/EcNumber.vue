@@ -20,7 +20,8 @@ export default {
   name: 'ec-number',
   props: {
     value: Number,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
 
   data () {

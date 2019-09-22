@@ -19,7 +19,8 @@ export default {
   name: 'ec-date',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
   computed: {
     localeDateString: {

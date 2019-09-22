@@ -5,7 +5,7 @@
     @mouseover="isEditing = true"
     @mouseleave="isEditing = false"
   >
-    <div class="nomargin" v-if="property.readOnly || !isEditing" v-html="value"></div>
+    <div class="nomargin" v-if="property.readOnly || !(isEditing || alwaysEditMode) " v-html="value"></div>
     <!-- https://github.com/iliyaZelenko/tiptap-vuetify#events -->
     <wysiwyg
       v-else
@@ -20,7 +20,8 @@ export default {
   name: 'ec-rich-text',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
 
   data () {

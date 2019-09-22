@@ -3144,7 +3144,7 @@
     {
         "key": "jjeqqtkmf5qo",
         "docType": "object",
-        "name": "Add History Record View",
+        "name": "Send Transaction",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "baseClassId": "re1ihrfyl3zf",
@@ -3153,10 +3153,11 @@
                 "query": {
                     "where": [
                         {
+                            "stop": true,
                             "docProp": "key",
                             "operator": "litteral",
-                            "valuePath": "nextStateIds",
-                            "mapValue": "action"
+                            "valuePath": "processStack.0",
+                            "mapValue": "stateId"
                         }
                     ],
                     "sortBy": "name"
@@ -3169,9 +3170,9 @@
                 "readOnly": false
             },
             "addButton": {
-                "title": "Add History",
+                "title": "Send Transaction",
                 "type": "button",
-                "action": "addHistory"
+                "action": "sendTransaction"
             }
         },
         "type": "object"
@@ -3266,15 +3267,40 @@
                 "query": {
                     "where": [
                         {
-                            "stop": true,
                             "docProp": "key",
-                            "operator": "in",
-                            "valuePath": "processStack",
+                            "operator": "eq",
+                            "valuePath": "processStack.0",
                             "mapValue": "stateId"
                         }
                     ]
                 },
                 "type": "string",
+                "readOnly": true
+            },
+            "state2": {
+                "items": {
+                    "properties": {
+                        "stateId": {
+                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                            "query": {
+                                "where": [
+                                    {
+                                        "docProp": "classId",
+                                        "operator": "instances",
+                                        "value": "dlpwvptczyeb"
+                                    }
+                                ],
+                                "sortBy": "name"
+                            },
+                            "title": "State",
+                            "type": "string",
+                            "readOnly": true
+                        }
+                    },
+                    "type": "object"
+                },
+                "title": "Current State",
+                "type": "array",
                 "readOnly": true
             },
             "processStack": {}
@@ -3537,8 +3563,7 @@
                 "stateId": "tfkyaytuac1g"
             },
             {
-                "action": "unhappy",
-                "XstateId": "cie1pllxq5mu"
+                "action": "unhappy"
             }
         ],
         "ownerId": "jwzwfaehsqks"
@@ -3555,8 +3580,7 @@
                 "XstateId": "cie1pllxq5mu"
             },
             {
-                "action": "unhappy",
-                "XstateId": "cie1pllxq5mu"
+                "action": "unhappy"
             }
         ],
         "ownerId": "jwzwfaehsqks"

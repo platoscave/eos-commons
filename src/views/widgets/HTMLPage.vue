@@ -9,7 +9,7 @@
 export default {
   props: {
     level: Number,
-    editMode: Boolean
+    alwaysEditMode: Boolean
   },
   data () {
     return {

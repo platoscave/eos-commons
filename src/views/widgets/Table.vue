@@ -108,6 +108,8 @@
           v-bind:showAllFields="true"
           v-model="newObj"
           v-bind:properties="addDialogViewObj.properties"
+          v-bind:currentObjId="queryObj.currentObj.key"
+          v-bind:alwaysEditMode="true"
         ></ec-sub-form>
       </v-card>
     </v-dialog>
@@ -128,7 +130,7 @@ export default {
   props: {
     level: Number,
     viewId: String,
-    editMode: Boolean
+    alwaysEditMode: Boolean
   },
   data() {
     return {
@@ -272,10 +274,9 @@ export default {
       if (action === "addAgreement") {
 
         this.newObj.sellerId = this.$store.state.levelIdsArr[this.level].selectedObjId;
-        this.newObj.buyerId = this.$store.state.currentUserId;
 
         const key = await this.$store.dispatch("addAgreement", this.newObj);
-      } else if (action === "addHistory") {
+      } else if (action === "sendTransaction") {
 
         this.newObj.agreementId = this.$store.state.levelIdsArr[this.level].selectedObjId;
 

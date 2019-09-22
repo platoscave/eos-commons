@@ -11,15 +11,15 @@
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->
-          <!-- ec-query-select needs currentObJ -->
+          <!-- ec-query-select needs currentObjId -->
           <v-flex xs12 md10 v-if="showAllFields || value[propName]">
             <ec-select-control  class="rowPadding"
               v-model="value[propName]"
-              v-bind:editMode="editMode"
+              v-bind:alwaysEditMode="alwaysEditMode"
               v-bind:showAllFields="showAllFields"
               v-bind:property="property"
               v-bind:definitions="definitions"
-              v-bind:currentObj="value"
+              v-bind:currentObjId="currentObjId ? currentObjId : value.key"
               v-on:button-click="$parent.$emit('button-click', $event)"
             ></ec-select-control>
           </v-flex>
@@ -36,11 +36,12 @@ export default {
   name: 'ec-sub-form',
   props: {
       showAllFields: Boolean,
-    editMode: Boolean,
+    alwaysEditMode: Boolean,
     properties: Object,
     definitions: Object,
     required: Array,
-    value: Object
+    value: Object,
+    currentObjId: String
   }
 }
 </script>

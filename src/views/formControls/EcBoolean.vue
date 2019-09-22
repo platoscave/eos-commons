@@ -19,7 +19,8 @@ export default {
   name: 'ec-boolean',
   props: {
     value: Boolean,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
 
   data () {

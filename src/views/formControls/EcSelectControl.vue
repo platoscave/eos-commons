@@ -6,6 +6,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-rich-text>
 
     <!-- image -->
@@ -14,6 +15,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-image>
 
     <!-- Date -->
@@ -22,6 +24,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-date>
 
     <!-- Uri -->
@@ -30,6 +33,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-uri>
 
     <!-- Enum -->
@@ -39,6 +43,7 @@
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
       v-bind:items="property.enum"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-select>
 
     <!-- Select from Query Results -->
@@ -48,7 +53,8 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
-      v-bind:currentObj="currentObj"  
+      v-bind:currentObjId="currentObjId"  
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-query-select>
 
     <!--String-->
@@ -57,6 +63,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-string>
 
     <!--Number-->
@@ -65,6 +72,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-number>
 
     <!-- Boolean -->
@@ -73,6 +81,7 @@
       v-bind:value="value"
       v-on:input="$emit('input', $event)"
       v-bind:property="property"
+      v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-boolean>
 
     <!-- Array -->
@@ -86,6 +95,7 @@
               v-on:input="$emit('input', $event)"
               v-bind:properties="property.items.properties"
               v-bind:definitions="definitions"
+                v-bind:alwaysEditMode="alwaysEditMode"
             ></ec-sub-form>
             <br />
           </div>
@@ -107,6 +117,7 @@
             v-on:input="$emit('input', $event)"
             v-bind:properties="property.properties"
             v-bind:definitions="definitions"
+                v-bind:alwaysEditMode="alwaysEditMode"
           ></ec-sub-form>
         </div>
         <div v-else-if="property.additionalProperties">
@@ -120,6 +131,7 @@
               v-on:input="$emit('input', $event)"
               v-bind:properties="definitions.additionalProperties"
               v-bind:definitions="definitions"
+                v-bind:alwaysEditMode="alwaysEditMode"
             ></ec-sub-form>
             <br />
           </div>
@@ -129,6 +141,7 @@
             v-bind:value="value"
             v-on:input="$emit('input', $event)"
             v-bind:property="property"
+            v-bind:alwaysEditMode="alwaysEditMode"
           ></ec-json>
         </div>
       </div>
@@ -190,7 +203,8 @@ export default {
       showAllFields: Boolean,
     definitions: Object,
     required: Array,
-    currentObj: Object
+    currentObjId: String,
+    alwaysEditMode: Boolean
   }
 };
 </script>

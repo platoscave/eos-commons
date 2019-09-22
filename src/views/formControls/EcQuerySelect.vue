@@ -6,7 +6,7 @@
     @mouseleave="mouseLeave"
   >
     <!-- Read only-->
-    <div v-if="property.readOnly || !isEditing || items.length < 2">{{ selectedText }}</div>
+    <div v-if="property.readOnly || !(isEditing || alwaysEditMode)  || items.length < 2">{{ selectedText }}</div>
 
     <!-- Less than 4: radio buttons-->
     <div v-else-if="items.length < 4">
@@ -42,7 +42,8 @@ export default {
   props: {
     value: String,
     property: Object,
-    currentObj: Object
+    currentObjId: String,
+    alwaysEditMode: Boolean
   },
   data () {
     return {
@@ -55,7 +56,7 @@ export default {
 
 
     const results = await this.$store.dispatch('query', {
-        currentObj: this.currentObj,
+        currentObj: this.currentObjId,
       query: this.property.query
     })
 

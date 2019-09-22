@@ -180,10 +180,13 @@ const store = new Vuex.Store({
 
                 // If the value is an array of objects, we can use mapValue to pick one of the properies 
                 // in the object and use those to populate the value array
-                if (where.mapValue && Array.isArray(where.value)) {
-                    where.value = where.value.map(valueObj => {
-                        return valueObj[where.mapValue]
-                    })
+                if (where.mapValue){
+                    if(Array.isArray(where.value)) {
+                        where.value = where.value.map(valueObj => {
+                            return valueObj[where.mapValue]
+                        })
+                    }
+                    else if(typeof where.value === 'object') where.value = where.value[where.mapValue]
                 }
             }
 
@@ -238,7 +241,6 @@ const store = new Vuex.Store({
 
             // Filter results
             const filterResults = (resultsArr, where) => {
-                const docProp = where.docProp
                 const operator = where.operator
                 let value = where.value
 
@@ -257,7 +259,10 @@ const store = new Vuex.Store({
 
             // queryId takes precidence over query
             if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
-
+            if(queryObj.query.where[0].stop) {
+                debugger
+                //console.log('before', whereArr[0])
+            }
             // If currentObj is a string, assume it's a key
             if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 

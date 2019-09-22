@@ -21,7 +21,8 @@ export default {
   name: 'ec-json',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
   data () {
     return {

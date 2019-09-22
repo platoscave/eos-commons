@@ -19,7 +19,8 @@ export default {
   name: 'ec-image',
   props: {
     value: String,
-    property: Object
+    property: Object,
+    alwaysEditMode: Boolean
   },
 
   data () {

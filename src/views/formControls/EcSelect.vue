@@ -41,7 +41,8 @@ export default {
   props: {
     value: String,
     property: Object,
-    items: Array
+    items: Array,
+    alwaysEditMode: Boolean
   },
   data() {
     return {
