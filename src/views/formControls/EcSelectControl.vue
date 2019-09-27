@@ -46,6 +46,14 @@
       v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-select>
 
+    <!-- Lookup from Query Results -->
+    <!-- ec-lookup needs currentObJ -->
+    <ec-lookup
+      v-else-if="property.query && property.lookup"
+      v-bind:property="property"
+      v-bind:currentObjId="currentObjId"  
+    ></ec-lookup>
+
     <!-- Select from Query Results -->
     <!-- ec-query-select needs currentObJ -->
     <ec-query-select
@@ -171,6 +179,7 @@
 <script>
 import EcString from "./EcString.vue";
 import EcQuerySelect from "./EcQuerySelect.vue";
+import EcLookup from "./EcLookup.vue";
 import EcSelect from "./EcSelect.vue";
 import EcNumber from "./EcNumber.vue";
 import EcBoolean from "./EcBoolean.vue";
@@ -186,6 +195,7 @@ export default {
   components: {
     EcString,
     EcQuerySelect,
+    EcLookup,
     EcSelect,
     EcNumber,
     EcBoolean,

@@ -88,7 +88,7 @@
         <tbody>
           <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(item)">
             <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
-              <ec-select-control v-model="item[propName]" v-bind:property="property"></ec-select-control>
+              <ec-select-control v-model="item[propName]" v-bind:currentObjId="item.key" v-bind:property="property"></ec-select-control>
             </td>
           </tr>
         </tbody>

@@ -22,7 +22,7 @@
       <template v-slot:activator="{ on }">
         <div v-on="on">{{ selectedText }}</div>
       </template>
-      <v-list dense>
+      <v-list>
         <v-list-item-group v-on:update="$emit('input', $event)" v-bind:value="value">
           <v-list-item v-for="(item, i) in items" v-bind:key="i">
             <v-list-item-content @click="$emit('input', item.value)">

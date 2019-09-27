@@ -3109,7 +3109,22 @@
                 "sort": "desc",
                 "title": "Date"
             },
-            "processStack": {},
+            "state": {
+                "title": "State",
+                "lookup": true,
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "key",
+                            "operator": "eq",
+                            "valuePath": "processStack.0",
+                            "mapValue": "stateId"
+                        }
+                    ]
+                },
+                "type": "string",
+                "readOnly": true
+            },
             "name": {}
         },
         "queryId": "vu2j5khcsdrv",
@@ -3155,7 +3170,7 @@
                         {
                             "stop": true,
                             "docProp": "key",
-                            "operator": "litteral",
+                            "operator": "eq",
                             "valuePath": "processStack.0",
                             "mapValue": "stateId"
                         }
@@ -3261,9 +3276,9 @@
                 "title": "From"
             },
             "name": {},
-            "description": {},
             "state": {
-                "title": "Current State",
+                "title": "State",
+                "lookup": true,
                 "query": {
                     "where": [
                         {
@@ -3277,33 +3292,7 @@
                 "type": "string",
                 "readOnly": true
             },
-            "state2": {
-                "items": {
-                    "properties": {
-                        "stateId": {
-                            "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
-                            "query": {
-                                "where": [
-                                    {
-                                        "docProp": "classId",
-                                        "operator": "instances",
-                                        "value": "dlpwvptczyeb"
-                                    }
-                                ],
-                                "sortBy": "name"
-                            },
-                            "title": "State",
-                            "type": "string",
-                            "readOnly": true
-                        }
-                    },
-                    "type": "object"
-                },
-                "title": "Current State",
-                "type": "array",
-                "readOnly": true
-            },
-            "processStack": {}
+            "description": {}
         },
         "baseClassId": "i1gjptcb2skq",
         "type": "object"
