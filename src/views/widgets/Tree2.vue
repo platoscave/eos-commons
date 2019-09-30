@@ -4,14 +4,14 @@
       :active.sync="active"
       :items="items"
       :load-children="loadChildren"
-      :open.sync="open"
+      :open.sync="getSetOpen"
       activatable
-      :multiple-active="false"
       item-key="key"
       transition
+      dense
     >
       <template v-slot:prepend="{ item, active }">
-        <v-icon v-if="!item.children">mdi-account</v-icon>
+        <img class="iconClass" :src="item.icon" />
       </template>
     </v-treeview>
     <v-menu v-model="showMenu" :position-x="x" :position-y="y" absolute offset-y>
@@ -41,7 +41,7 @@ export default {
   data: () => ({
     active: [],
     avatar: null,
-    open: [],
+    Xopen: [],
     users: [],
     viewObj: {},
     showMenu: false,
@@ -52,18 +52,44 @@ export default {
   }),
 
   computed: {
-    Xitems() {
-      return [
-        {
-          name: "Users",
-          children: this.users
-        }
-      ];
+    getSetOpen: {
+      get() {
+        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+        const openedArr = this.$store.state.pageStates[pageId].openedArr;
+        if (!openedArr) return [];
+        return openedArr;
+      },
+      set(openedArr) {
+        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+        this.$store.commit("SET_NODE_TOGGLE", {
+          openedArr: openedArr,
+          pageId: pageId
+        });
+      }
     }
   },
 
   methods: {
     loadChildren: async function(item) {
+      // Recusivly get the default icon, from the first ancestor class that has one
+      const getIconFromClassById = async classId => {
+        let classObj = await this.$store.dispatch("getCommonByKey", classId);
+        console.log('classObj', classObj)
+        if (classObj.icon) return classObj.icon;
+        else if (classObj.parentId)
+          return await getIconFromClassById(classObj.parentId);
+        return ""; // set to default icon
+      };
+
+      // Recusivly get the default pageId, from the first ancestor class that has one
+      const getPageIdFromClassById = async classId => {
+        let classObj = this.$store.dispatch("getCommonByKey", classId);
+        if (classObj.pageId) return classObj.pageId;
+        else if (classObj.parentId)
+          return await getPageIdFromClassById(classObj.parentId);
+        return ""; // set to default pageId
+      };
+
       // returns an array of childnodes
       const getChildren = async (item, getGrandChildren) => {
         if (!item.loaded) {
@@ -77,13 +103,25 @@ export default {
               query: query,
               currentObj: item.key
             });
+            let icon = query.icon ? query.icon : item.icon;
+            // Get the default icon from the class
+            if (!icon)
+              icon = await getIconFromClassById(
+                item.classId ? item.classId : item.parentId
+              );
+            let pageId = query.pageId ? query.pageId : item.pageId;
+
             resultsArr = results.map(subItem => {
               return {
                 key: subItem.key,
                 name: subItem.title ? subItem.title : subItem.name,
                 children: [],
                 subQueryIds: query.subQueryIds,
-                loaded: false
+                loaded: false,
+                icon: icon,
+                pageId: pageId,
+                classId: item.classId,
+                parentId: item.parentId
               };
             });
             return resultsArr;
@@ -125,20 +163,29 @@ export default {
         this.viewObj.subQueryIds
       );
 
-      let results = await this.$store.dispatch("query", queryObj);
-      let icon;
-      if (queryObj.query.icon) icon = queryObj.query.icon;
-      let resultsArr = results.map(item => {
-        return {
-          key: item.key,
-          name: item.title ? item.title : item.name,
-          children: [],
-          subQueryIds: queryObj.query.subQueryIds,
-          loaded: false,
-          icon: icon
-        };
-      });
-      this.items = Object.assign([], resultsArr); // Force reactive update
+      const results = await this.$store.dispatch("query", queryObj);
+      const item = results[0];
+
+      let icon = queryObj.query.icon ? queryObj.query.icon : item.icom;
+      // Get the default icon from the class
+      /* if (!icon)
+        icon = await getIconFromClassById(
+          item.classId ? item.classId : item.parentId
+        ); */
+      let pageId = queryObj.query.pageId ? queryObj.query.pageId : item.pageId;
+
+      const node = {
+        key: item.key,
+        name: item.title ? item.title : item.name,
+        children: [],
+        subQueryIds: queryObj.query.subQueryIds,
+        loaded: false,
+        icon: icon,
+        pageId: pageId,
+        classId: item.classId,
+        parentId: item.parentId
+      };
+      this.items = Object.assign([], [node]); // Force reactive update
     }
   },
   created() {
@@ -155,3 +202,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.iconClass {
+  block-size: 24px;
+  border-radius: 5%;
+}
+</style>

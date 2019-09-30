@@ -119,8 +119,7 @@ const store = new Vuex.Store({
         },
 
         SET_NODE_TOGGLE(state, payload) {
-            if (payload.opened) state.isOpened[payload.key] = true
-            else delete state.isOpened[payload.key]
+            state.pageStates[payload.pageId].openedArr = payload.openedArr
         }
     },
     actions: {
