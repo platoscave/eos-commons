@@ -63,7 +63,7 @@ const store = new Vuex.Store({
                           nextLevel: {}
                         } */
             if (payload.pageId) {
-                let newPageState = { paneWidth: '400px', selectedTab: 0 }
+                let newPageState = { paneWidth: 400, selectedTab: 0 }
                 let pageState = {}
                 if (payload.paneWidth) pageState.paneWidth = payload.paneWidth
                 if (payload.selectedTab !== undefined) pageState.selectedTab = payload.selectedTab
@@ -106,7 +106,7 @@ const store = new Vuex.Store({
                         selectedObjId: pageStateArr[0],
                         pageId: pageId
                     })
-                    const newPageState = { paneWidth: '400px', selectedTab: 0 }
+                    const newPageState = { paneWidth: 400, selectedTab: 0 }
                     const pageState = {
                         selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
                     }

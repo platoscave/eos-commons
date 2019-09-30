@@ -27,7 +27,7 @@
 
       <!-- Tree-->
       <div class="full-height" v-if="widget.displayType === 'Tree'">
-        <ec-tree v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree>
+        <ec-tree2 v-bind:level="level" v-bind:viewId="widget.viewId"></ec-tree2>
       </div>
 
       <!-- Table -->
@@ -77,7 +77,13 @@
 </template>
 
 <script>
+import EcTree2 from './widgets/Tree2.vue'
+
+
 export default {
+  components: {
+    EcTree2
+  },
   props: {
     level: Number,
     widgets: {

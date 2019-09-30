@@ -1235,7 +1235,7 @@
                 "type": "string",
                 "readOnly": true
             },
-            "processId": {
+            "agreementProcessId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
                 "query": {
                     "where": [
@@ -1247,7 +1247,7 @@
                     ],
                     "sortBy": "name"
                 },
-                "title": "Process",
+                "title": "Agreememt Process",
                 "type": "string",
                 "readOnly": true
             },
@@ -1369,6 +1369,22 @@
                 "title": "State Date",
                 "type": "date",
                 "readOnly": true
+            },
+            "action": {
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "key",
+                            "operator": "eq",
+                            "valuePath": "processStack.0",
+                            "mapValue": "stateId"
+                        }
+                    ],
+                    "sortBy": "name"
+                },
+                "title": "Action",
+                "type": "string",
+                "readOnly": false
             },
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -3138,7 +3154,16 @@
         "ownerId": "eoscommonsio",
         "baseClassId": "i1gjptcb2skq",
         "properties": {
-            "processId": {
+            "agreementProcessId": {
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "key",
+                            "operator": "in",
+                            "valuePath": "exposedToProcessesIds"
+                        }
+                    ]
+                },
                 "readOnly": false
             },
             "name": {
@@ -3165,10 +3190,10 @@
         "baseClassId": "re1ihrfyl3zf",
         "properties": {
             "action": {
+                "stateActions": true,
                 "query": {
                     "where": [
                         {
-                            "stop": true,
                             "docProp": "key",
                             "operator": "eq",
                             "valuePath": "processStack.0",
@@ -3243,7 +3268,7 @@
             },
             "startDate": {},
             "expirationDate": {},
-            "processId": {},
+            "agreementProcessId": {},
             "assetId": {},
             "amount": {},
             "currency": {},

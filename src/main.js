@@ -8,7 +8,6 @@ import VueLodash from 'vue-lodash'
 import Layout from './views/Layout.vue'
 import Tabs from './views/Tabs.vue'
 import Widgets from './views/Widgets.vue'
-import { Multipane, MultipaneResizer } from 'vue-multipane'
 import Form from './views/widgets/Form.vue'
 import ClassModel from './views/widgets/ClassModel.vue'
 import ProcessModel from './views/widgets/ProcessModel.vue'
@@ -27,8 +26,6 @@ import { sync } from 'vuex-router-sync'
 import wysiwyg from 'vue-wysiwyg'
 
 Vue.component('ec-layout', Layout)
-Vue.component('multipane', Multipane)
-Vue.component('multipane-resizer', MultipaneResizer)
 Vue.component('ec-tabs', Tabs)
 Vue.component('ec-widgets', Widgets)
 Vue.component('ec-form', Form)

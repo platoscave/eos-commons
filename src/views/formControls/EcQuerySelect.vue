@@ -54,23 +54,33 @@ export default {
   },
   mounted: async function () {
 
-
     const results = await this.$store.dispatch('query', {
         currentObj: this.currentObjId,
-      query: this.property.query
+        query: this.property.query
     })
 
-    this.items = results.map(item => {
-      let obj = {
-        value: item.key,
-        text: item.title ? item.title : item.name
-      }
-      return obj
-    })
-    this.items.push({
+    if(this.property.stateActions){
+        this.items = results[0].nextStateIds.map(item => {
+            let obj = {
+                value: item.action,
+                text: item.action
+            }
+            return obj
+        })
+    }
+    else {
+        this.items = results.map(item => {
+            let obj = {
+                value: item.key,
+                text: item.title ? item.title : item.name
+            }
+            return obj
+        })
+    }
+    /* this.items.push({
       value: undefined,
       text: '[not selected]'
-    })
+    }) */
     // How do we return [not selected] ?
     // Should remove property!
     // if(!this.value) this.value = '[not selected]'
