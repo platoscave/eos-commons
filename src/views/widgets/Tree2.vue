@@ -11,6 +11,7 @@
       dense
     >
       <template v-slot:prepend="{ item, active }">
+        <!-- See https://www.freepik.com for icons -->
         <img class="iconClass" :src="item.icon" />
       </template>
     </v-treeview>
@@ -119,6 +120,7 @@ export default {
               currentObj: item.key
             });
             let icon = query.icon ? query.icon : item.icon;
+            if(item.icon) debugger;
             // Get the default icon from the class
             if (!icon)
               icon = await getIconFromClassById(
