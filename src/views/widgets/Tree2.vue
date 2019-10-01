@@ -1,7 +1,7 @@
 <template>
   <div v-if="viewObj">
     <v-treeview
-      :active.sync="active"
+      :active.sync="getSetActive"
       :items="items"
       :load-children="loadChildren"
       :open.sync="getSetOpen"
@@ -65,6 +65,21 @@ export default {
           openedArr: openedArr,
           pageId: pageId
         });
+      }
+    },
+    
+    getSetActive: {
+      get() {
+        const currentObjId = this.$store.state.levelIdsArr[this.level+1].currentObjId;
+        return [currentObjId];
+      },
+      set(activeArr) {
+        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+        this.$store.commit('SET_PAGE_STATE2', {
+          level: this.level + 1,
+          pageId: pageId,
+          selectedObjId: activeArr[0]
+        })
       }
     }
   },
