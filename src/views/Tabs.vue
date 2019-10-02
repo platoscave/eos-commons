@@ -42,7 +42,9 @@ export default {
   computed: {
     selectedTab: {
       get() {
-        return this.$store.state.pageStates[this.pageId].selectedTab;
+          let pageStates = this.$store.state.pageStates[this.pageId]
+          if(pageStates && pageStates.selectedTab) return pageStates.selectedTab
+            return 0
       },
       set(value) {
         this.$store.commit("SET_PAGE_STATE2", {

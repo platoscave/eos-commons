@@ -57,8 +57,9 @@ export default {
       get() {
         const pageId = this.$store.state.levelIdsArr[this.level].pageId;
         const openedArr = this.$store.state.pageStates[pageId].openedArr;
+        return;
         if (!openedArr) return [];
-        return openedArr;
+        return [openedArr];
       },
       set(openedArr) {
         const pageId = this.$store.state.levelIdsArr[this.level].pageId;
@@ -68,19 +69,21 @@ export default {
         });
       }
     },
-    
+
     getSetActive: {
       get() {
-        const currentObjId = this.$store.state.levelIdsArr[this.level+1].currentObjId;
-        return [currentObjId];
+        const levelsArr = this.$store.state.levelIdsArr[this.level + 1];
+        if (levelsArr) return [levelsArr.currentObjId];
+        return [];
       },
       set(activeArr) {
         const pageId = this.$store.state.levelIdsArr[this.level].pageId;
-        this.$store.commit('SET_PAGE_STATE2', {
+        return;
+        this.$store.commit("SET_PAGE_STATE2", {
           level: this.level + 1,
           pageId: pageId,
           selectedObjId: activeArr[0]
-        })
+        });
       }
     }
   },
@@ -90,7 +93,7 @@ export default {
       // Recusivly get the default icon, from the first ancestor class that has one
       const getIconFromClassById = async classId => {
         let classObj = await this.$store.dispatch("getCommonByKey", classId);
-        console.log('classObj', classObj)
+        console.log("classObj", classObj);
         if (classObj.icon) return classObj.icon;
         else if (classObj.parentId)
           return await getIconFromClassById(classObj.parentId);
@@ -119,16 +122,16 @@ export default {
               query: query,
               currentObj: item.key
             });
-            let icon = query.icon ? query.icon : item.icon;
-            if(item.icon) debugger;
-            // Get the default icon from the class
-            if (!icon)
-              icon = await getIconFromClassById(
-                item.classId ? item.classId : item.parentId
-              );
-            let pageId = query.pageId ? query.pageId : item.pageId;
 
-            resultsArr = results.map(subItem => {
+            let resultsArrPromise = results.map(async subItem => {
+              let icon = query.icon ? query.icon : subItem.icon;
+              if (subItem.icon) debugger;
+              // Get the default icon from the class
+              if (!icon)
+                icon = await getIconFromClassById(
+                  item.classId ? item.classId : item.parentId
+                );
+              let pageId = query.pageId ? query.pageId : item.pageId;
               return {
                 key: subItem.key,
                 name: subItem.title ? subItem.title : subItem.name,
@@ -141,6 +144,7 @@ export default {
                 parentId: item.parentId
               };
             });
+          let resultsArr = await Promise.all(resultsArrPromise);
             return resultsArr;
           });
           let childrenArrArr = await Promise.all(childrenPromises);
