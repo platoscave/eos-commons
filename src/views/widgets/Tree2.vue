@@ -7,7 +7,9 @@
       :open.sync="getSetOpen"
       activatable
       item-key="key"
+      return-object
       transition
+      hoverable
       dense
     >
       <template v-slot:prepend="{ item, active }">
@@ -63,6 +65,8 @@ export default {
       },
       set(openedArr) {
         const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+        console.log("openedArr", openedArr);
+        return;
         this.$store.commit("SET_NODE_TOGGLE", {
           openedArr: openedArr,
           pageId: pageId
@@ -77,12 +81,10 @@ export default {
         return [];
       },
       set(activeArr) {
-        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
-        return;
         this.$store.commit("SET_PAGE_STATE2", {
           level: this.level + 1,
-          pageId: pageId,
-          selectedObjId: activeArr[0]
+          pageId: activeArr[0].pageId,
+          selectedObjId: activeArr[0].key
         });
       }
     }
@@ -109,11 +111,8 @@ export default {
         return ""; // set to default pageId
       };
 
-      // returns an array of childnodes
-      const getChildren = async (item, getGrandChildren) => {
-        if (!item.loaded) {
-          let resultsArr = [];
-          let childrenPromises = item.subQueryIds.map(async subqueryId => {
+      // Get children for subQuery
+      const getChildrenForSubqueryId = async subqueryId => {
             const query = await this.$store.dispatch(
               "getCommonByKey",
               subqueryId
@@ -125,13 +124,19 @@ export default {
 
             let resultsArrPromise = results.map(async subItem => {
               let icon = query.icon ? query.icon : subItem.icon;
-              if (subItem.icon) debugger;
               // Get the default icon from the class
               if (!icon)
                 icon = await getIconFromClassById(
-                  item.classId ? item.classId : item.parentId
+                  subItem.classId ? subItem.classId : subItem.parentId
                 );
-              let pageId = query.pageId ? query.pageId : item.pageId;
+              let pageId = query.pageId ? query.pageId : subItem.pageId;
+              // Get the default icon from the class
+              if (!pageId) debugger;
+
+              if (!pageId)
+                pageId = await getPageIdFromClassById(
+                  subItem.classId ? subItem.classId : subItem.parentId
+                );
               return {
                 key: subItem.key,
                 name: subItem.title ? subItem.title : subItem.name,
@@ -140,12 +145,19 @@ export default {
                 loaded: false,
                 icon: icon,
                 pageId: pageId,
-                classId: item.classId,
-                parentId: item.parentId
+                classId: subItem.classId,
+                parentId: subItem.parentId
               };
             });
-          let resultsArr = await Promise.all(resultsArrPromise);
+            let resultsArr = await Promise.all(resultsArrPromise);
             return resultsArr;
+      };
+
+      // returns an array of childnodes
+      const getChildren = async (item, getGrandChildren) => {
+        if (!item.loaded) {
+          let childrenPromises = item.subQueryIds.map(async subqueryId => {
+              return getChildrenForSubqueryId(subqueryId)
           });
           let childrenArrArr = await Promise.all(childrenPromises);
           let childrenArr = Vue._.union.apply(null, childrenArrArr);
