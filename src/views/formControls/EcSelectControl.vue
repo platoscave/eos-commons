@@ -208,7 +208,7 @@ export default {
     SubForm
   },
   props: {
-    value: [Number, String, Array, Object],
+    value: [Number, String, Array, Object, Boolean],
     property: Object,
       showAllFields: Boolean,
     definitions: Object,

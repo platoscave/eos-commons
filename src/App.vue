@@ -40,6 +40,12 @@
                   >Download From IndexedDB</v-btn>
                 </v-flex>
                 <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="onGennerateCpp()"
+                  >Gennerate cpp</v-btn>
+                </v-flex>
+                <v-flex xs12>
                   <div>Random Key: {{ randomKey }}</div>
                 </v-flex>
               </v-layout>
@@ -47,7 +53,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -100,9 +106,9 @@ export default {
       return Object.keys(networks)
     },
     randomKey: function () {
-      var characters = 'abcdefghijklmnopqrstuvwxyz12345'
-      var randomKey = ''
-      for (var i = 0; i < 12; i++) {
+      const characters = 'abcdefghijklmnopqrstuvwxyz12345'
+      let randomKey = ''
+      for (let i = 0; i < 12; i++) {
         randomKey += characters.charAt(
           Math.floor(Math.random() * characters.length)
         )
@@ -141,9 +147,30 @@ export default {
     onEraseAllEos () {
 
     },
-    onDownFromIndexeddb () {
+    async onDownFromIndexeddb () {
         // https://stackoverflow.com/questions/54793997/export-indexeddb-object-store-to-csv 
-
+        const data = await IndexedDBApiService.GetAll(this.$store)
+        const jsonString = JSON.stringify(data, null, 2);
+        const csv_mime_type = 'text/json';
+        const blob = new Blob([jsonString], {type: csv_mime_type})
+        const anchor = document.createElement('a');
+        anchor.setAttribute('download', 'commons.json');
+        const url = URL.createObjectURL(blob);
+        anchor.setAttribute('href', url);
+        anchor.click();
+        URL.revokeObjectURL(url);
+    },
+    
+    async onGennerateCpp () {
+        const data = await IndexedDBApiService.GennerateCpp(this.$store)
+        const csv_mime_type = 'text/cpp';
+        const blob = new Blob([data], {type: csv_mime_type})
+        const anchor = document.createElement('a');
+        anchor.setAttribute('download', 'commons.cpp');
+        const url = URL.createObjectURL(blob);
+        anchor.setAttribute('href', url);
+        anchor.click();
+        URL.revokeObjectURL(url);
     }
   },
   created () {

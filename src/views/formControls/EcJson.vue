@@ -9,7 +9,7 @@
   <div v-if="property.readOnly || !isEditing" class="monoSpaced">{{ JSON.stringify(property, replacer, 2) }}></div>
     <v-text-field
       v-else
-      v-bind:value="value"
+      v-bind:value="JSON.stringify(property, replacer, 2)"
       v-on:input="$emit('input', $event)"
       autofocus
       single-line
@@ -20,7 +20,7 @@
 export default {
   name: 'ec-json',
   props: {
-    value: String,
+    value: Object,
     property: Object,
     alwaysEditMode: Boolean
   },

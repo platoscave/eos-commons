@@ -1,8 +1,8 @@
-
 import axios from 'axios'
 import Vue from 'vue'
 const eosjs = require('eosjs');
 import BigNumber from 'bignumber.js/bignumber'
+
 
 
 class IndexedDBApiService {
@@ -46,10 +46,10 @@ class IndexedDBApiService {
                 } else {
                     store.commit('SET_SNACKBAR', {
                         snackbar: true,
-                        text: 'getCommonByKey failed: '+ key,
+                        text: 'getCommonByKey failed: ' + key,
                         color: 'error'
                     })
-                    reject('Cant find: '+ key)
+                    reject('Cant find: ' + key)
                 }
             }
         })
@@ -198,16 +198,18 @@ class IndexedDBApiService {
         let processObj = await this.getCommonByKey(store, agreementObj.processId);
         agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
         agreementObj.agreementHistoryIds = [];
-        agreementObj.processStack = [ {
+        agreementObj.processStack = [{
             processId: agreementObj.processId,
             stateId: 'gczvalloctae' // The Initialize state
-        } ]
+        }]
         agreementObj.startDate = new Date().toISOString();
         agreementObj.agreementHistoryIds = [];
         agreementObj.buyerId = store.state.currentUserId;
 
         const agreementKey = await this.upsertCommon(agreementObj)
-        await this.takeAction(store, {agreementObj: agreementObj})
+        await this.takeAction(store, {
+            agreementObj: agreementObj
+        })
 
         return agreementKey
     }
@@ -224,77 +226,77 @@ class IndexedDBApiService {
 
 
         // Get the agreement
-        if(!actionObj.agreementObj) actionObj.agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
+        if (!actionObj.agreementObj) actionObj.agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
         await this.bumpState(store, actionObj);
         let nextStateId = actionObj.agreementObj.processStack[0].stateId
         // Get the newStateObj
         let newStateObj = await this.getCommonByKey(store, nextStateId);
 
         // See if we have to do anything, based on the new state
-        if(newStateObj.classId === 'dqja423wlzrb' ){ //Execute class //TODO replace with isA
+        if (newStateObj.classId === 'dqja423wlzrb') { //Execute class //TODO replace with isA
             // For now, just skip
             actionObj.action = 'happy'
             await this.bumpState(store, actionObj);
         }
-        if(newStateObj.classId === 'jotxozcetpx2' ){ //Perform class //TODO replace with isA
+        if (newStateObj.classId === 'jotxozcetpx2') { //Perform class //TODO replace with isA
             // Add the sub process to the call stack
-            actionObj.agreementObj.processStack.unshift( {
+            actionObj.agreementObj.processStack.unshift({
                 processId: actionObj.agreementObj.sellerProcessId, // TODO known sub poricess??
                 stateId: 'gczvalloctae' // The Initialize state
-            } )
-            this.UpdateAgreementAddTransaction(store, actionObj) 
+            })
+            this.UpdateAgreementAddTransaction(store, actionObj)
             await this.takeAction(store, actionObj)
         }
 
- 
+
     }
-    
+
     static async bumpState(store, actionObj) {
         const date = new Date();
         actionObj.agreementObj.stateDate = date.toISOString()
-        
+
         // Determine next state
         // Get the current process stack object
         let processStackObj = actionObj.agreementObj.processStack[0]
         // If we are initializing, set the state to the process substateId
-        if(processStackObj.stateId === 'gczvalloctae') { // Initialize state
+        if (processStackObj.stateId === 'gczvalloctae') { // Initialize state
             // WRONG which processId in the case of sub classes?
             let processObj = await this.getCommonByKey(store, actionObj.agreementObj.processId);
             // Set the state to the process subState
             processStackObj.stateId = processObj.substateId
-            return this.UpdateAgreementAddTransaction(store, actionObj) 
-        } 
+            return this.UpdateAgreementAddTransaction(store, actionObj)
+        }
         // Get processStackObj state object
         const currentStateObj = await this.getCommonByKey(store, processStackObj.stateId);
 
-        if(currentStateObj.nextStateIds && currentStateObj.nextStateIds.length) {
+        if (currentStateObj.nextStateIds && currentStateObj.nextStateIds.length) {
             // Find the next state that corresponds with the action
-            const nextStateObj = currentStateObj.nextStateIds.find( obj => {
+            const nextStateObj = currentStateObj.nextStateIds.find(obj => {
                 return obj.action === actionObj.action
             })
             // If the nextStateObj has a stateId, use it
-            if(nextStateObj && nextStateObj.stateId) {
+            if (nextStateObj && nextStateObj.stateId) {
                 processStackObj.stateId = nextStateObj.stateId // Set agreement state to it
-                return this.UpdateAgreementAddTransaction(store, actionObj) 
+                return this.UpdateAgreementAddTransaction(store, actionObj)
             }
         }
         // We couldn't find a nextStateId, so we return
         // Are we in a sub process? If so, send action to super process
-        if(actionObj.agreementObj.processStack.length > 1) {
+        if (actionObj.agreementObj.processStack.length > 1) {
             // Remove the top processStackObj
             processStackObj.shift()
-            return this.UpdateAgreementAddTransaction(store, actionObj) 
+            return this.UpdateAgreementAddTransaction(store, actionObj)
         } else {
             // Otherwize we are at the end
-            if(actionObj.action === 'happy' ) processStackObj.stateId = '3hxkire2nn4v' // Sucess
+            if (actionObj.action === 'happy') processStackObj.stateId = '3hxkire2nn4v' // Sucess
             else processStackObj.stateId = 'zdwdoqpxks2s' // Failed
-            return this.UpdateAgreementAddTransaction(store, actionObj) 
+            return this.UpdateAgreementAddTransaction(store, actionObj)
         }
     }
 
     static async UpdateAgreementAddTransaction(store, actionObj) {
         const date = new Date();
-  
+
         // Add history record (get transaction from eos)
         // TODO find a way to query trransactions from eos, tehn remove agreementHistoryId
         const transactionObj = {
@@ -332,7 +334,9 @@ class IndexedDBApiService {
 
             openRequest.onupgradeneeded = e => {
                 let db = e.target.result
-                const store = db.createObjectStore('commons', { keyPath: 'key' })
+                const store = db.createObjectStore('commons', {
+                    keyPath: 'key'
+                })
                 store.createIndex('parentId', 'parentId')
                 store.createIndex('classId', 'classId')
                 store.createIndex('ownerId', 'ownerId')
@@ -342,7 +346,12 @@ class IndexedDBApiService {
             openRequest.onsuccess = e => {
                 this.db = e.target.result
 
-                return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
+                return axios('commons.json', {
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    data: {}
+                }).then(response => {
                     const transaction = this.db.transaction('commons', 'readwrite')
                     const commonsStore = transaction.objectStore('commons')
                     // console.log(response.data)
@@ -376,6 +385,101 @@ class IndexedDBApiService {
                 reject(e.error)
             }
         })
+    }
+
+    static async GetAll(store) {
+        return new Promise((resolve, reject) => {
+            const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
+
+            commonsStore.getAll().onsuccess = event => {
+                let result = event.target.result
+                if (result) {
+                    resolve(result)
+                } else {
+                    store.commit('SET_SNACKBAR', {
+                        snackbar: true,
+                        text: 'getAll failed',
+                        color: 'error'
+                    })
+                    reject('cant get all')
+                }
+            }
+        })
+    }
+
+    static async GennerateCpp(store) {
+
+        let classObj = await this.getCommonByKey(store, 'gzthjuyjca4s')
+        const className = classObj.title.replace(/\s+/g, '').toLowerCase();
+        let tableStruct = ''
+        for (let key in classObj.properties) {
+            const prop = classObj.properties[key]
+            if (prop.type === 'string') {
+                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') tableStruct += `      name ${key};` + '\n'
+                else tableStruct += `      std::string  ${key};` + '\n'
+            }
+        }
+        let keyStruct = ''
+        for (let key in classObj.properties) {
+            if (key !== 'key') {
+                const prop = classObj.properties[key]
+                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') tableStruct += `      uint64_t by_${key}() const { return ${key}.value; }` + '\n'
+            }
+        }
+        let upsertSrting = ''
+        for (let key in classObj.properties) {
+            const prop = classObj.properties[key]
+            if (prop.type === 'string') {
+                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') upsertSrting += `name ${key}, `
+                else upsertSrting += `std::string  ${key}, `
+            }
+        }
+        let indexSrting = ''
+        for (let key in classObj.properties) {
+            if (key !== 'key') {
+                const prop = classObj.properties[key]
+                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') indexSrting += `      indexed_by<name("by${key}"), const_mem_fun<${className}_struct, uint64_t, &${className}_struct::by_${key}id>>,` + '\n'
+            }
+        }
+
+        let cppString =
+            `#include <eosio/eosio.hpp>
+#include <eosio/print.hpp>
+
+using namespace eosio;
+
+CONTRACT ${className} : public contract {
+  public:
+    using contract::contract;
+    ${className}(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds), _${className}(receiver, receiver.value) {}
+    
+    ACTION upsert(name username, ${upsertSrting});
+
+    ACTION erase(name username, name key);
+    
+    ACTION eraseall(name username);
+  
+  private:
+    TABLE ${className}_struct {
+${tableStruct}
+
+      uint64_t primary_key() const { return key.value; 
+${keyStruct}
+    };
+    
+    typedef multi_index<name("${className}"), ${className}_struct, 
+      indexed_by<name("byparentid"), const_mem_fun<${className}_struct, uint64_t, &${className}_struct::by_parentid>>, 
+      indexed_by<name("byclassid"), const_mem_fun<${className}_struct, uint64_t, &${className}_struct::by_classid>>> ${className}_table;
+
+${indexSrting}> ${className}_table;
+      
+    // typedef multi_index<name("${className}"), ${className}_struct> ${className}_table;
+    
+    ${className}_table _${className};
+};`
+
+        return cppString
+
     }
 }
 

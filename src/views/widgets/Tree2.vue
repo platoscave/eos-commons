@@ -1,20 +1,22 @@
 <template>
   <div v-if="viewObj">
     <v-treeview
-      :active.sync="getSetActive"
-      :items="items"
+      :items="nodes"
       :load-children="loadChildren"
-      :open.sync="getSetOpen"
+      :active="active"
+      v-on:update:active="updateActiveArr"
+      :open="open"
+      v-on:update:open="updateOpenArr"
       activatable
       item-key="key"
-      return-object
+      Xreturn-object
       transition
       hoverable
       dense
     >
       <template v-slot:prepend="{ item, active }">
         <!-- See https://www.freepik.com for icons -->
-        <img class="iconClass" :src="item.icon" />
+        <img style="color: yellow;" class="iconClass" :src="item.icon" />
       </template>
     </v-treeview>
     <v-menu v-model="showMenu" :position-x="x" :position-y="y" absolute offset-y>
@@ -42,149 +44,168 @@ export default {
     viewId: String
   },
   data: () => ({
-    active: [],
     avatar: null,
-    Xopen: [],
     users: [],
     viewObj: {},
     showMenu: false,
     x: 0,
     y: 0,
-    items: [],
-    menuItems: []
+    nodes: [],
+    open: [],
+    active: [],
+    menuItems: [],
+    disableUpdateOpenArr: true
   }),
 
-  computed: {
-    getSetOpen: {
-      get() {
-        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
-        const openedArr = this.$store.state.pageStates[pageId].openedArr;
-        return;
-        if (!openedArr) return [];
-        return [openedArr];
-      },
-      set(openedArr) {
-        const pageId = this.$store.state.levelIdsArr[this.level].pageId;
-        console.log("openedArr", openedArr);
-        return;
-        this.$store.commit("SET_NODE_TOGGLE", {
-          openedArr: openedArr,
-          pageId: pageId
-        });
-      }
-    },
-
-    getSetActive: {
-      get() {
-        const levelsArr = this.$store.state.levelIdsArr[this.level + 1];
-        if (levelsArr) return [levelsArr.currentObjId];
-        return [];
-      },
-      set(activeArr) {
-        this.$store.commit("SET_PAGE_STATE2", {
-          level: this.level + 1,
-          pageId: activeArr[0].pageId,
-          selectedObjId: activeArr[0].key
-        });
-      }
-    }
-  },
-
   methods: {
-    loadChildren: async function(item) {
+    updateOpenArr: function(openedArr) {
+      if (this.disableUpdateOpenArr) return;
+      const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+      this.$store.commit("SET_NODE_TOGGLE", {
+        openedArr: openedArr,
+        pageId: pageId
+      });
+    },
+    updateActiveArr: function(activeArr) {
+      if (this.disableUpdateOpenArr) return;
+      const item = this.findTreeItem(this.nodes, activeArr[0]);
+      this.$store.commit("SET_PAGE_STATE2", {
+        level: this.level + 1,
+        pageId: item.pageId,
+        selectedObjId: activeArr[0]
+      });
+    },
+    loadChildren: async function(node) {
       // Recusivly get the default icon, from the first ancestor class that has one
       const getIconFromClassById = async classId => {
         let classObj = await this.$store.dispatch("getCommonByKey", classId);
-        console.log("classObj", classObj);
         if (classObj.icon) return classObj.icon;
-        else if (classObj.parentId)
+        if (classObj.parentId)
           return await getIconFromClassById(classObj.parentId);
         return ""; // set to default icon
       };
 
       // Recusivly get the default pageId, from the first ancestor class that has one
       const getPageIdFromClassById = async classId => {
-        let classObj = this.$store.dispatch("getCommonByKey", classId);
+        let classObj = await this.$store.dispatch("getCommonByKey", classId);
         if (classObj.pageId) return classObj.pageId;
-        else if (classObj.parentId)
+        if (classObj.parentId)
           return await getPageIdFromClassById(classObj.parentId);
         return ""; // set to default pageId
       };
 
-      // Get children for subQuery
-      const getChildrenForSubqueryId = async subqueryId => {
-            const query = await this.$store.dispatch(
-              "getCommonByKey",
-              subqueryId
-            );
-            let results = await this.$store.dispatch("query", {
-              query: query,
-              currentObj: item.key
-            });
+      // Make node from item
+      const makeNode = async (query, item, getGrandchildren) => {
+        let icon = query.icon ? query.icon : item.icon;
+        // Get the default icon from the class
+        if (!icon)
+          icon = await getIconFromClassById(
+            item.classId ? item.classId : item.parentId
+          );
 
-            let resultsArrPromise = results.map(async subItem => {
-              let icon = query.icon ? query.icon : subItem.icon;
-              // Get the default icon from the class
-              if (!icon)
-                icon = await getIconFromClassById(
-                  subItem.classId ? subItem.classId : subItem.parentId
-                );
-              let pageId = query.pageId ? query.pageId : subItem.pageId;
-              // Get the default icon from the class
-              if (!pageId) debugger;
+        let pageId = query.pageId ? query.pageId : item.pageId;
+        // Get the default icon from the class
+        if (!pageId)
+          pageId = await getPageIdFromClassById(
+            item.classId ? item.classId : item.parentId
+          );
 
-              if (!pageId)
-                pageId = await getPageIdFromClassById(
-                  subItem.classId ? subItem.classId : subItem.parentId
-                );
-              return {
-                key: subItem.key,
-                name: subItem.title ? subItem.title : subItem.name,
-                children: [],
-                subQueryIds: query.subQueryIds,
-                loaded: false,
-                icon: icon,
-                pageId: pageId,
-                classId: subItem.classId,
-                parentId: subItem.parentId
-              };
-            });
-            let resultsArr = await Promise.all(resultsArrPromise);
-            return resultsArr;
+        let node = {
+          key: item.key,
+          name: item.title ? item.title : item.name,
+          subQueryIds: query.subQueryIds,
+          loaded: false,
+          icon: icon,
+          pageId: pageId,
+          classId: item.classId,
+          parentId: item.parentId,
+          children: []
+        };
+
+        //node.children = []
+        return node;
+      };
+
+      // Get children for subQueryId
+      const getChildrenForSubqueryId = async (
+        subqueryId,
+        currentObjId,
+        getGrandchildren
+      ) => {
+        const query = await this.$store.dispatch("getCommonByKey", subqueryId);
+        let results = await this.$store.dispatch("query", {
+          query: query,
+          currentObj: currentObjId
+        });
+
+        let resultsArrPromise = results.map(async subItem => {
+          return makeNode(query, subItem, getGrandchildren);
+        });
+        let resultsArr = await Promise.all(resultsArrPromise);
+        return resultsArr;
       };
 
       // returns an array of childnodes
-      const getChildren = async (item, getGrandChildren) => {
-        if (!item.loaded) {
-          let childrenPromises = item.subQueryIds.map(async subqueryId => {
-              return getChildrenForSubqueryId(subqueryId)
+      const getChildren = async (node, getGrandchildren) => {
+        console.log('getGrandchildren node', getGrandchildren, node)
+
+        if (node.subQueryIds) {
+          let childrenPromises = node.subQueryIds.map(async subqueryId => {
+            return getChildrenForSubqueryId(
+              subqueryId,
+              node.key,
+              getGrandchildren
+            );
           });
           let childrenArrArr = await Promise.all(childrenPromises);
           let childrenArr = Vue._.union.apply(null, childrenArrArr);
-          //item.children = childrenArr
-          console.log("childrenArr", childrenArr);
-          //if(childrenArr.length === 0) debugger
-          if (childrenArr.length === 0) delete item.children;
-          item.loaded = true;
-          if (childrenArr.length > 0) item.children = childrenArr;
+          //console.log("childrenArr", childrenArr);
+          node.loaded = true;
+          if (childrenArr.length) node.children = childrenArr;
         }
-        console.log("one", item);
-        if (getGrandChildren && item.children) {
-          item.children.forEach(subItem => {
-            // getChildren(subItem, false);
-            // if (subItem.children.length = 0) delete subItem.children
+        // if (node.key === "be1ub1vtofjo") debugger;
+
+        let grandchildrenPromisses = [];
+        if (getGrandchildren && node.children) {
+          grandchildrenPromisses = node.children.map(async childNode => {
+            return getChildren(childNode, false);
           });
-          console.log("two", item);
         }
+
+        let grandchildren = await Promise.all(grandchildrenPromisses);
+        console.log('node', node)
+        // if (node.key === "eoscommonsio") debugger;
+        //this.onOpenBtn()
+        return true
       };
 
-      console.log("item", item);
-      if (!item.subQueryIds) return;
-      if (!Array.isArray(item.subQueryIds))
-        item.subQueryIds = [item.subQueryIds];
+      console.log("node", node);
+      if (!node.subQueryIds) return;
+      if (!Array.isArray(node.subQueryIds))
+        node.subQueryIds = [node.subQueryIds];
 
-      await getChildren(item, true);
+      return await getChildren(node, false);
     },
+
+    findTreeItem(nodes, key) {
+      if (!nodes) {
+        return;
+      }
+
+      for (const item of nodes) {
+        // Test current object
+        if (item.key === key) {
+          return item;
+        }
+
+        // Test children recursively
+        const child = this.findTreeItem(item.children, key);
+        if (child) {
+          return child;
+        }
+      }
+    },
+
     async refresh() {
       let queryObj = {
         currentObj: this.$store.state.levelIdsArr[this.level].selectedObjId
@@ -218,7 +239,25 @@ export default {
         classId: item.classId,
         parentId: item.parentId
       };
-      this.items = Object.assign([], [node]); // Force reactive update
+      this.nodes = Object.assign([], [node]); // Force reactive update
+      this.autoOpenTreeNodes();
+    },
+    autoOpenTreeNodes() {
+      const pageId = this.$store.state.levelIdsArr[this.level].pageId;
+      const openedArr = this.$store.state.pageStates[pageId].openedArr;
+      const nextLevelsArr = this.$store.state.levelIdsArr[this.level + 1];
+      const activeArr = nextLevelsArr ? [nextLevelsArr.selectedObjId] : [];
+
+      let count = 0
+      let myVar = setInterval(() => {
+        if(count > 1) this.open = Object.assign([], openedArr); // Force reactive update
+        if(count === 5) this.active = Object.assign([], activeArr); // Force reactive update
+        if(count > 5) {
+            clearInterval(myVar);
+            this.disableUpdateOpenArr = false;
+        }
+        count ++
+      }, 500);
     }
   },
   created() {
