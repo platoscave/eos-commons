@@ -14,7 +14,7 @@
           <!-- ec-query-select needs currentObjId -->
           <v-flex xs12 md10 v-if="showAllFields || value[propName]">
             <ec-select-control  class="rowPadding"
-              v-model="value[propName]"
+            v-model="value[propName]"
               v-bind:alwaysEditMode="alwaysEditMode"
               v-bind:showAllFields="showAllFields"
               v-bind:property="property"

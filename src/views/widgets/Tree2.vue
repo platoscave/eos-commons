@@ -250,7 +250,7 @@ export default {
 
       let count = 0
       let myVar = setInterval(() => {
-        if(count > 1) this.open = Object.assign([], openedArr); // Force reactive update
+        if(count > 0) this.open = Object.assign([], openedArr); // Force reactive update
         if(count === 5) this.active = Object.assign([], activeArr); // Force reactive update
         if(count > 5) {
             clearInterval(myVar);
