@@ -1566,12 +1566,6 @@
                     "type": "image/png"
                 },
                 "readOnly": true
-            },
-            "purchaseButton": {
-                "title": "Buy",
-                "type": "button",
-                "action": "addAgreement",
-                "readOnly": true
             }
         },
         "type": "object"
@@ -3097,12 +3091,47 @@
         "properties": {
             "key": {},
             "name": {},
-            "value": {},
-            "imageUrl": {},
-            "description": {},
-            "purchaseButton": {}
+            "value": {}
         },
         "queryId": "kl2fe4hvhhtg",
+        "type": "object"
+    },
+    {
+        "key": "tet4swafvc2k",
+        "docType": "object",
+        "name": "Purchase Form Page",
+        "classId": "pejdgrwd5qso",
+        "ownerId": "eoscommonsio",
+        "tabs": [
+            {
+                "name": "Purchase",
+                "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Purchase Assent Form",
+                        "viewId": "lhiev54rvf3w"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "lhiev54rvf3w",
+        "docType": "object",
+        "name": "Purchase Asset Form View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "value": {},
+            "purchaseButton": {
+                "title": "Buy",
+                "type": "button",
+                "action": "addAgreement"
+            },
+            "imageUrl": {},
+            "description": {}
+        },
+        "baseClassId": "nlmgc3dmrwxs",
         "type": "object"
     },
     {
@@ -3827,6 +3856,7 @@
         "name": "Purchase Assest Table Page",
         "accordionOrTab": "Tabs",
         "classId": "pejdgrwd5qso",
+        "divider": "Vertical",
         "ownerId": "bicycleshop1",
         "tabs": [
             {
@@ -4334,6 +4364,7 @@
         "name": "Assests Query",
         "classId": "q234ooehrk5v",
         "ownerId": "eoscommonsio",
+        "pageId": "tet4swafvc2k",
         "where": [
             {
                 "docProp": "classId",
