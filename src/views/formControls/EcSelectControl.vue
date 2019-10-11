@@ -189,7 +189,7 @@ import EcImage from "./EcImage.vue";
 import EcUri from "./EcUri.vue";
 import EcJson from "./EcJson.vue";
 import EcButton from "./EcButton.vue";
-import SubForm from "../widgets/recursive/SubForm.vue";
+import EcSubForm from "../widgets/recursive/EcSubForm.vue";
 export default {
   name: "ec-select-control",
   components: {
@@ -205,7 +205,7 @@ export default {
     EcUri,
     EcJson,
     EcButton,
-    SubForm
+    EcSubForm
   },
   props: {
     value: [Number, String, Array, Object, Boolean],

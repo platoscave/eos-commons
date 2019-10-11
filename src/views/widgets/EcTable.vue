@@ -118,14 +118,14 @@
 <script>
 import ApiService from "../../services/IndexedDBApiService";
 import EcSelectControl from "../formControls/EcSelectControl.vue";
-import SubForm from "./recursive/SubForm.vue";
+import EcSubForm from "./recursive/EcSubForm.vue";
 import Vue from "vue";
 
 export default {
   name: "ec-table",
   components: {
     EcSelectControl,
-    SubForm
+    EcSubForm
   },
   props: {
     level: Number,

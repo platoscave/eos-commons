@@ -69,12 +69,17 @@
 </template>
 
 <script>
+import EcLayout from './views/EcLayout.vue'
+
 import IndexedDBApiService from './services/IndexedDBApiService'
 import EosApiService from './services/EosApiService'
 import testAccounts from './config/testaccounts.js'
 import networks from './config/networks.js'
 
 export default {
+  components: {
+    EcLayout
+  },
   name: 'App',
   data () {
     return {

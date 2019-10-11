@@ -23,12 +23,12 @@
   </div>
 </template>
 <script>
-import BsItems from './recursive/BsItems'
+import EcBsItems from './recursive/EcBsItems'
 
 export default {
   name: 'ec-balance-sheet',
   components: {
-    BsItems
+    EcBsItems
   },
   props: {
     level: Number

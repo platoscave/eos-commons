@@ -127,7 +127,7 @@ const store = new Vuex.Store({
             return ApiService.getCommonByKey(store, key)
         },
         upsertCommon: async function (store, common) {
-            return ApiService.upsertCommon(common)
+            return ApiService.upsertCommon(store, common)
         },
         eraseCommon: async function (store, key) {
             return ApiService.eraseCommon(key)

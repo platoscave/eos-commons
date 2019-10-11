@@ -28,11 +28,16 @@
 </template>
 
 <script>
+import EcLayout from './EcLayout.vue'
+import EcTabs from './EcTabs.vue'
 import ResSplitPane from "vue-resize-split-pane";
 export default {
   components: {
+      EcLayout,
+      EcTabs,
     "rs-panes": ResSplitPane
   },
+  name: 'ec-layout',
   props: {
     level: {
       type: Number

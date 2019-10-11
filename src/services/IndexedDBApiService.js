@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js/bignumber'
 
 
 class IndexedDBApiService {
-    static upsertCommon(common) {
+    static upsertCommon(store, common) {
         const getRandomKey = () => {
             // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
             // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
@@ -22,7 +22,13 @@ class IndexedDBApiService {
 
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
-            let objectStoreRequest = commonsStore.put(common)
+            commonsStore.put(common)
+            
+            store.commit('SET_SNACKBAR', {
+                snackbar: true,
+                text: 'Import from static succes',
+                color: 'green'
+            })
             resolve(common.key)
         })
     }
@@ -206,7 +212,7 @@ class IndexedDBApiService {
         agreementObj.agreementHistoryIds = [];
         agreementObj.buyerId = store.state.currentUserId;
 
-        const agreementKey = await this.upsertCommon(agreementObj)
+        const agreementKey = await this.upsertCommon(store, agreementObj)
         await this.takeAction(store, {
             agreementObj: agreementObj
         })
@@ -309,12 +315,12 @@ class IndexedDBApiService {
             updaterId: store.state.currentUserId,
             description: actionObj.description
         }
-        const key = await this.upsertCommon(transactionObj)
+        const key = await this.upsertCommon(store, transactionObj)
 
         // Add transaction to agreementHistoryIds
         actionObj.agreementObj.agreementHistoryIds.unshift(key)
         // Update agreementObj with new state
-        await this.upsertCommon(actionObj.agreementObj)
+        await this.upsertCommon(store, actionObj.agreementObj)
 
     }
 

@@ -3,18 +3,15 @@
     <v-tabs class="full-height" v-model="selectedTab" show-arrows>
       <v-tab v-for="(tab, n) in tabs" :key="n" ripple>{{ tab.name ? tab.name : '[no name]' }}</v-tab>
       <v-tab-item class="full-height" v-for="(tab, n) in tabs" :key="n">
-<!--         <div class="full-height" v-if="selectedTab === n">
- -->          <div class="full-height" v-if="tab.widgets">
-            <!-- This tab has widgets -->
-            <!-- https://vuejs.org/v2/guide/components-dynamic-async.html#keep-alive-with-Dynamic-Components -->
-            <ec-widgets v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
-          </div>
-          <div class="full-height" v-if="tab.pageId">
-            <!-- This tab has a sub-page -->
-            <ec-layout v-bind:level="level+1"></ec-layout>
-          </div>
-<!--         </div>
- -->      </v-tab-item>
+        <div class="full-height" v-if="tab.widgets">
+          <!-- This tab has widgets -->
+          <ec-widgets v-bind:level="level" v-bind:widgets="tab.widgets"></ec-widgets>
+        </div>
+        <div class="full-height" v-if="tab.pageId">
+          <!-- This tab has a sub-page -->
+          <ec-layout v-bind:level="level+1"></ec-layout>
+        </div>
+      </v-tab-item>
     </v-tabs>
   </div>
   <div class="full-height" v-else-if="tabs.length > 0">
@@ -30,7 +27,15 @@
 </template>
 
 <script>
+//must be declared globally
+// import EcLayout from "./EcLayout.vue";
+import EcWidgets from "./EcWidgets.vue";
+
 export default {
+  components: {
+    EcWidgets
+  },
+  name: "ec-tabs",
   props: {
     level: Number,
     pageId: String,
@@ -42,9 +47,9 @@ export default {
   computed: {
     selectedTab: {
       get() {
-          let pageStates = this.$store.state.pageStates[this.pageId]
-          if(pageStates && pageStates.selectedTab) return pageStates.selectedTab
-            return 0
+        let pageStates = this.$store.state.pageStates[this.pageId];
+        if (pageStates && pageStates.selectedTab) return pageStates.selectedTab;
+        return 0;
       },
       set(value) {
         this.$store.commit("SET_PAGE_STATE2", {
@@ -61,10 +66,10 @@ export default {
 };
 </script>
 <style scoped>
- >>> .v-window {
-    height: calc(100% - 48px);
-  }
-  >>> .v-window__container {
-    height: 100%;
-  }
+>>> .v-window {
+  height: calc(100% - 48px);
+}
+>>> .v-window__container {
+  height: 100%;
+}
 </style>

@@ -20,7 +20,7 @@
               v-bind:property="property"
               v-bind:definitions="definitions"
               v-bind:currentObjId="currentObjId ? currentObjId : value.key"
-              v-on:button-click="$parent.$emit('button-click', $event)"
+              v-on:button-click="$emit('button-click', $event)"
             ></ec-select-control>
           </v-flex>
         </v-layout>

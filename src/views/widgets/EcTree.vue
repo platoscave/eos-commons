@@ -37,7 +37,7 @@
 import Vue from "vue"; // nneded for _
 
 export default {
-  name: "ec-tree2",
+  name: "ec-tree",
 
   props: {
     level: Number,

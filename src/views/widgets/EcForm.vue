@@ -3,6 +3,7 @@
   <div v-if="viewObj && dataObj">
     <div>{{viewId}} {{viewObj.name}}</div>
     <ec-sub-form
+      v-on:button-click="takeAction"
       v-bind:showAllFields="true"
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
@@ -33,20 +34,45 @@ export default {
           if (
             value == null ||
             value === "" ||
-            (typeof value === 'array' && value.length === 0)
+            (typeof value === "array" && value.length === 0)
           )
             console.log("delete: ", key, value);
           if (value && typeof value === "object") removeEmpty(value);
           else if (
             value == null ||
             value === "" ||
-            (typeof value === 'array' && value.length === 0)
+            (typeof value === "array" && value.length === 0)
           )
             delete obj[key]; // delete
         });
       };
       removeEmpty(newData);
       this.$store.dispatch("upsertCommon", newData);
+    },
+
+    takeAction: async function(action) {
+      if (action === "addAgreement") {
+        /* this.newObj.sellerId = this.$store.state.levelIdsArr[
+          this.level
+        ].selectedObjId; */
+        let newObj = {
+            sellerId: this.dataObj.ownerId,
+            processId: 'ynaxakdc423e' //Purchase Process
+        }
+        const key = await this.$store.dispatch("addAgreement", newObj);
+      } else if (action === "sendTransaction") {
+        this.newObj.agreementId = this.$store.state.levelIdsArr[
+          this.level
+        ].selectedObjId;
+
+        const key = await this.$store.dispatch("takeAction", this.dataObj);
+      }
+
+      this.queryObj.currentObj = this.$store.state.levelIdsArr[
+        this.level
+      ].selectedObjId; // we have reteive currentObj again, so we pass it id
+      let resultsArr = await this.$store.dispatch("query", this.queryObj);
+      this.dataArr = Object.assign([], resultsArr); // Force reactive update
     }
   },
   created: async function() {
