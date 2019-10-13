@@ -184,6 +184,8 @@ export default {
       if (!Array.isArray(node.subQueryIds))
         node.subQueryIds = [node.subQueryIds];
 
+        // getGrandChildren doen't work. The tree knows the children are already there so it won't do getChildren
+        // TODO find a different solution
       return await getChildren(node, false);
     },
 

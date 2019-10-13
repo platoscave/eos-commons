@@ -1363,20 +1363,9 @@
                 "readOnly": true
             },
             "action": {
-                "query": {
-                    "where": [
-                        {
-                            "docProp": "key",
-                            "operator": "eq",
-                            "valuePath": "processStack.0",
-                            "mapValue": "stateId"
-                        }
-                    ],
-                    "sortBy": "name"
-                },
                 "title": "Action",
                 "type": "string",
-                "readOnly": false
+                "readOnly": true
             },
             "stateId": {
                 "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
@@ -1386,6 +1375,22 @@
                             "docProp": "classId",
                             "operator": "instances",
                             "value": "dlpwvptczyeb"
+                        }
+                    ],
+                    "sortBy": "name"
+                },
+                "title": "State",
+                "type": "string",
+                "readOnly": true
+            },
+            "processId": {
+                "pattern": "[.abcdefghijklmnopqrstuvwxyz12345]{12}",
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "classId",
+                            "operator": "instances",
+                            "value": "dwl1kwhalwj4"
                         }
                     ],
                     "sortBy": "name"
@@ -3357,6 +3362,8 @@
             "stateId": {
                 "title": "State"
             },
+            "processId": {},
+            "action": {},
             "description": {}
         },
         "queryId": "eevccbk1napt",

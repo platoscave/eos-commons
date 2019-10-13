@@ -23,11 +23,13 @@ export default {
   data() {
     return {
       viewObj: {},
-      dataObj: {}
+      dataObj: {},
+      disableStoreData: true
     };
   },
   methods: {
     storeData(newData) {
+      if (this.disableStoreData) return;
       const removeEmpty = obj => {
         Object.keys(obj).forEach(key => {
           let value = obj[key];
@@ -56,9 +58,11 @@ export default {
           this.level
         ].selectedObjId; */
         let newObj = {
-            sellerId: this.dataObj.ownerId,
-            processId: 'ynaxakdc423e' //Purchase Process
-        }
+          name: "Pruchase " + this.dataObj.name,
+          sellerId: this.dataObj.ownerId,
+          sellerProcessId: 'h3q1vchxahoh', // Bicycle Shop Process
+          processId: "ynaxakdc423e" //Purchase Process
+        };
         const key = await this.$store.dispatch("addAgreement", newObj);
       } else if (action === "sendTransaction") {
         this.newObj.agreementId = this.$store.state.levelIdsArr[
@@ -80,6 +84,7 @@ export default {
       state => state.levelIdsArr[this.level].selectedObjId,
       selectedObjId => {
         if (!selectedObjId) return;
+        this.disableStoreData = true;
         this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
           // console.log('dataObj', newData)
           if (newData.classId === "pylvseoljret") {
@@ -87,8 +92,12 @@ export default {
               .dispatch("getMaterializedView", selectedObjId)
               .then(materializedView => {
                 this.dataObj = Object.assign({}, materializedView); // Force reactive update
+                this.disableStoreData = false;
               });
-          } else this.dataObj = Object.assign({}, newData); // Force reactive update
+          } else {
+            this.dataObj = Object.assign({}, newData); // Force reactive update
+            this.disableStoreData = false;
+          }
         });
       },
       { immediate: true }
