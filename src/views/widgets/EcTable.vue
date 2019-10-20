@@ -94,25 +94,6 @@
         </tbody>
       </template>
     </v-data-table>
-
-    <!-- Dialog to add new record -->
-    <v-dialog v-if="addDialogViewObj && addRecordAllowed" v-model="dialog" width="500">
-      <template v-slot:activator="{ on }">
-        <v-btn class="button-bottom" absolute dark fab bottom right color="pink" v-on="on">
-          <v-icon>add</v-icon>
-        </v-btn>
-      </template>
-      <v-card v-on:button-click="takeAction">
-        <v-card-title>{{this.addDialogViewObj.name}}</v-card-title>
-        <ec-sub-form
-          v-bind:showAllFields="true"
-          v-model="newObj"
-          v-bind:properties="addDialogViewObj.properties"
-          v-bind:currentObjId="queryObj.currentObj.key"
-          v-bind:alwaysEditMode="true"
-        ></ec-sub-form>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 <script>
@@ -138,11 +119,7 @@ export default {
       headers: [],
       viewObj: {},
       search: "",
-      dialog: false,
       menu: false,
-      newObj: {},
-      addRecordAllowed: false,
-      addDialogViewObj: {},
       sortBy: "startDate",
       sortDesc: true,
       filters: {},
@@ -177,12 +154,6 @@ export default {
       this.viewObj.queryId
     );
 
-    if (this.queryObj.query.addDialogViewId) {
-      this.addDialogViewObj = await this.$store.dispatch(
-        "getMaterializedView",
-        this.queryObj.query.addDialogViewId
-      );
-    }
 
     // watch the selected obj change
     this.$store.watch(
@@ -268,26 +239,6 @@ export default {
           selectedObjId: item.key
         });
       }
-    },
-    takeAction: async function(action) {
-      this.dialog = false;
-      if (action === "addAgreement") {
-
-        this.newObj.sellerId = this.$store.state.levelIdsArr[this.level].selectedObjId;
-
-        const key = await this.$store.dispatch("addAgreement", this.newObj);
-      } else if (action === "sendTransaction") {
-
-        this.newObj.agreementId = this.$store.state.levelIdsArr[this.level].selectedObjId;
-
-        const key = await this.$store.dispatch("takeAction", this.newObj);
-      }
-
-      this.queryObj.currentObj = this.$store.state.levelIdsArr[
-        this.level
-      ].selectedObjId; // we have reteive currentObj again, so we pass it id
-      let resultsArr = await this.$store.dispatch("query", this.queryObj);
-      this.dataArr = Object.assign([], resultsArr); // Force reactive update
     },
     changeSort(column) {
       if (this.sortBy === column) {

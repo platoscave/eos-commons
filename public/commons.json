@@ -1395,7 +1395,7 @@
                     ],
                     "sortBy": "name"
                 },
-                "title": "State",
+                "title": "Process",
                 "type": "string",
                 "readOnly": true
             }
@@ -3131,7 +3131,9 @@
             "purchaseButton": {
                 "title": "Buy",
                 "type": "button",
-                "action": "addAgreement"
+                "action": "addAgreement",
+                "addDialogViewId": "3ebxsw5pbk3r",
+                "processId": "ynaxakdc423e"
             },
             "imageUrl": {},
             "description": {}
@@ -3181,15 +3183,7 @@
         "baseClassId": "i1gjptcb2skq",
         "properties": {
             "agreementProcessId": {
-                "query": {
-                    "where": [
-                        {
-                            "docProp": "key",
-                            "operator": "in",
-                            "valuePath": "exposedToProcessesIds"
-                        }
-                    ]
-                },
+
                 "readOnly": false
             },
             "name": {
@@ -3198,11 +3192,6 @@
             },
             "description": {
                 "readOnly": false
-            },
-            "addButton": {
-                "title": "Add Service Request",
-                "type": "button",
-                "action": "addAgreement"
             }
         },
         "type": "object"
@@ -3234,11 +3223,6 @@
             },
             "description": {
                 "readOnly": false
-            },
-            "addButton": {
-                "title": "Send Transaction",
-                "type": "button",
-                "action": "sendTransaction"
             }
         },
         "type": "object"
@@ -3343,7 +3327,29 @@
                 "type": "string",
                 "readOnly": true
             },
-            "description": {}
+            "aurhorizedUsers": {
+                "dataFromQuery" : {
+                    "where": [
+                        {
+                            "operator": "getAuthorizedAccounts",
+                            "value": "$fk"
+                        }
+                    ]
+                },
+                "items": {
+                    "title": "Authorized User",
+                    "type": "string"
+                },
+                "title": "Authorized Users",
+                "type": "array",
+                "readOnly": true
+            },
+            "addButton": {
+                "title": "Bump State",
+                "type": "button",
+                "action": "sendTransaction",
+                "addDialogViewId": "jjeqqtkmf5qo"
+            }
         },
         "baseClassId": "i1gjptcb2skq",
         "type": "object"
@@ -3351,7 +3357,7 @@
     {
         "key": "13kxw4cyvpmb",
         "docType": "object",
-        "name": "Agreements History Table View",
+        "name": "Agreements Transaction Table View",
         "classId": "pylvseoljret",
         "ownerId": "eoscommonsio",
         "properties": {
@@ -4398,8 +4404,7 @@
                 "operator": "eq",
                 "value": "$fk"
             }
-        ],
-        "addDialogViewId": "3ebxsw5pbk3r"
+        ]
     },
     {
         "key": "eevccbk1napt",
@@ -4413,7 +4418,6 @@
                 "operator": "in",
                 "valuePath": "agreementHistoryIds"
             }
-        ],
-        "addDialogViewId": "jjeqqtkmf5qo"
+        ]
     }
 ]

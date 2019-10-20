@@ -233,6 +233,8 @@ const store = new Vuex.Store({
                     return await getSubclasses(value)
                 } else if (operator === 'get_controlled_accounts') {
                     return ApiService.getControlledAccounts(store, value, 'owner')
+                } else if (operator === 'getAuthorizedAccounts') {
+                    return ApiService.getAuthorizedAccounts(store, value)
                 } else {
                     throw new Error('Cannot query with ' + operator + ' operator yet')
                 }
@@ -258,29 +260,21 @@ const store = new Vuex.Store({
 
             // queryId takes precidence over query
             if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
-            if(queryObj.query.where[0].stop) {
-                debugger
-                //console.log('before', whereArr[0])
-            }
+
             // If currentObj is a string, assume it's a key
             if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 
             const whereArr = queryObj.query.where
 
             // The first where is executed againt the DB
-            if(whereArr[0].stop) {
-                debugger
-                console.log('before', whereArr[0])
-            }
+            if(whereArr[0].stop) debugger
             resolveWhereClause(queryObj, whereArr[0])
             let resultsArr = await executeQuery(whereArr[0])
-            if(whereArr[0].stop) console.log('after', whereArr[0])
+            if(whereArr[0].stop) debugger
 
             // Subsequent wheres are used as filters
             for (let idx = 1; idx < whereArr.length; idx++) {
-                if(whereArr[idx].stop) console.log('before', whereArr[idx])
                 resolveWhereClause(queryObj, whereArr[idx])
-                if(whereArr[idx].stop) console.log('after', whereArr[idx])
                 resultsArr = filterResults(resultsArr, whereArr[idx])
             }
 

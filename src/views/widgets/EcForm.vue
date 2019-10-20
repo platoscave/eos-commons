@@ -3,7 +3,6 @@
   <div v-if="viewObj && dataObj">
     <div>{{viewId}} {{viewObj.name}}</div>
     <ec-sub-form
-      v-on:button-click="takeAction"
       v-bind:showAllFields="true"
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
@@ -20,7 +19,7 @@ export default {
     viewId: String,
     showAllFields: Boolean
   },
-  data() {
+  data: function() {
     return {
       viewObj: {},
       dataObj: {},
@@ -52,68 +51,46 @@ export default {
       this.$store.dispatch("upsertCommon", newData);
     },
 
-    takeAction: async function(action) {
-      if (action === "addAgreement") {
-        /* this.newObj.sellerId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId; */
-        let newObj = {
-          name: "Pruchase " + this.dataObj.name,
-          sellerId: this.dataObj.ownerId,
-          sellerProcessId: 'h3q1vchxahoh', // Bicycle Shop Process
-          processId: "ynaxakdc423e" //Purchase Process
-        };
-        const key = await this.$store.dispatch("addAgreement", newObj);
-      } else if (action === "sendTransaction") {
-        this.newObj.agreementId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId;
+    async refresh() {
+      const levelIdsObj = this.$store.state.levelIdsArr[this.level]
+      if (!levelIdsObj) return;
+      const selectedObjId = levelIdsObj.selectedObjId
+      if (!selectedObjId) return;
+      this.disableStoreData = true;
 
-        const key = await this.$store.dispatch("takeAction", this.dataObj);
+      // get the selectedObj
+      let newData = await this.$store.dispatch("getCommonByKey", selectedObjId);
+
+      if (newData.classId === "pylvseoljret") {
+        // Views
+        this.$store
+          .dispatch("getMaterializedView", selectedObjId)
+          .then(materializedView => {
+            this.dataObj = Object.assign({}, materializedView); // Force reactive update
+          });
+      } else {
+        this.dataObj = Object.assign({}, newData); // Force reactive update
       }
-
-      this.queryObj.currentObj = this.$store.state.levelIdsArr[
-        this.level
-      ].selectedObjId; // we have reteive currentObj again, so we pass it id
-      let resultsArr = await this.$store.dispatch("query", this.queryObj);
-      this.dataArr = Object.assign([], resultsArr); // Force reactive update
-    }
-  },
-  created: async function() {
-    this.$store.watch(
-      state => state.levelIdsArr[this.level].selectedObjId,
-      selectedObjId => {
-        if (!selectedObjId) return;
-        this.disableStoreData = true;
-        this.$store.dispatch("getCommonByKey", selectedObjId).then(newData => {
-          // console.log('dataObj', newData)
-          if (newData.classId === "pylvseoljret") {
-            this.$store
-              .dispatch("getMaterializedView", selectedObjId)
-              .then(materializedView => {
-                this.dataObj = Object.assign({}, materializedView); // Force reactive update
-                this.disableStoreData = false;
-              });
-          } else {
-            this.dataObj = Object.assign({}, newData); // Force reactive update
-            this.disableStoreData = false;
-          }
-        });
-      },
-      { immediate: true }
-    );
-
-    this.viewObj = await this.$store.dispatch(
-      "getMaterializedView",
-      this.viewId
-    );
-    // console.log('view', this.viewObj)
-    if (this.viewObj.rpc) {
-      EosApiService.getAccountInfo("eoscommonsio").then(info => {
-        this.dataObj = info;
+      this.$nextTick(() => {
+        // we must do this in nexttick because the watch comes afterward
+        this.disableStoreData = false;
       });
     }
   },
+
+  created() {
+    this.$store.dispatch("getMaterializedView", this.viewId).then(viewObj => {
+      this.viewObj = viewObj;
+      this.refresh();
+    });
+
+    // watch the selected obj change
+    this.$store.watch(
+      state => state.levelIdsArr[this.level].selectedObjId,
+      this.refresh
+    );
+  },
+
   watch: {
     dataObj: {
       handler: "storeData",
@@ -122,8 +99,8 @@ export default {
   }
 };
 </script>
-/* Global form styles */
 <style>
+/* Global form styles */
 .label {
   padding: 10px;
   font-size: 16px;

@@ -143,7 +143,7 @@ class IndexedDBApiService {
         return resultsArr
     }
 
-    static async getAuthorizedUsers(store, agreementId) {
+    static async getAuthorizedAccounts(store, agreementId) {
 
         const agreementObj = await this.getCommonByKey(store, agreementId)
         // Get the last process stack object
@@ -151,17 +151,24 @@ class IndexedDBApiService {
 
         const sellerOrgunitAccounts = await this.getControlledAccounts(store, agreementObj.sellerId, 'owner')
  
-        let authorizedAccountsArr = sellerOrgunitAccounts.filter(sellerOrgunitAccount => {
+        let orgsAuthorizedForStateArr = sellerOrgunitAccounts.filter(sellerOrgunitAccount => {
             return sellerOrgunitAccount.authorizedForStateIds.includes(processStackObj.stateId)
         })
 
-        console.log('authorizedAccountsArr', authorizedAccountsArr)
-        debugger
-        return []
+        let accountIdsArr = []
+        orgsAuthorizedForStateArr.forEach(accountObj => {
+            accountObj.permissions.forEach(permissionObj => {
+                permissionObj.required_auth.accounts.forEach(account => {
+                    if(account.permission.permission === 'active') accountIdsArr.push(account.permission.actor)
+                })
+            })
+        })
+
+        console.log('accountIdsArr', accountIdsArr)
+        return accountIdsArr
     }
 
     static async userMayAddHistory(store, agreementId) {
-await this.getAuthorizedUsers(store, agreementId)
         // Recursivly findout if obj is a classId
         const isA = async (objId, classId) => {
             const obj = await this.getCommonByKey(store, objId)
@@ -214,20 +221,29 @@ await this.getAuthorizedUsers(store, agreementId)
         return authorizedForState
     }
     static async addAgreement(store, agreementObj) {
-        console.log("addAgreement", agreementObj);
 
         agreementObj.docType = "object";
-        // process is mapped to an agreement type
+
+        // The process is mapped to an agreement type
         let processObj = await this.getCommonByKey(store, agreementObj.processId);
         agreementObj.classId = processObj.agreementClassId; // Service Request Arreement class
+        
+        // Get the asset, use its owner as sellerId
+        let assetObj = await this.getCommonByKey(store, agreementObj.assetId);
+        agreementObj.sellerId = assetObj.ownerId; // Service Request Arreement class
+        
+        // create the process stack
         agreementObj.processStack = [{
             processId: agreementObj.processId,
             stateId: 'gczvalloctae' // The Initialize state
         }]
+
         agreementObj.startDate = new Date().toISOString();
         agreementObj.agreementHistoryIds = [];
         agreementObj.buyerId = store.state.currentUserId;
 
+        console.log("addAgreement", agreementObj);
+        
         const actioObj = {
             agreementObj: agreementObj
         }

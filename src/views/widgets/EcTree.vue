@@ -147,7 +147,7 @@ export default {
 
       // returns an array of childnodes
       const getChildren = async (node, getGrandchildren) => {
-        console.log('getGrandchildren node', getGrandchildren, node)
+        //console.log('getGrandchildren node', getGrandchildren, node)
 
         if (node.subQueryIds) {
           let childrenPromises = node.subQueryIds.map(async subqueryId => {
@@ -173,13 +173,13 @@ export default {
         }
 
         let grandchildren = await Promise.all(grandchildrenPromisses);
-        console.log('node', node)
+        //console.log('node', node)
         // if (node.key === "eoscommonsio") debugger;
         //this.onOpenBtn()
         return true
       };
 
-      console.log("node", node);
+      //console.log("node", node);
       if (!node.subQueryIds) return;
       if (!Array.isArray(node.subQueryIds))
         node.subQueryIds = [node.subQueryIds];
