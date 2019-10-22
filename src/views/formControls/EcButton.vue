@@ -41,20 +41,15 @@ export default {
     takeAction: async function(action) {
       this.dialog = false;
       if (this.property.action === "addAgreement") {
-        /* this.newObj.sellerId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId;         
-        */
-        // this.newObj.sellerId = this.currentObjId;
+
         this.newObj.assetId = this.currentObjId;
         const key = await this.$store.dispatch("addAgreement", this.newObj);
-      } else if (this.property.action === "sendTransaction") {
-        /* this.newObj.agreementId = this.$store.state.levelIdsArr[
-          this.level
-        ].selectedObjId; */
-        this.newObj.agreementId = this.currentObjId;
 
+      } else if (this.property.action === "sendTransaction") {
+
+        this.newObj.agreementId = this.currentObjId;
         const key = await this.$store.dispatch("takeAction", this.newObj);
+        
       }
     }
   },

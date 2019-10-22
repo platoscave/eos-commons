@@ -269,6 +269,9 @@ td {
 .v-data-table tr:hover {
   background-color: #424242 !important;
 }
+.v-data-table tr {
+  font-size: 16px;
+}
 </style>
 <style scoped>
 .button-bottom {

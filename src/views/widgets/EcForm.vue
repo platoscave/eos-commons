@@ -7,11 +7,12 @@
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
       v-bind:definitions="viewObj.definitions"
+        v-bind:currentObjId="dataObj.key"
+
     ></ec-sub-form>
   </div>
 </template>
 <script>
-import EosApiService from "../../services/EosApiService";
 
 export default {
   props: {

@@ -227,6 +227,9 @@ export default {
       } 
   },
   created: async function() {
+      // TODO something strange happens to this.currentObjId
+      console.log('ecselectcontrol currentObjId', this.currentObjId)
+
     // On rare occasions we want to take data from a property query, hense computedValue
     if (this.property.dataFromQuery) {
       const queryObj = {

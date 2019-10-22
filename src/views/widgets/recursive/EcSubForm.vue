@@ -7,7 +7,7 @@
         <v-layout justify-start row wrap>
           <!-- Label: If we are in edit mode or, there is data for this property -->
           <v-flex class="label" xs12 md2 v-if="showAllFields || value[propName]">
-            <div>{{ property.title }}</div>
+            <div v-if="property.type !== 'button'">{{ property.title }}</div>
           </v-flex>
 
           <!-- Value: If we are in edit mode or, there is data for this property -->

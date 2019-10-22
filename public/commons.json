@@ -3142,6 +3142,23 @@
         "type": "object"
     },
     {
+        "key": "idlmhh2i1ass",
+        "docType": "object",
+        "name": "Add Agreement Button View",
+        "classId": "pylvseoljret",
+        "ownerId": "eoscommonsio",
+        "properties": {
+            "purchaseButton": {
+                "title": "Add Agreement",
+                "type": "button",
+                "action": "addAgreement",
+                "addDialogViewId": "3ebxsw5pbk3r",
+                "processId": "ynaxakdc423e"
+            }
+        },
+        "type": "object"
+    },
+    {
         "key": "5p3j1unpm2pq",
         "docType": "object",
         "name": "Agreement Table View",
@@ -3896,6 +3913,11 @@
             {
                 "name": "Agreements Table Tab",
                 "widgets": [
+                    {
+                        "displayType": "Form",
+                        "name": "Add Agreement Form",
+                        "viewId": "idlmhh2i1ass"
+                    },
                     {
                         "displayType": "Table",
                         "name": "Agreements Table",

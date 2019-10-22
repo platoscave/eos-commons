@@ -15,7 +15,7 @@ export default {
       value: ""
     };
   },
-  mounted: async function() {
+  created: async function() {
     const results = await this.$store.dispatch("query", {
       currentObj: this.currentObjId,
       query: this.property.query
