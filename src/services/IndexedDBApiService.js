@@ -300,7 +300,7 @@ class IndexedDBApiService {
         }
 
         // Determine next state
-        const bumpState = async (store, actionObj) => {
+        const bumpState = async (actionObj) => {
 
             const date = new Date();
             actionObj.agreementObj.stateDate = date.toISOString()
@@ -381,9 +381,9 @@ class IndexedDBApiService {
         let userInputType = await isA(stateId, 'ahp433id2bo3') // User Input
         let closedType = await isA(stateId, 's41na42wsxez') // Closed Type
         do {
-            await bumpState(store, actionObj);
+            await bumpState(actionObj);
             await this.addTransactionAndUpsetAgreement(store, actionObj)
-
+console.log('',actionObj.agreementObj.processStack[0])
             const stateId = actionObj.agreementObj.processStack[0].stateId
             userInputType = await isA(stateId, 'ahp433id2bo3') // User Input
             closedType = await isA(stateId, 's41na42wsxez') // Closed Type

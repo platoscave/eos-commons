@@ -7,13 +7,11 @@
       v-model="dataObj"
       v-bind:properties="viewObj.properties"
       v-bind:definitions="viewObj.definitions"
-        v-bind:currentObjId="dataObj.key"
-
+      v-bind:currentObjId="dataObj.key"
     ></ec-sub-form>
   </div>
 </template>
 <script>
-
 export default {
   props: {
     level: Number,
@@ -53,9 +51,12 @@ export default {
     },
 
     async refresh() {
-      const levelIdsObj = this.$store.state.levelIdsArr[this.level]
-      if (!levelIdsObj) return;
-      const selectedObjId = levelIdsObj.selectedObjId
+      let selectedObjId;
+      if (
+        this.$store.state.levelIdsArr[this.level] &&
+        this.$store.state.levelIdsArr[this.level].selectedObjId
+      )
+        selectedObjId = this.$store.state.levelIdsArr[this.level].selectedObjId;
       if (!selectedObjId) return;
       this.disableStoreData = true;
 
@@ -79,17 +80,34 @@ export default {
     }
   },
 
-  created() {
-    this.$store.dispatch("getMaterializedView", this.viewId).then(viewObj => {
-      this.viewObj = viewObj;
-      this.refresh();
-    });
+  created: async function() {
+
+    // Get the view for this component
+    this.viewObj = await this.$store.dispatch(
+      "getMaterializedView",
+      this.viewId
+    )
+
+    this.refresh()
 
     // watch the selected obj change
     this.$store.watch(
       state => state.levelIdsArr[this.level].selectedObjId,
       this.refresh
     );
+
+    const debounceRefresh = Vue._.debounce(this.refresh, 500);
+  
+    // watch for update
+    this.$store.watch(
+      state => state.snackbar, newValue => {
+          if(newValue) debounceRefresh()
+      }
+    );
+
+    // watch the current user
+    this.$store.watch(state => state.currentUserId, this.refresh);
+
   },
 
   watch: {

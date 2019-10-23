@@ -6,7 +6,9 @@
     @mouseleave="mouseLeave"
   >
     <!-- Read only-->
-    <div v-if="property.readOnly || !(isEditing || alwaysEditMode)  || items.length < 2">{{ selectedText }}</div>
+    <div
+      v-if="property.readOnly || !(isEditing || alwaysEditMode)  || items.length < 2"
+    >{{ selectedText }}</div>
 
     <!-- Less than 4: radio buttons-->
     <div v-else-if="items.length < 4">
@@ -32,50 +34,46 @@
         </v-list-item-group>
       </v-list>
     </v-menu>
-
   </div>
-
 </template>
 <script>
 export default {
-  name: 'ec-query-select',
+  name: "ec-query-select",
   props: {
     value: String,
     property: Object,
     currentObjId: String,
     alwaysEditMode: Boolean
   },
-  data () {
+  data() {
     return {
       isEditing: false,
-      	items: [],
-      	selectedText: ''
-    }
+      items: [],
+      selectedText: ""
+    };
   },
-  mounted: async function () {
+  mounted: async function() {
+    const results = await this.$store.dispatch("query", {
+      currentObj: this.currentObjId,
+      query: this.property.query
+    });
 
-    const results = await this.$store.dispatch('query', {
-        currentObj: this.currentObjId,
-        query: this.property.query
-    })
-
-    if(this.property.stateActions){
-        this.items = results[0].nextStateIds.map(item => {
-            let obj = {
-                value: item.action,
-                text: item.action
-            }
-            return obj
-        })
-    }
-    else {
-        this.items = results.map(item => {
-            let obj = {
-                value: item.key,
-                text: item.title ? item.title : item.name
-            }
-            return obj
-        })
+    if (this.property.stateActions) {
+      this.items = results[0].nextStateIds.map(item => {
+        let obj = {
+          value: item.action,
+          text: item.action
+        };
+        return obj;
+      });
+    } else {
+      this.items = results.map(item => {
+        let obj = {
+          value: item.key,
+          text: item.title ? item.title : item.name
+        };
+        return obj;
+      });
     }
     /* this.items.push({
       value: undefined,
@@ -84,28 +82,30 @@ export default {
     // How do we return [not selected] ?
     // Should remove property!
     // if(!this.value) this.value = '[not selected]'
-    this.updateSelectedText()
+    this.updateSelectedText();
   },
   methods: {
     // Update the selected text in case of readonly output
-    updateSelectedText () {
+    updateSelectedText() {
       // console.log('this.value', this.value)
       const selectedObj = this.items.find(item => {
-        return item.value === this.value
-      })
-      if (selectedObj) this.selectedText = selectedObj.text
-      else this.selectedText = '[Selected item not found: ' + this.value + ']'
+        return item.value === this.value;
+      });
+      if (selectedObj) this.selectedText = selectedObj.text;
+      else this.selectedText = "[Selected item not found: " + this.value + "]";
     },
-    
+
     mouseLeave: function(e) {
-        // The popup menu does it's own mouseLeave. We must not interfere.
-        if (this.property.readOnly || !this.isEditing || this.items.length < 4) this.isEditing = false;
+      // The popup menu does it's own mouseLeave. We must not interfere.
+      if (this.property.readOnly || !this.isEditing || this.items.length < 4)
+        this.isEditing = false;
     }
   },
+  
   watch: {
-    value: 'updateSelectedText'
+    value: "updateSelectedText"
   }
-}
+};
 </script>
 <style>
 .custom.v-text-field > .v-input__control > .v-input__slot:before {

@@ -3382,11 +3382,11 @@
                 "sort": "desc",
                 "title": "Date"
             },
+            "processId": {},
+            "action": {},
             "stateId": {
                 "title": "State"
             },
-            "processId": {},
-            "action": {},
             "description": {}
         },
         "queryId": "eevccbk1napt",

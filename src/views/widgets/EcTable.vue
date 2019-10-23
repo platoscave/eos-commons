@@ -88,7 +88,11 @@
         <tbody>
           <tr v-for="(item, itemKey) in items" :key="itemKey" v-on:click="itemClick(item)">
             <td v-for="(property, propName) in viewObj.properties" v-bind:key="propName">
-              <ec-select-control v-model="item[propName]" v-bind:currentObjId="item.key" v-bind:property="property"></ec-select-control>
+              <ec-select-control
+                v-model="item[propName]"
+                v-bind:currentObjId="item.key"
+                v-bind:property="property"
+              ></ec-select-control>
             </td>
           </tr>
         </tbody>
@@ -125,78 +129,6 @@ export default {
       filters: {},
       queryObj: {}
     };
-  },
-  created: async function() {
-    this.viewObj = await this.$store.dispatch(
-      "getMaterializedView",
-      this.viewId
-    );
-
-    // initialize the filter arrays, and sort
-    Object.keys(this.viewObj.properties).forEach(key => {
-      Vue.set(this.filters, key, []); // must be set reactivly
-      if (this.viewObj.properties[key].sort) {
-        // console.log(this.viewObj.properties[key])
-        this.sortBy = key;
-        this.sortDec = this.viewObj.properties[key].sort === "desc";
-      }
-    });
-
-    // create the header
-    this.headers = Object.keys(this.viewObj.properties).map(key => ({
-      text: this.viewObj.properties[key].title,
-      value: key
-    }));
-
-    // get the query for this view
-    this.queryObj.query = await this.$store.dispatch(
-      "getCommonByKey",
-      this.viewObj.queryId
-    );
-
-
-    // watch the selected obj change
-    this.$store.watch(
-      state => state.levelIdsArr[this.level].selectedObjId,
-      async selectedObjId => {
-        if (!selectedObjId) return;
-
-        this.queryObj.currentObj = selectedObjId;
-        // get the data
-        let resultsArr = await this.$store.dispatch("query", this.queryObj);
-
-        // add empty response
-        /* const date = new Date();
-        const newAgreementHistory = {
-          description: "",
-          state: "",
-          stateDate: date.toISOString()
-        };
-        resultsArr.push(newAgreementHistory); */
-        this.dataArr = Object.assign([], resultsArr); // Force reactive update
-      },
-      { immediate: true }
-    );
-
-    // watch the current user
-    this.$store.watch(
-      state => state.currentUserId,
-      async currentUserId => {
-        if (!currentUserId) return;
-        if (this.viewObj.baseClassId === "i1gjptcb2skq") {
-          // Agreements
-          this.addRecordAllowed = true;
-        } else {
-          const orgId = this.$store.state.levelIdsArr[this.level].selectedObjId;
-          const addRecordAllowed = await this.$store.dispatch(
-            "userMayAddHistory",
-            orgId
-          );
-          this.addRecordAllowed = addRecordAllowed;
-        }
-      },
-      { immediate: true }
-    );
   },
   computed: {
     filteredDataArr() {
@@ -254,7 +186,75 @@ export default {
       });
       // make distict
       return [...new Set(valueArr)];
+    },
+
+    async refresh() {
+      console.log("refresh " + this.viewObj.name);
+
+      let selectedObjId;
+      if (
+        this.$store.state.levelIdsArr[this.level] &&
+        this.$store.state.levelIdsArr[this.level].selectedObjId
+      )
+        selectedObjId = this.$store.state.levelIdsArr[this.level].selectedObjId;
+      if (!selectedObjId) return;
+
+      this.queryObj.currentObj = selectedObjId;
+      // get the data
+      let resultsArr = await this.$store.dispatch("query", this.queryObj);
+
+      this.dataArr = Object.assign([], resultsArr); // Force reactive update
     }
+  },
+
+  created: async function() {
+    // Get the view for this component
+    this.viewObj = await this.$store.dispatch(
+      "getMaterializedView",
+      this.viewId
+    );
+
+    // initialize the filter arrays, and sort
+    Object.keys(this.viewObj.properties).forEach(key => {
+      Vue.set(this.filters, key, []); // must be set reactivly
+      if (this.viewObj.properties[key].sort) {
+        // console.log(this.viewObj.properties[key])
+        this.sortBy = key;
+        this.sortDec = this.viewObj.properties[key].sort === "desc";
+      }
+    });
+
+    // create the header
+    this.headers = Object.keys(this.viewObj.properties).map(key => ({
+      text: this.viewObj.properties[key].title,
+      value: key
+    }));
+
+    // get the query for this view
+    this.queryObj.query = await this.$store.dispatch(
+      "getCommonByKey",
+      this.viewObj.queryId
+    );
+
+    this.refresh();
+
+    // watch the selected obj change
+    this.$store.watch(
+      state => state.levelIdsArr[this.level].selectedObjId,
+      this.refresh
+    );
+
+    const debounceRefresh = Vue._.debounce(this.refresh, 500);
+  
+    // watch for update
+    this.$store.watch(
+      state => state.snackbar, newValue => {
+          if(newValue) debounceRefresh()
+      }
+    );
+
+    // watch the current user
+    this.$store.watch(state => state.currentUserId, this.refresh);
   }
 };
 </script>
