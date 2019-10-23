@@ -82,17 +82,33 @@ export default {
     // How do we return [not selected] ?
     // Should remove property!
     // if(!this.value) this.value = '[not selected]'
-    this.updateSelectedText();
+    this.refresh();
   },
   methods: {
     // Update the selected text in case of readonly output
-    updateSelectedText() {
+    async refresh() {
+        if(!this.value) {
+            this.selectedText = '[Not Selected]'
+            return
+        }
+        if(this.property.readOnly || !(this.isEditing || this.alwaysEditMode)){
+            // get the object for this value
+            const obj = await this.$store.dispatch(
+                "getCommonByKey",
+                this.value
+            );
+            this.selectedText = obj.title ? obj.title : obj.name
+        }
+        else {
+            const selectedObj = this.items.find(item => {
+                return item.value === this.value;
+            });
+            if (selectedObj) this.selectedText = selectedObj.text;
+            else this.selectedText = "[Selected item not found: " + this.value + "]";
+        }
+
       // console.log('this.value', this.value)
-      const selectedObj = this.items.find(item => {
-        return item.value === this.value;
-      });
-      if (selectedObj) this.selectedText = selectedObj.text;
-      else this.selectedText = "[Selected item not found: " + this.value + "]";
+
     },
 
     mouseLeave: function(e) {
@@ -103,7 +119,7 @@ export default {
   },
   
   watch: {
-    value: "updateSelectedText"
+    value: "refresh"
   }
 };
 </script>

@@ -196,58 +196,6 @@ class IndexedDBApiService {
         return accountIdsArr
     }
 
-    static async userMayAddHistory(store, agreementId) {
-        // Recursivly findout if obj is a classId
-        const isA = async (objId, classId) => {
-            const obj = await this.getCommonByKey(store, objId)
-            if (obj.classId === classId) return true
-            const superclassId = obj.classId
-
-            const testSuperClass = async superclassId => {
-                const superclass = await this.getCommonByKey(store, superclassId)
-                if (!superclass.parentId) return false // we are at the root
-                if (superclass.parentId === classId) return true
-                return testSuperClass(superclass.parentId)
-            }
-        }
-        /* 
-          if agreement buyerId = current user
-          and
-          agreement stateId = typeOf(buyerState)
-              allow add history record
-  
-          or
-  
-          get seller orgunit accounts = controled accounts by sellerId  
-          get currnet user orgunit accounts = controled accounts by current user 
-          if there is a match
-              find the states that these accounts are authorized for
-              if one of those sates is the current state
-                  allow add history record
-        */
-        const currentUserId = store.state.currentUserId
-        const agreementObj = await this.getCommonByKey(store, agreementId)
-        // Get the last process stack object
-        let processStackObj = agreementObj.processStack[0]
-
-        if (agreementObj.buyerId === currentUserId) {
-            const isABuyerState = await isA(processStackObj.stateId, 'xsaq3l5hncb2') // Buyer States
-            if (isABuyerState) return true
-        }
-        const sellerOrgunitAccounts = await this.getControlledAccounts(store, agreementObj.sellerId, 'owner')
-        const currentUserOrgunitAccounts = await this.getControlledAccounts(store, currentUserId, 'active')
-        const authorizedForAccountArr = Vue._.intersectionWith(sellerOrgunitAccounts, currentUserOrgunitAccounts, (objA, objB) => {
-            return objA.key === objB.key
-        })
-
-        let authorizedForState = false
-        authorizedForAccountArr.forEach(authAccount => {
-            authAccount.authorizedForStateIds.forEach(stateId => {
-                if (stateId === processStackObj.stateId) authorizedForState = true
-            })
-        })
-        return authorizedForState
-    }
     static async addAgreement(store, agreementObj) {
 
         agreementObj.docType = "object";

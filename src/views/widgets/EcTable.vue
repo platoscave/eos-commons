@@ -189,7 +189,7 @@ export default {
     },
 
     async refresh() {
-      console.log("refresh " + this.viewObj.name);
+      // console.log("refresh " + this.viewObj.name);
 
       let selectedObjId;
       if (

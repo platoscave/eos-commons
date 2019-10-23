@@ -3172,17 +3172,8 @@
             },
             "state": {
                 "title": "State",
-                "lookup": true,
-                "query": {
-                    "where": [
-                        {
-                            "docProp": "key",
-                            "operator": "eq",
-                            "valuePath": "processStack.0",
-                            "mapValue": "stateId"
-                        }
-                    ]
-                },
+                "valueFromMApi": "currentState",
+                "query": {},
                 "type": "string",
                 "readOnly": true
             },
@@ -3330,29 +3321,13 @@
             "name": {},
             "state": {
                 "title": "State",
-                "lookup": true,
-                "query": {
-                    "where": [
-                        {
-                            "docProp": "key",
-                            "operator": "eq",
-                            "valuePath": "processStack.0",
-                            "mapValue": "stateId"
-                        }
-                    ]
-                },
+                "valueFromMApi": "currentState",
+                "query": {},
                 "type": "string",
                 "readOnly": true
             },
             "aurhorizedUsers": {
-                "dataFromQuery" : {
-                    "where": [
-                        {
-                            "operator": "getAuthorizedAccounts",
-                            "value": "$fk"
-                        }
-                    ]
-                },
+                "valueFromMApi": "getAuthorizedAccounts",
                 "items": {
                     "title": "Authorized User",
                     "type": "string"

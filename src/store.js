@@ -138,8 +138,8 @@ const store = new Vuex.Store({
         takeAction: async function (store, actionObj) {
             return ApiService.takeAction(store, actionObj)
         },
-        userMayAddHistory: async function (store, agreementId) {
-            return ApiService.userMayAddHistory(store, agreementId)
+        getAuthorizedAccounts: async function (store, agreementId) {
+            return ApiService.getAuthorizedAccounts(store, agreementId)
         },
 
         query: async function (store, queryObj) {
@@ -169,8 +169,10 @@ const store = new Vuex.Store({
             const resolveWhereClause = (queryObj, where) => {
                 // if (value === '#nextstateIds') debugger
                 // Replace value with foreign key
-                if (where.value === '$fk') where.value = queryObj.currentObj.key
-
+                if (where.value === '$fk') {
+                    if(!queryObj.currentObj) console.error('no currentObj')
+                    where.value = queryObj.currentObj.key
+                }
                 // Replace value with currentObj.valuePath
                 if (where.valuePath) {
                     if(!queryObj.currentObj) console.error('no currentObj')
@@ -265,6 +267,8 @@ const store = new Vuex.Store({
             if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
 
             const whereArr = queryObj.query.where
+
+            if(!whereArr) return [] // we are just using query to force lookup
 
             // The first where is executed againt the DB
             if(whereArr[0].stop) debugger

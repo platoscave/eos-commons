@@ -12,6 +12,8 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
+
 export default {
   props: {
     level: Number,
@@ -20,8 +22,8 @@ export default {
   },
   data: function() {
     return {
-      viewObj: {},
-      dataObj: {},
+      viewObj: null,
+      dataObj: null,
       disableStoreData: true
     };
   },

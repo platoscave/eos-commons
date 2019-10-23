@@ -46,14 +46,6 @@
       v-bind:alwaysEditMode="alwaysEditMode"
     ></ec-select>
 
-    <!-- Lookup from Query Results -->
-    <!-- ec-lookup needs currentObJ -->
-    <ec-lookup
-      v-else-if="property.query && property.lookup"
-      v-bind:property="property"
-      v-bind:currentObjId="currentObjId"
-    ></ec-lookup>
-
     <!-- Select from Query Results -->
     <!-- ec-query-select needs currentObJ TODO replace with level-->
     <ec-query-select
@@ -157,7 +149,7 @@
 
     <!-- button -->
     <ec-button
-      v-else-if="property.type === 'button'"            
+      v-else-if="property.type === 'button'"
       v-bind:property="property"
       v-bind:currentObjId="currentObjId"
     >{{property.title}}</ec-button>
@@ -179,7 +171,6 @@
 <script>
 import EcString from "./EcString.vue";
 import EcQuerySelect from "./EcQuerySelect.vue";
-import EcLookup from "./EcLookup.vue";
 import EcSelect from "./EcSelect.vue";
 import EcNumber from "./EcNumber.vue";
 import EcBoolean from "./EcBoolean.vue";
@@ -195,7 +186,6 @@ export default {
   components: {
     EcString,
     EcQuerySelect,
-    EcLookup,
     EcSelect,
     EcNumber,
     EcBoolean,
@@ -222,22 +212,39 @@ export default {
     };
   },
   computed: {
-      computedValue: function() {
-          return this.queryValue ? this.queryValue : this.value
-      } 
+    computedValue: function() {
+      return this.queryValue ? this.queryValue : this.value;
+    }
   },
-  created: async function() {
-      // TODO something strange happens to this.currentObjId
-      console.log('ecselectcontrol currentObjId', this.currentObjId)
+  methods: {
+    refresh: async function() {
+      if (!this.currentObjId) return;
 
-    // On rare occasions we want to take data from a property query, hense computedValue
-    if (this.property.dataFromQuery) {
-      const queryObj = {
-        currentObj: this.currentObjId,
-        query: this.property.dataFromQuery
-      };
-      let resultsArr = await this.$store.dispatch("query", queryObj);
-      this.queryValue = resultsArr;
+      // On rare occasions we want to take data from a property query, hense computedValue
+      if (this.property.valueFromMApi === "currentState") {
+        // get the object for this value
+        const agreementObj = await this.$store.dispatch(
+          "getCommonByKey",
+          this.currentObjId
+        );
+        const stateId = agreementObj.processStack[0].stateId
+        this.queryValue = stateId;
+      }
+      
+      if (this.property.valueFromMApi === "getAuthorizedAccounts") {
+        // get the object for this value
+        const AccountIdsArr = await this.$store.dispatch(
+          "getAuthorizedAccounts",
+          this.currentObjId
+        );
+        this.queryValue = AccountIdsArr;
+      }
+    }
+  },
+  watch: {
+    currentObjId: {
+      handler: "refresh",
+      immediate: true
     }
   }
 };
