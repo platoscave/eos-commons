@@ -192,7 +192,7 @@ class IndexedDBApiService {
             })
         })
 
-        console.log('accountIdsArr', accountIdsArr)
+        /// console.log('accountIdsArr', accountIdsArr)
         return accountIdsArr
     }
 
@@ -314,7 +314,7 @@ class IndexedDBApiService {
                 actionObj.returning = true
                 return
             }
-
+debugger
             // Otherwize we are at the end
             if (actionObj.action === 'happy') processStackObj.stateId = '3hxkire2nn4v' // Sucess
             else processStackObj.stateId = 'zdwdoqpxks2s' // Failed
@@ -326,31 +326,22 @@ class IndexedDBApiService {
 
         // Keep bumping the state until we are at a user input state, or at the end
         const stateId = actionObj.agreementObj.processStack[0].stateId
-        let userInputType = await isA(stateId, 'ahp433id2bo3') // User Input
-        let closedType = await isA(stateId, 's41na42wsxez') // Closed Type
+        let executeType = await isA(stateId, 'dqja423wlzrb') // Execute State
+        let deligateType = await isA(stateId, 'jotxozcetpx2') // Deligate Type
         do {
             await bumpState(actionObj);
             await this.addTransactionAndUpsetAgreement(store, actionObj)
 console.log('',actionObj.agreementObj.processStack[0])
             const stateId = actionObj.agreementObj.processStack[0].stateId
-            userInputType = await isA(stateId, 'ahp433id2bo3') // User Input
-            closedType = await isA(stateId, 's41na42wsxez') // Closed Type
-        } while (!userInputType && !closedType);
+            executeType = await isA(stateId, 'dqja423wlzrb') // Execute State
+            deligateType = await isA(stateId, 'jotxozcetpx2') // Deligate Type
+        } while (executeType && deligateType);
     }
 
 
 
 
     static async ImportFromStatic(store) {
-
-        /* let sb = new eosjs.Serialize.SerialBuffer();                                                  
-        sb.pushName('testacc');                                                                                                                                     
-        let res = eosjs.Numeric.binaryToDecimal(sb.getUint8Array(8));
-        const lowerBoundBigNumber = new BigNumber(res)
-        const upperBoundBigNumber = lowerBoundBigNumber.plus(1).toString()
-        let res2 = eosjs.Numeric.SerialBuffer(12, upperBoundBigNumber);
-
-        debugger */
 
         return new Promise((resolve, reject) => {
             const openRequest = indexedDB.open('commonsDB', 1)
@@ -378,13 +369,6 @@ console.log('',actionObj.agreementObj.processStack[0])
                     const transaction = this.db.transaction('commons', 'readwrite')
                     const commonsStore = transaction.objectStore('commons')
                     // console.log(response.data)
-
-                    /* const ipfsPromisses = response.data.map(obj => {
-                                  IpfsApiService.pinJSONToIPFS(obj).then( result => {
-                                      console.log('result', result)
-                                      obj.cid = result.data.IpfsHash
-                                  })
-                              }) */
 
                     response.data.forEach(obj => {
                         commonsStore.put(obj)

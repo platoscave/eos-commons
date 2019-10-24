@@ -42,6 +42,12 @@ export default {
     required: Array,
     value: Object,
     currentObjId: String
+  },
+  computed: {
+      showRow: function() {
+          //showAllFields || value[propName]
+          return true
+      }
   }
 }
 </script>

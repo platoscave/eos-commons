@@ -169,6 +169,8 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
+
 import EcString from "./EcString.vue";
 import EcQuerySelect from "./EcQuerySelect.vue";
 import EcSelect from "./EcSelect.vue";
@@ -240,6 +242,18 @@ export default {
         this.queryValue = AccountIdsArr;
       }
     }
+  },
+  created: async function() {
+
+    const debounceRefresh = Vue._.debounce(this.refresh, 500);
+  
+    // watch for update
+    this.$store.watch(
+      state => state.snackbar, newValue => {
+          if(newValue) debounceRefresh()
+      }
+    );
+
   },
   watch: {
     currentObjId: {
