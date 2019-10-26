@@ -277,8 +277,10 @@ class IndexedDBApiService {
                 const nextStateObj = currentStateObj.nextStateIds.find(obj => {
                     return obj.action === actionObj.action
                 })
-                processStackObj.stateId = nextStateObj.stateId
-                return
+                if(nextStateObj && nextStateObj.stateId) {
+                    processStackObj.stateId = nextStateObj.stateId
+                    return
+                }
             }
 
             const delegateType = await isA(processStackObj.stateId, 'jotxozcetpx2') //Delegate class
@@ -305,7 +307,6 @@ class IndexedDBApiService {
                 processStackObj.stateId = nextStateObj.stateId // Set agreement state to it
                 return
             }
-
             // We couldn't find a nextStateId, so we return
             // Are we in a sub process? If so, send action to super process
             if (actionObj.agreementObj.processStack.length > 1) {
@@ -314,7 +315,7 @@ class IndexedDBApiService {
                 actionObj.returning = true
                 return
             }
-debugger
+
             // Otherwize we are at the end
             if (actionObj.action === 'happy') processStackObj.stateId = '3hxkire2nn4v' // Sucess
             else processStackObj.stateId = 'zdwdoqpxks2s' // Failed
@@ -325,17 +326,18 @@ debugger
         if (!actionObj.agreementObj) actionObj.agreementObj = await this.getCommonByKey(store, actionObj.agreementId);
 
         // Keep bumping the state until we are at a user input state, or at the end
-        const stateId = actionObj.agreementObj.processStack[0].stateId
+        let stateId = actionObj.agreementObj.processStack[0].stateId
         let executeType = await isA(stateId, 'dqja423wlzrb') // Execute State
-        let deligateType = await isA(stateId, 'jotxozcetpx2') // Deligate Type
+        let delegateType = await isA(stateId, 'jotxozcetpx2') // delegate Type
         do {
             await bumpState(actionObj);
             await this.addTransactionAndUpsetAgreement(store, actionObj)
-console.log('',actionObj.agreementObj.processStack[0])
-            const stateId = actionObj.agreementObj.processStack[0].stateId
+
+            stateId = actionObj.agreementObj.processStack[0].stateId
             executeType = await isA(stateId, 'dqja423wlzrb') // Execute State
-            deligateType = await isA(stateId, 'jotxozcetpx2') // Deligate Type
-        } while (executeType && deligateType);
+            delegateType = await isA(stateId, 'jotxozcetpx2') // delegate Type
+            
+        } while (executeType || delegateType || stateId === 'gczvalloctae'); // Initialize
     }
 
 
