@@ -13,6 +13,7 @@
     "bignumber.js": "git+https://github.com/MikeMcl/bignumber.js.git",
     "core-js": "^2.6.5",
     "eosjs": "^20.0.0-beta1",
+    "jszip": "git+https://github.com/Stuk/jszip.git",
     "three.js": "^0.77.1",
     "tiptap-vuetify": "^1.6.0",
     "vue": "^2.6.10",

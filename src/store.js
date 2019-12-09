@@ -307,7 +307,7 @@ const store = new Vuex.Store({
                 if (classObj.parentId) {
                     let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
                     return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
-                        // if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
+                        if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                     })
                 } else return classObj
             }

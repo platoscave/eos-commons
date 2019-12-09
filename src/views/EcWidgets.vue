@@ -7,6 +7,7 @@
             If we remove full-height here, the underlaying full-heights loose there effect-->
     <div
       v-bind:class="['overflow-auto', widgets.length === 1 ? 'full-height' : '']"
+      class="overflow-auto"
       v-for="(widget, key) in widgets "
       v-bind:key="key"
     >
@@ -84,6 +85,7 @@ import EcTree from './widgets/EcTree.vue'
 import EcForm from './widgets/EcForm.vue'
 import EcHtmlPage from './widgets/EcHtmlPage.vue'
 import EcProcessModel from './widgets/EcProcessModel.vue'
+import EcWorkflowModel from './widgets/EcWorkflowModel.vue'
 import EcTable from './widgets/EcTable.vue'
 import EcWidgets from './EcWidgets.vue'
 
@@ -96,6 +98,7 @@ export default {
     EcForm,
     EcHtmlPage,
     EcProcessModel,
+    EcWorkflowModel,
     EcTable,
     EcWidgets
   },
@@ -116,7 +119,7 @@ export default {
 </script>
 <style scoped>
 .button-bottom {
-  bottom: 10px;
+  bottom: 10px !important;
   right: 30px;
 }
 .overflow-auto {

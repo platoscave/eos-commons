@@ -42,7 +42,7 @@
                 <v-flex xs12>
                   <v-btn
                     color="blue darken-1"
-                    @click="onGennerateCpp()"
+                    @click="onGenerateCpp()"
                   >Gennerate cpp</v-btn>
                 </v-flex>
                 <v-flex xs12>
@@ -72,6 +72,7 @@
 import EcLayout from './views/EcLayout.vue'
 
 import IndexedDBApiService from './services/IndexedDBApiService'
+import GenerateCpp from './services/GenerateCpp'
 import EosApiService from './services/EosApiService'
 import testAccounts from './config/testaccounts.js'
 import networks from './config/networks.js'
@@ -166,8 +167,8 @@ export default {
         URL.revokeObjectURL(url);
     },
     
-    async onGennerateCpp () {
-        const data = await IndexedDBApiService.GennerateCpp(this.$store)
+    async onGenerateCpp () {
+        const data = await GenerateCpp.GenerateCpp(this.$store)
         const csv_mime_type = 'text/cpp';
         const blob = new Blob([data], {type: csv_mime_type})
         const anchor = document.createElement('a');

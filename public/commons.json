@@ -3054,6 +3054,15 @@
                         "name": "Workflow"
                     }
                 ]
+            },
+            {
+                "name": "Process Model",
+                "widgets": [
+                    {
+                        "displayType": "Process Model",
+                        "name": "Process Model"
+                    }
+                ]
             }
         ]
     },
@@ -3191,7 +3200,21 @@
         "baseClassId": "i1gjptcb2skq",
         "properties": {
             "agreementProcessId": {
-
+                "readOnly": false
+            },
+            "XagreementProcessId": {
+                "query": {
+                    "where": [
+                        {
+                            "docProp": "key",
+                            "operator": "in",
+                            "valuePath": "exposedToProcessesIds"
+                        }
+                    ],
+                    "sortBy": "name"
+                },
+                "title": "Process",
+                "type": "string",
                 "readOnly": false
             },
             "name": {
