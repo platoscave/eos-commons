@@ -7,6 +7,7 @@ import BigNumber from 'bignumber.js/bignumber'
 
 class GernnerateCpp {
 
+// https://github.com/EOSIO/eos/blob/c9b7a2472dc3c138e64d07ec388e64340577bb34/contracts/identity/identity.cpp#L105
 
     static async GenerateCpp(store) {
 
@@ -24,7 +25,7 @@ class GernnerateCpp {
 
         // let zip = new JSZip();
         let classObj = await getMergeAncestorClasses('pejdgrwd5qso')
-        return this.hpp(classObj)
+        return this.cpp(classObj)
 
     }
     static generateUpsertString(properties) {
@@ -196,57 +197,9 @@ ${upsertSrting}
         let lastOne = tableStruct.substr(tableStruct.length - 1)
         if(lastOne === '\n') tableStruct = tableStruct.substring(0, tableStruct.length - 1)
         
-        let upsertSrting = ''
-        for (let key in classObj.properties) {
-            const prop = classObj.properties[key]
-            if (prop.type === 'string') {
-                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') upsertSrting += `  name ${key},\n`
-                else upsertSrting += `  std::string ${key},\n`
-            }
-            else if (prop.type === 'number') {
-                upsertSrting += `  std::float64 ${key},\n`
-            }
-            else if (prop.type === 'boolean') {
-                upsertSrting += `  std::bool ${key},\n`
-            }
-            else if (prop.type === 'date') {
-                upsertSrting += `  std::time_point_sec ${key},\n`
-            }
-            else if (prop.type === 'object') {
-                if (prop.property){
-                    upsertSrting += `  std::string ${key},\n`
-                } 
-            }
-            else if (prop.type === 'array') {
-                if (prop.items){
-                    upsertSrting += `  std::string  ${key},\n`
-                } 
-            }
-        }
-        let lastTwo = upsertSrting.substr(upsertSrting.length - 2)
-        if(lastTwo === ',\n') upsertSrting = upsertSrting.substring(0, upsertSrting.length - 2)
+        let upsertSrting = this.generateUpsertString(classObj.properties)
         
-        let validateSrting = ''
-        for (let key in classObj.properties) {
-            const prop = classObj.properties[key]
-            if(prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') {
-                validateSrting += `    // perform regex on ${key}\n`
-                if(prop.query && prop.query.where) {
-                    validateSrting += `    // lookup ${key} in table ${prop.query.where[0].value}\n`
-                }
-            }
-            if (prop.maxLength) validateSrting += `    eosio_assert(${key}.size() <= ${prop.maxLength}, "${className}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
-            if (prop.minLength) validateSrting += `    eosio_assert(${key}.size() >= ${prop.minLength}, "${className}::${key} must be longer or equal to ${prop.minLength} bytes");\n`
-            if (prop.max) validateSrting += `    eosio_assert(${key} <= ${prop.max}, "${className}::${key} must be less than or equal to ${prop.max} bytes");\n`
-            if (prop.min) validateSrting += `    eosio_assert(${key} >= ${prop.min}, "${className}::${key} must be greater than or equal to ${prop.min} bytes");\n`
-            if (prop.format === 'date-time') validateSrting += `    // validate date-time;\n`
-            if (prop.enum) {
-                validateSrting += `    // validate enum;\n`
-            }
-            if (prop.media && prop.media.mediaType === 'text/html' ) validateSrting += `    // validate text/html(!${key}\n`
-        }
-        lastOne = tableStruct.substr(tableStruct.length - 1)
-        if(lastOne === '\n') tableStruct = tableStruct.substring(0, tableStruct.length - 1)
+        let validateString = this.generateValidateCpp(tableName, classObj.properties)
 
         let cppString =
 `#include <${className}.hpp>
@@ -293,17 +246,60 @@ ACTION ${className}::eraseall(name user) {
   }
 }
 
-bool ${className}::validateObject(
-${upsertSrting}
-){
-${validateSrting}
-    return true;
-}
+${validateString}
 
 EOSIO_DISPATCH(${className}, (upsert)(erase)(eraseall))
 `
 
         return cppString
+    }
+
+
+
+    static generateValidateCpp(structName, properties) {
+        let upsertSrting = this.generateUpsertString(properties)
+
+        let validateCode = ''
+        for (let key in properties) {
+            validateCode += `\n    // Validate ${key}\n`
+            const prop = properties[key]
+            if(prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') {
+                validateCode += `    // perform regex on ${key}\n`
+                if(prop.query && prop.query.where) {
+                    validateCode += `    // lookup ${key} in table ${prop.query.where[0].value}\n`
+                }
+            }
+            if (prop.maxLength) validateCode += `    validateString += eosio_assert(${key}.size() <= ${prop.maxLength}, "${structName}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
+            if (prop.minLength) validateCode += `    eosio_assert(${key}.size() >= ${prop.minLength}, "${structName}::${key} must be longer or equal to ${prop.minLength} bytes");\n`
+            if (prop.max) validateCode += `    eosio_assert(${key} <= ${prop.max}, "${structName}::${key} must be less than or equal to ${prop.max} bytes");\n`
+            if (prop.min) validateCode += `    eosio_assert(${key} >= ${prop.min}, "${structName}::${key} must be greater than or equal to ${prop.min} bytes");\n`
+            if (prop.format === 'date-time') validateCode += `    // date-time;${key}\n`
+            if (prop.enum) {
+                validateCode += `    // enum;${key}\n`
+            }
+            if (prop.media && prop.media.mediaType === 'text/html' ) validateCode += `    // text/html(!${key}\n`
+            if (prop.type === 'array') validateString += `\n     // Validate ${key} sub structure\n     validate_${key}();`
+
+        }
+        let lastOne = validateCode.substr(validateCode.length - 1)
+        if(lastOne === '\n') validateCode = validateCode.substring(0, validateCode.length - 1)
+
+
+
+        let validateString =
+`\n// Validate ${structName} 
+void validate_${structName} (
+${upsertSrting}) {
+${validateCode}
+}`
+        for (let key in properties) {
+            const prop = properties[key]
+            if (prop.type === 'array') {
+                validateString += this.generateValidateCpp(key, prop.items.properties)
+            }
+        }
+        return validateString
+
     }
 }
 
