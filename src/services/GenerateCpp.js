@@ -187,7 +187,7 @@ class GernnerateCpp {
         let cppString =
             `#include <${className}.hpp>\n\n` +
             `// ${classObj.title} Contract\n\n` +
-            `ACTION ${className}::upsert(name user, \n\n` +
+            `ACTION ${className}::upsert(name user, \n` +
             `${upsertSrting}) {\n` +
             `  // Will fail if the user does not sign the transaction\n` +
             `  require_auth( user );\n` +
@@ -240,7 +240,7 @@ class GernnerateCpp {
                     validateCode += `    // lookup ${key} in table ${prop.query.where[0].value}\n`
                 }
             }
-            if (prop.maxLength) validateCode += `    validateString += eosio_assert(${key}.size() <= ${prop.maxLength}, "${structName}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
+            if (prop.maxLength) validateCode += `    eosio_assert(${key}.size() <= ${prop.maxLength}, "${structName}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
             if (prop.minLength) validateCode += `    eosio_assert(${key}.size() >= ${prop.minLength}, "${structName}::${key} must be longer or equal to ${prop.minLength} bytes");\n`
             if (prop.max) validateCode += `    eosio_assert(${key} <= ${prop.max}, "${structName}::${key} must be less than or equal to ${prop.max} bytes");\n`
             if (prop.min) validateCode += `    eosio_assert(${key} >= ${prop.min}, "${structName}::${key} must be greater than or equal to ${prop.min} bytes");\n`
@@ -249,14 +249,14 @@ class GernnerateCpp {
                 validateCode += `    // enum;${key}\n`
             }
             if (prop.media && prop.media.mediaType === 'text/html') validateCode += `    // text/html(!${key}\n`
-            if (prop.type === 'array') validateString += `\n     for ( const auto& value : values ) { validate_${key}(); }`
+            if (prop.type === 'array') validateCode += `    for ( const auto& value : values ) {\n      validate_${key}( value );\n    }`
 
         }
         let lastOne = validateCode.substr(validateCode.length - 1)
         if (lastOne === '\n') validateCode = validateCode.substring(0, validateCode.length - 1)
 
         let validateString =
-            `\n// Validate ${structName}\n` +
+            `\n// Validate ${structName} structure\n` +
             `void validate_${structName} (\n` +
             `${upsertSrting}) {\n` +
             `${validateCode}\n` +
