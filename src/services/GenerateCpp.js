@@ -20,17 +20,25 @@ class GernnerateCpp {
 
 
         // let zip = new JSZip();
+        // PR: gzthjuyjca4s
+        // Pages: 
         let classObj = await getMergeAncestorClasses('pejdgrwd5qso')
-        return this.cpp(classObj)
+        return this.hpp(classObj)
 
     }
     static generateUpsertString(properties) {
         let upsertSrting = ''
+        // Keys must come first. Otherwise we get a wierd complier error on type name.
         for (let key in properties) {
             const prop = properties[key]
             if (prop.type === 'string') {
                 if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') upsertSrting += `      name ${key},\n`
-                else upsertSrting += `      std::string ${key},\n`
+            }
+        }
+        for (let key in properties) {
+            const prop = properties[key]
+            if (prop.type === 'string') {
+                if (prop.pattern !== '[.abcdefghijklmnopqrstuvwxyz12345]{12}') upsertSrting += `      std::string ${key},\n`
             }
             else if (prop.type === 'number') {
                 upsertSrting += `      std::float64 ${key},\n`
@@ -101,13 +109,15 @@ class GernnerateCpp {
             `    using contract::contract;\n` +
             `    ${className}(name receiver, name code, datastream<const char*> ds):\n` +
             `        contract(receiver, code, ds), \n` +
-            `        ${className}(receiver, receiver.value) {}\n\n` +
+            `        ${tableName}(receiver, receiver.value) {}\n\n` +
+            `    // ${classObj.title} Structures\n\n` +
+            `${tableStructs}\n\n` +
+            `    // ${classObj.title} Actions\n\n` +
             `    ACTION upsert(name username, \n` +
             `${upsertSrting});\n\n` +
             `    ACTION erase(name username, name key);\n\n` +
             `    ACTION eraseall(name username);\n\n` +
             `  private:\n\n` +
-            `${tableStructs}\n\n` +
             `    typedef multi_index<name("${tableName}"), ${className}_struct, \n\n` +
             `${indexSrting}\n` +
             `      > ${className}_table;\n\n` +
@@ -121,16 +131,23 @@ class GernnerateCpp {
 
     static generateTableStructs(structName, properties, keyStruct) {
         let tableStruct = ''
+        // Keys must come beforw orther attrs other wise we get wierd compiler
         for (let key in properties) {
             const prop = properties[key]
             if (prop.type === 'string') {
                 if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') tableStruct += `      name ${key};\n`
-                else tableStruct += `      std::string ${key};\n`
+            }
+        }
+        for (let key in properties) {
+            const prop = properties[key]
+            if (prop.type === 'string') {
+                if (prop.pattern !== '[.abcdefghijklmnopqrstuvwxyz12345]{12}') tableStruct += `      std::string ${key};\n`
             }
             if (prop.type === 'array') {
                 tableStruct += `      std::vector<${key}_struct> ${key};\n`
             }
         }
+
         let lastOne = tableStruct.substr(tableStruct.length - 1)
         if (lastOne === '\n') tableStruct = tableStruct.substring(0, tableStruct.length - 1)
 
@@ -143,7 +160,8 @@ class GernnerateCpp {
         for (let key in properties) {
             const prop = properties[key]
             if (prop.type === 'array') {
-                tableStructString += this.generateTableStructs(key, prop.items.properties, '')
+                // The order is important
+                tableStructString = this.generateTableStructs(key, prop.items.properties, '') + tableStructString
             }
         }
         return tableStructString
@@ -161,12 +179,15 @@ class GernnerateCpp {
         for (let key in properties) {
             const prop = properties[key]
             if (prop.type === 'array') {
-                validateString += this.generateValidateHpp(key, prop.items.properties)
+                // The order is important
+                validateString = this.generateValidateHpp(key, prop.items.properties) + validateString
             }
         }
         return validateString
 
     }
+
+    // cpp file
 
     static async cpp(classObj) {
 
@@ -221,13 +242,29 @@ class GernnerateCpp {
             `      ${className}_iterator = ${tableName}.erase(${className}_iterator);\n` +
             `  }\n` +
             `}\n\n` +
-            `${validateString}\n\n` +
-            `EOSIO_DISPATCH(${className}, (upsert)(erase)(eraseall))\n`
+            `${validateString}\n\n` 
+            // `EOSIO_DISPATCH(${className}, (upsert)(erase)(eraseall))\n`
 
         return cppString
     }
 
     static generateValidateCpp(structName, properties) {
+
+        const getValidateParms = properties => {
+            let parmsSrting = ''
+            // We must use the same order ofor parms as we do in getUpsertString
+            for (let key in properties) {
+                const prop = properties[key]
+                if (prop.pattern === '[.abcdefghijklmnopqrstuvwxyz12345]{12}') parmsSrting += `\n          value.${key},`
+            }
+            for (let key in properties) {
+                const prop = properties[key]
+                if (prop.pattern !== '[.abcdefghijklmnopqrstuvwxyz12345]{12}') parmsSrting += `\n          value.${key},`
+            }
+            let lastOne = parmsSrting.substr(parmsSrting.length - 1)
+            if (lastOne === ',') parmsSrting = parmsSrting.substring(0, parmsSrting.length - 1)
+            return parmsSrting
+        }
         let upsertSrting = this.generateUpsertString(properties)
 
         let validateCode = ''
@@ -240,16 +277,16 @@ class GernnerateCpp {
                     validateCode += `    // lookup ${key} in table ${prop.query.where[0].value}\n`
                 }
             }
-            if (prop.maxLength) validateCode += `    eosio_assert(${key}.size() <= ${prop.maxLength}, "${structName}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
-            if (prop.minLength) validateCode += `    eosio_assert(${key}.size() >= ${prop.minLength}, "${structName}::${key} must be longer or equal to ${prop.minLength} bytes");\n`
-            if (prop.max) validateCode += `    eosio_assert(${key} <= ${prop.max}, "${structName}::${key} must be less than or equal to ${prop.max} bytes");\n`
-            if (prop.min) validateCode += `    eosio_assert(${key} >= ${prop.min}, "${structName}::${key} must be greater than or equal to ${prop.min} bytes");\n`
-            if (prop.format === 'date-time') validateCode += `    // date-time;${key}\n`
+            if (prop.maxLength) validateCode += `    // eosio_assert(${key}.size() <= ${prop.maxLength}, "${structName}::${key} must be shorter or equal to ${prop.maxLength} bytes");\n`
+            if (prop.minLength) validateCode += `    // eosio_assert(${key}.size() >= ${prop.minLength}, "${structName}::${key} must be longer or equal to ${prop.minLength} bytes");\n`
+            if (prop.max) validateCode += `    // eosio_assert(${key} <= ${prop.max}, "${structName}::${key} must be less than or equal to ${prop.max} bytes");\n`
+            if (prop.min) validateCode += `    // eosio_assert(${key} >= ${prop.min}, "${structName}::${key} must be greater than or equal to ${prop.min} bytes");\n`
+            if (prop.format === 'date-time') validateCode += `    // date-time ${key}\n`
             if (prop.enum) {
-                validateCode += `    // enum;${key}\n`
+                validateCode += `    // enum ${key}\n`
             }
-            if (prop.media && prop.media.mediaType === 'text/html') validateCode += `    // text/html(!${key}\n`
-            if (prop.type === 'array') validateCode += `    for ( const auto& value : values ) {\n      validate_${key}( value );\n    }`
+            if (prop.media && prop.media.mediaType === 'text/html') validateCode += `    // text/html ${key}\n`
+            if (prop.type === 'array') validateCode += `    for ( const auto& value : ${key} ) {\n      validate_${key}( ${getValidateParms(prop.items.properties)} );\n    }`
 
         }
         let lastOne = validateCode.substr(validateCode.length - 1)
@@ -265,7 +302,8 @@ class GernnerateCpp {
         for (let key in properties) {
             const prop = properties[key]
             if (prop.type === 'array') {
-                validateString += this.generateValidateCpp(key, prop.items.properties)
+                // The order is important
+                validateString = this.generateValidateCpp(key, prop.items.properties) + validateString
             }
         }
         return validateString
