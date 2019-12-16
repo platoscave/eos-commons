@@ -7,15 +7,16 @@ import BigNumber from 'bignumber.js/bignumber'
 import { encodeName, decodeName } from '../lib/format.js'
 import IndexedDBApiService from './IndexedDBApiService'
 
+// See https://eosio.github.io/eosjs/latest/how-to-guides/index
+
 const HTTPENDPOINT = 'http://localhost:8888'
 const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
 const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Otherwise the same as code
 const TABLE = 'commons' // name of the table as specified by the contract abi
 
 // Main action call to blockchain
-async function takeAction (action, dataValue) {
-  const ACCOUNT = 'eoscommonsio'
-  const ACTOR = 'eoscommonsio'
+async function takeAction (store, account, action, dataValue) {
+    const actor = store.state.currentUserId;
 
   const privateKey = testAccounts.eoscommonsio.privateKey
   const rpc = new JsonRpc(HTTPENDPOINT)
@@ -26,10 +27,10 @@ async function takeAction (action, dataValue) {
   try {
     const resultWithConfig = await api.transact({
       actions: [{
-        account: ACCOUNT,
+        account: account,
         name: action,
         authorization: [{
-          actor: ACTOR,
+          actor: actor,
           permission: 'active'
         }],
         data: dataValue
@@ -46,7 +47,7 @@ async function takeAction (action, dataValue) {
 }
 
 class EosApiService {
-  static upsertCommon (common) {
+  static upsertCommon (store, common) {
     const getRandomKey = () => {
       // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
       // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
@@ -64,7 +65,7 @@ class EosApiService {
     const classId = common.classId ? common.classId : 'aaaaaaaaaaaaa'
 
     return new Promise((resolve, reject) => {
-      takeAction('upsert', { username: 'eoscommonsio', key: key, parentid: parentId, classid: classId, common: JSON.stringify(common) })
+      takeAction(store, 'eoscommonsio', 'upsert', { username: 'eoscommonsio', key: key, parentid: parentId, classid: classId, common: JSON.stringify(common) })
         .then(() => {
           resolve(key)
         })
@@ -74,9 +75,9 @@ class EosApiService {
     })
   }
 
-  static eraseCommon (key) {
+  static eraseCommon (store, key) {
     return new Promise((resolve, reject) => {
-      takeAction('erase', { username: 'eoscommonsio', key: key })
+      takeAction(store, 'eoscommonsio', 'erase', { username: 'eoscommonsio', key: key })
         .then(() => {
           resolve()
         })
@@ -86,7 +87,7 @@ class EosApiService {
     })
   }
 
-  static async getCommonByKey (keyValue) {
+  static async getCommonByKey (store, keyValue) {
     return this.queryByIndex('key', keyValue).then(result => {
       if (result.length == 0) {
         console.error('Key Not found: ' + keyValue)
@@ -96,7 +97,7 @@ class EosApiService {
     })
   }
 
-  static async queryByIndex (indexName, keyValue) {
+  static async queryByIndex (store, indexName, keyValue) {
     try {
         sb = new eosjs.Serialize.SerialBuffer();                                                  
         sb.pushName('testacc');                                                                                                                                     
@@ -133,38 +134,6 @@ class EosApiService {
     }
   }
 
-  static async transact (indexName, keyValue) {
-    try {
-      const rpc = new JsonRpc(HTTPENDPOINT)
-      const result = await api.transact({
-        actions: [{
-          account: 'eosio',
-          name: 'delegatebw',
-          authorization: [{
-            actor: 'useraaaaaaaa',
-            permission: 'active'
-          }],
-          data: {
-            from: 'useraaaaaaaa',
-            receiver: 'useraaaaaaaa',
-            stake_net_quantity: '1.0000 SYS',
-            stake_cpu_quantity: '1.0000 SYS',
-            transfer: false
-          }
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30
-      })
-      return result.rows.map(row => {
-        return JSON.parse(row.common)
-      })
-    } catch (err) {
-      console.error(err)
-      return []
-    }
-  }
-
   static async ImportFromEOS () {
     const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
@@ -189,7 +158,7 @@ class EosApiService {
     }
   }
 
-  static async ImportFromEOS () {
+  static async ImportFromEOSX () {
     /* const doAllSequentually = async (fnPromiseArr) => {
       for (let i = 0; i < fnPromiseArr.length; i++) {
         await fnPromiseArr[i]()
@@ -236,7 +205,7 @@ class EosApiService {
       })
     })
     /* return new Promise((resolve, reject) => {
-      takeAction('eraseall', { username: 'eoscommonsio' })
+      takeAction(store, 'eoscommonsio', 'eraseall', { username: 'eoscommonsio' })
         .then(() => {
           resolve()
         })
