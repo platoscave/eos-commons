@@ -46,6 +46,12 @@
                   >Gennerate cpp</v-btn>
                 </v-flex>
                 <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="createAccount()"
+                  >Create Account</v-btn>
+                </v-flex>
+                <v-flex xs12>
                   <div>Random Key: {{ randomKey }}</div>
                 </v-flex>
               </v-layout>
@@ -177,6 +183,10 @@ export default {
         anchor.setAttribute('href', url);
         anchor.click();
         URL.revokeObjectURL(url);
+    },
+
+    async createAccount () {
+        EosApiService.createAccount(this.$store)
     }
   },
   created () {
