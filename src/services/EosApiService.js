@@ -52,13 +52,23 @@ async function takeAction(store, actions) {
             })
             resolve( resultWithConfig )
         } catch (err) {
-            store.commit('SET_SNACKBAR', {
-                snackbar: true,
-                text: 'EOS Transaction Failed: '+ actions[0].name,
-                color: 'error'
-            })
-            if (err instanceof RpcError) reject(new Error(JSON.stringify(err.json, null, 2)))
-            else reject(err)
+            let text = 'EOS Transaction Failed: '+ actions[0].name
+            if (err instanceof RpcError) {
+                store.commit('SET_SNACKBAR', {
+                    snackbar: true,
+                    text: text + '\n' + err.json.error.details[0].message,
+                    color: 'error'
+                })
+                reject(new Error(JSON.stringify(err.json, null, 2)))
+            }
+            else {
+                store.commit('SET_SNACKBAR', {
+                    snackbar: true,
+                    text: text,
+                    color: 'error'
+                })
+                reject(err)
+            }
         }
     })
 }
@@ -77,6 +87,10 @@ class EosApiService {
         }
         if (!common.key) common.key = getRandomKey()
 
+        const createPayload = async(accountName) => {
+
+        }
+
         const accountName = '' // also, the name of the table we're tring to update
         const actor = store.state.currentUserId; // The user performing the action
         const actions = [{
@@ -92,6 +106,26 @@ class EosApiService {
                     parentid: parentId,
                     classid: classId,
                     common: JSON.stringify(common)
+            }
+        }]
+        return takeAction(store, actions)
+    }
+
+    static eraseCommon(store, key) {
+        const accountName = '' // also, the name of the table we're tring to update
+        const actor = store.state.currentUserId; // The user performing the action
+        const actions = [{
+            account: accountName,
+            name: 'erase',
+            authorization: [{
+                actor: actor,
+                permission: 'active'
+            }],
+            data: {
+                payload: {
+                    username: actor,
+                    key: key
+                }
             }
         }]
         return takeAction(store, actions)
@@ -187,23 +221,8 @@ class EosApiService {
         return result
     }
 
-    static eraseCommon(store, key) {
-        const accountName = '' // also, the name of the table we're tring to update
-        const actor = store.state.currentUserId; // The user performing the action
-        const actions = [{
-            account: accountName,
-            name: 'erase',
-            authorization: [{
-                actor: actor,
-                permission: 'active'
-            }],
-            data: {
-                username: actor,
-                key: key
-            }
-        }]
-        return takeAction(store, actions)
-    }
+    // Query Tables
+
 
     static async getCommonByKey(store, keyValue) {
         return this.queryByIndex('key', keyValue).then(result => {
@@ -345,17 +364,19 @@ class EosApiService {
     }
 
     static async getAccountInfo(store, account) {
-        try {
-            const network = store.state.network;
-            const rpc = networks[network]
-            const result = await rpc.get_account(account)
-            return result
-            console.log(result)
-            return JSON.parse(result)
-        } catch (err) {
-            console.error(err)
-            return {}
-        }
+        const network = store.state.network;
+        const rpc = new JsonRpc(networks[network]);
+        const result = await rpc.get_abi(account)
+        console.log(result)
+        return result
+    }
+
+    static async getAbi(store, account) {
+        const network = store.state.network;
+        const rpc = new JsonRpc(networks[network]);
+        const result = await rpc.get_abi(account)
+        console.log(result)
+        return result
     }
 }
 

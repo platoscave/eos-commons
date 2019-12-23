@@ -52,6 +52,12 @@
                   >Create Account</v-btn>
                 </v-flex>
                 <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="getAccountInfo()"
+                  >Get Account Info</v-btn>
+                </v-flex>
+                <v-flex xs12>
                   <div>Random Key: {{ randomKey }}</div>
                 </v-flex>
               </v-layout>
@@ -187,6 +193,9 @@ export default {
 
     async createAccount () {
         EosApiService.createAccount(this.$store)
+    },
+    async getAccountInfo () {
+        EosApiService.getAccountInfo(this.$store, 'eoscommonsio')
     }
   },
   created () {

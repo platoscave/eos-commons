@@ -172,11 +172,13 @@ class IndexedDBApiService {
     }
 
     static async getAuthorizedAccounts(store, agreementId) {
+        // Get accounts that are authorized for the current state of an agreement
 
         const agreementObj = await this.getCommonByKey(store, agreementId)
         // Get the last process stack object
         let processStackObj = agreementObj.processStack[0]
 
+        // get all org unit accounts for seller account
         const sellerOrgunitAccounts = await this.getControlledAccounts(store, agreementObj.sellerId, 'owner')
 
         let orgsAuthorizedForStateArr = sellerOrgunitAccounts.filter(sellerOrgunitAccount => {
