@@ -58,6 +58,12 @@
                   >Get Account Info</v-btn>
                 </v-flex>
                 <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="test()"
+                  >Test</v-btn>
+                </v-flex>
+                <v-flex xs12>
                   <div>Random Key: {{ randomKey }}</div>
                 </v-flex>
               </v-layout>
@@ -196,6 +202,9 @@ export default {
     },
     async getAccountInfo () {
         EosApiService.getAccountInfo(this.$store, 'eoscommonsio')
+    },
+    async test () {
+        EosApiService.test(this.$store)
     }
   },
   created () {

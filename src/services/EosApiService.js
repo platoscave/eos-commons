@@ -74,7 +74,7 @@ async function takeAction(store, actions) {
 }
 
 class EosApiService {
-    static upsertCommon(store, common) {
+    static upsertCommon(store, action, common) {
         const getRandomKey = () => {
             // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
             // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
@@ -87,25 +87,20 @@ class EosApiService {
         }
         if (!common.key) common.key = getRandomKey()
 
-        const createPayload = async(accountName) => {
-
-        }
-
-        const accountName = '' // also, the name of the table we're tring to update
+        const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
         const actor = store.state.currentUserId; // The user performing the action
         const actions = [{
             account: accountName,
-            name: 'upsert',
+            name: action,
             authorization: [{
                 actor: actor,
                 permission: 'active'
             }],
             data: {
+                payload: {
                     username: actor,
-                    key: key,
-                    parentid: parentId,
-                    classid: classId,
                     common: JSON.stringify(common)
+                }
             }
         }]
         return takeAction(store, actions)
@@ -132,23 +127,6 @@ class EosApiService {
     }
 
     static async createAccount(store) {
-        let queryObj = {
-            query: {
-                where: [{
-                  docProp: 'classId',
-                  operator: 'eq',
-                  value: null
-                },{
-                    docProp: 'docType',
-                    operator: 'eq',
-                    value: 'class'
-                  }
-                ]
-            }
-        }
-        let classes = await store.dispatch('query', queryObj)
-        console.log('classes', classes)
-
         const newAccount = 'gzthjuyjca4s'
         const actor = store.state.currentUserId;
 
@@ -187,7 +165,7 @@ class EosApiService {
                         waits: []
                     },
                 },
-            }/*, // Omly needed wjen the eos system contract is running
+            }/*, // Omly needed when the eos system contract is running
             {
                 account: 'eosio',
                 name: 'buyrambytes',
@@ -366,7 +344,7 @@ class EosApiService {
     static async getAccountInfo(store, account) {
         const network = store.state.network;
         const rpc = new JsonRpc(networks[network]);
-        const result = await rpc.get_abi(account)
+        const result = await rpc.get_account(account)
         console.log(result)
         return result
     }
@@ -375,6 +353,18 @@ class EosApiService {
         const network = store.state.network;
         const rpc = new JsonRpc(networks[network]);
         const result = await rpc.get_abi(account)
+        console.log(result)
+        return result
+    }
+
+    static async test(store) {
+        let objId = 'lmxjrogzeld1' //purchase agreement
+        // let objId = 'gzthjuyjca4s' //root
+        const common = await store.dispatch(
+            "getCommonByKey",
+            objId
+        );
+        const result = await this.upsertCommon(store, 'addagreement', common) 
         console.log(result)
         return result
     }

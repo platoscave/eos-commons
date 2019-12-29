@@ -1,0 +1,208 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.1",
+    "types": [],
+    "structs": [
+        {
+            "name": "addagreement",
+            "base": "",
+            "fields": [
+                {
+                    "name": "payload",
+                    "type": "upsert_str"
+                }
+            ]
+        },
+        {
+            "name": "agreementstack_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "agreementid",
+                    "type": "name"
+                },
+                {
+                    "name": "stack",
+                    "type": "processstate_str[]"
+                }
+            ]
+        },
+        {
+            "name": "bumpState_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "username",
+                    "type": "name"
+                },
+                {
+                    "name": "agreementid",
+                    "type": "name"
+                },
+                {
+                    "name": "action",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "bumpstate",
+            "base": "",
+            "fields": [
+                {
+                    "name": "payload",
+                    "type": "bumpState_str"
+                }
+            ]
+        },
+        {
+            "name": "commons_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "name"
+                },
+                {
+                    "name": "parentid",
+                    "type": "name"
+                },
+                {
+                    "name": "classid",
+                    "type": "name"
+                },
+                {
+                    "name": "common",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "erase",
+            "base": "",
+            "fields": [
+                {
+                    "name": "payload",
+                    "type": "erase_str"
+                }
+            ]
+        },
+        {
+            "name": "erase_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "username",
+                    "type": "name"
+                },
+                {
+                    "name": "key",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "eraseall",
+            "base": "",
+            "fields": [
+                {
+                    "name": "payload",
+                    "type": "eraseall_str"
+                }
+            ]
+        },
+        {
+            "name": "eraseall_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "username",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "processstate_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "processid",
+                    "type": "name"
+                },
+                {
+                    "name": "stateid",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "upsert",
+            "base": "",
+            "fields": [
+                {
+                    "name": "payload",
+                    "type": "upsert_str"
+                }
+            ]
+        },
+        {
+            "name": "upsert_str",
+            "base": "",
+            "fields": [
+                {
+                    "name": "username",
+                    "type": "name"
+                },
+                {
+                    "name": "common",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "addagreement",
+            "type": "addagreement",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "bumpstate",
+            "type": "bumpstate",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "erase",
+            "type": "erase",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "eraseall",
+            "type": "eraseall",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "upsert",
+            "type": "upsert",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "commonstable",
+            "type": "commons_str",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "stacktable",
+            "type": "agreementstack_str",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "variants": []
+}

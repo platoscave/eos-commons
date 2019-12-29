@@ -2472,7 +2472,7 @@
         "description": "Buy a bike",
         "startDate": "2019-07-10",
         "expirationDate": "2019-07-24",
-        "amount": 150.22,
+        "amount": "150.22",
         "assetId": "pwyzd1adoyzu",
         "buyerId": "testuser1111",
         "classId": "hhg2u2zptnfo",
