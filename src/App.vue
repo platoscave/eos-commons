@@ -25,7 +25,10 @@
                   <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onImportFromEos()">Import From EOS</v-btn>
+                  <v-btn color="blue darken-1" @click="onStaticAllToEos()">Static to EOS</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onImportFromEos()">EOS to indexedDB</v-btn>
                 </v-flex>
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onSaveDirtyToEos()">Save to EOS</v-btn>
@@ -164,6 +167,9 @@ export default {
     },
     onImportFromEos () {
       EosApiService.ImportFromEos()
+    },
+    onStaticAllToEos () {
+      EosApiService.StaticAllToEos(this.$store)
     },
     onSaveDirtyToEos () {
       EosApiService.SaveDirtyToEos()

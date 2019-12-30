@@ -9,8 +9,10 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
 
   // See https://nlohmann.github.io/json/
   // https://en.wikibooks.org/wiki/JsonCpp
+  // annoying problem https://www.bcskill.com/index.php/archives/714.html
 
-  auto parsedJson = json::parse(payload.common);
+  auto parsedJson = json::parse(payload.common, nullptr, false);
+  check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
   
   /*
   jsoncons::json_reader reader(payload.common);
@@ -79,6 +81,11 @@ ACTION eoscommonsio::erase(erase_str payload) {
   auto common_iterator = commons_tbl.find(key.value);
   check(common_iterator != commons_tbl.end(), "Record does not exist");
   commons_tbl.erase(common_iterator);
+
+  auto agreementstack_iterator = agreementstack_tbl.find(key.value);
+  if(agreementstack_iterator != agreementstack_tbl.end()) {
+    agreementstack_tbl.erase(agreementstack_iterator);
+  }
 }
 
 ACTION eoscommonsio::eraseall(eraseall_str payload) {
@@ -88,6 +95,11 @@ ACTION eoscommonsio::eraseall(eraseall_str payload) {
   for(auto common_iterator = commons_tbl.begin(); common_iterator != commons_tbl.end();) {
       // delete element and update iterator reference
       common_iterator = commons_tbl.erase(common_iterator);
+  }
+
+  for(auto agreementstack_iterator = agreementstack_tbl.begin(); agreementstack_iterator != agreementstack_tbl.end();) {
+      // delete element and update iterator reference
+      agreementstack_iterator = agreementstack_tbl.erase(agreementstack_iterator);
   }
 }
 
@@ -152,12 +164,12 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
   // Get the agreement
   auto commons_iterator = commons_tbl.find( agreementid.value );
-  check(commons_iterator == commons_tbl.end(), "Couldn't find the agreement.");
+  check(commons_iterator != commons_tbl.end(), "Couldn't find the agreement.");
   auto parsedAgreement = json::parse(commons_iterator->common);
 
   // Get the agreement process stack
   auto agreementstack_iterator = agreementstack_tbl.find( agreementid.value );
-  check(agreementstack_iterator == agreementstack_tbl.end(), "Couldn't find the process stack for this agreement.");
+  check(agreementstack_iterator != agreementstack_tbl.end(), "Couldn't find the process stack for this agreement.");
   auto stack = agreementstack_iterator->stack;
   
   // Do while state is Initialize or state is a execute, delegate state
@@ -170,12 +182,13 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // get the current processstate
     processstate_str currentProcessState = stack.back();
 
-    // If current state is initializing, set the current processId to the process substateId
+    // If current state is initializing, set the current stateId to the process substateId
     if ( currentProcessState.stateid == name("gczvalloctae") ) { // Initialize state
     
+      /*
       // Get the process obj
       auto commons_iterator = commons_tbl.find( currentProcessState.processid.value );
-      check(commons_iterator == commons_tbl.end(), "Couldn't find the process obj.");
+      check(commons_iterator != commons_tbl.end(), "Couldn't find the process obj.");
       auto parsedProcessJson = json::parse(commons_iterator->common);
 
       // Get the substateId from processObj
@@ -183,7 +196,9 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       auto substateid = name(parsedProcessJson["substateId"].get<std::string>());
 
       // Use substateid as current stateId
-      currentProcessState.stateid = substateid;
+      currentProcessState.stateid = substateid;*/
+      stack.back().stateid = name("aaaaaaaaaaaa");
+
 
     }
 
@@ -242,6 +257,8 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       }
 
     }
+  print("currentProcessState: ", currentProcessState.processid, " ", currentProcessState.stateid);
+  print(" newProcessState: ", stack[0].processid, " ", stack[0].stateid);
 
 
     // Update the agreement stack table
@@ -252,11 +269,13 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // get the current processstate
     currentProcessState = stack.back();
 
+
     name stateId = currentProcessState.stateid;
     bool executeType = isA(stateId, name("dqja423wlzrb")); // Execute Type
     bool delegateType = isA(stateId, name("jotxozcetpx2")); // Delegate Type
     
   } while (executeType || delegateType || stateId == "gczvalloctae"); // Initialize
+
 
 }
 

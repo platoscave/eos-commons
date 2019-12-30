@@ -199,6 +199,26 @@ class EosApiService {
         return result
     }
 
+    static bumpState(store, agreementId, action) {
+        const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
+        const actor = store.state.currentUserId; // The user performing the action
+        const actions = [{
+            account: accountName,
+            name: 'bumpstate',
+            authorization: [{
+                actor: actor,
+                permission: 'active'
+            }],
+            data: {
+                payload: {
+                    username: actor,
+                    agreementid: agreementId,
+                    action: action
+                }
+            }
+        }]
+        return takeAction(store, actions)
+    }
     // Query Tables
 
 
@@ -265,6 +285,35 @@ class EosApiService {
         const createFnPromise = (common) => {
             return () => this.upsertCommon(common)
         }
+    }
+
+    static async StaticAllToEos(store) {
+        const doAllSequentually = async (fnPromiseArr) => {
+            for (let i = 0; i < fnPromiseArr.length; i++) {
+                await fnPromiseArr[i]()
+            }
+        }
+
+        const createFnPromise = (common) => {
+            return () => this.upsertCommon(store, 'upsert', common).then( result => {console.log(result)})
+        }
+
+        return axios('commons.json', {
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            data: {}
+        }).then(response => {
+            let loadEOSPromissesArr = []
+            response.data.forEach(common => {
+                // console.log(common)
+                loadEOSPromissesArr.push(createFnPromise(common))
+            })
+            doAllSequentually(loadEOSPromissesArr).then(() => {
+                console.log('finished StaticAllToEos')
+                return true
+            })
+        })
     }
 
     static async SaveDirtyToEos() {
@@ -364,7 +413,8 @@ class EosApiService {
             "getCommonByKey",
             objId
         );
-        const result = await this.upsertCommon(store, 'addagreement', common) 
+        // const result = await this.upsertCommon(store, 'addagreement', common) 
+        const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
         console.log(result)
         return result
     }
