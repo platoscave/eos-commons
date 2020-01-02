@@ -25,7 +25,7 @@
                   <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onStaticAllToEos()">Static to EOS</v-btn>
+                  <v-btn color="blue darken-1" @click="onIndexedDBAllToEos()">IndexedDB to EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onImportFromEos()">EOS to indexedDB</v-btn>
@@ -166,16 +166,16 @@ export default {
       IndexedDBApiService.ImportFromStatic()
     },
     onImportFromEos () {
-      EosApiService.ImportFromEos()
+      EosApiService.ImportFromEos(this.$store)
     },
-    onStaticAllToEos () {
-      EosApiService.StaticAllToEos(this.$store)
+    onIndexedDBAllToEos () {
+      EosApiService.IndexedDBAllToEos(this.$store)
     },
     onSaveDirtyToEos () {
-      EosApiService.SaveDirtyToEos()
+      EosApiService.SaveDirtyToEos(this.$store)
     },
     onEraseAllEos () {
-
+      EosApiService.EraseAllEos(this.$store)
     },
     async onDownFromIndexeddb () {
         // https://stackoverflow.com/questions/54793997/export-indexeddb-object-store-to-csv 

@@ -39,6 +39,7 @@ async function takeAction(store, actions) {
     return new Promise( async(resolve, reject) => {
         // Main call to blockchain after setting action, account_name and data
         try {
+            console.log('actions', actions)
             const resultWithConfig = await api.transact({
                 actions: actions
             }, {
@@ -107,7 +108,7 @@ class EosApiService {
     }
 
     static eraseCommon(store, key) {
-        const accountName = '' // also, the name of the table we're tring to update
+        const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
         const actor = store.state.currentUserId; // The user performing the action
         const actions = [{
             account: accountName,
@@ -315,8 +316,107 @@ class EosApiService {
             })
         })
     }
+    static async IndexedDBAllToEos(store) {
+        const doAllSequentually = async (fnPromiseArr) => {
+            for (let i = 0; i < fnPromiseArr.length; i++) {
+                await fnPromiseArr[i]()
+            }
+        }
 
-    static async SaveDirtyToEos() {
+        const createFnPromise = (actions) => {
+            return () => takeAction(store, actions).then( result => {console.log(result)})
+        }
+
+        const addSubclasses = async (classId) => {
+            let queryObj = {
+                query: {
+                    where: [{
+                        docProp: 'parentId',
+                        operator: 'eq',
+                        value: classId
+                    }]
+                }
+            }
+            const resultsArr = await store.dispatch('query', queryObj)
+            if(!resultsArr.length) return
+            const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
+            const actor = store.state.currentUserId; // The user performing the action
+            const actions = []
+            resultsArr.forEach(async subClassObj => {
+                actions.push({
+                    account: accountName,
+                    name: 'upsert',
+                    authorization: [{
+                        actor: actor,
+                        permission: 'active'
+                    }],
+                    data: {
+                        payload: {
+                            username: actor,
+                            common: JSON.stringify(subClassObj)
+                        }
+                    }
+                })
+            })
+            loadEOSPromissesArr.push(createFnPromise(actions))
+            let promises = []
+            resultsArr.forEach(async subClassObj => {
+                promises.push(addSubclasses(subClassObj.key))
+            })
+            return Promise.all(promises)
+        }
+        
+        const addInstances = async (classId) => {
+            let queryObj = {
+                query: {
+                    where: [{
+                        docProp: 'classId',
+                        operator: 'eq',
+                        value: classId
+                    }]
+                }
+            }
+            const resultsArr = await store.dispatch('query', queryObj)
+            if(!resultsArr.length) return
+            const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
+            const actor = store.state.currentUserId; // The user performing the action
+            const actions = []
+            resultsArr.forEach(async subClassObj => {
+                actions.push({
+                    account: accountName,
+                    name: 'upsert',
+                    authorization: [{
+                        actor: actor,
+                        permission: 'active'
+                    }],
+                    data: {
+                        payload: {
+                            username: actor,
+                            common: JSON.stringify(subClassObj)
+                        }
+                    }
+                })
+            })
+            loadEOSPromissesArr.push(createFnPromise(actions))
+            let promises = []
+            resultsArr.forEach(async subClassObj => {
+                promises.push(addSubclasses(subClassObj.key))
+            })
+            return Promise.all(promises)
+        }
+
+        let loadEOSPromissesArr = []
+
+        const root = await store.dispatch( 'getCommonByKey', 'gzthjuyjca4s' ); // get the root
+        //loadEOSPromissesArr.push(createFnPromise(root))
+        await this.upsertCommon(store, 'upsert', root).then( result => {console.log(result)})
+
+        await addSubclasses('gzthjuyjca4s')
+        doAllSequentually(loadEOSPromissesArr)
+
+    }
+
+    static async SaveDirtyToEos(store) {
         const doAllSequentually = async (fnPromiseArr) => {
             for (let i = 0; i < fnPromiseArr.length; i++) {
                 await fnPromiseArr[i]()
@@ -329,30 +429,10 @@ class EosApiService {
     }
 
     static async ImportFromEOSX() {
-        /* const doAllSequentually = async (fnPromiseArr) => {
-          for (let i = 0; i < fnPromiseArr.length; i++) {
-            await fnPromiseArr[i]()
-          }
-        }
 
-        const createFnPromise = (common) => {
-          return () => this.upsertCommon(common)
-        }
-
-        return axios('commons.json', { headers: { 'Content-Type': 'application/json; charset=UTF-8' }, data: {} }).then(response => {
-          let loadEOSPromissesArr = []
-          response.data.forEach(common => {
-            // console.log(common)
-            loadEOSPromissesArr.push(createFnPromise(common))
-          })
-          doAllSequentually(loadEOSPromissesArr).then(() => {
-            console.log('finished upsert')
-            return true
-          })
-        }) */
     }
 
-    static EraseAllEos() {
+    static EraseAllEos(store) {
         const doAllSequentually = async (fnPromiseArr) => {
             for (let i = 0; i < fnPromiseArr.length; i++) {
                 await fnPromiseArr[i]()
@@ -360,7 +440,7 @@ class EosApiService {
         }
 
         const createFnPromise = (key) => {
-            return () => this.eraseCommon(key)
+            return () => this.eraseCommon(store, key)
         }
 
         return axios('commons.json', {

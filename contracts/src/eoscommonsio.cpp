@@ -1,10 +1,19 @@
 #include <eoscommonsio.hpp>
 
+/*float eoscommonsio::stof(std::string s, float def)
+    {   
+        if (s == "") return def;
+        std::size_t i = s.find(".");
+        int digits = s.length() - i - 1;
+        s.erase(i, 1); 
+        return atoi(s.c_str()) / pow(10, digits);
+    }*/
+
 ACTION eoscommonsio::upsert(upsert_str payload) {
   name username = payload.username;
   // Will fail if the user does not sign the transaction 
   require_auth( username );
-  // or require the contract athority
+  // or require the contract athority. _self is the account that constructed the contract
   // require_auth( get_self() );
 
   // See https://nlohmann.github.io/json/
@@ -30,21 +39,24 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
   auto key = name(parsedJson["key"].get<std::string>());
 
   auto classId = name("aaaaaaaaaaaa");
-  if(parsedJson.contains("classId")) {
-    // Use the value from payload as foreign key
-    classId = name(parsedJson["classId"].get<std::string>());
-    // Make sure the foreigne key exsits
-    auto common_iterator = commons_tbl.find( classId.value );
-    // check( common_iterator != commons_tbl.end(), "classId not found" );
-  }
-
   auto parentId = name("aaaaaaaaaaaa");
-  if(parsedJson.contains("parentId")) {
-    // Use the value from payload as foreign key
-    parentId = name(parsedJson["parentId"].get<std::string>());
-    // Make sure the foreigne key exsits
-    auto common_iterator = commons_tbl.find( parentId.value );
-    // check( common_iterator != commons_tbl.end(), "parentId not found" );
+
+  if(key != name("gzthjuyjca4s")){ // Exception for the root
+    if(parsedJson.contains("classId")) {
+      // Use the value from payload as foreign key
+      classId = name(parsedJson["classId"].get<std::string>());
+      // Make sure the foreigne key exsits
+      auto common_iterator = commons_tbl.find( classId.value );
+      check( common_iterator != commons_tbl.end(), "classId not found" );
+    }
+    else if(parsedJson.contains("parentId")) {
+      // Use the value from payload as foreign key
+      parentId = name(parsedJson["parentId"].get<std::string>());
+      // Make sure the foreigne key exsits
+      auto common_iterator = commons_tbl.find( parentId.value );
+      check( common_iterator != commons_tbl.end(), "parentId not found" );
+    }
+    else check( false, "Must have either parentId or classId" );
   }
 
   // Collect schema from classes
@@ -89,6 +101,7 @@ ACTION eoscommonsio::erase(erase_str payload) {
 }
 
 ACTION eoscommonsio::eraseall(eraseall_str payload) {
+  // Example send transactions https://eosio.stackexchange.com/questions/1214/delete-all-multi-index-records-without-iterator
   name username = payload.username;
   require_auth(username);
 
