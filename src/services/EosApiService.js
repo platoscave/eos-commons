@@ -200,7 +200,7 @@ class EosApiService {
         return result
     }
 
-    static bumpState(store, agreementId, action) {
+    static bumpState(store, agreementId) {
         const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
         const actor = store.state.currentUserId; // The user performing the action
         const actions = [{
@@ -214,7 +214,7 @@ class EosApiService {
                 payload: {
                     username: actor,
                     agreementid: agreementId,
-                    action: action
+                    action: 'bumpstate'
                 }
             }
         }]
@@ -327,8 +327,11 @@ class EosApiService {
             return () => takeAction(store, actions).then( result => {console.log(result)})
         }
 
+        // Recusivly nagigate class model
         const addSubclasses = async (classId) => {
-            let queryObj = {
+
+            // Get the subclasses for this class
+            let classesQueryObj = {
                 query: {
                     where: [{
                         docProp: 'parentId',
@@ -337,37 +340,35 @@ class EosApiService {
                     }]
                 }
             }
-            const resultsArr = await store.dispatch('query', queryObj)
-            if(!resultsArr.length) return
-            const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
-            const actor = store.state.currentUserId; // The user performing the action
-            const actions = []
-            resultsArr.forEach(async subClassObj => {
-                actions.push({
-                    account: accountName,
-                    name: 'upsert',
-                    authorization: [{
-                        actor: actor,
-                        permission: 'active'
-                    }],
-                    data: {
-                        payload: {
-                            username: actor,
-                            common: JSON.stringify(subClassObj)
+            const classesArr = await store.dispatch('query', classesQueryObj)
+            if(classesArr.length) {
+                const actions = []
+                classesArr.forEach(async subClassObj => {
+                    actions.push({
+                        account: accountName,
+                        name: 'upsert',
+                        authorization: [{
+                            actor: actor,
+                            permission: 'active'
+                        }],
+                        data: {
+                            payload: {
+                                username: actor,
+                                common: JSON.stringify(subClassObj)
+                            }
                         }
-                    }
+                    })
                 })
-            })
-            loadEOSPromissesArr.push(createFnPromise(actions))
-            let promises = []
-            resultsArr.forEach(async subClassObj => {
-                promises.push(addSubclasses(subClassObj.key))
-            })
-            return Promise.all(promises)
-        }
-        
-        const addInstances = async (classId) => {
-            let queryObj = {
+                loadEOSPromissesArr.push(createFnPromise(actions))
+                let promises = []
+                classesArr.forEach(async subClassObj => {
+                    promises.push(addSubclasses(subClassObj.key))
+                })
+                await Promise.all(promises)
+            }
+
+            // Get the objects for this class
+            let objectsQueryObj = {
                 query: {
                     where: [{
                         docProp: 'classId',
@@ -376,39 +377,36 @@ class EosApiService {
                     }]
                 }
             }
-            const resultsArr = await store.dispatch('query', queryObj)
-            if(!resultsArr.length) return
-            const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
-            const actor = store.state.currentUserId; // The user performing the action
-            const actions = []
-            resultsArr.forEach(async subClassObj => {
-                actions.push({
-                    account: accountName,
-                    name: 'upsert',
-                    authorization: [{
-                        actor: actor,
-                        permission: 'active'
-                    }],
-                    data: {
-                        payload: {
-                            username: actor,
-                            common: JSON.stringify(subClassObj)
+            const objectsArr = await store.dispatch('query', objectsQueryObj)
+            if(objectsArr.length) {
+                const actions = []
+                objectsArr.forEach(async obj => {
+                    actions.push({
+                        account: accountName,
+                        name: 'upsert',
+                        authorization: [{
+                            actor: actor,
+                            permission: 'active'
+                        }],
+                        data: {
+                            payload: {
+                                username: actor,
+                                common: JSON.stringify(obj)
+                            }
                         }
-                    }
+                    })
                 })
-            })
-            loadEOSPromissesArr.push(createFnPromise(actions))
-            let promises = []
-            resultsArr.forEach(async subClassObj => {
-                promises.push(addSubclasses(subClassObj.key))
-            })
-            return Promise.all(promises)
+                loadEOSPromissesArr.push(createFnPromise(actions))
+            }
         }
 
+
+        const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
+        const actor = store.state.currentUserId; // The user performing the action
         let loadEOSPromissesArr = []
 
         const root = await store.dispatch( 'getCommonByKey', 'gzthjuyjca4s' ); // get the root
-        //loadEOSPromissesArr.push(createFnPromise(root))
+
         await this.upsertCommon(store, 'upsert', root).then( result => {console.log(result)})
 
         await addSubclasses('gzthjuyjca4s')
@@ -432,7 +430,7 @@ class EosApiService {
 
     }
 
-    static EraseAllEos(store) {
+    static XEraseAllEos(store) {
         const doAllSequentually = async (fnPromiseArr) => {
             for (let i = 0; i < fnPromiseArr.length; i++) {
                 await fnPromiseArr[i]()
@@ -459,15 +457,25 @@ class EosApiService {
                 return true
             })
         })
-        /* return new Promise((resolve, reject) => {
-          takeAction(store, 'eoscommonsio', 'eraseall', { username: 'eoscommonsio' })
-            .then(() => {
-              resolve()
-            })
-            .catch(err => {
-              reject(err)
-            })
-        }) */
+
+    }
+    static EraseAllEos(store) {
+        const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
+        const actor = store.state.currentUserId; // The user performing the action
+        const actions = [{
+            account: accountName,
+            name: 'eraseall',
+            authorization: [{
+                actor: actor,
+                permission: 'active'
+            }],
+            data: {
+                payload: {
+                    username: actor
+                }
+            }
+        }]
+        takeAction(store, actions).then( result => {console.log(result)})
     }
 
     static async getAccountInfo(store, account) {
@@ -487,16 +495,37 @@ class EosApiService {
     }
 
     static async test(store) {
+ 
+        const printTraces = result => {
+            console.log(result.console)
+            if(result.inline_traces.length) printTraces(result.inline_traces[0])
+        }
+
+/*
+        const result = await this.bumpState(store, 'lmxjrogzeld1' )
+        console.log('results')
+        printTraces(result.processed.action_traces[0])
+
+        */
+
+        const eraseResult =  await this.eraseCommon(store, 'lmxjrogzeld1')
+        console.log('eraseResult', eraseResult)
+
         let objId = 'lmxjrogzeld1' //purchase agreement
         // let objId = 'gzthjuyjca4s' //root
         const common = await store.dispatch(
             "getCommonByKey",
             objId
         );
-        // const result = await this.upsertCommon(store, 'addagreement', common) 
-        const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
-        console.log(result)
+        const result = await this.upsertCommon(store, 'addagreement', common) 
+        // const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
+
+        console.log('results')
+        printTraces(result.processed.action_traces[0])
+
+
         return result
+       
     }
 }
 

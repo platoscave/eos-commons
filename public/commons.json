@@ -2539,7 +2539,7 @@
         "currency": "EUR",
         "imageUrl": "green-bike-19463282.jpg",
         "ownerId": "bicycleshop1",
-        "value": 150.23
+        "value": "150.23"
     },
     {
         "key": "4htc3ykicyzj",
@@ -2550,7 +2550,7 @@
         "currency": "EUR",
         "imageUrl": "green-bike-19463282.jpg",
         "ownerId": "bicycleshop1",
-        "value": 160.50
+        "value": "160.50"
     },
     {
         "key": "pwyzd1adoyzu",
@@ -2561,7 +2561,7 @@
         "currency": "EUR",
         "imageUrl": "green-bike-19463282.jpg",
         "ownerId": "bicycleshop1",
-        "value": 155.80
+        "value": "155.80"
     },
     {
         "key": "u5tqb1rd2gkr",
@@ -2569,7 +2569,7 @@
         "classId": "zob5kwxrv2y4",
         "currency": "EUR",
         "ownerId": "bicycleshop1",
-        "value": 465.65
+        "value": "465.65"
     },
     {
         "key": "icfdprzi442m",
