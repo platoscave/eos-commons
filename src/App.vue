@@ -63,6 +63,18 @@
                 <v-flex xs12>
                   <v-btn
                     color="blue darken-1"
+                    @click="addAgreement()"
+                  >Add Agreement</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
+                    @click="bumpState()"
+                  >Bump State</v-btn>
+                </v-flex>
+                <v-flex xs12>
+                  <v-btn
+                    color="blue darken-1"
                     @click="test()"
                   >Test</v-btn>
                 </v-flex>
@@ -208,6 +220,12 @@ export default {
     },
     async getAccountInfo () {
         EosApiService.getAccountInfo(this.$store, 'eoscommonsio')
+    },
+    async addAgreement () {
+        EosApiService.addAgreement(this.$store)
+    },
+    async bumpState () {
+        EosApiService.bumpAgreementState(this.$store)
     },
     async test () {
         EosApiService.test(this.$store)

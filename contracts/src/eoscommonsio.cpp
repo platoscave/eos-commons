@@ -199,7 +199,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     bool executeType = false;
     bool delegateType = false;
 
-  do {
+  // do {
 
     // get the current processstate
     processstate_str currentProcessState = stack.back();
@@ -233,10 +233,14 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       check(parsedAgreement.contains("sellerProcessId"), "agreementObj has no sellerProcessId: " + agreementid.to_string());
       auto sellerProcessId = name(parsedAgreement["sellerProcessId"].get<std::string>());
 
+      print("stack size:", stack.size(), " - ");
+
       // Create a processstate with default state and current process. Push it to the stack.
       processstate_str processState = { name(sellerProcessId), name("gczvalloctae") }; 
       std::vector<processstate_str> stack;
       stack.push_back( processState );
+
+      print("stack size:", stack.size(), "\n");
 
     }
 
@@ -332,7 +336,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
 
 
-  } while (executeType); // Initialize
+  // } while (executeType || delegateType || stateId == name("gczvalloctae")); // Initialize
 
   /*
     // || delegateType || executeType|| stateId == name("gczvalloctae")

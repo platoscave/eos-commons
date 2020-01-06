@@ -214,7 +214,7 @@ class EosApiService {
                 payload: {
                     username: actor,
                     agreementid: agreementId,
-                    action: 'bumpstate'
+                    action: 'happy'
                 }
             }
         }]
@@ -492,6 +492,48 @@ class EosApiService {
         const result = await rpc.get_abi(account)
         console.log(result)
         return result
+    }
+
+    static async addAgreement(store) {
+ 
+        const printTraces = result => {
+            console.log(result.console)
+            if(result.inline_traces.length) printTraces(result.inline_traces[0])
+        }
+
+        const eraseResult =  await this.eraseCommon(store, 'lmxjrogzeld1')
+        console.log('eraseResult', eraseResult)
+
+        let objId = 'lmxjrogzeld1' //purchase agreement
+        // let objId = 'gzthjuyjca4s' //root
+        const common = await store.dispatch(
+            "getCommonByKey",
+            objId
+        );
+        const result = await this.upsertCommon(store, 'addagreement', common) 
+        // const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
+
+        console.log('results')
+        printTraces(result.processed.action_traces[0])
+
+
+        return result
+       
+    }
+
+    static async bumpAgreementState(store) {
+ 
+        const printTraces = result => {
+            console.log(result.console)
+            if(result.inline_traces.length) printTraces(result.inline_traces[0])
+        }
+
+        const result = await this.bumpState(store, 'lmxjrogzeld1' )
+        console.log('results')
+        printTraces(result.processed.action_traces[0])
+
+        return result
+       
     }
 
     static async test(store) {
