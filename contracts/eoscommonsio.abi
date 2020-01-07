@@ -132,6 +132,10 @@
                 {
                     "name": "stateid",
                     "type": "name"
+                },
+                {
+                    "name": "done",
+                    "type": "bool"
                 }
             ]
         },

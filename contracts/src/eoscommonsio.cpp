@@ -155,8 +155,8 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   auto agreementstack_iterator = agreementstack_tbl.find( agreementId.value );
   check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack: " + agreementId.to_string());
 
-  // Create a processstate with default state and current process. Add it to the stack
-  processstate_str processState = { name(pocsessId), name("gczvalloctae") }; 
+  // Create a processstate with Initialize state and current process. Add it to the stack.
+  processstate_str processState = { name(pocsessId), name("gczvalloctae"), false }; 
   std::vector<processstate_str> stack;
   stack.push_back( processState );
 
@@ -226,21 +226,20 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     }
 
 
-    // If current state isA Delegate, find the sellerProcessId, add it the the stack
-    else if ( isA(currentProcessState.stateid, name("jotxozcetpx2") ) ) { // Delegate state
+    // If current state isA Delegate and not done, find the sellerProcessId, add it the the stack
+    else if ( isA(currentProcessState.stateid, name("jotxozcetpx2") ) && currentProcessState.done == false) { // Delegate state
+
+      // Set current ProcessState to done
+      currentProcessState.done = true;
+      stack.back() = currentProcessState;
 
       // Get the sellerProcessId from agreementObj
       check(parsedAgreement.contains("sellerProcessId"), "agreementObj has no sellerProcessId: " + agreementid.to_string());
       auto sellerProcessId = name(parsedAgreement["sellerProcessId"].get<std::string>());
 
-      print("stack size:", stack.size(), " - ");
-
-      // Create a processstate with default state and current process. Push it to the stack.
-      processstate_str processState = { name(sellerProcessId), name("gczvalloctae") }; 
-      std::vector<processstate_str> stack;
+      // Create a processstate with Initialize state and current process. Push it to the stack.
+      processstate_str processState = { name(sellerProcessId), name("gczvalloctae"), false }; 
       stack.push_back( processState );
-
-      print("stack size:", stack.size(), "\n");
 
     }
 
@@ -257,7 +256,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
 
       // Process the action
-      check( action != "", "No action provided: " + agreementid.to_string());
+      //check( !action.empty(), "No action provided: " + agreementid.to_string());
 
       // Get stateObj from processStackObj.stateId
       auto commons_iterator = commons_tbl.find( currentProcessState.stateid.value );
@@ -324,7 +323,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // get the current processstate
     currentProcessState = stack.back();
 
-    print("PROCESS STATE processId:", currentProcessState.processid, " stateId: ", currentProcessState.stateid, "\n");
+    print("PROCESS STATE processId: ", currentProcessState.processid, " stateId: ", currentProcessState.stateid, " done: ", currentProcessState.done, "\n");
 
     stateId = currentProcessState.stateid;
     executeType = isA(stateId, name("dqja423wlzrb")); // Execute Type
@@ -338,14 +337,14 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
   // } while (executeType || delegateType || stateId == name("gczvalloctae")); // Initialize
 
-  /*
+  
     // || delegateType || executeType|| stateId == name("gczvalloctae")
-    if( executeType || delegateType ) {
+    if( executeType || delegateType || stateId == name("gczvalloctae" )) {
       bumpState_str bumpsatePayload = { username, agreementid, action };
 
       SEND_INLINE_ACTION( *this, bumpstate, { username, name("active") }, bumpsatePayload );
     }
-    */
+    
 }
 
 // Recusivly get the common. Check to see if the parentId equals saughtId.

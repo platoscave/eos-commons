@@ -33,6 +33,7 @@ CONTRACT eoscommonsio : public contract {
     struct processstate_str {
       name processid;
       name stateid;
+      bool done;
     };
 
     
