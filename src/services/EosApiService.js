@@ -200,7 +200,7 @@ class EosApiService {
         return result
     }
 
-    static bumpState(store, agreementId) {
+    static bumpState(store, agreementId, action ) {
         const accountName = 'eoscommonsio' // also, the name of the table we're tring to update
         const actor = store.state.currentUserId; // The user performing the action
         const actions = [{
@@ -214,7 +214,7 @@ class EosApiService {
                 payload: {
                     username: actor,
                     agreementid: agreementId,
-                    action: 'happy'
+                    action: action
                 }
             }
         }]
@@ -528,7 +528,7 @@ class EosApiService {
             if(result.inline_traces.length) printTraces(result.inline_traces[0])
         }
 
-        const result = await this.bumpState(store, 'lmxjrogzeld1' )
+        const result = await this.bumpState(store, 'lmxjrogzeld1', 'unhappy' )
         console.log('results')
         printTraces(result.processed.action_traces[0])
 

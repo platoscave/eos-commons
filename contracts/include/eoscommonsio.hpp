@@ -87,7 +87,7 @@ CONTRACT eoscommonsio : public contract {
       name username;
       name agreementid;
       std::string action;
-      EOSLIB_SERIALIZE( bumpState_str, (username) (agreementid) )
+      EOSLIB_SERIALIZE( bumpState_str, (username) (agreementid) (action))
     };
     ACTION bumpstate(bumpState_str payload);
    

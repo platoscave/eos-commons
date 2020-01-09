@@ -136,6 +136,10 @@
                 {
                     "name": "done",
                     "type": "bool"
+                },
+                {
+                    "name": "created_at",
+                    "type": "time_point_sec"
                 }
             ]
         },

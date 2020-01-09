@@ -20,7 +20,7 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
   // annoying problem https://www.bcskill.com/index.php/archives/714.html
 
   auto parsedJson = json::parse(payload.common, nullptr, false);
-  check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
+  check(!parsedJson.is_discarded(), "Invalid Json:\n" + payload.common);
   
   /*
   jsoncons::json_reader reader(payload.common);
@@ -34,7 +34,7 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
 
   
   // Get the key from payload
-  check(parsedJson.contains("key"), "Proposed upsert has no key: " + payload.common);
+  check(parsedJson.contains("key"), "Proposed upsert has no key:\n" + parsedJson.dump(4));
   auto key = name(parsedJson["key"].get<std::string>());
 
   auto classId = name("aaaaaaaaaaaa");
@@ -46,7 +46,7 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
       classId = name(parsedJson["classId"].get<std::string>());
       // Make sure the foreigne key exsits
       auto common_iterator = commons_tbl.find( classId.value );
-      check( common_iterator != commons_tbl.end(), "classId not found: " + payload.common);
+      check( common_iterator != commons_tbl.end(), "classId not found:\n" + parsedJson.dump(4));
 
       // Collect schema from classes
       // Validate common
@@ -121,18 +121,18 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
   
   // Get the key from agreement
-  check(parsedJson.contains("key"), "Proposed agrrement has no key: " + payload.common);
+  check(parsedJson.contains("key"), "Proposed agrrement has no key:\n" + parsedJson.dump(4));
   auto agreementId = name(parsedJson["key"].get<std::string>());
 
   // Make sure the agreement doesn't already exist
   auto common_iterator = commons_tbl.find( agreementId.value );
-  check(common_iterator == commons_tbl.end(), "This agreement already exists: " + payload.common);
+  check(common_iterator == commons_tbl.end(), "This agreement already exists:\n" + parsedJson.dump(4));
 
   // Get the Process obj for this agreement. 
   // Use it to determin the the type (classId) of the agreement 
 
   // Get the processId from agreement 
-  check(parsedJson.contains("processId"), "Proposed agrrement has no processId: " + payload.common);
+  check(parsedJson.contains("processId"), "Proposed agrrement has no processId:\n" + parsedJson.dump(4));
   auto pocsessId = name(parsedJson["processId"].get<std::string>());
 
   // Get the processObj
@@ -144,7 +144,7 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   check(!parsedProcessJson.is_discarded(), "Invalid Json: " + process_iterator->common);
 
   // Get the agreementClassId from processObj
-  check(parsedProcessJson.contains("agreementClassId"), "Proposed agrrement process has no agreementClassId: " + process_iterator->common);
+  check(parsedProcessJson.contains("agreementClassId"), "Proposed agrrement process has no agreementClassId:\n" + parsedProcessJson.dump(4));
   auto agreementClassId = name(parsedProcessJson["agreementClassId"].get<std::string>());
   // Use agreementClassId as classId for the new agreement
 
@@ -153,7 +153,7 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
 
   // Make sure there isn't an agreementstack already
   auto agreementstack_iterator = agreementstack_tbl.find( agreementId.value );
-  check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack: " + agreementId.to_string());
+  check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack:\n" + parsedJson.dump(4));
 
   // Create a processstate with Initialize state and current process. Add it to the stack.
   processstate_str processState = { name(pocsessId), name("gczvalloctae"), false, current_time_point() }; 
@@ -182,6 +182,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
   name agreementid = payload.agreementid;
   std::string action = payload.action;
   require_auth(username);
+
 
   // Get the agreement
   auto commons_iterator = commons_tbl.find( agreementid.value );
@@ -216,7 +217,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       check(!parsedProcessJson.is_discarded(), "Invalid Json: " + commons_iterator->common);
 
       // Get the substateId from processObj
-      check(parsedProcessJson.contains("substateId"), "Stack process has no substateId: " + currentProcessState.processid.to_string());
+      check(parsedProcessJson.contains("substateId"), "Stack process has no substateId:\n" + parsedProcessJson.dump(4));
       auto substateid = name(parsedProcessJson["substateId"].get<std::string>());
 
       // Use substateid as current stateId
@@ -258,7 +259,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
 
       // Process the action
-      //check( !action.empty(), "No action provided: " + agreementid.to_string());
+      check( !action.empty(), "No action provided: " + agreementid.to_string());
 
       // Get stateObj from processStackObj.stateId
       auto commons_iterator = commons_tbl.find( currentProcessState.stateid.value );
@@ -267,28 +268,22 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       check(!parsedStateJson.is_discarded(), "Invalid Json: " + commons_iterator->common);
 
 
-      // Hack to prevent loop
-      // currentProcessState.stateid = name("3hxkire2nn4v");
-      // stack.back() = currentProcessState;
-      
-    
-
       // Get the nextStateIds from state obj
-      check(parsedStateJson.contains("nextStateIds"), "State process has no nextStateIds: " + currentProcessState.stateid.to_string());
+      check(parsedStateJson.contains("nextStateIds"), "State process has no nextStateIds:\n" + parsedStateJson.dump(4));
       auto nextStateIds = parsedStateJson["nextStateIds"];
 
-      // Find the nextStateIds obj that crrespondes with our action
-      // https://github.com/nlohmann/json/issues/1331
-      auto actionStateIter = std::find_if(nextStateIds.begin(), nextStateIds.end(), [](const json& x) {
-          auto it = x.find("action");
-          return it != x.end() and it.value() = "happy";
+      // Find the nextStateIds obj that corresponds with our action
+      auto actionStateIter = std::find_if(nextStateIds.begin(), nextStateIds.end(), [=](const json& actionStateObj) {
+          auto it = actionStateObj.find("action");
+          return it != actionStateObj.end() and (*it) == action;
       });
 
       // If found, use the nextStateId
-      auto nextStateId = actionStateIter->find("stateId");
-      if (nextStateId != actionStateIter->end()) {
+      if(actionStateIter != nextStateIds.end()) {
+        auto nextStateIdIter = actionStateIter->find("stateId");
+        check(nextStateIdIter != actionStateIter->end(), "nextStateIds has no stateId for action: " + action + "\n" + parsedStateJson.dump(4));
 
-        std::string next = nextStateId.value();
+        std::string next = nextStateIdIter.value();
         currentProcessState.stateid = name(next);
         currentProcessState.created_at = current_time_point();
         stack.back() = currentProcessState;
@@ -298,10 +293,9 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       // We couldn't find a nextStateId, so we return
       else {
 
-        print("notfound", "\n");
         // Are we in a sub process? If so, send action to super process
         if( stack.size() > 1) {
-          // Remove the top processStack
+          // Remove the end processStack
           stack.pop_back();
         }
         else {
@@ -334,20 +328,14 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     delegateType = isA(stateId, name("jotxozcetpx2")); // Delegate Type
     
 
-      print("executeType:", executeType, " - ");
-      print("delegateType:", delegateType, "\n");
-
-
-
-  // } while (executeType || delegateType || stateId == name("gczvalloctae")); // Initialize
-
-  
-    // || delegateType || executeType|| stateId == name("gczvalloctae")
+    //TODO We may have to relace SEND_INLINE_ACTION with do while
     if( executeType || delegateType || stateId == name("gczvalloctae" )) {
       bumpState_str bumpsatePayload = { username, agreementid, action };
 
       SEND_INLINE_ACTION( *this, bumpstate, { username, name("active") }, bumpsatePayload );
     }
+
+  // } while (executeType || delegateType || stateId == name("gczvalloctae")); // Initialize
     
 }
 
