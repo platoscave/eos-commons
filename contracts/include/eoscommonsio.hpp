@@ -1,7 +1,9 @@
 #include <eosio/eosio.hpp>
 #include <eosio/print.hpp>
+#include <eosio/system.hpp>
 #include <src/nlohmann/json-schema.hpp>
 #include <src/nlohmann/json.hpp>
+//#include <ctime>
 // #include <jsoncons/json_reader.hpp>
 // https://github.com/pboettch/json-schema-validator
 
@@ -34,6 +36,7 @@ CONTRACT eoscommonsio : public contract {
       name processid;
       name stateid;
       bool done;
+      time_point_sec created_at;
     };
 
     

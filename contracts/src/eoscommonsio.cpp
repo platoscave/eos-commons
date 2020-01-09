@@ -156,7 +156,7 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack: " + agreementId.to_string());
 
   // Create a processstate with Initialize state and current process. Add it to the stack.
-  processstate_str processState = { name(pocsessId), name("gczvalloctae"), false }; 
+  processstate_str processState = { name(pocsessId), name("gczvalloctae"), false, current_time_point() }; 
   std::vector<processstate_str> stack;
   stack.push_back( processState );
 
@@ -221,6 +221,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
       // Use substateid as current stateId
       currentProcessState.stateid = substateid;
+      currentProcessState.created_at = current_time_point();
       stack.back() = currentProcessState;
 
     }
@@ -229,8 +230,9 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // If current state isA Delegate and not done, find the sellerProcessId, add it the the stack
     else if ( isA(currentProcessState.stateid, name("jotxozcetpx2") ) && currentProcessState.done == false) { // Delegate state
 
-      // Set current ProcessState to done
+      // Set current ProcessState to done, so that on the way back we continu
       currentProcessState.done = true;
+      currentProcessState.created_at = current_time_point();
       stack.back() = currentProcessState;
 
       // Get the sellerProcessId from agreementObj
@@ -238,7 +240,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       auto sellerProcessId = name(parsedAgreement["sellerProcessId"].get<std::string>());
 
       // Create a processstate with Initialize state and current process. Push it to the stack.
-      processstate_str processState = { name(sellerProcessId), name("gczvalloctae"), false }; 
+      processstate_str processState = { name(sellerProcessId), name("gczvalloctae"), false, current_time_point() }; 
       stack.push_back( processState );
 
     }
@@ -279,7 +281,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       // https://github.com/nlohmann/json/issues/1331
       auto actionStateIter = std::find_if(nextStateIds.begin(), nextStateIds.end(), [](const json& x) {
           auto it = x.find("action");
-          return it != x.end() and it.value() == "happy";
+          return it != x.end() and it.value() = "happy";
       });
 
       // If found, use the nextStateId
@@ -288,6 +290,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
         std::string next = nextStateId.value();
         currentProcessState.stateid = name(next);
+        currentProcessState.created_at = current_time_point();
         stack.back() = currentProcessState;
 
       }
@@ -305,6 +308,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
           // Otherwize we are at the end
           if (action == "happy") currentProcessState.stateid = name("3hxkire2nn4v"); // Sucess
           else currentProcessState.stateid = name("zdwdoqpxks2s"); // Failed
+          currentProcessState.created_at = current_time_point();
           stack.back() = currentProcessState;
 
           // TODO cleanup agreementstack, Update agreement 
