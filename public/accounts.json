@@ -1,0 +1,459 @@
+[
+    {
+        "name": "platoscave",
+        "data": {
+            "name": "platoscave11",
+            "owner": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS7iDk4oo8MKkhMPAtNf2ut6mYrHJor2qQ6eK5trcxBjJXmv6Mwe",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS7iDk4oo8MKkhMPAtNf2ut6mYrHJor2qQ6eK5trcxBjJXmv6Mwe",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "key": "eoscommonsio",
+        "name": "eos-commons.io",
+        "data": {
+            "name": "eoscommonsio",
+            "owner": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS7BAiAoXoyPa1kSSqHoSQGipot2oV58Wa1SrbFrdrLKCqzuJLE3",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "platoscave11",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "EOS Commons Service Desk",
+        "data": {
+            "name": "jotcvffqbzfp",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "platoscave11",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Bicyle Shop Front Desk User",
+        "data": {
+            "name": "bikefronuser",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS8fzzEVMqCdj8izdXPnVzyBjJFqGK3mahR36v8x54eofraHxgW7",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Bicyle Shop Work Shop User",
+        "data": {
+            "name": "bikeworkuser",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS7AfgnCaRAFQFWSYe6AD4jz5Gk1gy5VHzoSuFNHCq8BbMgzQDg1",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "ACME Bicycle Shop",
+        "data": {
+            "name": "bikeshop1111",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Front Desk",
+        "data": {
+            "name": "bikefrondesk",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "bikeshop1111",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "bikefronuser",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }],
+                "waits": []
+            }
+        }
+    },
+    {
+        "key": "bikeworkshop",
+        "name": "Bicyle Shop Workshop",
+        "data": {
+            "name": "bikeworkshop",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "bikeshop1111",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "bikeworkuser",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Clinic Reception User",
+        "data": {
+            "name": "clinreceuser",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS6pwMQ7cShSSdoyVHecfeNE5hxJE6wiRsCxSoDNVm9Hc52VSajt",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Clinic Nurse User",
+        "data": {
+            "name": "clinnursuser",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS8DjnakK6hF8Ba36W7QiMfQX1K57tvUgLgUhPJGPMU8vUNMeHUT",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Clinic Doctor User",
+        "data": {
+            "name": "clindoctuser",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [
+                    {
+                        "key": "EOS51up6rEwbyFf3CNJcuVaBNMPJVEQVAtUwC32TYtxadAcEzxzPC",
+                        "weight": 1
+                    }
+                ],
+                "accounts": [],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "ACME Health Care Clinic",
+        "data": {
+            "name": "clinic111111",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "eoscommonsio",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Clinic Reception",
+        "data": {
+            "name": "clinreceptio",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "clinic111111",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "clinreceuser",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }],
+                "waits": []
+            }
+        }
+    },
+    {
+        "name": "Clinic Consulting Room",
+        "data": {
+            "name": "clinconsulti",
+            "owner": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "clinic111111",
+                            "permission": "owner"
+                        },
+                        "weight": 1
+                    }
+                ],
+                "waits": []
+            },
+            "active": {
+                "threshold": 1,
+                "keys": [],
+                "accounts": [
+                    {
+                        "permission": {
+                            "actor": "clinnursuser",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    },
+                    {
+                        "permission": {
+                            "actor": "clindoctuser",
+                            "permission": "active"
+                        },
+                        "weight": 1
+                    }],
+                "waits": []
+            }
+        }
+    }
+]

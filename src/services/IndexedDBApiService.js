@@ -398,7 +398,7 @@ class IndexedDBApiService {
         })
     }
 
-    static async GetAll(store) {
+    static async XGetAll(store) {
         return new Promise((resolve, reject) => {
             const commonsStore = this.db.transaction('commons', 'readwrite').objectStore('commons')
 
@@ -416,6 +416,56 @@ class IndexedDBApiService {
                 }
             }
         })
+    }
+
+    static async GetAll(store) {
+        let results = []
+
+        // Recusivly nagigate class model
+        const addSubclasses = async (classId) => {
+
+            // Get the subclasses for this class
+            let classesQueryObj = {
+                query: {
+                    where: [{
+                        docProp: 'parentId',
+                        operator: 'eq',
+                        value: classId
+                    }]
+                }
+            }
+            const classesArr = await store.dispatch('query', classesQueryObj)
+            if(classesArr.length) {
+                results = results.concat(classesArr)
+                let promises = []
+                classesArr.forEach(async subClassObj => {
+                    promises.push(addSubclasses(subClassObj.key))
+                })
+                await Promise.all(promises)
+            }
+
+            // Get the objects for this class
+            let objectsQueryObj = {
+                query: {
+                    where: [{
+                        docProp: 'classId',
+                        operator: 'eq',
+                        value: classId
+                    }]
+                }
+            }
+            const objectsArr = await store.dispatch('query', objectsQueryObj)
+            if(objectsArr.length) {
+                results = results.concat(objectsArr)
+
+            }
+        }
+
+
+
+        results.push(await store.dispatch( 'getCommonByKey', 'gzthjuyjca4s' )); // get the root
+        await addSubclasses('gzthjuyjca4s')
+        return results
     }
 
 }

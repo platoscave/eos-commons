@@ -321,7 +321,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // get the current processstate
     currentProcessState = stack.back();
 
-    print("PROCESS STATE processId: ", currentProcessState.processid, " stateId: ", currentProcessState.stateid, " done: ", currentProcessState.done, "\n");
+    print("PROCESS STATE processId: ", currentProcessState.processid, " stateId: ", currentProcessState.stateid, " done: ", currentProcessState.done,  currentProcessState.created_at.to_iso_string(), "\n");
 
     stateId = currentProcessState.stateid;
     executeType = isA(stateId, name("dqja423wlzrb")); // Execute Type

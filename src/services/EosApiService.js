@@ -127,10 +127,10 @@ class EosApiService {
         return takeAction(store, actions)
     }
 
-    static async createAccount(store) {
-        const newAccount = 'gzthjuyjca4s'
+    static async createAccount(store, accountData) {
         const actor = store.state.currentUserId;
-
+        accountData.data.creator = actor
+        console.log('data', accountData)
         const actions = [{
                 account: 'eosio',
                 name: 'newaccount',
@@ -138,9 +138,10 @@ class EosApiService {
                     actor: actor,
                     permission: 'active',
                 }],
-                data: {
+                data: accountData.data
+                /*data: {
                     creator: actor,
-                    name: newAccount,
+                    name: newAccountName,
                     owner: {
                         threshold: 1,
                         keys: [],
@@ -165,7 +166,7 @@ class EosApiService {
                           }],
                         waits: []
                     },
-                },
+                },*/
             }/*, // Omly needed when the eos system contract is running
             {
                 account: 'eosio',
@@ -224,7 +225,7 @@ class EosApiService {
 
 
     static async getCommonByKey(store, keyValue) {
-        return this.queryByIndex('key', keyValue).then(result => {
+        return this.queryByIndex(store, 'key', keyValue).then(result => {
             if (result.length == 0) {
                 console.error('Key Not found: ' + keyValue)
                 return []
@@ -233,7 +234,7 @@ class EosApiService {
         })
     }
 
-    static async queryByIndex(store, table, indexName, keyValue) {
+    static async queryByIndex(store, indexName, keyValue) {
         try {
             // sb = new eosjs.Serialize.SerialBuffer();                                                  
             // sb.pushName('testacc');                                                                                                                                     
@@ -249,12 +250,13 @@ class EosApiService {
             else if (indexName === 'classId') index = 'third'
             else throw 'Add index: ' + indexName
 
+
             const network = store.state.network;
-            const rpc = networks[network]
+            const rpc = new JsonRpc(networks[network]);
 
             const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
             const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Otherwise the same as code
-            const TABLE = 'commons' // name of the table as specified by the contract abi
+            const TABLE = 'commonstable' // name of the table as specified by the contract abi
 
             const result = await rpc.get_table_rows({
                 'json': true,
@@ -274,6 +276,36 @@ class EosApiService {
             console.error(err)
             return []
         }
+    }
+
+    static async getAuthorizedAccounts(store, agreementId) {
+        // Get accounts that are authorized for the current state of an agreement
+
+        const agreementObj = await this.getCommonByKey(store, agreementId)
+        // Get the last process stack object
+        let processStackObj = agreementObj.processStack[0]
+
+        // get all org unit accounts for seller account
+        const network = store.state.network;
+        const rpc = new JsonRpc(networks[network]);
+        
+        const sellerOrgunitAccounts = await rpc.get_controlled_accounts(agreementObj.sellerId)
+
+        let orgsAuthorizedForStateArr = sellerOrgunitAccounts.filter(sellerOrgunitAccount => {
+            return sellerOrgunitAccount.authorizedForStateIds.includes(processStackObj.stateId)
+        })
+
+        let accountIdsArr = []
+        orgsAuthorizedForStateArr.forEach(accountObj => {
+            accountObj.permissions.forEach(permissionObj => {
+                permissionObj.required_auth.accounts.forEach(account => {
+                    if (account.permission.permission === 'active') accountIdsArr.push(account.permission.actor)
+                })
+            })
+        })
+
+        /// console.log('accountIdsArr', accountIdsArr)
+        return accountIdsArr
     }
 
     static async ImportFromEOS() {
@@ -312,6 +344,33 @@ class EosApiService {
             })
             doAllSequentually(loadEOSPromissesArr).then(() => {
                 console.log('finished StaticAllToEos')
+                return true
+            })
+        })
+    }
+
+    static async addAccounts(store) {
+        const doAllSequentually = async (fnPromiseArr) => {
+            for (let i = 0; i < fnPromiseArr.length; i++) {
+                await fnPromiseArr[i]()
+            }
+        }
+
+        const createFnPromise = (data) => {
+            return () => this.createAccount(store, data).then( result => {console.log(result)})
+        }
+
+        return axios('accounts.json', {
+            headers: {'Content-Type': 'application/json; charset=UTF-8' },
+            data: {}
+        }).then(response => {
+            let loadEOSPromissesArr = []
+            response.data.forEach(data => {
+                // console.log(common)
+                loadEOSPromissesArr.push(createFnPromise(data))
+            })
+            doAllSequentually(loadEOSPromissesArr).then(() => {
+                console.log('finished addAccounts')
                 return true
             })
         })
