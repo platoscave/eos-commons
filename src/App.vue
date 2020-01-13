@@ -18,19 +18,22 @@
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onEraseAllEos()">Erase all EOS</v-btn>
                 </v-flex>
+                <!-- <v-flex xs12>
+                  <v-btn color="blue darken-1" @click="onIndexedDBAllToEos()">IndexedDB all to EOS</v-btn>
+                </v-flex> -->
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="onIndexedDBAllToEos()">IndexedDB to EOS</v-btn>
+                  <v-btn color="blue darken-1" @click="onStaticAllToEos()">Static all to EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="addAccounts()">Add EOS Accounts</v-btn>
+                  <v-btn color="blue darken-1" @click="addAccounts()">Add Test Accounts to EOS</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="addAgreement()">Add Agreement</v-btn>
+                  <v-btn color="blue darken-1" @click="addAgreement()">Add Test Agreement</v-btn>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn color="blue darken-1" @click="bumpState()">Bump State</v-btn>
+                  <v-btn color="blue darken-1" @click="bumpState()">Test Agreement Bump State</v-btn>
                 </v-flex>
-                <v-flex xs12>
+                <!-- <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onImportFromStatic()">Import From Static File</v-btn>
                 </v-flex>
                 <v-flex xs12>
@@ -38,7 +41,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-btn color="blue darken-1" @click="onSaveDirtyToEos()">Save to EOS</v-btn>
-                </v-flex>
+                </v-flex> -->
                 <v-flex xs12>
                   <v-btn
                     color="blue darken-1"
@@ -170,6 +173,9 @@ export default {
     },
     onIndexedDBAllToEos() {
       EosApiService.IndexedDBAllToEos(this.$store);
+    },
+    onStaticAllToEos() {
+      EosApiService.StaticAllToEos(this.$store);
     },
     onSaveDirtyToEos() {
       EosApiService.SaveDirtyToEos(this.$store);

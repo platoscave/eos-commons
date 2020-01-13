@@ -235,6 +235,20 @@ class EosApiService {
     }
 
     static async queryByIndex(store, indexName, keyValue) {
+        // Recursivly findout if obj is a classId
+        const isA = async (objId, classId) => {
+            const testSuperClass = async superclassId => {
+                const superclass = await this.getCommonByKey(store, superclassId)
+                if (!superclass.parentId) return false // we are at the root
+                if (superclass.parentId === classId) return true
+                return testSuperClass(superclass.parentId)
+            }
+
+            const obj = await this.getCommonByKey(store, objId)
+            if (obj.classId === classId) return true
+            return testSuperClass(obj.classId)
+        }
+
         try {
             // sb = new eosjs.Serialize.SerialBuffer();                                                  
             // sb.pushName('testacc');                                                                                                                                     
@@ -269,9 +283,25 @@ class EosApiService {
                 'lower_bound': keyValue,
                 'upper_bound': upperBound // must be numericlly equal to key plus one
             })
-            return result.rows.map(row => {
+            let results =  result.rows.map(row => {
                 return JSON.parse(row.common)
             })
+            /* results.forEach(async result =>  {
+                const isAnAccount = await isA(result.key, 'ikjyhlqewxs3') 
+                if(isAnAccount){
+                    const accountInfo = await this.getAccountInfo(store, result.key)
+                    result = Object.assign(result, accountInfo)
+                }
+                const isAnAgreement = await isA(result.key, 'i1gjptcb2skq') 
+                if(isAnAgreement){
+                    //const accountInfo = await this.getAccountInfo(store, retult.key)
+                    //result = Object.assign(result, accountInfo)
+                }
+                
+            }) */
+
+
+            return results
         } catch (err) {
             console.error(err)
             return []
@@ -321,14 +351,16 @@ class EosApiService {
     }
 
     static async StaticAllToEos(store) {
+        const actor = store.state.currentUserId; // The user performing the action
+
         const doAllSequentually = async (fnPromiseArr) => {
             for (let i = 0; i < fnPromiseArr.length; i++) {
                 await fnPromiseArr[i]()
             }
         }
 
-        const createFnPromise = (common) => {
-            return () => this.upsertCommon(store, 'upsert', common).then( result => {console.log(result)})
+        const createFnPromise = (actions) => {
+            return () => takeAction(store, actions).then( result => {console.log(result)})
         }
 
         return axios('commons.json', {
@@ -338,10 +370,32 @@ class EosApiService {
             data: {}
         }).then(response => {
             let loadEOSPromissesArr = []
-            response.data.forEach(common => {
-                // console.log(common)
-                loadEOSPromissesArr.push(createFnPromise(common))
+            let actions = []
+            let parentId = ""
+            let classId = ""
+            response.data.forEach(async subClassObj => {
+                if((subClassObj.parentId != parentId || subClassObj.classId != classId) && actions.length) {
+                    loadEOSPromissesArr.push(createFnPromise(actions))
+                    actions = []
+                }
+                parentId = subClassObj.parentId
+                classId = subClassObj.classId
+                actions.push({
+                    account: 'eoscommonsio',
+                    name: 'upsert',
+                    authorization: [{
+                        actor: actor,
+                        permission: 'active'
+                    }],
+                    data: {
+                        payload: {
+                            username: actor,
+                            common: JSON.stringify(subClassObj)
+                        }
+                    }
+                })
             })
+
             doAllSequentually(loadEOSPromissesArr).then(() => {
                 console.log('finished StaticAllToEos')
                 return true
