@@ -1,4 +1,6 @@
 # eos-commons.io
+Bringing Process Modeling to the Blockchain
+
 Vue.js/Vuetify client for EOS blockchain backend
 
 Under construction.
