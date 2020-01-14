@@ -18,5 +18,5 @@ We have several 3D diagrams that represent various aspects of the model: class m
 
 ### Demo
 These demos are based on static data, not the blockchain
-- [Accounts](https://gateway.pinata.cloud/ipfs/QmZsAZcoSXNNB7ZqzQFmeGtqbscozwqgguVizsJMfCTGZd/#/.kmghbh3qovtq)
-- [Classmodel](https://gateway.pinata.cloud/ipfs/QmZsAZcoSXNNB7ZqzQFmeGtqbscozwqgguVizsJMfCTGZd/#/.4lk3hxyyfac3) (includes 3D Class Model)
+- [Accounts](https://gateway.pinata.cloud/ipfs/QmZsAZcoSXNNB7ZqzQFmeGtqbscozwqgguVizsJMfCTGZd/#/.kmghbh3qovtq./bicycleshop1.2kjjzqr2i5o5.1/bicycleshop1.h5syw45c3qg1./4htc3ykicyzj.tet4swafvc2k.)
+- [Classmodel](https://gateway.pinata.cloud/ipfs/QmZsAZcoSXNNB7ZqzQFmeGtqbscozwqgguVizsJMfCTGZd/#/.4lk3hxyyfac3./gzthjuyjca4s.24cnex2sayeh.1/gzthjuyjca4s..) (includes 3D Class Model)
