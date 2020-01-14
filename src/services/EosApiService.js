@@ -313,13 +313,18 @@ class EosApiService {
 
         const agreementObj = await this.getCommonByKey(store, agreementId)
         // Get the last process stack object
+        if(!agreementObj.processStack) {
+            console.log('Agreement has no process stack', agreementObj)
+            return []
+        }
         let processStackObj = agreementObj.processStack[0]
 
         // get all org unit accounts for seller account
         const network = store.state.network;
         const rpc = new JsonRpc(networks[network]);
         
-        const sellerOrgunitAccounts = await rpc.get_controlled_accounts(agreementObj.sellerId)
+        // const sellerOrgunitAccounts = await rpc.get_controlled_accounts(agreementObj.sellerId)
+        const sellerOrgunitAccounts = []
 
         let orgsAuthorizedForStateArr = sellerOrgunitAccounts.filter(sellerOrgunitAccount => {
             return sellerOrgunitAccount.authorizedForStateIds.includes(processStackObj.stateId)
@@ -607,14 +612,14 @@ class EosApiService {
         return result
     }
 
-    static async addAgreement(store) {
+    static async addAgreement(store, agreementObj) {
  
         const printTraces = result => {
             console.log(result.console)
             if(result.inline_traces.length) printTraces(result.inline_traces[0])
         }
 
-        const eraseResult =  await this.eraseCommon(store, 'lmxjrogzeld1')
+        /* const eraseResult =  await this.eraseCommon(store, 'lmxjrogzeld1')
         console.log('eraseResult', eraseResult)
 
         let objId = 'lmxjrogzeld1' //purchase agreement
@@ -622,8 +627,8 @@ class EosApiService {
         const common = await store.dispatch(
             "getCommonByKey",
             objId
-        );
-        const result = await this.upsertCommon(store, 'addagreement', common) 
+        ); */
+        const result = await this.upsertCommon(store, 'addagreement', agreementObj) 
         // const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
 
         console.log('results')

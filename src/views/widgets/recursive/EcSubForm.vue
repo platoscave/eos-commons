@@ -1,31 +1,35 @@
 <template>
   <div>
     <v-container>
-      <!-- For each of the properties in schema -->
-      <div v-for="(property, propName) in properties" v-bind:key="propName">
-        <div v-if="property.type !== 'button' || (property.action === 'sendTransaction' && userIsAuthorized) || (property.action === 'addAgreement' && userCanAdd)">
-          <!-- Start owr layout. v-flex must be immidiate child! Why doen't anyone tell you these things?-->
-          <v-layout justify-start row wrap>
-            <!-- Label: If we are in edit mode or, there is data for this property -->
-            <v-flex class="label" xs12 md2 v-if="showAllFields || value[propName]">
-              <div v-if="property.type !== 'button'">{{ property.title }}</div>
-            </v-flex>
+      <div v-if="properties[0].type == 'button'">
+        <div></div>
+      </div>
+      <div v-else>
+        <!-- For each of the properties in schema -->
+        <div v-for="(property, propName) in properties" v-bind:key="propName">
 
-            <!-- Value: If we are in edit mode or, there is data for this property -->
-            <!-- ec-query-select needs currentObjId -->
-            <v-flex xs12 md10 v-if="showAllFields || value[propName]">
-              <ec-select-control
-                class="rowPadding"
-                v-model="value[propName]"
-                v-bind:alwaysEditMode="alwaysEditMode"
-                v-bind:showAllFields="showAllFields"
-                v-bind:property="property"
-                v-bind:definitions="definitions"
-                v-bind:currentObjId="currentObjId ? currentObjId : value.key"
-                v-on:button-click="$emit('button-click', $event)"
-              ></ec-select-control>
-            </v-flex>
-          </v-layout>
+            <!-- Start owr layout. v-flex must be immidiate child! Why doen't anyone tell you these things?-->
+            <v-layout justify-start row wrap>
+              <!-- Label: If we are in edit mode or, there is data for this property -->
+              <v-flex class="label" xs12 md2 v-if="showAllFields || value[propName]">
+                <div v-if="property.type !== 'button'">{{ property.title }}</div>
+              </v-flex>
+
+              <!-- Value: If we are in edit mode or, there is data for this property -->
+              <!-- ec-query-select needs currentObjId -->
+              <v-flex xs12 md10 v-if="showAllFields || value[propName]">
+                <ec-select-control
+                  class="rowPadding"
+                  v-model="value[propName]"
+                  v-bind:alwaysEditMode="alwaysEditMode"
+                  v-bind:showAllFields="showAllFields"
+                  v-bind:property="property"
+                  v-bind:definitions="definitions"
+                  v-bind:currentObjId="currentObjId ? currentObjId : value.key"
+                  v-on:button-click="$emit('button-click', $event)"
+                ></ec-select-control>
+              </v-flex>
+            </v-layout>
         </div>
       </div>
     </v-container>

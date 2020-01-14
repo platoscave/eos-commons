@@ -3530,16 +3530,25 @@
     {
       "key": "idlmhh2i1ass",
       "docType": "object",
-      "name": "Add Agreement Button View",
+      "name": "Add Service Request Button View",
       "classId": "pylvseoljret",
       "ownerId": "eoscommonsio",
+      "baseClassId": "i1gjptcb2skq",
       "properties": {
         "purchaseButton": {
-          "title": "Add Agreement",
+          "title": "Add Service Request",
           "type": "button",
           "action": "addAgreement",
           "addDialogViewId": "3ebxsw5pbk3r",
-          "processId": "ynaxakdc423e"
+          "processId": "cie1pllxq5mu",
+          "classId": "w3mzeetidb5n"
+        },
+        "name": {
+          "readOnly": false,
+          "placeholder": "Agreement name"
+        },
+        "description": {
+          "readOnly": false
         }
       },
       "type": "object"
