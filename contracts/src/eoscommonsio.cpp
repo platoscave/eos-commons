@@ -22,19 +22,10 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
   auto parsedJson = json::parse(payload.common, nullptr, false);
   check(!parsedJson.is_discarded(), "Invalid Json:\n" + payload.common);
   
-  /*
-  jsoncons::json_reader reader(payload.common);
+  // print("UPSERT: ", parsedJson.dump(4), "\n");
 
-  std::error_code ec;
-  reader.read(ec);
-  if (ec) {
-    eosio::print( ec.message());
-  }
-  */
-
-  
   // Get the key from payload
-  check(parsedJson.contains("key"), "Proposed upsert has no key:\n" + parsedJson.dump(4));
+  check(parsedJson.contains("key"), "Proposed upsert has no key:\n" + parsedJson.dump());
   auto key = name(parsedJson["key"].get<std::string>());
 
   auto classId = name("aaaaaaaaaaaa");
@@ -46,7 +37,7 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
       classId = name(parsedJson["classId"].get<std::string>());
       // Make sure the foreigne key exsits
       auto common_iterator = commons_tbl.find( classId.value );
-      check( common_iterator != commons_tbl.end(), "classId not found:\n" + parsedJson.dump(4));
+      check( common_iterator != commons_tbl.end(), "classId not found:\n" + parsedJson.dump());
 
       // Collect schema from classes
       // Validate common
@@ -60,8 +51,6 @@ ACTION eoscommonsio::upsert(upsert_str payload) {
     }
     else check( false, "Must have either parentId or classId: " + payload.common);
   }
-
-  // eosio::print( "parsedJson, ", parsedJson);
 
   auto common_iterator = commons_tbl.find( key.value );
   if( common_iterator == commons_tbl.end() )
@@ -112,6 +101,11 @@ ACTION eoscommonsio::eraseall(eraseall_str payload) {
   }
 }
 
+/* addagreement(upsert_str payload)
+    key
+    agreementProcessId
+    sellerProcessId
+*/
 ACTION eoscommonsio::addagreement(upsert_str payload) {
   name username = payload.username;
   require_auth(username);
@@ -120,20 +114,23 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   auto parsedJson = json::parse(payload.common, nullptr, false);
   check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
   
+  // print("ADD AGREEMENT: ", parsedJson.dump(4), "\n");
+
+
   // Get the key from agreement
-  check(parsedJson.contains("key"), "Proposed agrrement has no key:\n" + parsedJson.dump(4));
+  check(parsedJson.contains("key"), "Proposed agrrement has no key:\n" + parsedJson.dump());
   auto agreementId = name(parsedJson["key"].get<std::string>());
 
   // Make sure the agreement doesn't already exist
   auto common_iterator = commons_tbl.find( agreementId.value );
-  check(common_iterator == commons_tbl.end(), "This agreement already exists:\n" + parsedJson.dump(4));
+  check(common_iterator == commons_tbl.end(), "This agreement already exists:\n" + parsedJson.dump());
 
   // Get the Process obj for this agreement. 
   // Use it to determin the the type (classId) of the agreement 
 
-  // Get the processId from agreement 
-  check(parsedJson.contains("processId"), "Proposed agrrement has no processId:\n" + parsedJson.dump(4));
-  auto pocsessId = name(parsedJson["processId"].get<std::string>());
+  // Get the agreementProcessId from agreement 
+  check(parsedJson.contains("agreementProcessId"), "Proposed agrrement has no agreementProcessId:\n" + parsedJson.dump());
+  auto pocsessId = name(parsedJson["agreementProcessId"].get<std::string>());
 
   // Get the processObj
   auto process_iterator = commons_tbl.find( pocsessId.value );
@@ -144,16 +141,20 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   check(!parsedProcessJson.is_discarded(), "Invalid Json: " + process_iterator->common);
 
   // Get the agreementClassId from processObj
-  check(parsedProcessJson.contains("agreementClassId"), "Proposed agrrement process has no agreementClassId:\n" + parsedProcessJson.dump(4));
+  check(parsedProcessJson.contains("agreementClassId"), "Proposed agrrement process has no agreementClassId:\n" + parsedProcessJson.dump());
   auto agreementClassId = name(parsedProcessJson["agreementClassId"].get<std::string>());
   // Use agreementClassId as classId for the new agreement
+  parsedJson["classId"] = agreementClassId.to_string();
+
+  // update payload for when we do the upsert
+  payload.common = parsedJson.dump();
 
   // Create the Process stack
   // Initialize it with Initialize state and agreement processId
 
   // Make sure there isn't an agreementstack already
   auto agreementstack_iterator = agreementstack_tbl.find( agreementId.value );
-  check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack:\n" + parsedJson.dump(4));
+  check(agreementstack_iterator == agreementstack_tbl.end(), "This agreement already has a agreement stack:\n" + parsedJson.dump());
 
   // Create a processstate with Initialize state and current process. Add it to the stack.
   processstate_str processState = { name(pocsessId), name("gczvalloctae"), false, current_time_point() }; 
@@ -166,15 +167,14 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
     new_stack.stack = stack;
   });
 
-  print("PROCESS STATE processId:", pocsessId, " stateId: initialized", "\n");
-
 
   // Now add the agreement
   upsert( payload );
 
   // Finally, Start the process
   bumpState_str bumpsatePayload = { username, agreementId, "" };
-  SEND_INLINE_ACTION( *this, bumpstate, {username, name("active")}, bumpsatePayload );
+  // SEND_INLINE_ACTION( *this, bumpstate, {username, name("active")}, bumpsatePayload );
+  bumpstate( bumpsatePayload );
 }
 
 ACTION eoscommonsio::bumpstate(bumpState_str payload) {
@@ -182,6 +182,8 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
   name agreementid = payload.agreementid;
   std::string action = payload.action;
   require_auth(username);
+
+  print("{ \"bumpstate\": ", payload.toJson(), ",\n");
 
 
   // Get the agreement
@@ -269,7 +271,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
 
       // Get the nextStateIds from state obj
-      check(parsedStateJson.contains("nextStateIds"), "State process has no nextStateIds:\n" + parsedStateJson.dump(4));
+      check(parsedStateJson.contains("nextStateIds"), "State process has no nextStateIds:\n" + parsedStateJson.dump());
       auto nextStateIds = parsedStateJson["nextStateIds"];
 
       // Find the nextStateIds obj that corresponds with our action
@@ -281,7 +283,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
       // If found, use the nextStateId
       if(actionStateIter != nextStateIds.end()) {
         auto nextStateIdIter = actionStateIter->find("stateId");
-        check(nextStateIdIter != actionStateIter->end(), "nextStateIds has no stateId for action: " + action + "\n" + parsedStateJson.dump(4));
+        check(nextStateIdIter != actionStateIter->end(), "nextStateIds has no stateId for action: " + action + "\n" + parsedStateJson.dump());
 
         std::string next = nextStateIdIter.value();
         currentProcessState.stateid = name(next);
@@ -321,7 +323,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     // get the current processstate
     currentProcessState = stack.back();
 
-    print("PROCESS STATE processId: ", currentProcessState.processid, " stateId: ", currentProcessState.stateid, " done: ", currentProcessState.done,  currentProcessState.created_at.to_iso_string(), "\n");
+    print("\"result\": ", currentProcessState.toJson(), " }\n");
 
     stateId = currentProcessState.stateid;
     executeType = isA(stateId, name("dqja423wlzrb")); // Execute Type
@@ -332,7 +334,8 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     if( executeType || delegateType || stateId == name("gczvalloctae" )) {
       bumpState_str bumpsatePayload = { username, agreementid, action };
 
-      SEND_INLINE_ACTION( *this, bumpstate, { username, name("active") }, bumpsatePayload );
+      // SEND_INLINE_ACTION( *this, bumpstate, { username, name("active") }, bumpsatePayload );
+      bumpstate( bumpsatePayload );
     }
 
   // } while (executeType || delegateType || stateId == name("gczvalloctae")); // Initialize

@@ -3310,27 +3310,11 @@
       "ownerId": "eoscommonsio",
       "baseClassId": "i1gjptcb2skq",
       "properties": {
-        "agreementProcessId": {
-          "readOnly": false
-        },
-        "XagreementProcessId": {
-          "query": {
-            "where": [
-              {
-                "docProp": "key",
-                "operator": "in",
-                "valuePath": "exposedToProcessesIds"
-              }
-            ],
-            "sortBy": "name"
-          },
-          "title": "Process",
-          "type": "string",
-          "readOnly": false
-        },
+        "agreementProcessId": {},
+        "sellerProcessId": {},
         "name": {
           "readOnly": false,
-          "placeholder": "Agreement name"
+          "placeholder": "Subject"
         },
         "description": {
           "readOnly": false
@@ -3533,22 +3517,13 @@
       "name": "Add Service Request Button View",
       "classId": "pylvseoljret",
       "ownerId": "eoscommonsio",
-      "baseClassId": "i1gjptcb2skq",
       "properties": {
         "purchaseButton": {
           "title": "Add Service Request",
           "type": "button",
           "action": "addAgreement",
           "addDialogViewId": "3ebxsw5pbk3r",
-          "processId": "cie1pllxq5mu",
-          "classId": "w3mzeetidb5n"
-        },
-        "name": {
-          "readOnly": false,
-          "placeholder": "Agreement name"
-        },
-        "description": {
-          "readOnly": false
+          "agreementProcessId": "cie1pllxq5mu"
         }
       },
       "type": "object"

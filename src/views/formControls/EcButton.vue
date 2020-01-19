@@ -42,7 +42,6 @@ export default {
       this.dialog = false;
       if (this.property.action === "addAgreement") {
 
-        this.newObj.assetId = this.currentObjId;
         const key = await this.$store.dispatch("addAgreement", this.newObj);
 
       } else if (this.property.action === "sendTransaction") {
@@ -61,8 +60,8 @@ export default {
       );
       // Prep processId
       // TODO
-      this.newObj.processId = "ynaxakdc423e";
-      this.newObj.sellerProcessId = "h3q1vchxahoh";
+        this.newObj.agreementProcessId = this.property.agreementProcessId;
+        this.newObj.sellerProcessId = this.property.sellerProcessId;
       
     }
   }

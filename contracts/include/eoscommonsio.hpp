@@ -37,9 +37,16 @@ CONTRACT eoscommonsio : public contract {
       name stateid;
       bool done;
       time_point_sec created_at;
+
+      std::string toJson() {
+        return "{\n    \"processId\": \"" + processid.to_string() + "\", " + 
+          "\n    \"stateid\": \"" + stateid.to_string() + "\", " + 
+          "\n    \"done\": " + (done ? "true" : "false") + "\n}"; 
+          //"created_at: " + std::string(created_at) ;
+      }
     };
 
-    
+
     TABLE agreementstack_str {
       name agreementid;
       std::vector<processstate_str> stack;
@@ -87,6 +94,13 @@ CONTRACT eoscommonsio : public contract {
       name username;
       name agreementid;
       std::string action;
+      
+      std::string toJson() {
+        return "{\n    \"username\": \"" + username.to_string() + "\", " + 
+          "\n    \"agreementid\": \"" + agreementid.to_string() + "\", " + 
+          "\n    \"action\": \"" + action + "\"\n}"; 
+      }
+
       EOSLIB_SERIALIZE( bumpState_str, (username) (agreementid) (action))
     };
     ACTION bumpstate(bumpState_str payload);

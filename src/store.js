@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
-//import ApiService from './services/EosApiService'
-import ApiService from './services/IndexedDBApiService'
+import ApiService from './services/EosApiService'
+//import ApiService from './services/IndexedDBApiService'
 import IpfsApiService from './services/IpfsApiService'
 import { tmpdir } from 'os';
 

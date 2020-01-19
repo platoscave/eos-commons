@@ -1,10 +1,6 @@
 <template>
   <div>
     <v-container>
-      <div v-if="properties[0].type == 'button'">
-        <div></div>
-      </div>
-      <div v-else>
         <!-- For each of the properties in schema -->
         <div v-for="(property, propName) in properties" v-bind:key="propName">
 
@@ -31,7 +27,6 @@
               </v-flex>
             </v-layout>
         </div>
-      </div>
     </v-container>
   </div>
 </template>
