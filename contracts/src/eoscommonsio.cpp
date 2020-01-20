@@ -1,4 +1,6 @@
 #include <eoscommonsio.hpp>
+#include <ctime>
+
 
 /*float eoscommonsio::stof(std::string s, float def)
     {   
@@ -115,6 +117,13 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
   
   // print("ADD AGREEMENT: ", parsedJson.dump(4), "\n");
+  //print(current_time_point().sec_since_epoch());
+  //print((new Date(current_time_point().sec_since_epoch() * 1000)).toISOString());
+  //char* c_time_string;
+  time_t current_time = current_time_point().sec_since_epoch() * 1000;
+  char* charTime = std::ctime(&current_time);
+  //c_time_string = ctime(&current_time);
+  print(charTime);
 
 
   // Get the key from agreement
@@ -145,6 +154,9 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   auto agreementClassId = name(parsedProcessJson["agreementClassId"].get<std::string>());
   // Use agreementClassId as classId for the new agreement
   parsedJson["classId"] = agreementClassId.to_string();
+
+  // Add start date to agreement
+  parsedJson["startDate"] = "2020-01-10";
 
   // update payload for when we do the upsert
   payload.common = parsedJson.dump();

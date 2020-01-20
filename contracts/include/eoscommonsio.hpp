@@ -1,6 +1,7 @@
 #include <eosio/eosio.hpp>
 #include <eosio/print.hpp>
 #include <eosio/system.hpp>
+#include <ctime>
 #include <src/nlohmann/json-schema.hpp>
 #include <src/nlohmann/json.hpp>
 //#include <ctime>
@@ -42,7 +43,7 @@ CONTRACT eoscommonsio : public contract {
         return "{\n    \"processId\": \"" + processid.to_string() + "\", " + 
           "\n    \"stateid\": \"" + stateid.to_string() + "\", " + 
           "\n    \"done\": " + (done ? "true" : "false") + "\n}"; 
-          //"created_at: " + std::string(created_at) ;
+          //"\n    \"created_at\": " + created_at.sec_since_epoch() + "\n}";
       }
     };
 

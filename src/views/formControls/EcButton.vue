@@ -60,6 +60,8 @@ export default {
       );
       // Prep processId
       // TODO
+        this.newObj.sellerId = this.currentObjId;
+        this.newObj.buyerId = this.$store.state.currentUserId;
         this.newObj.agreementProcessId = this.property.agreementProcessId;
         this.newObj.sellerProcessId = this.property.sellerProcessId;
       
