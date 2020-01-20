@@ -6,6 +6,7 @@ Writing smart contracts in C++ and deploying them to a blockchain, is not everyb
 
 **Work in progress!**
 
+# Features
 ### Process Universe
 eos-commons is built around a class model that encompasses all processes. At the highest level it includes accounts and resources. Resources includes things like pages, views, processes, states etc.
 ### Extensible
