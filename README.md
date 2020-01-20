@@ -1,9 +1,10 @@
+A Vue.js/Vuetify client for the EOS blockchain backend
 # eos-commons.io
-Bringing Process Modeling to the Blockchain
+*Bringing Process Modeling to the Blockchain*
 
-Vue.js/Vuetify client for EOS blockchain backend
+Writing smart contracts in C++ and deploying them to a blockchain, is not everybodies cup of tea. Eos-commons.io aims to bridge the gap between your conceptual process model and a smart contract executed on a block chain.
 
-Work in progress.
+**Work in progress!**
 
 ### Process Universe
 eos-commons is built around a class model that encompasses all processes. At the highest level it includes accounts and resources. Resources includes things like pages, views, processes, states etc.
