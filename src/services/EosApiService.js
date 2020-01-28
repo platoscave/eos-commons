@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
     Api,
     JsonRpc,
@@ -23,7 +24,7 @@ import IndexedDBApiService from './IndexedDBApiService'
 async function takeAction(store, actions) {
 
     const network = store.state.network;
-    const rpc = new JsonRpc(networks[network]);
+    const rpc = new JsonRpc(networks[network].endpoint);
 
     const actor = store.state.currentUserId;
     const privateKey = testAccounts[actor].privateKey
@@ -241,12 +242,12 @@ class EosApiService {
                 const superclass = await this.getCommonByKey(store, superclassId)
                 if (!superclass.parentId) return false // we are at the root
                 if (superclass.parentId === classId) return true
-                return testSuperClass(superclass.parentId)
+                return await testSuperClass(superclass.parentId)
             }
 
             const obj = await this.getCommonByKey(store, objId)
             if (obj.classId === classId) return true
-            return testSuperClass(obj.classId)
+            return await testSuperClass(obj.classId)
         }
 
         try {
@@ -266,7 +267,7 @@ class EosApiService {
 
 
             const network = store.state.network;
-            const rpc = new JsonRpc(networks[network]);
+            const rpc = new JsonRpc(networks[network].endpoint);
 
             const CODE = 'eoscommonsio' // contract who owns the table, to keep table names unqique amongst different contracts. We all use the same table space.
             const SCOPE = 'eoscommonsio' // scope of the table. Can be used to give each participating acount its own table. Otherwise the same as code
@@ -286,22 +287,21 @@ class EosApiService {
             let results =  result.rows.map(row => {
                 return JSON.parse(row.common)
             })
-            /* results.forEach(async result =>  {
-                const isAnAccount = await isA(result.key, 'ikjyhlqewxs3') 
-                if(isAnAccount){
-                    const accountInfo = await this.getAccountInfo(store, result.key)
-                    result = Object.assign(result, accountInfo)
-                }
-                const isAnAgreement = await isA(result.key, 'i1gjptcb2skq') 
-                if(isAnAgreement){
-                    //const accountInfo = await this.getAccountInfo(store, retult.key)
-                    //result = Object.assign(result, accountInfo)
-                }
-                
-            }) */
+            let enrichedResults = []
+            results.forEach(async result =>  {
+                // is an Acount?
+                const accountClassIds = [ 'dasprps1lrwf', 'ikjyhlqewxs3', 'dasprps1lrwf', 'hdt3hmnsaghk', 'pae2bfbrab5n', 'be1ub1vtofjo', 't5punszz4lhv', 'zx5ffzoa5euy']
+                if( accountClassIds.includes(result.classId) ) {
+                    enrichedResults.push( this.getAccountInfo(store, result.key).then( accountInfo => {
+                        return Object.assign(result, accountInfo) 
+                    }, () => {
+                        return result // ingore key not found
+                    }))
+                } 
+                else enrichedResults.push( result )
+            }) 
 
-
-            return results
+            return Promise.all(enrichedResults)
         } catch (err) {
             console.error(err)
             return []
@@ -321,7 +321,7 @@ class EosApiService {
 
         // get all org unit accounts for seller account
         const network = store.state.network;
-        const rpc = new JsonRpc(networks[network]);
+        const rpc = new JsonRpc(networks[network].endpoint);
         
         // const sellerOrgunitAccounts = await rpc.get_controlled_accounts(agreementObj.sellerId)
         const sellerOrgunitAccounts = []
@@ -595,18 +595,52 @@ class EosApiService {
         }]
         takeAction(store, actions).then( result => {console.log(result)})
     }
-
-    static async getAccountInfo(store, account) {
+    static async getStackTable(store, agreementId) {
+        const accountName = 'eoscommonsio' // also, the name of the scope
+        const table = 'stacktable' // name of the table as specified by the contract abi
+        const index = 'first' // the key
         const network = store.state.network;
-        const rpc = new JsonRpc(networks[network]);
-        const result = await rpc.get_account(account)
-        console.log(result)
-        return result
+        const rpc = new JsonRpc(networks[network].endpoint);
+
+        const result = await rpc.get_table_rows({
+            'json': true,
+            'code': accountName, // contract who owns the table
+            'scope': accountName, // scope of the table
+            'table': table,
+            'limit': 500,
+            'key_type': 'name', // account name type
+            'index_position': index,
+            'lower_bound': agreementId
+        })
+        console.log('stacktable', result)
+        return JSON.parse(result.rows[0].stacktable)
+    }
+
+    static async getAccountInfo(store, accountId) {
+        const network = store.state.network;
+        const rpc = new JsonRpc(networks[network].endpoint);
+        return new Promise( async (resolve, reject) => {
+            try {
+                const resultWithConfig = await rpc.get_account(accountId)
+                resolve( resultWithConfig )
+            } catch (error) {
+                let text = 'account not found'
+                console.log(JSON.stringify(error.json, null, 2))
+                if (error instanceof RpcError) text =  error.json.error.details[0].message
+                store.commit('SET_SNACKBAR', {
+                    snackbar: true,
+                    text: text,
+                    color: 'error'
+                })
+                reject(error)
+            }
+        })
+ 
     }
 
     static async getAbi(store, account) {
         const network = store.state.network;
-        const rpc = new JsonRpc(networks[network]);
+        const rpc = new JsonRpc(networks[network].endpoint);
         const result = await rpc.get_abi(account)
         console.log(result)
         return result
@@ -631,7 +665,7 @@ class EosApiService {
         const result = await this.upsertCommon(store, 'addagreement', agreementObj) 
         // const result = await this.bumpState(store, 'lmxjrogzeld1', '') 
 
-        console.log('results')
+        console.log('transaction', result)
         printTraces(result.processed.action_traces[0])
 
 

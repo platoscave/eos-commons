@@ -1,16 +1,19 @@
+
+#include <json.hpp>
 #include <eosio/eosio.hpp>
 #include <eosio/print.hpp>
+//#include <eosio/time.hpp>
+
 #include <eosio/system.hpp>
-#include <ctime>
-#include <src/nlohmann/json-schema.hpp>
-#include <src/nlohmann/json.hpp>
+//#include <chrono>
 //#include <ctime>
+// #include <src/nlohmann/json-schema.hpp>
 // #include <jsoncons/json_reader.hpp>
 // https://github.com/pboettch/json-schema-validator
 
 // using jsoncons::json;
-using nlohmann::json;
-using nlohmann::json_schema::json_validator;
+using json = nlohmann::json;
+//using nlohmann::json_schema::json_validator;
 
 using namespace eosio;
 
@@ -37,15 +40,25 @@ CONTRACT eoscommonsio : public contract {
       name processid;
       name stateid;
       bool done;
-      time_point_sec created_at;
+      time_point_sec updated_at;
+
+
+    /*std::string isoTimestamp() {
+      char buffer[32];
+      time_t current_time = updated_at.sec_since_epoch();
+      std::strftime(buffer, sizeof(buffer), "%FT%TZ", std::gmtime(&current_time));
+      return buffer;
+    }*/
 
       std::string toJson() {
         return "{\n    \"processId\": \"" + processid.to_string() + "\", " + 
           "\n    \"stateid\": \"" + stateid.to_string() + "\", " + 
-          "\n    \"done\": " + (done ? "true" : "false") + "\n}"; 
-          //"\n    \"created_at\": " + created_at.sec_since_epoch() + "\n}";
+          "\n    \"done\": " + (done ? "true" : "false") + "\", " + 
+          "\n    \"updated_at\": \"" + "isoTimestamp()" + "\"\n}";
       }
+
     };
+
 
 
     TABLE agreementstack_str {

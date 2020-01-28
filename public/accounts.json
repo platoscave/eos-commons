@@ -28,38 +28,6 @@
         }
     },
     {
-        "key": "eoscommonsio",
-        "name": "eos-commons.io",
-        "data": {
-            "name": "eoscommonsio",
-            "owner": {
-                "threshold": 1,
-                "keys": [
-                    {
-                        "key": "EOS7BAiAoXoyPa1kSSqHoSQGipot2oV58Wa1SrbFrdrLKCqzuJLE3",
-                        "weight": 1
-                    }
-                ],
-                "accounts": [],
-                "waits": []
-            },
-            "active": {
-                "threshold": 1,
-                "keys": [],
-                "accounts": [
-                    {
-                        "permission": {
-                            "actor": "platoscave11",
-                            "permission": "active"
-                        },
-                        "weight": 1
-                    }
-                ],
-                "waits": []
-            }
-        }
-    },
-    {
         "name": "EOS Commons Service Desk",
         "data": {
             "name": "jotcvffqbzfp",
@@ -441,13 +409,6 @@
                     {
                         "permission": {
                             "actor": "clinnursuser",
-                            "permission": "active"
-                        },
-                        "weight": 1
-                    },
-                    {
-                        "permission": {
-                            "actor": "clindoctuser",
                             "permission": "active"
                         },
                         "weight": 1

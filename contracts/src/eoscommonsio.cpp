@@ -1,5 +1,5 @@
 #include <eoscommonsio.hpp>
-#include <ctime>
+
 
 
 /*float eoscommonsio::stof(std::string s, float def)
@@ -116,15 +116,6 @@ ACTION eoscommonsio::addagreement(upsert_str payload) {
   auto parsedJson = json::parse(payload.common, nullptr, false);
   check(!parsedJson.is_discarded(), "Invalid Json: " + payload.common);
   
-  // print("ADD AGREEMENT: ", parsedJson.dump(4), "\n");
-  //print(current_time_point().sec_since_epoch());
-  //print((new Date(current_time_point().sec_since_epoch() * 1000)).toISOString());
-  //char* c_time_string;
-  time_t current_time = current_time_point().sec_since_epoch() * 1000;
-  char* charTime = std::ctime(&current_time);
-  //c_time_string = ctime(&current_time);
-  print(charTime);
-
 
   // Get the key from agreement
   check(parsedJson.contains("key"), "Proposed agrrement has no key:\n" + parsedJson.dump());
@@ -236,7 +227,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
       // Use substateid as current stateId
       currentProcessState.stateid = substateid;
-      currentProcessState.created_at = current_time_point();
+      currentProcessState.updated_at = current_time_point();
       stack.back() = currentProcessState;
 
     }
@@ -247,7 +238,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
       // Set current ProcessState to done, so that on the way back we continu
       currentProcessState.done = true;
-      currentProcessState.created_at = current_time_point();
+      currentProcessState.updated_at = current_time_point();
       stack.back() = currentProcessState;
 
       // Get the sellerProcessId from agreementObj
@@ -299,7 +290,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
 
         std::string next = nextStateIdIter.value();
         currentProcessState.stateid = name(next);
-        currentProcessState.created_at = current_time_point();
+        currentProcessState.updated_at = current_time_point();
         stack.back() = currentProcessState;
 
       }
@@ -316,7 +307,7 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
           // Otherwize we are at the end
           if (action == "happy") currentProcessState.stateid = name("3hxkire2nn4v"); // Sucess
           else currentProcessState.stateid = name("zdwdoqpxks2s"); // Failed
-          currentProcessState.created_at = current_time_point();
+          currentProcessState.updated_at = current_time_point();
           stack.back() = currentProcessState;
 
           // TODO cleanup agreementstack, Update agreement 
@@ -336,6 +327,11 @@ ACTION eoscommonsio::bumpstate(bumpState_str payload) {
     currentProcessState = stack.back();
 
     print("\"result\": ", currentProcessState.toJson(), " }\n");
+
+      /*char buffer[32];
+      time_t current_time = current_time_point().sec_since_epoch();
+      std::strftime(buffer, sizeof(buffer), "%FT%TZ", std::gmtime(&current_time));
+      print( buffer, "\n" );*/
 
     stateId = currentProcessState.stateid;
     executeType = isA(stateId, name("dqja423wlzrb")); // Execute Type
