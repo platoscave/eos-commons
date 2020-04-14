@@ -227,8 +227,8 @@ export default {
   },
   created() {
     IndexedDBApiService.ImportFromStatic(this.$store).then(res => {
-      this.$store.commit("SET_NETWORK", "cloud");
-      this.$store.commit("SET_ACCOUNT", "platoscave11");
+      if (!this.$store.state.network) this.$store.commit("SET_NETWORK", "localhost");
+      if (!this.$store.state.currentUserId) this.$store.commit("SET_ACCOUNT", "platoscave11");
       if (!window.location.hash) window.location.hash = "#/.kmghbh3qovtq"; // Demo Page
       this.loading = false;
     });

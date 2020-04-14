@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
-import ApiService from './services/EosApiService'
-//import ApiService from './services/IndexedDBApiService'
-import IpfsApiService from './services/IpfsApiService'
+import EosApiService from './services/EosApiService'
+import IndexedDBApiService from './services/IndexedDBApiService'
+//import IpfsApiService from './services/IpfsApiService'
 import { tmpdir } from 'os';
 
 Vue.use(Vuex)
@@ -29,8 +29,8 @@ const store = new Vuex.Store({
     plugins: [createPersistedState()],
 
     state: {
-        currentUserId: '[not selected]',
-        network: '[not selected]',
+        currentUserId: '',
+        network: '',
         snackbar: false,
         text: '',
         color: '',
@@ -123,23 +123,33 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        getCommonByKey: async function (store, key) {
-            return ApiService.getCommonByKey(store, key)
+        getCommonByKey: function (store, keyValue) {
+            if (store.state.network == 'localhost') return IndexedDBApiService.getCommonByKey(store, keyValue)
+            return EosApiService.getCommonByKey(store, keyValue)
         },
-        upsertCommon: async function (store, common) {
-            return ApiService.upsertCommon(store, common)
+        queryByIndex: function (store, queryObj) {
+            if (store.state.network == 'localhost') return IndexedDBApiService.queryByIndex(store, queryObj.indexName, queryObj.keyValue)
+            return EosApiService.queryByIndex(store, queryObj.indexName, queryObj.keyValue)
+        },
+        upsertCommon: async function (store, action, common) {
+            if (store.state.network == 'localhost') return IndexedDBApiService.upsertCommon(store, common)
+            return EosApiService.upsertCommon(store, action, common)
         },
         eraseCommon: async function (store, key) {
-            return ApiService.eraseCommon(key)
+            if (store.state.network == 'localhost') return IndexedDBApiService.eraseCommon(key)
+            return EosApiService.eraseCommon(key)
         },
         addAgreement: async function (store, agreementObj) {
-            return ApiService.addAgreement(store, agreementObj)
+            if (store.state.network == 'localhost') return IndexedDBApiService.addAgreement(store, agreementObj)
+            return EosApiService.addAgreement(store, agreementObj)
         },
         takeAction: async function (store, actionObj) {
-            return ApiService.takeAction(store, actionObj)
+            if (store.state.network == 'localhost') return IndexedDBApiService.takeAction(store, actionObj)
+            return EosApiService.takeAction(store, actionObj)
         },
         getAuthorizedAccounts: async function (store, agreementId) {
-            return ApiService.getAuthorizedAccounts(store, agreementId)
+            if (store.state.network == 'localhost') return IndexedDBApiService.getAuthorizedAccounts(store, agreementId)
+            return EosApiService.getAuthorizedAccounts(store, agreementId)
         },
 
         query: async function (store, queryObj) {
@@ -147,7 +157,7 @@ const store = new Vuex.Store({
             // Recursivly get an array of subclasses
             const getSubclasses = async (classKey) => {
                 const subclasses = async (parentClassKey) => {
-                    let classArr = await ApiService.queryByIndex(store, 'parentId', parentClassKey)
+                    let classArr = await store.dispatch( 'queryByIndex',  { indexName: 'parentId', keyValue: parentClassKey })
                     let promisses = classArr.map(classObj => {
                         return subclasses(classObj.key)
                     })
@@ -159,7 +169,7 @@ const store = new Vuex.Store({
                     return classArr
                 }
                 let subClassesArr = await subclasses(classKey)
-                let classObj = await ApiService.getCommonByKey(store, classKey)
+                let classObj = await store.dispatch("getCommonByKey",  classKey)
                 subClassesArr.push(classObj)
                 // console.log('subClassesArr', subClassesArr)
                 return subClassesArr // include the class we started out with
@@ -200,17 +210,17 @@ const store = new Vuex.Store({
                 if (operator === 'eq') {
                     if (docProp === 'key') {
                         // Get single value based on key
-                        let result = await ApiService.getCommonByKey(store, value)
+                        let result = await store.dispatch("getCommonByKey",  value)
                         return [result]
                     } else {
-                        return await ApiService.queryByIndex(store, docProp, value)
+                        return await store.dispatch( 'queryByIndex',  { indexName: docProp, keyValue: value })
                     }
 
                 } else if (operator === 'in') {
                     let prommisesArr = []
                     if (!Array.isArray(value)) value = [value]
                     value.forEach(key => {
-                        if (key) prommisesArr.push(ApiService.getCommonByKey(store, key))
+                        if (key) prommisesArr.push(store.dispatch("getCommonByKey",  key))
                     })
                     return await Promise.all(prommisesArr)
 
@@ -226,7 +236,7 @@ const store = new Vuex.Store({
 
                     // Collect all of the objects for these subclasses
                     let promisses = subClassArr.map(classObj => {
-                        return ApiService.queryByIndex(store, 'classId', classObj.key)
+                        return store.dispatch( 'queryByIndex',  { indexName: 'classId', keyValue: classObj.key })
                     })
                     let subClassObjectsArr = await Promise.all(promisses)
                     // Flatten array of arrays.
@@ -234,9 +244,9 @@ const store = new Vuex.Store({
                 } else if (operator === 'subclasses') {
                     return await getSubclasses(value)
                 } else if (operator === 'get_controlled_accounts') {
-                    return ApiService.getControlledAccounts(store, value, 'owner')
+                    return EosApiService.getControlledAccounts(store, value, 'owner')
                 } else if (operator === 'getAuthorizedAccounts') {
-                    return ApiService.getAuthorizedAccounts(store, value)
+                    return EosApiService.getAuthorizedAccounts(store, value)
                 } else {
                     throw new Error('Cannot query with ' + operator + ' operator yet')
                 }
@@ -261,10 +271,10 @@ const store = new Vuex.Store({
             }
 
             // queryId takes precidence over query
-            if (queryObj.queryId) queryObj.query = await ApiService.getCommonByKey(store, queryObj.queryId)
+            if (queryObj.queryId) queryObj.query = await store.dispatch("getCommonByKey",  queryObj.queryId)
 
             // If currentObj is a string, assume it's a key
-            if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await ApiService.getCommonByKey(store, queryObj.currentObj)
+            if (queryObj.currentObj && typeof queryObj.currentObj === 'string') queryObj.currentObj = await store.dispatch("getCommonByKey",  queryObj.currentObj)
 
             const whereArr = queryObj.query.where
 
@@ -303,7 +313,7 @@ const store = new Vuex.Store({
 
             // Recusivly merge all the ancestor classes, starting with the root. Sub class properties take precedence over parent class
             const getMergeAncestorClasses = async classId => {
-                let classObj = await ApiService.getCommonByKey(store, classId)
+                let classObj = await store.dispatch("getCommonByKey",  classId)
                 if (classObj.parentId) {
                     let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
                     return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
@@ -340,7 +350,7 @@ const store = new Vuex.Store({
                 if (classObj.definitions) viewObj.definitions = classObj.definitions
             }
 
-            const viewObj = await ApiService.getCommonByKey(store, viewId)
+            const viewObj = await store.dispatch("getCommonByKey",  viewId)
             let classId = viewObj.baseClassId
             if (!classId) return viewObj
             const mergedAncestorClasses = await getMergeAncestorClasses(classId)

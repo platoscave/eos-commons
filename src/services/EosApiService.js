@@ -236,6 +236,7 @@ class EosApiService {
     }
 
     static async queryByIndex(store, indexName, keyValue) {
+    
         // Recursivly findout if obj is a classId
         const isA = async (objId, classId) => {
             const testSuperClass = async superclassId => {
@@ -356,6 +357,7 @@ class EosApiService {
     }
 
     static async StaticAllToEos(store) {
+
         const actor = store.state.currentUserId; // The user performing the action
 
         const doAllSequentually = async (fnPromiseArr) => {
@@ -378,11 +380,13 @@ class EosApiService {
             let actions = []
             let parentId = ""
             let classId = ""
+            let skip = true
             response.data.forEach(async subClassObj => {
-                if((subClassObj.parentId != parentId || subClassObj.classId != classId) && actions.length) {
+                /*if((subClassObj.parentId != parentId || subClassObj.classId != classId) && actions.length) {
                     loadEOSPromissesArr.push(createFnPromise(actions))
                     actions = []
-                }
+                }*/
+                actions = []
                 parentId = subClassObj.parentId
                 classId = subClassObj.classId
                 actions.push({
@@ -399,6 +403,9 @@ class EosApiService {
                         }
                     }
                 })
+                if(subClassObj.key === 'uqefmsegqvhs') skip = false
+                if (!skip) loadEOSPromissesArr.push(createFnPromise(actions))
+
             })
 
             doAllSequentually(loadEOSPromissesArr).then(() => {
@@ -460,8 +467,8 @@ class EosApiService {
             }
             const classesArr = await store.dispatch('query', classesQueryObj)
             if(classesArr.length) {
-                const actions = []
                 classesArr.forEach(async subClassObj => {
+                    const actions = []
                     actions.push({
                         account: accountName,
                         name: 'upsert',
@@ -476,8 +483,8 @@ class EosApiService {
                             }
                         }
                     })
+                    loadEOSPromissesArr.push(createFnPromise(actions))
                 })
-                loadEOSPromissesArr.push(createFnPromise(actions))
                 let promises = []
                 classesArr.forEach(async subClassObj => {
                     promises.push(addSubclasses(subClassObj.key))
@@ -497,8 +504,8 @@ class EosApiService {
             }
             const objectsArr = await store.dispatch('query', objectsQueryObj)
             if(objectsArr.length) {
-                const actions = []
                 objectsArr.forEach(async obj => {
+                    const actions = []
                     actions.push({
                         account: accountName,
                         name: 'upsert',
@@ -513,8 +520,8 @@ class EosApiService {
                             }
                         }
                     })
+                    loadEOSPromissesArr.push(createFnPromise(actions))
                 })
-                loadEOSPromissesArr.push(createFnPromise(actions))
             }
         }
 

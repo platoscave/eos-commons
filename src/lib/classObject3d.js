@@ -216,7 +216,8 @@ export default class ClassObject3d extends THREE.Object3D {
     }
 
     let path = new THREE.CatmullRomCurve3(this.straightenPoints(points))
-    let geometry = new THREE.TubeGeometry(path, 128, 7, 8, false)
+    // path.curveType = 'centripetal';
+    let geometry = new THREE.TubeGeometry(path, 300, 7, 8, false)
     let mesh = new THREE.Mesh(geometry, material)
     this.add(mesh)
 
