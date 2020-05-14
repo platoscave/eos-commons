@@ -44,9 +44,21 @@ export default {
   },
   methods: {
     macroEconomicModel: async function(zPos) {
+      const tankRect = (ctx, x, y, width, height, radius) => {
+        ctx.moveTo(x, y + radius)
+        ctx.lineTo(x, y + height)
+        ctx.lineTo(x + width, y + height)
+        ctx.lineTo(x + width, y + radius)
+        ctx.quadraticCurveTo(x + width, y, x + width - radius, y)
+        ctx.lineTo(x + radius, y)
+        ctx.quadraticCurveTo(x, y, x, y + radius)
+      }
+
       let placeholderObject3d = new THREE.Object3D();
       placeholderObject3d.position.setZ(zPos);
       this.modelObject3D.add(placeholderObject3d);
+
+      // Water Body
 
       const material = new THREE.MeshBasicMaterial({
         color: 0x4040ff,
@@ -75,12 +87,38 @@ export default {
       geometry.center();
       let buffgeom = new THREE.BufferGeometry();
       buffgeom.fromGeometry(geometry);
+
+
       let mesh = new THREE.Mesh(buffgeom, material);
+      mesh.position.set(0, HEIGHT * -2, 0);
+
       placeholderObject3d.add(mesh);
 
-      // water https://github.com/mrdoob/three.js/blob/master/examples/webgl_water.html
 
-      var waterGeometry = new THREE.PlaneBufferGeometry(WIDTH, DEPTH);
+
+      // Tank rectangle
+      let tankRectShape = new THREE.Shape()
+      tankRect(tankRectShape, 0, 0, WIDTH, HEIGHT, 20) // negative numbers not allowed
+      // extruded shape
+      //let extrudeSettings = { depth: DEPTH, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
+      let tankGeometry = new THREE.ExtrudeGeometry(tankRectShape, extrudeSettings)
+      tankGeometry.center()
+      let tankBuffgeom = new THREE.BufferGeometry();
+      tankBuffgeom.fromGeometry(tankGeometry);
+
+      let tempMaterial  = new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
+
+
+      let tankMesh = new THREE.Mesh(tankBuffgeom, tempMaterial);
+      tankMesh.position.set(0, HEIGHT * -4, 0);
+
+      placeholderObject3d.add(tankMesh);
+
+
+
+
+      // water surface https://github.com/mrdoob/three.js/blob/master/examples/webgl_water.html
+      // and https://jsfiddle.net/6ym08593/
 
       var params = {
         color: "#ffffff",
@@ -89,12 +127,20 @@ export default {
         flowY: 1
       };
 
+      var textureLoader = new THREE.TextureLoader();
+      var waterGeometry = new THREE.PlaneBufferGeometry(WIDTH, DEPTH);
+      var flowMap = textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Flow.jpg');
+
+
       const water = new Water(waterGeometry, {
         color: params.color,
         scale: params.scale,
         flowDirection: new THREE.Vector2(params.flowX, params.flowY),
         textureWidth: 1024,
-        textureHeight: 1024
+        textureHeight: 1024,
+        flowMap: flowMap,
+        normalMap0: textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg'),
+        normalMap1: textureLoader.load('https://threejs.org/examples/textures/water/Water_2_M_Normal.jpg')
       });
 
       water.position.y = 1;
@@ -105,7 +151,7 @@ export default {
 
       const radiusTop = 30;
 
-      const fromPos = new THREE.Vector3(0, HEIGHT * -2, 0);
+      const fromPos = new THREE.Vector3(WIDTH / -2, HEIGHT * -2, 0);
       const toPos = new THREE.Vector3(0, HEIGHT * 2, 0);
 
       let points = [];
@@ -114,15 +160,28 @@ export default {
         new THREE.Vector3(fromPos.x - WIDTH / 2, fromPos.y, fromPos.z)
       );
       //points.push(new THREE.Vector3(toPos.x - WIDTH / 2, fromPos.y - HEIGHT, toPos.z))
-      points.push(new THREE.Vector3(toPos.x - WIDTH / 2, toPos.y, toPos.z));
+      points.push(new THREE.Vector3(toPos.x - WIDTH, toPos.y, toPos.z));
       points.push(toPos);
 
-      //this.addTextMeshBetween(name, points[1], points[2])
+      // test material
+      //let aa = this.scene.children[0]
+      //var glassMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: aa, refractionRatio: 0.95 } );
+      //glassMaterial.envMap.mapping = THREE.CubeRefractionMapping;
+      
+      const glassMaterial = new THREE.MeshPhongMaterial({
+        color: 0x4040ff,
+        opacity: 0.2,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        depthTest: false,
+        transparent: true,
+
+      });
 
       let curve = new THREE.CatmullRomCurve3(points); //SplineCurve3
       curve.curveType = "catmullrom";
-      let tubeGeometry = new THREE.TubeGeometry(curve, 64, 10, 8, false);
-      let tubeMesh = new THREE.Mesh(tubeGeometry, material);
+      let tubeGeometry = new THREE.TubeGeometry(curve, 64, 30, 8, false);
+      let tubeMesh = new THREE.Mesh(tubeGeometry, glassMaterial);
       placeholderObject3d.add(tubeMesh);
 
       // Cone
