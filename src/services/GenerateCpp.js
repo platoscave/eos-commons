@@ -12,7 +12,7 @@ class GernnerateCpp {
             let classObj = await store.dispatch("getCommonByKey", classId)
             if (classObj.parentId) {
                 let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
-                return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
+                return _.mergeWith(parentClassObj, classObj, (a, b) => {
                     if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                 })
             } else return classObj
@@ -67,7 +67,7 @@ class GernnerateCpp {
 
     static hpp(classObj) {
 
-        const className = Vue._.camelCase(classObj.title);
+        const className = _.camelCase(classObj.title);
         const tableName = classObj.key;
 
         let keyStruct = ''
@@ -191,7 +191,7 @@ class GernnerateCpp {
 
     static async cpp(classObj) {
 
-        const className = Vue._.camelCase(classObj.title);
+        const className = _.camelCase(classObj.title);
         const tableName = classObj.key;
 
         let tableStruct = ''

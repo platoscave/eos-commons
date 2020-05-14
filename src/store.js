@@ -18,7 +18,7 @@ const updateRoute = (state) => {
         let levelArr = []
         levelArr.push(levelId.selectedObjId)
         levelArr.push(levelId.pageId)
-        let selectedTab = Vue._.get(state, 'pageStates.' + levelId.pageId + '.selectedTab', 0)
+        let selectedTab = _.get(state, 'pageStates.' + levelId.pageId + '.selectedTab', 0)
         // if (state.pageStates[levelId.pageId].selectedTab) selectedTab = state.pageStates[levelId.pageId].selectedTab
         if (selectedTab) levelArr.push(selectedTab)
         else levelArr.push('')
@@ -69,7 +69,7 @@ const store = new Vuex.Store({
                 let pageState = {}
                 if (payload.paneWidth) pageState.paneWidth = payload.paneWidth
                 if (payload.selectedTab !== undefined) pageState.selectedTab = payload.selectedTab
-                Vue._.merge(newPageState, state.pageStates[payload.pageId], pageState)
+                _.merge(newPageState, state.pageStates[payload.pageId], pageState)
                 Vue.set(state.pageStates, payload.pageId, newPageState)
             }
 
@@ -83,7 +83,7 @@ const store = new Vuex.Store({
                 let ids = {}
                 if (payload.pageId) ids.pageId = payload.pageId
                 if (payload.selectedObjId) ids.selectedObjId = payload.selectedObjId
-                Vue._.merge(newIds, state.levelIdsArr[payload.level], ids)
+                _.merge(newIds, state.levelIdsArr[payload.level], ids)
                 Vue.set(state.levelIdsArr, payload.level, newIds)
             }
 
@@ -112,7 +112,7 @@ const store = new Vuex.Store({
                     const pageState = {
                         selectedTab: pageStateArr[2] ? parseInt(pageStateArr[2]) : 0
                     }
-                    state.pageStates[pageId] = Vue._.merge(newPageState, state.pageStates[pageId], pageState)
+                    state.pageStates[pageId] = _.merge(newPageState, state.pageStates[pageId], pageState)
                     Vue.set(state.pageStates, pageId, newPageState)
                 }
             })
@@ -165,7 +165,7 @@ const store = new Vuex.Store({
                     })
                     let subClassesArrArr = await Promise.all(promisses)
                     // Flatten array of arrays.
-                    let subClassesArr = Vue._.flatten(subClassesArrArr)
+                    let subClassesArr = _.flatten(subClassesArrArr)
                     classArr = classArr.concat(subClassesArr)
                     // console.log('classArr', parentClassKey, classArr)
                     return classArr
@@ -188,7 +188,7 @@ const store = new Vuex.Store({
                 // Replace value with currentObj.valuePath
                 if (where.valuePath) {
                     if(!queryObj.currentObj) console.error('no currentObj')
-                    where.value = Vue._.get(queryObj.currentObj, where.valuePath)
+                    where.value = _.get(queryObj.currentObj, where.valuePath)
                 }
 
                 // If the value is an array of objects, we can use mapValue to pick one of the properies 
@@ -242,7 +242,7 @@ const store = new Vuex.Store({
                     })
                     let subClassObjectsArr = await Promise.all(promisses)
                     // Flatten array of arrays.
-                    return Vue._.flatten(subClassObjectsArr)
+                    return _.flatten(subClassObjectsArr)
                 } else if (operator === 'subclasses') {
                     return await getSubclasses(value)
                 } else if (operator === 'get_controlled_accounts') {
@@ -318,7 +318,7 @@ const store = new Vuex.Store({
                 let classObj = await store.dispatch("getCommonByKey",  classId)
                 if (classObj.parentId) {
                     let parentClassObj = await getMergeAncestorClasses(classObj.parentId)
-                    return Vue._.mergeWith(parentClassObj, classObj, (a, b) => {
+                    return _.mergeWith(parentClassObj, classObj, (a, b) => {
                         if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                     })
                 } else return classObj
@@ -332,7 +332,7 @@ const store = new Vuex.Store({
                         const classProp = classObj.properties[propName]
                         if (classProp) {
                             let viewProp = viewObj.properties[propName]
-                            viewObj.properties[propName] = Vue._.mergeWith(classProp, viewProp, (a, b) => {
+                            viewObj.properties[propName] = _.mergeWith(classProp, viewProp, (a, b) => {
                                 if (_.isArray(a)) return a.concat(b) // Arrays must be concanated instead of merged
                                 /*
                                 if (viewProp.maxLength && viewProp.maxLength > classProp.maxLength) viewProp.maxLength = classProp.maxLength

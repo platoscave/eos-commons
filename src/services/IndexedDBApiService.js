@@ -131,7 +131,7 @@ class IndexedDBApiService {
                 })
                 let subClassesArrArr = await Promise.all(promisses)
                 // Flatten array of arrays.
-                let subClassesArr = Vue._.flatten(subClassesArrArr)
+                let subClassesArr = _.flatten(subClassesArrArr)
                 classArr = classArr.concat(subClassesArr)
                 // console.log('classArr', parentClassKey, classArr)
                 return classArr
@@ -153,7 +153,7 @@ class IndexedDBApiService {
         })
         let subClassObjectsArr = await Promise.all(promisses)
         // Flatten array of arrays.
-        const accountsArr = Vue._.flatten(subClassObjectsArr)
+        const accountsArr = _.flatten(subClassObjectsArr)
         let resultsArr = []
 
         accountsArr.forEach(accountObj => {

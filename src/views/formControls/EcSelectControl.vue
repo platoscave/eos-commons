@@ -245,7 +245,7 @@ export default {
   },
   created: async function() {
 
-    const debounceRefresh = Vue._.debounce(this.refresh, 500);
+    const debounceRefresh = _.debounce(this.refresh, 500);
   
     // watch for update
     this.$store.watch(

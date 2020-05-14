@@ -74,9 +74,9 @@ export default class ClassObject3d extends THREE.Object3D {
       let resultsArr = []
       Object.keys(properties).forEach(key => {
         let obj = properties[key]
-        let toKey = Vue._.get(obj, 'query.from')
+        let toKey = _.get(obj, 'query.from')
         if (toKey && toKey !== 'classes') resultsArr.push({ key: key, name: obj.title, key: toKey })
-        let subProperties = Vue._.get(obj, 'items.properties')
+        let subProperties = _.get(obj, 'items.properties')
         if (subProperties) resultsArr = resultsArr.concat(getAssocs(subProperties))
       })
       return resultsArr

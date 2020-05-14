@@ -158,7 +158,7 @@ export default {
             );
           });
           let childrenArrArr = await Promise.all(childrenPromises);
-          let childrenArr = Vue._.union.apply(null, childrenArrArr);
+          let childrenArr = _.union.apply(null, childrenArrArr);
           //console.log("childrenArr", childrenArr);
           node.loaded = true;
           if (childrenArr.length) node.children = childrenArr;

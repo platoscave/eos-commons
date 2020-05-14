@@ -1,6 +1,6 @@
 import TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
-// import OrbitControls from '../node_modules/three/examples/js/controls/OrbitControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import fontJson from '../assets/helvetiker_regular.typeface.json'
 const font = new THREE.Font(fontJson)
 
@@ -81,7 +81,7 @@ export default {
       this.$el.appendChild(this.renderer.domElement)
 
       // controls
-      this.controls = new THREE.OrbitControls(this.camera)
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement)
       this.controls.autoRotateSpeed = 0.125
       this.controls.minPolarAngle = Math.PI / 4
       this.controls.maxPolarAngle = Math.PI / 1.5

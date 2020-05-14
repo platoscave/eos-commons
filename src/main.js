@@ -23,7 +23,7 @@ Vue.component('ec-layout', EcLayout)
 global.THREE = require('three')
 global.OrbitControls = require('three/examples/jsm/controls/OrbitControls.js')
 
-//Vue.use(VueLodash)
+//https://stackoverflow.com/questions/59872651/why-is-lodash-not-working-when-i-import-it-in-vue-js
 window._ = require('lodash');
 Vue.use(wysiwyg, {})
 Vue.config.productionTip = false
