@@ -10,7 +10,7 @@ import {
 import testAccounts from '../config/testaccounts.js'
 import networks from '../config/networks.js'
 import axios from 'axios'
-import BigNumber from 'bignumber.js/bignumber'
+import BigNumber from "../../node_modules/big.js"
 import {
     encodeName,
     decodeName

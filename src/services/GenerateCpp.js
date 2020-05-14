@@ -1,5 +1,5 @@
 import Vue from 'vue'
-const JSZip = require("jszip");
+//const JSZip = require("jszip");
 
 class GernnerateCpp {
 

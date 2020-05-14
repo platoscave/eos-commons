@@ -1347,7 +1347,7 @@
                         "Form",
                         "HTML Page",
                         "Balance Sheet",
-                        "Macro Economic Model"
+                        "Workflow Model"
                       ],
                       "title": "Display Type",
                       "type": "string",
@@ -3081,10 +3081,10 @@
           ]
         },
         {
-          "name": "Macro Economic Model",
+          "name": "Workflow Model",
           "widgets": [
             {
-              "displayType": "Macro Economic Model",
+              "displayType": "Workflow Model",
               "name": "Workflow"
             }
           ]
@@ -3257,25 +3257,6 @@
             {
               "displayType": "Process Model",
               "name": "Process",
-              "viewId": "nqnnj5xfzg4y"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "key": "etzkqkeevznx",
-      "docType": "object",
-      "name": "Macro Economic Model",
-      "classId": "pejdgrwd5qso",
-      "ownerId": "eoscommonsio",
-      "tabs": [
-        {
-          "name": "Macro Economic Model",
-          "widgets": [
-            {
-              "displayType": "Macro Economic Model",
-              "name": "Macro Economic Model",
               "viewId": "nqnnj5xfzg4y"
             }
           ]
@@ -4334,7 +4315,7 @@
       "key": "rewk2w4kvavm",
       "docType": "object",
       "name": "Design",
-      "description": "<div><p>These are some of the key design features</p><p><strong>Object Oriented</strong></p><p>Eos-commons is centered around a data store. The store holds a class model and a bunch of instantiations of these classes, a.k.a. objects. The classes form a hierarchy, where classes lower on the tree, inherit all the properties of their ancestor classes. Objects always point to a class through a 'classId'. Objects must comply with the properties defined in their respective classes.</p><p><strong>Extensible</strong></p><p>The class model is fully extensible meaning, developers can add and use their own classes, without interfering with existing class model.</p><p><strong>JSON Schema</strong></p><p>Our classes take the form of JSON Schema. That means you can, at any time, validate an object against it&rsquo;s schema, using a standard JSON schema validator.</p><p><strong>Frontend</strong></p><p>The frontend is developed in vuetify.js. The vuetify app 'knows' how to interpret data in the store, in order to generate layout, pages, tabs, widgets etc. These in turn, allowed the user to view and modify data.</p><p><strong>Naivgate the Data Graph</strong></p><p>The combination layout, pages, tabs etc. allow the user to drill down through the data graph, in a master - detail fashion, which can go on indefintity. Eos-commons elables developers to create sophisicated apps which maintain relational and data intgrity, based on rules lay down in the class model.</p><p><strong>Generated Forms</strong></p><p>Forms are generated from Views. Views similar to SQL views in that they referece a class, and properties of that class. The view properties determin wich type of editor is used: sting, number, html, date etc. If the property type is 'object' or 'array', sub-forms are generated accordingly.</p><p><strong>Pages</strong></p><p>Pages have one or more tabs. With one tab, no tabbar is displayed. A tab can have a widget: Form, Document, Process Model, Balance Sheet etc. Or it can reference another page. Pages can have splitter, in which case the right side serves as a slave to the right side. Click on a treenode or table row on the left, then it's details are displayed on the right (master detail paterm)</p><p><strong>DYI</strong></p><p>Users are invited to create their own pages and resuse (sub-)pages created by others.</p><p><strong>Routing</strong></p><p>The hash in the url represents the page state. You can easly create a link that points to your home page or an organization</p><p><strong>3D</strong></p><p>We love 3D. 3D views allow you to get upclose and personal with your data. Asof writing we have</p><ul><li>Class Model</li><li>Process Model</li><li>Macro Economic Model</li></ul><p>We would like to venture in to things like Tree of Life, Earth Epocs logatithic timeline, Dynamic political history map, Macro economics and so on. We're eager to see what others come up with.</p><p><strong>Death to 3GL</strong></p><p>No coding involved.</p></div>",
+      "description": "<div><p>These are some of the key design features</p><p><strong>Object Oriented</strong></p><p>Eos-commons is centered around a data store. The store holds a class model and a bunch of instantiations of these classes, a.k.a. objects. The classes form a hierarchy, where classes lower on the tree, inherit all the properties of their ancestor classes. Objects always point to a class through a 'classId'. Objects must comply with the properties defined in their respective classes.</p><p><strong>Extensible</strong></p><p>The class model is fully extensible meaning, developers can add and use their own classes, without interfering with existing class model.</p><p><strong>JSON Schema</strong></p><p>Our classes take the form of JSON Schema. That means you can, at any time, validate an object against it&rsquo;s schema, using a standard JSON schema validator.</p><p><strong>Frontend</strong></p><p>The frontend is developed in vuetify.js. The vuetify app 'knows' how to interpret data in the store, in order to generate layout, pages, tabs, widgets etc. These in turn, allowed the user to view and modify data.</p><p><strong>Naivgate the Data Graph</strong></p><p>The combination layout, pages, tabs etc. allow the user to drill down through the data graph, in a master - detail fashion, which can go on indefintity. Eos-commons elables developers to create sophisicated apps which maintain relational and data intgrity, based on rules lay down in the class model.</p><p><strong>Generated Forms</strong></p><p>Forms are generated from Views. Views similar to SQL views in that they referece a class, and properties of that class. The view properties determin wich type of editor is used: sting, number, html, date etc. If the property type is 'object' or 'array', sub-forms are generated accordingly.</p><p><strong>Pages</strong></p><p>Pages have one or more tabs. With one tab, no tabbar is displayed. A tab can have a widget: Form, Document, Process Model, Balance Sheet etc. Or it can reference another page. Pages can have splitter, in which case the right side serves as a slave to the right side. Click on a treenode or table row on the left, then it's details are displayed on the right (master detail paterm)</p><p><strong>DYI</strong></p><p>Users are invited to create their own pages and resuse (sub-)pages created by others.</p><p><strong>Routing</strong></p><p>The hash in the url represents the page state. You can easly create a link that points to your home page or an organization</p><p><strong>3D</strong></p><p>We love 3D. 3D views allow you to get upclose and personal with your data. Asof writing we have</p><ul><li>Class Model</li><li>Process Model</li><li>Workflow Model</li></ul><p>We would like to venture in to things like Tree of Life, Earth Epocs logatithic timeline, Dynamic political history map, Macro economics and so on. We're eager to see what others come up with.</p><p><strong>Death to 3GL</strong></p><p>No coding involved.</p></div>",
       "classId": "siutzqsj5dgc",
       "ownerId": "eoscommonsio"
     },

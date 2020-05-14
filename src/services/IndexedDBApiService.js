@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Vue from 'vue'
 const eosjs = require('eosjs');
-import BigNumber from 'bignumber.js/bignumber'
+//import BigNumber from 'bignumber.js/bignumber'
 
 
 

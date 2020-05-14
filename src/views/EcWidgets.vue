@@ -47,7 +47,7 @@
       </div>
 
       <!-- WorkflowModel-->
-      <div class="full-height" v-if="widget.displayType === 'Workflow Model'">
+      <div class="full-height" v-if="widget.displayType === 'Macro Economic Model'">
         <ec-workflow-model v-bind:level="level" v-bind:viewId="widget.viewId"></ec-workflow-model>
       </div>
 

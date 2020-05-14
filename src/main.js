@@ -4,7 +4,7 @@ import vuetify from '@/plugins/vuetify' // path to vuetify export
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import VueLodash from 'vue-lodash'
+//import VueLodash from 'vue-lodash'
 import EcBsItems from './views/widgets/recursive/EcBsItems.vue'
 import EcSubForm from './views/widgets/recursive/EcSubForm.vue'
 import EcSelectControl from './views/formControls/EcSelectControl.vue'
@@ -20,10 +20,11 @@ Vue.component('ec-select-control', EcSelectControl)
 Vue.component('ec-paragraph', EcParagraph)
 Vue.component('ec-layout', EcLayout)
 
-global.THREE = require('../node_modules/three/three.js')
-global.OrbitControls = require('../node_modules/three/examples/js/controls/OrbitControls.js')
+global.THREE = require('three')
+global.OrbitControls = require('three/examples/jsm/controls/OrbitControls.js')
 
-Vue.use(VueLodash)
+//Vue.use(VueLodash)
+window._ = require('lodash');
 Vue.use(wysiwyg, {})
 Vue.config.productionTip = false
 

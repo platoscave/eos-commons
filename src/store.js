@@ -1,4 +1,6 @@
 import Vue from 'vue'
+//import VueLodash from 'vue-lodash'
+//import lodash from 'lodash'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
