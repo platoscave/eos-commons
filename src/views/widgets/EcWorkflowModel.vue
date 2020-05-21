@@ -14,6 +14,7 @@ import TWEEN from "@tweenjs/tween.js";
 import { Water } from "three/examples/jsm/objects/Water2.js";
 import { Refractor } from "three/examples/jsm/objects/Refractor.js";
 import { Reflector } from "three/examples/jsm/objects/Reflector.js";
+import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js';
 
 const WIDTH = 400;
 const HEIGHT = 200;
@@ -24,15 +25,7 @@ export default {
   mixins: [Scene],
   data() {
     return {
-      skyboxArray: [
-        "grass/sbox_px.jpg",
-        "grass/sbox_nx.jpg",
-        "grass/sbox_py.jpg",
-        "grass/sbox_ny.jpg",
-        "grass/sbox_pz.jpg",
-        "grass/sbox_nz.jpg"
-      ]
-      // skyboxArray: ['islands/skybox_e.jpg', 'islands/skybox_w.jpg', 'islands/skybox_t.jpg', 'islands/skybox_b.jpg', 'islands/skybox_n.jpg', 'islands/skybox_s.jpg']
+      skyboxArray: ['islands/skybox_e.jpg', 'islands/skybox_w.jpg', 'islands/skybox_t.jpg', 'islands/skybox_b.jpg', 'islands/skybox_n.jpg', 'islands/skybox_s.jpg']
     };
   },
   mounted: async function() {
@@ -43,151 +36,60 @@ export default {
     this.removeLoadingText();
   },
   methods: {
-    macroEconomicModel: async function(zPos) {
-      const tankRect = (ctx, x, y, width, height, radius) => {
-        ctx.moveTo(x, y + radius)
-        ctx.lineTo(x, y + height)
-        ctx.lineTo(x + width, y + height)
-        ctx.lineTo(x + width, y + radius)
-        ctx.quadraticCurveTo(x + width, y, x + width - radius, y)
-        ctx.lineTo(x + radius, y)
-        ctx.quadraticCurveTo(x, y, x, y + radius)
-      }
+    macroEconomicModel: function(zPos) {
 
-      let placeholderObject3d = new THREE.Object3D();
-      placeholderObject3d.position.setZ(zPos);
-      this.modelObject3D.add(placeholderObject3d);
+      const TANSACTIONBALANCES = new THREE.Vector3(0, - HEIGHT * 4, 0)
+      const IDLEBALANCES = new THREE.Vector3( WIDTH, HEIGHT * 2, 0)
+      const FOREIGNBALANCES = new THREE.Vector3( WIDTH, - HEIGHT, 0)
 
-      // Water Body
+      let macroEconomicModelObject3d = new THREE.Object3D();
+      this.modelObject3D.add(macroEconomicModelObject3d);
 
-      const material = new THREE.MeshBasicMaterial({
-        color: 0x4040ff,
-        opacity: 0.5,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-        depthTest: false,
-        transparent: true
-      });
+      let transBalObj3d = this.getTankObject3D('Transaction Balances')
+      transBalObj3d.position.set(TANSACTIONBALANCES.x, TANSACTIONBALANCES.y, TANSACTIONBALANCES.z)
+      macroEconomicModelObject3d.add(transBalObj3d);
 
-      let roundedRectShape = this.getRoundedRectShape(0, 0, WIDTH, HEIGHT, 20);
-      // let geometry = new THREE.ShapeGeometry(rountedRectShape)
-      // extruded shape
-      let extrudeSettings = {
-        depth: DEPTH,
-        bevelEnabled: true,
-        bevelSegments: 2,
-        steps: 2,
-        bevelSize: 1,
-        bevelThickness: 1
-      };
-      let geometry = new THREE.ExtrudeGeometry(
-        roundedRectShape,
-        extrudeSettings
-      );
-      geometry.center();
-      let buffgeom = new THREE.BufferGeometry();
-      buffgeom.fromGeometry(geometry);
+      let idleBalObj3d = this.getTankObject3D('Idle Balances')
+      idleBalObj3d.position.set(IDLEBALANCES.x, IDLEBALANCES.y, IDLEBALANCES.z)
+      macroEconomicModelObject3d.add(idleBalObj3d);
 
+      let forBalObj3d = this.getTankObject3D('Foreign Owned Balances')
+      forBalObj3d.position.set(FOREIGNBALANCES.x, FOREIGNBALANCES.y, FOREIGNBALANCES.z)
+      macroEconomicModelObject3d.add(forBalObj3d);
 
-      let mesh = new THREE.Mesh(buffgeom, material);
-      mesh.position.set(0, HEIGHT * -2, 0);
-
-      placeholderObject3d.add(mesh);
-
-
-
-      // Tank rectangle
-      let tankRectShape = new THREE.Shape()
-      tankRect(tankRectShape, 0, 0, WIDTH, HEIGHT, 20) // negative numbers not allowed
-      // extruded shape
-      //let extrudeSettings = { depth: DEPTH, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
-      let tankGeometry = new THREE.ExtrudeGeometry(tankRectShape, extrudeSettings)
-      tankGeometry.center()
-      let tankBuffgeom = new THREE.BufferGeometry();
-      tankBuffgeom.fromGeometry(tankGeometry);
-
-      let tempMaterial  = new THREE.MeshLambertMaterial({ color: 0xFFAAAA })
-
-
-      let tankMesh = new THREE.Mesh(tankBuffgeom, tempMaterial);
-      tankMesh.position.set(0, HEIGHT * -4, 0);
-
-      placeholderObject3d.add(tankMesh);
-
-
-
-
-      // water surface https://github.com/mrdoob/three.js/blob/master/examples/webgl_water.html
-      // and https://jsfiddle.net/6ym08593/
-
-      var params = {
-        color: "#ffffff",
-        scale: 4,
-        flowX: 1,
-        flowY: 1
-      };
-
-      var textureLoader = new THREE.TextureLoader();
-      var waterGeometry = new THREE.PlaneBufferGeometry(WIDTH, DEPTH);
-      var flowMap = textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Flow.jpg');
-
-
-      const water = new Water(waterGeometry, {
-        color: params.color,
-        scale: params.scale,
-        flowDirection: new THREE.Vector2(params.flowX, params.flowY),
-        textureWidth: 1024,
-        textureHeight: 1024,
-        flowMap: flowMap,
-        normalMap0: textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg'),
-        normalMap1: textureLoader.load('https://threejs.org/examples/textures/water/Water_2_M_Normal.jpg')
-      });
-
-      water.position.y = 1;
-      water.rotation.x = Math.PI * -0.5;
-      placeholderObject3d.add(water);
+   
 
       // Pipe
 
-      const radiusTop = 30;
-
-      const fromPos = new THREE.Vector3(WIDTH / -2, HEIGHT * -2, 0);
-      const toPos = new THREE.Vector3(0, HEIGHT * 2, 0);
+      const fromPos = new THREE.Vector3(TANSACTIONBALANCES.x, TANSACTIONBALANCES.y - HEIGHT / 2, TANSACTIONBALANCES.z);
+      const toPos = new THREE.Vector3(TANSACTIONBALANCES.x, TANSACTIONBALANCES.y + HEIGHT / 2, TANSACTIONBALANCES.z);
 
       let points = [];
       points.push(fromPos);
-      points.push(
-        new THREE.Vector3(fromPos.x - WIDTH / 2, fromPos.y, fromPos.z)
-      );
-      //points.push(new THREE.Vector3(toPos.x - WIDTH / 2, fromPos.y - HEIGHT, toPos.z))
-      points.push(new THREE.Vector3(toPos.x - WIDTH, toPos.y, toPos.z));
+      points.push(new THREE.Vector3(fromPos.x - 40, fromPos.y - HEIGHT, fromPos.z));
+      points.push(new THREE.Vector3(fromPos.x - WIDTH * 2, fromPos.y - HEIGHT, fromPos.z));
+      points.push(new THREE.Vector3(fromPos.x - WIDTH * 2, IDLEBALANCES.y + HEIGHT * 3, fromPos.z));
+      points.push(new THREE.Vector3(fromPos.x, IDLEBALANCES.y + HEIGHT * 3, fromPos.z));
       points.push(toPos);
-
-      // test material
-      //let aa = this.scene.children[0]
-      //var glassMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: aa, refractionRatio: 0.95 } );
-      //glassMaterial.envMap.mapping = THREE.CubeRefractionMapping;
       
-      const glassMaterial = new THREE.MeshPhongMaterial({
+      const pipeMaterial = new THREE.MeshPhongMaterial({
         color: 0x4040ff,
-        opacity: 0.2,
+        opacity: 0.3,
         side: THREE.DoubleSide,
         depthWrite: false,
-        depthTest: false,
+        //depthTest: false,
         transparent: true,
-
       });
 
-      let curve = new THREE.CatmullRomCurve3(points); //SplineCurve3
-      curve.curveType = "catmullrom";
-      let tubeGeometry = new THREE.TubeGeometry(curve, 64, 30, 8, false);
-      let tubeMesh = new THREE.Mesh(tubeGeometry, glassMaterial);
-      placeholderObject3d.add(tubeMesh);
+      let curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.20 ); //SplineCurve3
+      let tubeGeometry = new THREE.TubeGeometry(curve, 64, 50, 8, false);
+      let tubeMesh = new THREE.Mesh(tubeGeometry, pipeMaterial);
+      macroEconomicModelObject3d.add(tubeMesh);
 
       // Cone
 
-      let coneMaterial = new THREE.MeshLambertMaterial({ color: 0x0000ef });
-      let coneGeometry = new THREE.CylinderGeometry(0, 40, 100, 40, 40, false);
+      let coneMaterial = new THREE.MeshLambertMaterial({ color: 0xffdf00 });
+      let coneGeometry = new THREE.CylinderGeometry(0, 10, 50, 40, 40, false);
       let coneMesh = new THREE.Mesh(coneGeometry, coneMaterial);
 
       let t = 0;
@@ -211,7 +113,7 @@ export default {
 
       // set the quaternion
       coneMesh.quaternion.setFromAxisAngle(axis, radians);
-      placeholderObject3d.add(coneMesh);
+      macroEconomicModelObject3d.add(coneMesh);
 
       let waterTween = new TWEEN.Tween({ tx: 0 }).to({ tx: 1 }, 8000);
       waterTween.easing(TWEEN.Easing.Linear.None);
@@ -235,6 +137,113 @@ export default {
       });
       waterTween.repeat(Infinity); // repeats forever
       waterTween.start();
+    },
+
+
+    getTankObject3D: function( text ) {
+
+      let tankObject3d = new THREE.Object3D();
+
+      // Water Body
+
+      const waterMaterial = new THREE.MeshBasicMaterial({
+        color: 0x4040ff,
+        opacity: 0.3,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        //depthTest: true,
+        transparent: true
+      });
+
+
+      var waterGeometry = new THREE.BoxBufferGeometry( WIDTH, HEIGHT  /2, DEPTH);
+      let waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+      waterMesh.position.set(0, -HEIGHT / 4, 0);
+
+      tankObject3d.add(waterMesh);
+
+
+
+      // Tank rectangle
+
+      const tankMaterial = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        opacity: 0.2,
+        side: THREE.DoubleSide,
+        //depthWrite: false,
+        //depthTest: false,
+        transparent: true,
+      });
+      var materialTransparent =  new THREE.MeshBasicMaterial( { transparent: true, opacity: 0, wireframe: true, side: THREE.DoubleSide} );
+      var materials = [ tankMaterial, tankMaterial, materialTransparent, tankMaterial, tankMaterial, tankMaterial ]
+      var tankGeometry = new THREE.BoxBufferGeometry( WIDTH, HEIGHT, DEPTH);
+      let tankMesh = new THREE.Mesh(tankGeometry, materials);
+
+      tankObject3d.add(tankMesh);
+      this.selectableMeshArr.push(tankMesh)
+
+
+      //makeCanvasLabel:function (text, maxWidth, size, color, backgroundColor) 
+      const textMesh = this.makeCanvasLabel(text, WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.5)')
+      textMesh.position.set(0, - HEIGHT / 4, DEPTH / 2 +20)
+      tankObject3d.add(textMesh);
+
+
+      const frameMaterial = new THREE.MeshPhongMaterial({
+        color: 0xe0e0e0,
+        //opacity: 0.3,
+        //side: THREE.DoubleSide,
+        //depthWrite: false
+        //depthTest: false,
+        //transparent: true,
+      });
+
+      var wireframe = new THREE.EdgesGeometry( tankGeometry );
+      const vectorArray = wireframe.attributes.position.array;
+
+      for ( let i = 0;  i < vectorArray.length; i += 6 ) {
+        let points = []
+        points.push( new THREE.Vector3(vectorArray[i], vectorArray[i+1], vectorArray[i+2]))
+        points.push( new THREE.Vector3(vectorArray[i+3], vectorArray[i+4], vectorArray[i+5]))
+
+        let curve = new THREE.CatmullRomCurve3(points);
+        let tubeGeometry = new THREE.TubeGeometry(curve, 10, 10, 8, false);
+        let tubeMesh = new THREE.Mesh(tubeGeometry, frameMaterial);
+        tankObject3d.add(tubeMesh);
+
+        var geometry = new THREE.SphereGeometry( 10, 32, 32 );
+        var sphereMesh = new THREE.Mesh( geometry, frameMaterial );
+        sphereMesh.position.set(vectorArray[i], vectorArray[i+1], vectorArray[i+2]);
+        tankObject3d.add( sphereMesh );
+      }
+
+
+
+
+      // water surface https://github.com/mrdoob/three.js/blob/master/examples/webgl_water.html
+      // and https://jsfiddle.net/6ym08593/
+
+      var textureLoader = new THREE.TextureLoader();
+      var waterGeometry = new THREE.PlaneBufferGeometry(WIDTH, DEPTH);
+      var flowMap = textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Flow.jpg');
+
+      const water = new Water(waterGeometry, {
+        color: '#ffffff',
+        scale: 4,
+        flowDirection: new THREE.Vector2(1, 1),
+        textureWidth: 1024,
+        textureHeight: 1024,
+        flowMap: flowMap,
+        normalMap0: textureLoader.load('https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg'),
+        normalMap1: textureLoader.load('https://threejs.org/examples/textures/water/Water_2_M_Normal.jpg')
+      });
+
+      water.position.set(0, 2, 0);
+      water.rotation.x = Math.PI * -0.5;
+      tankObject3d.add(water);
+
+
+      return tankObject3d
     }
   }
 };

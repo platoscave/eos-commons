@@ -139,7 +139,7 @@ export default class ClassObject3d extends THREE.Object3D {
     orientation.lookAt(p1, p2, new THREE.Vector3(0, 1, 0))// look at destination
     offsetRotation.makeRotationX(HALF_PI)// rotate 90 degs on X
     orientation.multiply(offsetRotation)// combine orientation with rotation transformations
-    cylinder.applyMatrix(orientation)
+    cylinder.applyMatrix4(orientation)
     let mesh = new THREE.Mesh(cylinder, material)
     mesh.position.set(position.x, position.y, position.z)
     return mesh
@@ -302,6 +302,7 @@ export default class ClassObject3d extends THREE.Object3D {
     return newPoints
   }
   addTextMeshBetween (name, pointA, pointB) {
+    if(!name) name = 'unnamed'
     let textPosition = new THREE.Vector3()
     textPosition.subVectors(pointB, pointA).divideScalar(2)
     textPosition.add(pointA)
@@ -309,6 +310,7 @@ export default class ClassObject3d extends THREE.Object3D {
     this.addTextMesh(name, textPosition)
   }
   addTextMesh (name, textPosition) {
+    if(!name) name = 'unnamed'
     let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
     let text3d = new THREE.TextGeometry(name, { size: 30, height: 1, font: font })
     text3d.center()

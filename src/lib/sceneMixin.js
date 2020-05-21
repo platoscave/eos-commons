@@ -85,6 +85,15 @@ export default {
       this.controls.autoRotateSpeed = 0.125
       this.controls.minPolarAngle = Math.PI / 4
       this.controls.maxPolarAngle = Math.PI / 1.5
+      this.controls.screenSpacePanning = true;
+      /* 
+      this.controls.dollyOut = function(){
+        this.object.position.z -= 100;
+      }
+      this.controls.dollyIn = function(){
+          this.object.position.z += 100;
+      }
+     */
 
       // lights
       let light1 = new THREE.DirectionalLight(0xffffff)
@@ -94,24 +103,23 @@ export default {
       sceneObject3D.add(light2)
 
       // axes
-      sceneObject3D.add(new THREE.AxisHelper(100))
+      sceneObject3D.add(new THREE.AxesHelper(100))
 
       // raycaster
       this.raycaster = new THREE.Raycaster()
 
-      // this.scene.background = new THREE.CubeTextureLoader().load(this.skyboxArray)
+      var loader = new THREE.TextureLoader();
       // See https://stemkoski.github.io/Three.js/Skybox.html
       if (this.skyboxArray.length === 6) {
         let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
         let materialArray = []
         for (let i = 0; i < 6; i++) {
           materialArray.push(new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(this.skyboxArray[i]),
+            map: loader.load(this.skyboxArray[i]),
             side: THREE.BackSide
           }))
         }
-        let skyMaterial = new THREE.MeshFaceMaterial(materialArray)
-        this.skyBox = new THREE.Mesh(skyGeometry, skyMaterial)
+        this.skyBox = new THREE.Mesh(skyGeometry, materialArray)
         sceneObject3D.add(this.skyBox)
       }
 
@@ -212,8 +220,10 @@ export default {
 
       this.scene.remove(mesh)
     },
-    getRoundedRectShape (x, y, width, height, radius) {
-      const roundedRect = (ctx, x, y, width, height, radius) => {
+    getRoundedRectShape (width, height, radius) {
+      const roundedRect = (ctx, width, height, radius) => {
+        const x = 0
+        const y = 0
         ctx.moveTo(x, y + radius)
         ctx.lineTo(x, y + height - radius)
         ctx.quadraticCurveTo(x, y + height, x + radius, y + height)
@@ -226,8 +236,83 @@ export default {
       }
       // Rounded rectangle
       let roundedRectShape = new THREE.Shape()
-      roundedRect(roundedRectShape, x, y, width, height, radius) // negative numbers not allowed
+      roundedRect(roundedRectShape, width, height, radius) // negative numbers not allowed
       return roundedRectShape
+    },
+
+    makeCanvasLabel:function (text, maxWidth, size, color, backgroundColor) {
+      var canvas = document.createElement("canvas");
+      var textCtx = canvas.getContext("2d");
+      let lineHeight = size + 10
+      textCtx.font = size + "pt Arial";
+
+      //http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
+      var words = text.split(' ');
+      var line = '';
+      var linesArr = []
+      var canvasHeight = lineHeight + 8 + 20 // add margins
+      var canvasWidth, curWidth
+      for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = textCtx.measureText(testLine);
+        var testWidth = metrics.width;
+        curWidth = testWidth
+        if (testWidth > maxWidth && n > 0) {
+          linesArr.push(line.trim())
+          line = words[n] + ' ';
+          canvasHeight += lineHeight;
+        }
+        else {
+          let width = textCtx.measureText(line);
+          canvasWidth = width>curWidth?width:curWidth
+          line = testLine;
+        }
+      }
+      linesArr.push(line.trim())
+      canvasWidth += 20 // add margins
+
+      textCtx.canvas.width  = canvasWidth;
+      textCtx.canvas.height = canvasHeight;
+
+      // Create a rounded rect background if required
+      if(backgroundColor) {
+        let radius = 20
+        textCtx.fillStyle = backgroundColor;
+        textCtx.beginPath();     
+        textCtx.moveTo(canvasWidth -radius, 0); // Create a starting point
+        textCtx.arcTo(canvasWidth, 0, canvasWidth, radius, radius);
+        textCtx.lineTo(canvasWidth, canvasHeight -radius); 
+        textCtx.arcTo(canvasWidth, canvasHeight, canvasWidth -radius, canvasHeight, radius);
+        textCtx.lineTo(canvasWidth -radius, canvasHeight); 
+        textCtx.arcTo(0, canvasHeight, 0, canvasHeight -radius, radius);
+        textCtx.lineTo(0, canvasHeight -radius);
+        textCtx.arcTo(0, 0, radius, 0, radius);
+        textCtx.closePath(); // Close it
+        textCtx.fillStyle = backgroundColor;
+        textCtx.fill() // Fill it
+        textCtx.strokeStyle = 'grey';
+        textCtx.lineWidth = 3;
+        textCtx.stroke();// Draw it
+      }
+
+      textCtx.font = size + "pt Arial";
+      textCtx.textAlign = "center"; // TODO left aligned
+      textCtx.fillStyle = color ;
+      let y = lineHeight
+      for(var n = 0; n < linesArr.length; n++) {
+        textCtx.fillText(linesArr[n], textCtx.canvas.width / 2, y + 10);
+        y += lineHeight;
+      }
+      
+      var texture = new THREE.Texture(canvas);
+      texture.needsUpdate = true;
+
+      var material = new THREE.MeshBasicMaterial({
+        map : texture,
+        transparent: true
+      });
+      return new THREE.Mesh(new THREE.PlaneGeometry(canvasWidth, canvasHeight, 10, 10), material);
+
     }
   }
 }
