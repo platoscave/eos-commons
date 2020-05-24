@@ -42,7 +42,7 @@ export default {
     onResize (x, y) {
       if (!this.renderer) return
       if (this.width === undefined || this.height === undefined) {
-        console.log('this.$el', this.$el)
+        // console.log('this.$el', this.$el)
         let rect = this.$el.getBoundingClientRect()
         this.camera.aspect = rect.width / rect.height
         this.camera.updateProjectionMatrix()
@@ -108,7 +108,7 @@ export default {
       // raycaster
       this.raycaster = new THREE.Raycaster()
 
-      var loader = new THREE.TextureLoader();
+      let loader = new THREE.TextureLoader();
       // See https://stemkoski.github.io/Three.js/Skybox.html
       if (this.skyboxArray.length === 6) {
         let skyGeometry = new THREE.CubeGeometry(50000, 50000, 50000)
@@ -160,7 +160,7 @@ export default {
         let selectedMesh = intersects[0].object
         // let normal = intersects[0].face.normal
         // console.log(normal)
-        // var normalMatrix = new THREE.Matrix3().getNormalMatrix(selectedMesh.matrixWorld)
+        // let normalMatrix = new THREE.Matrix3().getNormalMatrix(selectedMesh.matrixWorld)
         // console.log(normal.clone().applyMatrix3(normalMatrix).normalize())
         this.$store.commit('SET_PAGE_STATE2', {
           level: this.level,
@@ -241,21 +241,21 @@ export default {
     },
 
     makeCanvasLabel:function (text, maxWidth, size, color, backgroundColor) {
-      var canvas = document.createElement("canvas");
-      var textCtx = canvas.getContext("2d");
+      let canvas = document.createElement("canvas");
+      let textCtx = canvas.getContext("2d");
       let lineHeight = size + 10
       textCtx.font = size + "pt Arial";
 
       //http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
-      var words = text.split(' ');
-      var line = '';
-      var linesArr = []
-      var canvasHeight = lineHeight + 8 + 20 // add margins
-      var canvasWidth, curWidth
-      for(var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + ' ';
-        var metrics = textCtx.measureText(testLine);
-        var testWidth = metrics.width;
+      let words = text.split(' ');
+      let line = '';
+      let linesArr = []
+      let canvasHeight = lineHeight + 8 + 20 // add margins
+      let canvasWidth, curWidth
+      for(let n = 0; n < words.length; n++) {
+        let testLine = line + words[n] + ' ';
+        let metrics = textCtx.measureText(testLine);
+        let testWidth = metrics.width;
         curWidth = testWidth
         if (testWidth > maxWidth && n > 0) {
           linesArr.push(line.trim())
@@ -263,7 +263,7 @@ export default {
           canvasHeight += lineHeight;
         }
         else {
-          let width = textCtx.measureText(line);
+          let width = textCtx.measureText(line.trim());
           canvasWidth = width>curWidth?width:curWidth
           line = testLine;
         }
@@ -299,15 +299,15 @@ export default {
       textCtx.textAlign = "center"; // TODO left aligned
       textCtx.fillStyle = color ;
       let y = lineHeight
-      for(var n = 0; n < linesArr.length; n++) {
+      for(let n = 0; n < linesArr.length; n++) {
         textCtx.fillText(linesArr[n], textCtx.canvas.width / 2, y + 10);
         y += lineHeight;
       }
       
-      var texture = new THREE.Texture(canvas);
+      let texture = new THREE.Texture(canvas);
       texture.needsUpdate = true;
 
-      var material = new THREE.MeshBasicMaterial({
+      let material = new THREE.MeshBasicMaterial({
         map : texture,
         transparent: true
       });
