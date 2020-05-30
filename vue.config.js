@@ -2,3 +2,6 @@
 module.exports = {
   publicPath: './'
 }
+/* watchOptions: {
+  poll: true
+} */

@@ -1,10 +1,13 @@
 import TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
+
 import fontJson from '../assets/helvetiker_regular.typeface.json'
 const font = new THREE.Font(fontJson)
 
 export default {
+
   name: 'Scene',
   props: {
     level: Number,
@@ -18,16 +21,16 @@ export default {
       default: undefined
     }
   },
-  data () {
+  data() {
     return {
       skyboxArray: [],
       orbit: false
     }
   },
-  mounted () {
+  mounted() {
     this.loadScene()
   },
-  created () {
+  created() {
     this.$store.watch(state => state.levelIdsArr[this.level].selectedObjId, (newVal, oldVal) => {
       console.log('selectedObjId Changed!', newVal, oldVal)
       this.highlight(newVal, oldVal)
@@ -35,24 +38,26 @@ export default {
     }, { immediate: false })
   },
   methods: {
-    onOrbit (e) {
+    onOrbit(e) {
       this.orbit = !this.orbit
       this.controls.autoRotate = this.orbit
     },
-    onResize (x, y) {
-      if (!this.renderer) return
+    onResize(x, y) {
+      if (!this.glRenderer) return
       if (this.width === undefined || this.height === undefined) {
         // console.log('this.$el', this.$el)
         let rect = this.$el.getBoundingClientRect()
         this.camera.aspect = rect.width / rect.height
         this.camera.updateProjectionMatrix()
-        this.renderer.setSize(rect.width, rect.height)
+        this.glRenderer.setSize(rect.width, rect.height)
+        this.cssRenderer.setSize(rect.width, rect.height)
         this.render()
       } else {
-        this.renderer.setSize(this.width, this.height)
+        this.glRenderer.setSize(this.width, this.height)
+        this.cssRenderer.setSize(rect.width, rect.height)
       }
     },
-    getSceneIndexByKey (key) {
+    getSceneIndexByKey(key) {
       for (let i = 0; i < this.scenes.length; i++) {
         if (this.scenes[i].key === key) {
           return i
@@ -60,15 +65,20 @@ export default {
       }
       return -1
     },
-    loadScene () {
+    loadScene() {
       // world
-      this.scene = new THREE.Scene()
+      this.glScene = new THREE.Scene()
 
       let sceneObject3D = new THREE.Object3D()
+      this.glScene.add(sceneObject3D)
+      /* 
       this.modelObject3D = new THREE.Object3D()
 
-      this.scene.add(sceneObject3D)
-      this.scene.add(this.modelObject3D)
+      this.glScene.add(sceneObject3D)
+      this.glScene.add(this.modelObject3D) */
+
+      this.cssScene = new THREE.Scene();
+
 
       this.selectableMeshArr = []
 
@@ -76,12 +86,16 @@ export default {
       this.camera = new THREE.PerspectiveCamera(60, 3 / 2, 1, 100000)
       this.camera.position.z = 4000
 
-      // renderer
-      this.renderer = new THREE.WebGLRenderer({ antialias: true })
-      this.$el.appendChild(this.renderer.domElement)
+      // glRenderer
+      this.glRenderer = this.createGlRenderer()
+      this.cssRenderer = this.createCssRenderer()
+
+      this.$el.appendChild(this.cssRenderer.domElement);
+      this.cssRenderer.domElement.appendChild(this.glRenderer.domElement);
 
       // controls
-      this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+      //this.controls = new OrbitControls(this.camera, this.glRenderer.domElement)
+      this.controls = new OrbitControls(this.camera, this.$el)
       this.controls.autoRotateSpeed = 0.125
       this.controls.minPolarAngle = Math.PI / 4
       this.controls.maxPolarAngle = Math.PI / 1.5
@@ -132,18 +146,20 @@ export default {
       this.render()
       this.animate()
     },
-    render () {
-      this.renderer.render(this.scene, this.camera)
+    render() {
+      this.glRenderer.render(this.glScene, this.camera)
+      this.cssRenderer.render(this.cssScene, this.camera)
     },
 
-    animate () {
+    animate() {
       requestAnimationFrame(this.animate.bind(this))
       TWEEN.update()
       this.skyBox.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z) // keep skybox centred around the camera
       this.controls.update()
-      this.renderer.render(this.scene, this.camera)
+      this.glRenderer.render(this.glScene, this.camera)
+      this.cssRenderer.render(this.cssScene, this.camera)
     },
-    onClick (event) {
+    onClick(event) {
       // see https://threejs.org/docs/#api/core/Raycaster.setFromCamera
       event.preventDefault()
 
@@ -168,7 +184,7 @@ export default {
         })
       }
     },
-    highlight (newVal, oldVal) {
+    highlight(newVal, oldVal) {
       let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
       if (currentlySelected) {
         currentlySelected.children[0].material = currentlySelected.getMaterial()
@@ -180,12 +196,12 @@ export default {
         newlySelected.children[1].material = new THREE.MeshLambertMaterial({ color: 0x666666 })
       }
     },
-    moveCameraToPos (key) {
+    moveCameraToPos(key) {
       let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
-      if(!selectedModelObj) return
-      if(!this.scene) return
+      if (!selectedModelObj) return
+      if (!this.glScene) return
       // console.log('selectedModelObj', selectedModelObj)
-      this.scene.updateMatrixWorld()
+      this.glScene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
       newTargetPos.setFromMatrixPosition(selectedModelObj.matrixWorld)
 
@@ -206,21 +222,21 @@ export default {
       })
       cameraTween.start()
     },
-    addLoadingText (text) {
+    addLoadingText(text) {
       let textMaterial = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
       let text3d = new THREE.TextGeometry(text || 'Loading...', { size: 200, font: font })
       text3d.center()
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       textMesh.name = 'Loading Message'
       textMesh.position.set(0, 400, 0)
-      this.scene.add(textMesh)
+      this.glScene.add(textMesh)
     },
-    removeLoadingText () {
-      let mesh = this.scene.getObjectByName('Loading Message')
+    removeLoadingText() {
+      let mesh = this.glScene.getObjectByName('Loading Message')
 
-      this.scene.remove(mesh)
+      this.glScene.remove(mesh)
     },
-    getRoundedRectShape (width, height, radius) {
+    getRoundedRectShape(width, height, radius) {
       const roundedRect = (ctx, width, height, radius) => {
         const x = 0
         const y = 0
@@ -240,7 +256,7 @@ export default {
       return roundedRectShape
     },
 
-    makeCanvasLabel:function (text, maxWidth, size, color, backgroundColor) {
+    makeCanvasLabel: function (text, maxWidth, size, color, backgroundColor) {
       let canvas = document.createElement("canvas");
       let textCtx = canvas.getContext("2d");
       let lineHeight = size + 10
@@ -252,7 +268,7 @@ export default {
       let linesArr = []
       let canvasHeight = lineHeight + 8 + 20 // add margins
       let canvasWidth, curWidth
-      for(let n = 0; n < words.length; n++) {
+      for (let n = 0; n < words.length; n++) {
         let testLine = line + words[n] + ' ';
         let metrics = textCtx.measureText(testLine);
         let testWidth = metrics.width;
@@ -264,28 +280,28 @@ export default {
         }
         else {
           let width = textCtx.measureText(line.trim());
-          canvasWidth = width>curWidth?width:curWidth
+          canvasWidth = width > curWidth ? width : curWidth
           line = testLine;
         }
       }
       linesArr.push(line.trim())
       canvasWidth += 20 // add margins
 
-      textCtx.canvas.width  = canvasWidth;
+      textCtx.canvas.width = canvasWidth;
       textCtx.canvas.height = canvasHeight;
 
       // Create a rounded rect background if required
-      if(backgroundColor) {
+      if (backgroundColor) {
         let radius = 20
         textCtx.fillStyle = backgroundColor;
-        textCtx.beginPath();     
-        textCtx.moveTo(canvasWidth -radius, 0); // Create a starting point
+        textCtx.beginPath();
+        textCtx.moveTo(canvasWidth - radius, 0); // Create a starting point
         textCtx.arcTo(canvasWidth, 0, canvasWidth, radius, radius);
-        textCtx.lineTo(canvasWidth, canvasHeight -radius); 
-        textCtx.arcTo(canvasWidth, canvasHeight, canvasWidth -radius, canvasHeight, radius);
-        textCtx.lineTo(canvasWidth -radius, canvasHeight); 
-        textCtx.arcTo(0, canvasHeight, 0, canvasHeight -radius, radius);
-        textCtx.lineTo(0, canvasHeight -radius);
+        textCtx.lineTo(canvasWidth, canvasHeight - radius);
+        textCtx.arcTo(canvasWidth, canvasHeight, canvasWidth - radius, canvasHeight, radius);
+        textCtx.lineTo(canvasWidth - radius, canvasHeight);
+        textCtx.arcTo(0, canvasHeight, 0, canvasHeight - radius, radius);
+        textCtx.lineTo(0, canvasHeight - radius);
         textCtx.arcTo(0, 0, radius, 0, radius);
         textCtx.closePath(); // Close it
         textCtx.fillStyle = backgroundColor;
@@ -297,22 +313,65 @@ export default {
 
       textCtx.font = size + "pt Arial";
       textCtx.textAlign = "center"; // TODO left aligned
-      textCtx.fillStyle = color ;
+      textCtx.fillStyle = color;
       let y = lineHeight
-      for(let n = 0; n < linesArr.length; n++) {
+      for (let n = 0; n < linesArr.length; n++) {
         textCtx.fillText(linesArr[n], textCtx.canvas.width / 2, y + 10);
         y += lineHeight;
       }
-      
+
       let texture = new THREE.Texture(canvas);
       texture.needsUpdate = true;
 
       let material = new THREE.MeshBasicMaterial({
-        map : texture,
+        map: texture,
         transparent: true
       });
       return new THREE.Mesh(new THREE.PlaneGeometry(canvasWidth, canvasHeight, 10, 10), material);
 
+    },
+    ///////////////////////////////////////////////////////////////////
+    // Creates WebGL Renderer
+    //
+    ///////////////////////////////////////////////////////////////////
+    createGlRenderer: function () {
+
+      var glRenderer = new THREE.WebGLRenderer({ alpha: true });
+
+      glRenderer.setClearColor(0xECF8FF);
+      glRenderer.setPixelRatio(window.devicePixelRatio);
+      //glRenderer.setSize(window.innerWidth, window.innerHeight);
+
+      glRenderer.domElement.style.position = 'absolute';
+      //glRenderer.domElement.style.zIndex = -1;
+      glRenderer.domElement.style.top = 0;
+      glRenderer.domElement.style.pointerEvents	= 'none'
+      glRenderer.domElement.setAttribute("name", "GLRENDERER");
+
+      //window.addEventListener('mousemove', this.mouseMove, false);
+
+      return glRenderer;
+    },
+
+    ///////////////////////////////////////////////////////////////////
+    // Creates CSS Renderer
+    //
+    ///////////////////////////////////////////////////////////////////
+    createCssRenderer: function () {
+
+      var cssRenderer = new CSS3DRenderer();
+
+      //cssRenderer.setSize(window.innerWidth, window.innerHeight);
+
+      cssRenderer.domElement.style.position = 'absolute';
+      //cssRenderer.domElement.style.zIndex = 0;
+      cssRenderer.domElement.style.top = 0;
+      //cssRenderer.domElement.style.pointerEvents	= 'auto'
+      cssRenderer.domElement.setAttribute("name", "CSSRENDERER");
+
+
+
+      return cssRenderer;
     }
   }
 }

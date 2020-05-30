@@ -22,15 +22,15 @@ const DEPTH = 200;
 
 const IDLEBALANCES = new THREE.Vector3( WIDTH * 1.25, HEIGHT * 2.5, 0)
 const FOREIGNBALANCES = new THREE.Vector3( WIDTH * 1.25, - HEIGHT * 2.5, 0)
-
 const TANSACTIONBALANCES = new THREE.Vector3(0, - HEIGHT * 5, 0)
 
 export default {
-  name: "workflowModel",
+  name: "macroEconimicModel",
   mixins: [Scene],
   data() {
     return {
       skyboxArray: ['islands/skybox_e.jpg', 'islands/skybox_w.jpg', 'islands/skybox_t.jpg', 'islands/skybox_b.jpg', 'islands/skybox_n.jpg', 'islands/skybox_s.jpg']
+      //skyboxArray: ['dawnmountain/dawnmountain-posx.png', 'dawnmountain/dawnmountain-negx.png', 'dawnmountain/dawnmountain-posy.png', 'dawnmountain/dawnmountain-negy.png', 'dawnmountain/dawnmountain-posz.png', 'dawnmountain/dawnmountain-negz.png']
     };
   },
   mounted: async function() {
@@ -80,22 +80,22 @@ export default {
       macroEconomicModelObject3d.add(incomePipeObject3D);
 
       // Savings pipe
-      let savingsPipeObject3D = this.getToRightPipeObject3D( 'Savings', pipeMaterial )
+      let savingsPipeObject3D = this.getToRightPipeObject3D( 'Savings (S)', pipeMaterial )
       savingsPipeObject3D.position.set(IDLEBALANCES.x, IDLEBALANCES.y, IDLEBALANCES.z)
       macroEconomicModelObject3d.add(savingsPipeObject3D);
 
       // Investment pipe
-      let investmentsPipeObject3D = this.getToLeftPipeObject3D( 'Investments', pipeMaterial )
+      let investmentsPipeObject3D = this.getToLeftPipeObject3D( 'Investments (I)', pipeMaterial )
       investmentsPipeObject3D.position.set(IDLEBALANCES.x, IDLEBALANCES.y, IDLEBALANCES.z)
       macroEconomicModelObject3d.add(investmentsPipeObject3D);
 
       // Import pipe
-      let importPipeObject3D = this.getToRightPipeObject3D( 'Import', pipeMaterial )
+      let importPipeObject3D = this.getToRightPipeObject3D( 'Import (M)', pipeMaterial )
       importPipeObject3D.position.set(FOREIGNBALANCES.x, FOREIGNBALANCES.y, FOREIGNBALANCES.z)
       macroEconomicModelObject3d.add(importPipeObject3D);
 
       // Export pipe
-      let exportPipeObject3D = this.getToLeftPipeObject3D( 'Export', pipeMaterial )
+      let exportPipeObject3D = this.getToLeftPipeObject3D( 'Export (X)', pipeMaterial )
       exportPipeObject3D.position.set(FOREIGNBALANCES.x, FOREIGNBALANCES.y, FOREIGNBALANCES.z)
       macroEconomicModelObject3d.add(exportPipeObject3D);
       
@@ -276,7 +276,7 @@ export default {
       domesticTextMesh.position.set(0, 0, 50)
       object3d.add(domesticTextMesh);
 
-      const totalExpTextMesh = this.makeCanvasLabel('Total Expendrtures (AE)', 500, 40, 'black', 'rgba(215, 219, 221, 0.7)')
+      const totalExpTextMesh = this.makeCanvasLabel('Total Expenditures (AE)', 500, 40, 'black', 'rgba(215, 219, 221, 0.7)')
       totalExpTextMesh.position.set(0, FOREIGNBALANCES.y, 50)
       object3d.add(totalExpTextMesh);
 
@@ -398,11 +398,11 @@ export default {
       object3d.add(currenciesObj3d);
 
       // Add Labels
-      const taxTextMesh = this.makeCanvasLabel('Tax', WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.7)')
-      taxTextMesh.position.set(- WIDTH / 2, HEIGHT * 2.7, 50)
+      const taxTextMesh = this.makeCanvasLabel('Tax (T)', WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.7)')
+      taxTextMesh.position.set(- WIDTH / 2, HEIGHT * 2.8, 50)
       object3d.add(taxTextMesh);
 
-      const govTextMesh = this.makeCanvasLabel('Government Spending', WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.7)')
+      const govTextMesh = this.makeCanvasLabel('Government Spending (G)', WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.7)')
       govTextMesh.position.set(- WIDTH / 2, - HEIGHT * 1.2, 50)
       object3d.add(govTextMesh);
 

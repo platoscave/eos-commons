@@ -1347,7 +1347,8 @@
                         "Form",
                         "HTML Page",
                         "Balance Sheet",
-                        "Macro Economic Model"
+                        "Macro Economic Model",
+                        "Mind Palace"
                       ],
                       "title": "Display Type",
                       "type": "string",
@@ -3276,6 +3277,25 @@
             {
               "displayType": "Macro Economic Model",
               "name": "Macro Economic Model",
+              "viewId": "nqnnj5xfzg4y"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "uhekisbbbjh5",
+      "docType": "object",
+      "name": "Mind Palace",
+      "classId": "pejdgrwd5qso",
+      "ownerId": "eoscommonsio",
+      "tabs": [
+        {
+          "name": "Mind Palace",
+          "widgets": [
+            {
+              "displayType": "Mind Palace",
+              "name": "Mind Palace",
               "viewId": "nqnnj5xfzg4y"
             }
           ]

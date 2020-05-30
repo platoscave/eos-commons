@@ -46,9 +46,14 @@
         <ec-process-model v-bind:level="level" v-bind:viewId="widget.viewId"></ec-process-model>
       </div>
 
-      <!-- WorkflowModel-->
+      <!-- MacroEconomicModel-->
       <div class="full-height" v-if="widget.displayType === 'Macro Economic Model'">
-        <ec-workflow-model v-bind:level="level" v-bind:viewId="widget.viewId"></ec-workflow-model>
+        <ec-macro-economic-model v-bind:level="level" v-bind:viewId="widget.viewId"></ec-macro-economic-model>
+      </div>
+
+      <!-- MindPalace-->
+      <div class="full-height" v-if="widget.displayType === 'Mind Palace'">
+        <ec-mind-palace-model v-bind:level="level" v-bind:viewId="widget.viewId"></ec-mind-palace-model>
       </div>
 
       <!-- Form-->
@@ -85,7 +90,8 @@ import EcTree from './widgets/EcTree.vue'
 import EcForm from './widgets/EcForm.vue'
 import EcHtmlPage from './widgets/EcHtmlPage.vue'
 import EcProcessModel from './widgets/EcProcessModel.vue'
-import EcWorkflowModel from './widgets/EcWorkflowModel.vue'
+import EcMacroEconomicModel from './widgets/EcMacroEconomicModel.vue'
+import EcMindPalaceModel from './widgets/EcMindPalaceModel.vue'
 import EcTable from './widgets/EcTable.vue'
 import EcWidgets from './EcWidgets.vue'
 
@@ -98,7 +104,8 @@ export default {
     EcForm,
     EcHtmlPage,
     EcProcessModel,
-    EcWorkflowModel,
+    EcMacroEconomicModel,
+    EcMindPalaceModel,
     EcTable,
     EcWidgets
   },
