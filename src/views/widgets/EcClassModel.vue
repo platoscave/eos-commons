@@ -30,7 +30,7 @@ export default {
 
     // placeholderObj3d holds all of our 3d objects. Mostly used for lookup by key.
     let placeholderObj3d = new THREE.Object3D()
-    this.modelObject3D.add(placeholderObj3d)
+    this.glModelObject3D.add(placeholderObj3d)
 
     // Get the root class from the store
     let rootClass = await this.$store.dispatch('getCommonByKey', 'gzthjuyjca4s')

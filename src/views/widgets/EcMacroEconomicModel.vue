@@ -44,7 +44,7 @@ export default {
     macroEconomicModel: function(zPos) {
 
       let macroEconomicModelObject3d = new THREE.Object3D();
-      this.modelObject3D.add(macroEconomicModelObject3d);
+      this.glModelObject3D.add(macroEconomicModelObject3d);
 
       let transBalObj3d = this.getTankObject3D('Transaction Balances')
       transBalObj3d.position.set(TANSACTIONBALANCES.x, TANSACTIONBALANCES.y, TANSACTIONBALANCES.z)

@@ -73,7 +73,7 @@ export default {
     drawInterfaceState (interfaceState, zPos) {
       let placeholderObject3d = new THREE.Object3D()
       placeholderObject3d.position.setZ(zPos)
-      this.modelObject3D.add(placeholderObject3d)
+      this.glModelObject3D.add(placeholderObject3d)
       let interfaceStateObj3d = new ProcessObject3d(interfaceState)
       placeholderObject3d.add(interfaceStateObj3d)
       this.selectableMeshArr.push(interfaceStateObj3d.children[0])
@@ -104,7 +104,7 @@ export default {
         subStateState.drawSubstateConnectors(placeholderObject3d, interfaceStateObj3d)
 
         // let box = new THREE.BoxHelper(placeholderObject3d, 0xffff00)
-        // this.modelObject3D.add(box)
+        // this.glModelObject3D.add(box)
         placeholderObject3d.position.setX(-maxX / 2)
         return interfaceStateObj3d
       })

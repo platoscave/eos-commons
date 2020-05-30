@@ -42,28 +42,40 @@ export default {
     this.addLoadingText();
 
     //this.mindPalace();
+    const w = 560;
+    const h = 315;
+
     this.create3dPage(
-      900, 1000,
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0, 0, 0),
-      'http://adndevblog.typepad.com/cloud_and_mobile');
+      w,
+      h,
+      new THREE.Vector3(-300, 0, 0),
+      new THREE.Vector3(0, Math.PI * 0.25, 0),
+      `<iframe width="${w}" height="${h}" src="https://www.youtube.com/embed/eRsGyueVLvQ?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    );
+
+    this.create3dPage(
+      w,
+      h,
+      new THREE.Vector3(300, 0, 0),
+      new THREE.Vector3(0, -Math.PI * 0.25, 0),
+      '<label for="fname">First name:</label> <input type="text" id="fname" name="fname"><br><br>'
+    );
 
     this.removeLoadingText();
   },
   methods: {
-
     ///////////////////////////////////////////////////////////////////
     // Creates 3d webpage object
     //
     ///////////////////////////////////////////////////////////////////
-    create3dPage: function(w, h, position, rotation, url) {
+    create3dPage: function(w, h, position, rotation, content) {
       var plane = this.createPlane(w, h, position, rotation);
 
-      this.glScene.add(plane);
+      this.glModelObject3D.add(plane);
 
-      var cssObject = this.createCssObject(w, h, position, rotation, url);
+      var cssObject = this.createCssObject(w, h, position, rotation, content);
 
-      this.cssScene.add(cssObject);
+      this.cssModelObject3D.add(cssObject);
     },
     ///////////////////////////////////////////////////////////////////
     // Creates plane mesh
@@ -95,28 +107,18 @@ export default {
     // Creates CSS object
     //
     ///////////////////////////////////////////////////////////////////
-    createCssObject: function(w, h, position, rotation, url) {
+    createCssObject: function(w, h, position, rotation, content) {
       var html = [
-        '<div style="width:' + w + "px; height:" + h + 'px; font-size:100px";>',
-        '<iframe width="560" height="315" src="https://www.youtube.com/embed/eRsGyueVLvQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>', 
-        //"<p>I am editable text!</p>",
+        `<div style="width:${w}px; height:${h}px; font-size:20px";>`,
+        content,
         "</div>"
       ].join("\n");
 
       var div = document.createElement("div");
       div.style.background = new THREE.Color(0xa0a0a0).getStyle();
-
       div.setAttribute("contenteditable", "");
       div.setAttribute("name", "CONTENTDIV");
-
-      //div.addEventListener('click', () => alert('Button clicked!'))
-      //div.addEventListener('mousemove', () => alert('Button clicked!'));
-      //window.addEventListener('mousemove', this.mouseMove, false);
-      //div.style.pointerEvents	= 'auto'
-
-
-
-      div.innerHTML = html
+      div.innerHTML = html;
 
       var cssObject = new CSS3DObject(div);
 

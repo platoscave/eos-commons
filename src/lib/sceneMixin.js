@@ -1,10 +1,11 @@
 import TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
-
 import fontJson from '../assets/helvetiker_regular.typeface.json'
 const font = new THREE.Font(fontJson)
+
+let camera, controls, skyBox, glRenderer, cssRenderer, glScene, cssScene
 
 export default {
 
@@ -24,7 +25,10 @@ export default {
   data() {
     return {
       skyboxArray: [],
-      orbit: false
+      orbit: false,
+      glModelObject3D: null,
+      cssModelObject3D: null,
+      selectableMeshArr: []
     }
   },
   mounted() {
@@ -40,21 +44,21 @@ export default {
   methods: {
     onOrbit(e) {
       this.orbit = !this.orbit
-      this.controls.autoRotate = this.orbit
+      controls.autoRotate = this.orbit
     },
     onResize(x, y) {
-      if (!this.glRenderer) return
+      if (!glRenderer) return
       if (this.width === undefined || this.height === undefined) {
         // console.log('this.$el', this.$el)
         let rect = this.$el.getBoundingClientRect()
-        this.camera.aspect = rect.width / rect.height
-        this.camera.updateProjectionMatrix()
-        this.glRenderer.setSize(rect.width, rect.height)
-        this.cssRenderer.setSize(rect.width, rect.height)
+        camera.aspect = rect.width / rect.height
+        camera.updateProjectionMatrix()
+        glRenderer.setSize(rect.width, rect.height)
+        cssRenderer.setSize(rect.width, rect.height)
         this.render()
       } else {
-        this.glRenderer.setSize(this.width, this.height)
-        this.cssRenderer.setSize(rect.width, rect.height)
+        glRenderer.setSize(this.width, this.height)
+        cssRenderer.setSize(this.width, this.height)
       }
     },
     getSceneIndexByKey(key) {
@@ -67,44 +71,39 @@ export default {
     },
     loadScene() {
       // world
-      this.glScene = new THREE.Scene()
+      glScene = new THREE.Scene()
+      this.glModelObject3D = new THREE.Object3D()
+      glScene.add(this.glModelObject3D) 
 
-      let sceneObject3D = new THREE.Object3D()
-      this.glScene.add(sceneObject3D)
-      /* 
-      this.modelObject3D = new THREE.Object3D()
-
-      this.glScene.add(sceneObject3D)
-      this.glScene.add(this.modelObject3D) */
-
-      this.cssScene = new THREE.Scene();
-
+      cssScene = new THREE.Scene();
+      this.cssModelObject3D = new THREE.Object3D()
+      cssScene.add(this.cssModelObject3D) 
 
       this.selectableMeshArr = []
 
       // camera
-      this.camera = new THREE.PerspectiveCamera(60, 3 / 2, 1, 100000)
-      this.camera.position.z = 4000
+      camera = new THREE.PerspectiveCamera(60, 3 / 2, 1, 100000)
+      camera.position.z = 4000
 
       // glRenderer
-      this.glRenderer = this.createGlRenderer()
-      this.cssRenderer = this.createCssRenderer()
+      glRenderer = this.createGlRenderer()
+      cssRenderer = this.createCssRenderer()
 
-      this.$el.appendChild(this.cssRenderer.domElement);
-      this.cssRenderer.domElement.appendChild(this.glRenderer.domElement);
+      this.$el.appendChild(cssRenderer.domElement);
+      cssRenderer.domElement.appendChild(glRenderer.domElement);
 
       // controls
-      //this.controls = new OrbitControls(this.camera, this.glRenderer.domElement)
-      this.controls = new OrbitControls(this.camera, this.$el)
-      this.controls.autoRotateSpeed = 0.125
-      this.controls.minPolarAngle = Math.PI / 4
-      this.controls.maxPolarAngle = Math.PI / 1.5
-      this.controls.screenSpacePanning = true;
+      //controls = new OrbitControls(camera, glRenderer.domElement)
+      controls = new OrbitControls(camera, this.$el)
+      controls.autoRotateSpeed = 0.125
+      controls.minPolarAngle = Math.PI / 4
+      controls.maxPolarAngle = Math.PI / 1.5
+      controls.screenSpacePanning = true;
       /* 
-      this.controls.dollyOut = function(){
+      controls.dollyOut = function(){
         this.object.position.z -= 100;
       }
-      this.controls.dollyIn = function(){
+      controls.dollyIn = function(){
           this.object.position.z += 100;
       }
      */
@@ -112,12 +111,12 @@ export default {
       // lights
       let light1 = new THREE.DirectionalLight(0xffffff)
       light1.position.set(1, 1, 1).normalize()
-      sceneObject3D.add(light1)
+      glScene.add(light1)
       let light2 = new THREE.AmbientLight(0x404040)
-      sceneObject3D.add(light2)
+      glScene.add(light2)
 
       // axes
-      sceneObject3D.add(new THREE.AxesHelper(100))
+      glScene.add(new THREE.AxesHelper(100))
 
       // raycaster
       this.raycaster = new THREE.Raycaster()
@@ -133,13 +132,13 @@ export default {
             side: THREE.BackSide
           }))
         }
-        this.skyBox = new THREE.Mesh(skyGeometry, materialArray)
-        sceneObject3D.add(this.skyBox)
+        skyBox = new THREE.Mesh(skyGeometry, materialArray)
+        glScene.add(skyBox)
       }
 
       // else see http://threejs.org/examples/webgl_multiple_views.html
 
-      sceneObject3D.name = 'Boilerplate'
+      glScene.name = 'Boilerplate'
       this.$el.addEventListener('click', this.onClick, false)
 
       this.$nextTick(() => this.$nextTick(() => this.onResize()))
@@ -147,17 +146,17 @@ export default {
       this.animate()
     },
     render() {
-      this.glRenderer.render(this.glScene, this.camera)
-      this.cssRenderer.render(this.cssScene, this.camera)
+      glRenderer.render(glScene, camera)
+      cssRenderer.render(cssScene, camera)
     },
 
     animate() {
       requestAnimationFrame(this.animate.bind(this))
       TWEEN.update()
-      this.skyBox.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z) // keep skybox centred around the camera
-      this.controls.update()
-      this.glRenderer.render(this.glScene, this.camera)
-      this.cssRenderer.render(this.cssScene, this.camera)
+      skyBox.position.set(camera.position.x, camera.position.y, camera.position.z) // keep skybox centred around the camera
+      controls.update()
+      glRenderer.render(glScene, camera)
+      cssRenderer.render(cssScene, camera)
     },
     onClick(event) {
       // see https://threejs.org/docs/#api/core/Raycaster.setFromCamera
@@ -170,7 +169,7 @@ export default {
       let mouse = new THREE.Vector2(x, y)
 
       // update the picking ray with the camera and mouse position
-      this.raycaster.setFromCamera(mouse, this.camera)
+      this.raycaster.setFromCamera(mouse, camera)
       let intersects = this.raycaster.intersectObjects(this.selectableMeshArr)
       if (intersects.length > 0) {
         let selectedMesh = intersects[0].object
@@ -185,29 +184,29 @@ export default {
       }
     },
     highlight(newVal, oldVal) {
-      let currentlySelected = this.modelObject3D.getObjectByProperty('key', oldVal)
+      let currentlySelected = this.glModelObject3D.getObjectByProperty('key', oldVal)
       if (currentlySelected) {
         currentlySelected.children[0].material = currentlySelected.getMaterial()
         currentlySelected.children[1].material = new THREE.MeshLambertMaterial({ color: 0xEFEFEF })
       }
-      let newlySelected = this.modelObject3D.getObjectByProperty('key', newVal)
+      let newlySelected = this.glModelObject3D.getObjectByProperty('key', newVal)
       if (newlySelected) {
         newlySelected.children[0].material = new THREE.MeshLambertMaterial({ color: 0xEEEE00 })
         newlySelected.children[1].material = new THREE.MeshLambertMaterial({ color: 0x666666 })
       }
     },
     moveCameraToPos(key) {
-      let selectedModelObj = this.modelObject3D.getObjectByProperty('key', key)
+      let selectedModelObj = this.glModelObject3D.getObjectByProperty('key', key)
       if (!selectedModelObj) return
-      if (!this.glScene) return
+      if (!glScene) return
       // console.log('selectedModelObj', selectedModelObj)
-      this.glScene.updateMatrixWorld()
+      glScene.updateMatrixWorld()
       let newTargetPos = new THREE.Vector3()
       newTargetPos.setFromMatrixPosition(selectedModelObj.matrixWorld)
 
-      new TWEEN.Tween(this.controls.target).easing(TWEEN.Easing.Quadratic.Out).to(newTargetPos, 1500).start()
+      new TWEEN.Tween(controls.target).easing(TWEEN.Easing.Quadratic.Out).to(newTargetPos, 1500).start()
 
-      let cameraPos = this.controls.object.position.clone()
+      let cameraPos = controls.object.position.clone()
       let newCameraPos = newTargetPos.clone()
 
       newCameraPos.setY(newCameraPos.y + 300)
@@ -218,7 +217,7 @@ export default {
       cameraTween.easing(TWEEN.Easing.Quadratic.Out)
       cameraTween.onUpdate(() => {
         // console.log('cameraPos', cameraPos)
-        this.controls.object.position.set(cameraPos.x, cameraPos.y, cameraPos.z)
+        controls.object.position.set(cameraPos.x, cameraPos.y, cameraPos.z)
       })
       cameraTween.start()
     },
@@ -229,12 +228,12 @@ export default {
       let textMesh = new THREE.Mesh(text3d, textMaterial)
       textMesh.name = 'Loading Message'
       textMesh.position.set(0, 400, 0)
-      this.glScene.add(textMesh)
+      glScene.add(textMesh)
     },
     removeLoadingText() {
-      let mesh = this.glScene.getObjectByName('Loading Message')
+      let mesh = glScene.getObjectByName('Loading Message')
 
-      this.glScene.remove(mesh)
+      glScene.remove(mesh)
     },
     getRoundedRectShape(width, height, radius) {
       const roundedRect = (ctx, width, height, radius) => {
