@@ -112,26 +112,20 @@ export default {
 
     getTankObject3D: function( text ) {
 
+      const getRandomKey = () => {
+          // base32 encoded 64-bit integers. This means they are limited to the characters a-z, 1-5, and '.' for the first 12 characters.
+          // If there is a 13th character then it is restricted to the first 16 characters ('.' and a-p).
+          var characters = 'abcdefghijklmnopqrstuvwxyz12345'
+          var randomKey = ''
+          for (var i = 0; i < 12; i++) {
+              randomKey += characters.charAt(Math.floor(Math.random() * characters.length))
+          }
+          return randomKey
+      }
+
       let tankObject3d = new THREE.Object3D();
-
-      // Water Body
-
-      const waterMaterial = new THREE.MeshBasicMaterial({
-        color: 0x4040ff,
-        opacity: 0.3,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-        //depthTest: true,
-        transparent: true
-      });
-
-
-      let waterGeometry = new THREE.BoxBufferGeometry( WIDTH, HEIGHT  /2, DEPTH);
-      let waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
-      waterMesh.position.set(0, -HEIGHT / 4, 0);
-
-      tankObject3d.add(waterMesh);
-
+      tankObject3d.key = getRandomKey()
+      tankObject3d.name = text
 
 
       // Tank rectangle
@@ -153,8 +147,28 @@ export default {
       this.selectableMeshArr.push(tankMesh)
 
 
-      //makeCanvasLabel:function (text, maxWidth, size, color, backgroundColor) 
-      //const textMesh = this.makeCanvasLabel(text, WIDTH, 30, 'black', 'rgba(249, 231, 159, 0.8)')
+
+      // Water Body
+
+      const waterMaterial = new THREE.MeshBasicMaterial({
+        color: 0x4040ff,
+        opacity: 0.3,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        //depthTest: true,
+        transparent: true
+      });
+
+
+      let waterGeometry = new THREE.BoxBufferGeometry( WIDTH, HEIGHT  /2, DEPTH);
+      let waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+      waterMesh.position.set(0, -HEIGHT / 4, 0);
+
+      tankObject3d.add(waterMesh);
+
+
+
+
       const textMesh = this.makeCanvasLabel(text, WIDTH, 30, 'black', 'rgba(215, 219, 221, 0.7)')
       textMesh.position.set(0, - HEIGHT / 4, DEPTH / 2 +20)
       tankObject3d.add(textMesh);

@@ -48,6 +48,14 @@ export default {
     this.create3dPage(
       w,
       h,
+      new THREE.Vector3(0, 400, 0),
+      new THREE.Vector3(0, 0, 0),
+      `<iframe width="${w}" height="${h}" src="http://localhost:8080/#/.etzkqkeevznx" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    );
+
+    this.create3dPage(
+      w,
+      h,
       new THREE.Vector3(-300, 0, 0),
       new THREE.Vector3(0, Math.PI * 0.25, 0),
       `<iframe width="${w}" height="${h}" src="https://www.youtube.com/embed/eRsGyueVLvQ?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`

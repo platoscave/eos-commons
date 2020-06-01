@@ -5,7 +5,7 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import fontJson from '../assets/helvetiker_regular.typeface.json'
 const font = new THREE.Font(fontJson)
 
-let camera, controls, skyBox, glRenderer, cssRenderer, glScene, cssScene
+let camera, controls, skyBox, glRenderer, cssRenderer, glScene, cssScene, axesHelper
 
 export default {
 
@@ -28,7 +28,8 @@ export default {
       orbit: false,
       glModelObject3D: null,
       cssModelObject3D: null,
-      selectableMeshArr: []
+      selectableMeshArr: [],
+      heighlight: false
     }
   },
   mounted() {
@@ -79,7 +80,6 @@ export default {
       this.cssModelObject3D = new THREE.Object3D()
       cssScene.add(this.cssModelObject3D) 
 
-      this.selectableMeshArr = []
 
       // camera
       camera = new THREE.PerspectiveCamera(60, 3 / 2, 1, 100000)
@@ -99,24 +99,31 @@ export default {
       controls.minPolarAngle = Math.PI / 4
       controls.maxPolarAngle = Math.PI / 1.5
       controls.screenSpacePanning = true;
-      /* 
-      controls.dollyOut = function(){
-        this.object.position.z -= 100;
-      }
-      controls.dollyIn = function(){
-          this.object.position.z += 100;
-      }
-     */
+/*       controls.enableZoom = false
+
+      this.$el.addEventListener( 'wheel', evnet => {
+        event.preventDefault();
+        event.stopPropagation();
+        let moveCameraVec = new THREE.Vector3()
+        camera.getWorldDirection(moveCameraVec)
+        moveCameraVec.multiplyScalar ( event.deltaY > 0 ? 100 : -100)
+
+        var newCameraPos = camera.position.clone().add( moveCameraVec );
+        controls.object.position.set(newCameraPos.x, newCameraPos.y, newCameraPos.z)
+
+      }, false ); */
+     
 
       // lights
       let light1 = new THREE.DirectionalLight(0xffffff)
-      light1.position.set(1, 1, 1).normalize()
+      light1.position.set(-1, 1, 1).normalize()
       glScene.add(light1)
       let light2 = new THREE.AmbientLight(0x404040)
       glScene.add(light2)
 
-      // axes
-      glScene.add(new THREE.AxesHelper(100))
+      // axesHelper
+      axesHelper =new THREE.AxesHelper(100)
+      glScene.add(axesHelper)
 
       // raycaster
       this.raycaster = new THREE.Raycaster()
@@ -155,6 +162,7 @@ export default {
       TWEEN.update()
       skyBox.position.set(camera.position.x, camera.position.y, camera.position.z) // keep skybox centred around the camera
       controls.update()
+      axesHelper.position.set(controls.target.x, controls.target.y, controls.target.z)
       glRenderer.render(glScene, camera)
       cssRenderer.render(cssScene, camera)
     },
@@ -184,6 +192,7 @@ export default {
       }
     },
     highlight(newVal, oldVal) {
+      if(!this.heighlight) return
       let currentlySelected = this.glModelObject3D.getObjectByProperty('key', oldVal)
       if (currentlySelected) {
         currentlySelected.children[0].material = currentlySelected.getMaterial()

@@ -253,6 +253,6 @@ export default class ProcessObject3d extends THREE.Object3D {
     text3d.center()
     let textMesh = new THREE.Mesh(text3d, textMaterial)
     textMesh.position.set(textPosition.x, textPosition.y, textPosition.z)
-    this.add(textMesh)
+    //this.add(textMesh)
   }
 }

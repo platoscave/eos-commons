@@ -23,7 +23,7 @@ Vue.component('ec-layout', EcLayout)
 //import * as THREE from 'three'
 
 global.THREE = require('three')
-window.THREE = THREE;
+//window.THREE = THREE;
 global.OrbitControls = require('three/examples/jsm/controls/OrbitControls.js')
 
 //https://stackoverflow.com/questions/59872651/why-is-lodash-not-working-when-i-import-it-in-vue-js
