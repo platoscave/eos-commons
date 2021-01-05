@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "async-es": "^2.6.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bignumber.js": "git+https://github.com/MikeMcl/bignumber.js.git",
     "core-js": "^2.6.11",
     "eosjs": "^20.0.3",
