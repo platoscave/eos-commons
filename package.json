@@ -24,7 +24,7 @@
     "vue-router": "^3.1.6",
     "vue-wysiwyg": "^1.7.2",
     "vueckeditor": "^0.1.4",
-    "vuetify": "^2.2.28",
+    "vuetify": "^2.6.10",
     "vuex": "^3.4.0",
     "vuex-persistedstate": "^2.7.1",
     "vuex-router-sync": "^5.0.0"
